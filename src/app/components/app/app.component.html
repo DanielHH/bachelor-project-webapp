@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-md navbar-dark primary-color-dark">
+	<a class="navbar-brand" routerLink="/">Åsas awesome webapp</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+	 aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarText">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+				<a class="nav-link" routerLink="/documents">Handlingar</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" routerLink="/receipts">Kvittenser</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" routerLink="/logs">Loggar</a>
+			</li>
+		</ul>
+		<span class="navbar-text white-text">
+			Här kan man också skriva lite
+		</span>
+	</div>
+</nav>
+
+<div class="container">
+
+	<router-outlet></router-outlet>
+
+</div>
