@@ -20,6 +20,7 @@ import { ComponentOutputComponent } from './pages/examples/code-examples/compone
 import { ComponentInoutComponent } from './pages/examples/code-examples/component-inout/component-inout.component';
 import { InputTestComponent } from './pages/examples/code-examples/component-input/input-test/input-test.component';
 import { OutputTestComponent } from './pages/examples/code-examples/component-output/output-test/output-test.component';
+import { CardsComponent } from './pages/cards/cards.component';
 
 
 
@@ -36,7 +37,8 @@ import { OutputTestComponent } from './pages/examples/code-examples/component-ou
     ComponentOutputComponent,
     ComponentInoutComponent,
     InputTestComponent,
-    OutputTestComponent
+    OutputTestComponent,
+    CardsComponent
   ],
   imports: [
     BrowserModule,
