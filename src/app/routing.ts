@@ -13,9 +13,9 @@ export const routes: Routes = [
     { path: 'logs', component: LogsComponent, data: { name: 'Loggar' } },
     { path: 'examples', component: ExamplesComponent, data: { name: 'Kodexempel' } }
 
-	/* Resterande routes
+  /* Resterande routes
 	{ path: '**', component: PageNotFoundComponent, data: { name: 'SidanHittadesInte', fullSizeBackgroundURL: '/assets/not-found.jpg' } }
-    */
+  */
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, { useHash: false });
