@@ -5,7 +5,8 @@
     <div class="col-12 col-md-6 py-3">
       <div class="md-form">
         <mat-form-field>
-          <mat-select placeholder="Card type" [formControl]="cardTypeControl" required>
+          <mat-select id="cardTypeInput" name="cardTypeInput" placeholder="Card type"
+          [(ngModel)]="newCard.cardType" [formControl]="cardTypeControl" required>
             <mat-option>None</mat-option>
             <mat-option *ngFor="let cardType of cardTypes" [value]="cardType">
               {{cardType.name}}
