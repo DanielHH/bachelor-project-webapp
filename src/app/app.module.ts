@@ -1,13 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
-
-import { AppComponent } from './components/app/app.component';
-import { routing } from './routing';
-
+import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { routing } from './routing';
+
+import { AppComponent } from './components/app/app.component';
 
 import { HomeComponent } from './pages/home/home.component';
 import { DocumentsComponent } from './pages/documents/documents.component';
@@ -21,6 +20,10 @@ import { ComponentInoutComponent } from './pages/examples/code-examples/componen
 import { InputTestComponent } from './pages/examples/code-examples/component-input/input-test/input-test.component';
 import { OutputTestComponent } from './pages/examples/code-examples/component-output/output-test/output-test.component';
 import { CardsComponent } from './pages/cards/cards.component';
+import { HttpService } from './services/http.service';
+import { GetComponent } from './pages/examples/code-examples/get/get.component';
+import { PostComponent } from './pages/examples/code-examples/post/post.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
 
 
 
@@ -38,15 +41,19 @@ import { CardsComponent } from './pages/cards/cards.component';
     ComponentInoutComponent,
     InputTestComponent,
     OutputTestComponent,
-    CardsComponent
+    CardsComponent,
+    GetComponent,
+    PostComponent,
+    SideMenuComponent
   ],
   imports: [
     BrowserModule,
     routing,
     MDBBootstrapModule.forRoot(),
-    FormsModule
+    FormsModule,
+    HttpModule
   ],
-  providers: [],
+  providers: [HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
