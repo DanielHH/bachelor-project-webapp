@@ -1,3 +1,10 @@
-<p>
-  cards works!
-</p>
+<div *ngIf="showAddNewCard" class="input-container">
+  <app-add-new-card></app-add-new-card>
+</div>
+
+<button class="btn btn-blue-grey" (click)="showAddNewCard = !showAddNewCard">Nånting</button>
+
+
+<div class="table-container">
+  <app-card-table [cardList]="cardList"></app-card-table>
+</div>

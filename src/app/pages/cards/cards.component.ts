@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Card } from '../../datamodels/card';
 
 @Component({
   selector: 'app-cards',
@@ -7,7 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CardsComponent implements OnInit {
 
-  constructor() { }
+  showAddNewCard = true;
+
+  cardList: Card[] = [];
+
+  constructor() {
+
+    const cardOne: Card = {
+      id: 0,
+      cardType: 1,
+      cardNumber: '123',
+      userID: 1234,
+      user: 'Jennifer',
+      location: 'Zimbabwe',
+      comment: 'Varför?!?!??!',
+      expirationDate: new Date()
+    };
+
+    this.cardList.push(cardOne);
+    this.cardList.push(cardOne);
+    this.cardList.push(cardOne);
+  }
 
   ngOnInit() {
   }
