@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { routing } from './routing';
@@ -28,7 +28,16 @@ import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-n
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {
+  MatNativeDateModule,
+  MatInputModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatFormFieldModule,
+  MatDatepickerModule,
+  MatSelectModule
+} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -57,7 +66,16 @@ import { CardItemComponent } from './pages/cards/components/card-item/card-item.
     routing,
     MDBBootstrapModule.forRoot(),
     FormsModule,
-    HttpModule
+    ReactiveFormsModule,
+    HttpModule,
+    BrowserAnimationsModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatSelectModule
   ],
   providers: [HttpService],
   bootstrap: [AppComponent]

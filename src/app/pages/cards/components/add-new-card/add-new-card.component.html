@@ -1,42 +1,91 @@
 <form #testForm="ngForm" (ngSubmit)="addNewCard()">
-  <!-- Row 1 -->
+
+  <!-- Row 1 cardType & cardNumber -->
   <div class="row">
     <div class="col-12 col-md-6 py-3">
       <div class="md-form">
-        <input mdbActive type="text" id="cardTypeInput" class="form-control" [(ngModel)]="newCard.cardType" name="cardTypeInput"
+        <mat-form-field>
+          <mat-select placeholder="Card type" [formControl]="cardTypeControl" required>
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let cardType of cardTypes" [value]="cardType">
+              {{cardType.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="cardTypeControl.hasError('required')">Please select a card type</mat-error>
+          <mat-hint>{{cardTypeControl.value?.description}}</mat-hint>
+        </mat-form-field>
+        <!--<input mdbActive type="text" id="cardTypeInput" class="form-control"
+        [(ngModel)]="newCard.cardType" name="cardTypeInput"
           #cardTypeInput="ngModel">
-        <label for="cardTypeInput">Card type</label>
+        <label for="cardTypeInput">Card type</label>-->
       </div>
     </div>
     <div class="col-12 col-md-6 py-3">
       <div class="md-form">
-        <input mdbActive type="text" id="cardNumberInput" class="form-control" [(ngModel)]="newCard.cardNumber" name="cardNumberInput"
+        <input mdbActive type="text" id="cardNumberInput" class="form-control"
+        [(ngModel)]="newCard.cardNumber" name="cardNumberInput"
           #cardNumberInput="ngModel">
-        <label for="cardNumberInput">Card number</label>
+        <label for="cardNumberInput">Serial number</label>
       </div>
     </div>
   </div>
 
-  <!-- Row 2 -->
+  <!-- Row 2 userID & user (full name) -->
   <div class="row mt-3">
     <div class="col-12 col-md-6 py-3">
       <div class="md-form">
-        <input mdbActive type="text" id="userID" class="form-control" [(ngModel)]="newCard.userID" name="userIDInput" #userIDInput="ngModel">
+        <input mdbActive type="text" id="userID" class="form-control"
+        [(ngModel)]="newCard.userID" name="userIDInput" #userIDInput="ngModel">
         <label for="userIDInput">User ID</label>
       </div>
     </div>
     <div class="col-12 col-md-6 py-3">
       <div class="md-form">
-        <input mdbActive type="text" id="userInput" class="form-control" [(ngModel)]="newCard.user" name="userInput" #userInput="ngModel">
-        <label for="userInput">Name</label>
+        <input mdbActive type="text" id="userInput" class="form-control"
+        [(ngModel)]="newCard.user" name="userInput" #userInput="ngModel">
+        <label for="userInput">Full name</label>
       </div>
     </div>
   </div>
 
-  <!-- Row 3 -->
+  <!-- Row 3 location & comment -->
+  <div class="row mt-3">
+    <div class="col-12 col-md-6 py-3">
+      <div class="md-form">
+        <input mdbActive type="text" id="location" class="form-control"
+        [(ngModel)]="newCard.location" name="locationInput" #locationInput="ngModel">
+        <label for="locationInput">Location</label>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 py-3">
+      <div class="md-form">
+        <input mdbActive type="text" id="commentInput" class="form-control"
+        [(ngModel)]="newCard.comment" name="commentInput" #commentInput="ngModel">
+        <label for="commentInput">Comment</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 4 expirationDate -->
+  <div class="row mt-3">
+    <div class="col-12 py-3">
+      <div class="md-form">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Expiration date"
+          id="expirationDate" [(ngModel)]="newCard.expirationDate"
+          name="expirationDateInput" #expirationDateInput="ngModel">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 5 -->
   <div class="row mt-3">
     <div class="col-12 py-3 text-center">
       <button type="submit" class="btn btn-blue-grey">Send</button>
     </div>
   </div>
+
 </form>
