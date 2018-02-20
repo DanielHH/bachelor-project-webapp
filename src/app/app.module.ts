@@ -36,7 +36,9 @@ import {
   MatCheckboxModule,
   MatFormFieldModule,
   MatDatepickerModule,
-  MatSelectModule
+  MatSelectModule,
+  MatAutocompleteModule,
+  MatIconModule
 } from '@angular/material';
 
 @NgModule({
@@ -75,7 +77,9 @@ import {
     MatCheckboxModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatIconModule
   ],
   providers: [HttpService],
   bootstrap: [AppComponent]

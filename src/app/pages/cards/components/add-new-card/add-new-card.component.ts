@@ -1,7 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators} from '@angular/forms';
+
+import {Observable} from 'rxjs/Observable';
+import {startWith} from 'rxjs/operators/startWith';
+import {map} from 'rxjs/operators/map';
 
 @Component({
   selector: 'app-add-new-card',
@@ -12,18 +16,58 @@ export class AddNewCardComponent implements OnInit {
 
   newCard = new Card();
 
-  cardTypeControl = new FormControl('', [Validators.required]);
+  // Form Controls
+  cardTypeControl = new FormControl('', Validators.required);
+  cardNumberControl = new FormControl('', Validators.required);
+  userIDControl = new FormControl('', Validators.required);
+  nameControl = new FormControl('', Validators.required);
+  locationControl = new FormControl('', Validators.required);
+  expirationDateControl = new FormControl('', Validators.required);
 
   cardTypes = [
-    {name: 'Type 1', description: 'Type 1 description'},
-    {name: 'Type 2', description: 'Type 2 description'},
-    {name: 'Type 3', description: 'Type 3 description'},
-    {name: 'Type 4', description: 'Type 4 description'},
+    'Type 1',
+    'Type 2',
+    'Type 3',
+    'Type 4',
+  ];
+
+  userIDs = [
+    'Jennifer',
+    'Niklas',
+    'Philip',
+    'Johan',
+    'David',
+    'Daniel',
+    'Andreas'
   ];
 
   constructor(private httpService: HttpService) { }
 
+  filteredCardTypes: Observable<string[]>;
+  filteredUserIDs: Observable<string[]>;
+
   ngOnInit() {
+    this.filteredCardTypes = this.cardTypeControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(val => this.filterCardTypes(val))
+      );
+
+    this.filteredUserIDs = this.userIDControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(val => this.filterUserIDs(val))
+    );
+  }
+
+  filterCardTypes(val: string): string[] {
+    return this.cardTypes.filter(cardType =>
+      cardType.toLowerCase().indexOf(val.toLowerCase()) === 0);
+  }
+
+  filterUserIDs(val: string): string[] {
+    return this.userIDs.filter(userID =>
+      userID.toLowerCase().indexOf(val.toLowerCase()) === 0);
   }
 
   addNewCard() {
@@ -32,6 +76,50 @@ export class AddNewCardComponent implements OnInit {
       console.log(data);
 
     });
+  }
+
+  getCardTypeInputFontColor() {
+    if (this.newCard.cardType) {
+      return 'black';
+    } else {
+      return 'gray';
+    }
+  }
+
+  getUserIDInputFontColor() {
+    if (this.newCard.userID) {
+      return 'black';
+    } else {
+      return 'gray';
+    }
+  }
+
+  setCardType(data: any) {
+    this.newCard.cardType = data.option.value;
+  }
+
+  setCardNumber(data: any) {
+    this.newCard.cardNumber = data.data;
+  }
+
+  setUserID(data: any) {
+    this.newCard.userID = data.option.value;
+  }
+
+  setUser(data: any) {
+    this.newCard.user = data.data;
+  }
+
+  setLocation(data: any) {
+    this.newCard.location = data.data;
+  }
+
+  setComment(data: any) {
+    this.newCard.comment = data.data;
+  }
+
+  setExpirationDate(data: any) {
+    this.newCard.expirationDate = data.value;
   }
 
 }

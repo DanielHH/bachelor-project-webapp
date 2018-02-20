@@ -2,89 +2,91 @@
 
   <!-- Row 1 cardType & cardNumber -->
   <div class="row">
-    <div class="col-12 col-md-6 py-3">
+    <div class="col-12 col-md-6 p-3">
       <div class="md-form">
         <mat-form-field>
-          <mat-select id="cardTypeInput" name="cardTypeInput" placeholder="Card type"
-          [(ngModel)]="newCard.cardType" [formControl]="cardTypeControl" required>
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let cardType of cardTypes" [value]="cardType">
-              {{cardType.name}}
+          <input id="cardTypeInput" name="cardTypeInput" type="text" [style.color]="getCardTypeInputFontColor()"
+          placeholder="Card type" aria-label="Number" matInput [matAutocomplete]="auto"
+          [formControl]="cardTypeControl" (input)="newCard.cardType = null" required>
+          <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.cardType != null">done</mat-icon>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setCardType($event)">
+            <mat-option *ngFor="let cardType of filteredCardTypes | async" [value]="cardType">
+              {{ cardType }}
             </mat-option>
-          </mat-select>
-          <mat-error *ngIf="cardTypeControl.hasError('required')">Please select a card type</mat-error>
-          <mat-hint>{{cardTypeControl.value?.description}}</mat-hint>
+          </mat-autocomplete>
+          <mat-error *ngIf="cardTypeControl.hasError('required')">Please select a valid card type</mat-error>
         </mat-form-field>
-        <!--<input mdbActive type="text" id="cardTypeInput" class="form-control"
-        [(ngModel)]="newCard.cardType" name="cardTypeInput"
-          #cardTypeInput="ngModel">
-        <label for="cardTypeInput">Card type</label>-->
       </div>
     </div>
-    <div class="col-12 col-md-6 py-3">
-      <div class="md-form">
-        <input mdbActive type="text" id="cardNumberInput" class="form-control"
-        [(ngModel)]="newCard.cardNumber" name="cardNumberInput"
-          #cardNumberInput="ngModel">
-        <label for="cardNumberInput">Serial number</label>
-      </div>
+    <div class="col-12 col-md-6 p-3">
+      <mat-form-field>
+        <input matInput placeholder="Serial number" [formControl]="cardNumberControl" (input)="setCardNumber($event)" required>
+        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.cardNumber != null">done</mat-icon>
+        <mat-error *ngIf="cardNumberControl.hasError('required')">Please enter location</mat-error>
+      </mat-form-field>
     </div>
   </div>
 
   <!-- Row 2 userID & user (full name) -->
   <div class="row mt-3">
-    <div class="col-12 col-md-6 py-3">
-      <div class="md-form">
-        <input mdbActive type="text" id="userID" class="form-control"
-        [(ngModel)]="newCard.userID" name="userIDInput" #userIDInput="ngModel">
-        <label for="userIDInput">User ID</label>
-      </div>
+    <div class="col-12 col-md-6 p-3">
+      <mat-form-field>
+        <input id="userIDInput" name="userIDInput" type="text" [style.color]="getUserIDInputFontColor()"
+        placeholder="User ID" aria-label="Number" matInput [matAutocomplete]="auto"
+        [formControl]="userIDControl" (input)="newCard.userID = null" required>
+        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.userID != null">done</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setUserID($event)">
+          <mat-option *ngFor="let userID of filteredUserIDs | async" [value]="userID">
+            {{ userID }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="userIDControl.hasError('required')">Please select a valid user ID</mat-error>
+      </mat-form-field>
     </div>
-    <div class="col-12 col-md-6 py-3">
-      <div class="md-form">
-        <input mdbActive type="text" id="userInput" class="form-control"
-        [(ngModel)]="newCard.user" name="userInput" #userInput="ngModel">
-        <label for="userInput">Full name</label>
-      </div>
-    </div>
-  </div>
-
-  <!-- Row 3 location & comment -->
-  <div class="row mt-3">
-    <div class="col-12 col-md-6 py-3">
-      <div class="md-form">
-        <input mdbActive type="text" id="location" class="form-control"
-        [(ngModel)]="newCard.location" name="locationInput" #locationInput="ngModel">
-        <label for="locationInput">Location</label>
-      </div>
-    </div>
-    <div class="col-12 col-md-6 py-3">
-      <div class="md-form">
-        <input mdbActive type="text" id="commentInput" class="form-control"
-        [(ngModel)]="newCard.comment" name="commentInput" #commentInput="ngModel">
-        <label for="commentInput">Comment</label>
-      </div>
+    <div class="col-12 col-md-6 p-3">
+      <mat-form-field>
+        <input matInput placeholder="Full name" [formControl]="nameControl" (input)="setUser($event)" required>
+        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.user != null">done</mat-icon>
+        <mat-error *ngIf="nameControl.hasError('required')">Please enter full name</mat-error>
+      </mat-form-field>
     </div>
   </div>
 
-  <!-- Row 4 expirationDate -->
+  <!-- Row 3 location & expirationDate -->
   <div class="row mt-3">
-    <div class="col-12 py-3">
-      <div class="md-form">
+    <div class="col-12 col-md-6 p-3">
+      <mat-form-field>
+        <input matInput placeholder="Location" [formControl]="locationControl" (input)="setLocation($event)" required>
+        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.location != null">done</mat-icon>
+        <mat-error *ngIf="locationControl.hasError('required')">Please enter location</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-12 col-md-6 p-3">
+      <mat-form-field>
+        <input matInput id="expirationDate" name="expirationDateInput"
+        type="text" placeholder="Expiration date" [matDatepicker]="picker" (dateInput)="setExpirationDate($event)"
+        [formControl]="expirationDateControl" required>
+        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.expirationDate != null">done</mat-icon>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-error *ngIf="expirationDateControl.hasError('required')">Please select a date</mat-error>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Row 4 comment -->
+  <div class="row mt-3">
+    <div class="col-12 p-3">
         <mat-form-field>
-          <input matInput [matDatepicker]="picker" placeholder="Expiration date"
-          id="expirationDate" [(ngModel)]="newCard.expirationDate"
-          name="expirationDateInput" #expirationDateInput="ngModel">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <input matInput matInputAutosize matAutosizeMinRows="1"
+          matAutosizeMaxRows="5" placeholder="Comment" (input)="setComment($event)">
         </mat-form-field>
-      </div>
     </div>
   </div>
 
   <!-- Row 5 -->
   <div class="row mt-3">
-    <div class="col-12 py-3 text-center">
+    <div class="col-12 p-3 text-center">
       <button type="submit" class="btn btn-blue-grey">Send</button>
     </div>
   </div>
