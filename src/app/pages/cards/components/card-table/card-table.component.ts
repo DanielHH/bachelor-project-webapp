@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-card-table',

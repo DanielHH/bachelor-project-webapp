@@ -44,4 +44,9 @@ export class Card {
    */
   expirationDate: Date;
 
+  /**
+   * Formatted Date to be displayed
+   */
+  displayedDate?: string;
+
 }
