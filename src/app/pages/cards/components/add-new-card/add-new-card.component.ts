@@ -16,10 +16,10 @@ import {map} from 'rxjs/operators/map';
   validate(c: FormControl): ValidationErrors {
     const input = String(c.value);
     const cardTypes = [
-      'Type 1',
-      'Type 2',
-      'Type 3',
-      'Type 4',
+      'USB',
+      'MicroSD',
+      'Harddrive',
+      'Chip',
     ];
     const isValid = input && cardTypes.includes(input);
     const message = {
@@ -32,26 +32,26 @@ import {map} from 'rxjs/operators/map';
  }
 
  @Directive({
-  selector: '[appUserID]',
-  providers: [{provide: NG_VALIDATORS, useExisting: UserIDValidatorDirective, multi: true}]
+  selector: '[appUsername]',
+  providers: [{provide: NG_VALIDATORS, useExisting: UsernameValidatorDirective, multi: true}]
  })
- export class UserIDValidatorDirective implements Validator {
+ export class UsernameValidatorDirective implements Validator {
 
   validate(c: FormControl): ValidationErrors {
     const input = String(c.value);
-    const userIDs = [
-      'Jennifer',
-      'Niklas',
-      'Philip',
-      'Johan',
-      'David',
-      'Daniel',
-      'Andreas'
+    const usernames = [
+      'jenli414',
+      'nikni459',
+      'phibe092',
+      'johli252',
+      'davha914',
+      'danhe178',
+      'andlu984'
     ];
-    const isValid = input && userIDs.includes(input);
+    const isValid = input && usernames.includes(input);
     const message = {
       'userID': {
-        'message': 'Invalid user ID'
+        'message': 'Invalid username'
       }
     };
     return isValid ? null : message;
@@ -70,55 +70,58 @@ export class AddNewCardComponent implements OnInit {
   // ngModel variables
   cardTypeInput = '';
   cardNumberInput = '';
-  userIDInput = '';
-  userInput = '';
+  usernameInput = '';
+  // NOT USED NOW userInput = '';
   locationInput = '';
   expirationDateInput = '';
   commentInput = '';
+  addCardHolder: Boolean = false;
 
   cardTypes = [
-    'Type 1',
-    'Type 2',
-    'Type 3',
-    'Type 4',
+    'USB',
+    'MicroSD',
+    'Harddrive',
+    'Chip',
   ];
 
   cardTypeDict = {
-    'Type 1': 0,
-    'Type 2': 1,
-    'Type 3': 2,
-    'Type 4': 3,
-    'Type 5': 4,
+    'USB': 0,
+    'MicroSD': 0,
+    'Harddrive': 0,
+    'Chip': 0
   };
 
-  userIDs = [
-    'Jennifer',
-    'Niklas',
-    'Philip',
-    'Johan',
-    'David',
-    'Daniel',
-    'Andreas'
+  usernames = [
+    'jenli414',
+    'nikni459',
+    'phibe092',
+    'johli252',
+    'davha914',
+    'danhe178',
+    'andlu984'
   ];
 
-  userIDDict = {
-    'Jennifer': 0,
-    'Niklas': 1,
-    'Philip': 2,
-    'Johan': 3,
-    'David': 4,
-    'Daniel': 4,
-    'Andreas': 4,
+  /**
+   * Dictionary with username as key and {userID, user} as value.
+   */
+  userDict = {
+    'jenli414': {userID: 0, user: 'Jennifer Lindgren'},
+    'nikni459': {userID: 0, user: 'Niklas Nilsson'},
+    'phibe092': {userID: 0, user: 'Philip Bengtsson'},
+    'johli252': {userID: 0, user: 'Johan Lind'},
+    'davha914': {userID: 0, user: 'David Hasselquist'},
+    'danhe178': {userID: 0, user: 'Daniel Herzegh'},
+    'andlu984': {userID: 0, user: 'Andreas Lundquist'},
   };
 
   filteredCardTypes: Observable<any[]>;
-  filteredUserIDs: Observable<any[]>;
+  filteredUsernames: Observable<any[]>;
 
   // Form Controls
-  cardTypeControl = new FormControl('', [Validators.required]);
+  cardTypeControl = new FormControl('', Validators.required);
   cardNumberControl = new FormControl('', Validators.required);
-  userIDControl = new FormControl('', Validators.required);
-  nameControl = new FormControl('', Validators.required);
+  usernameControl = new FormControl('', Validators.required);
+  // NOT USED NOW userControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
   expirationDateControl = new FormControl('', Validators.required);
 
@@ -128,9 +131,9 @@ export class AddNewCardComponent implements OnInit {
       cardType.toLowerCase().indexOf(str.toLowerCase()) === 0);
   }
 
-  filterUserIDs(str: string) {
-    return this.userIDs.filter(userID =>
-      userID.toLowerCase().indexOf(str.toLowerCase()) === 0);
+  filterUsernames(str: string) {
+    return this.usernames.filter(username =>
+      username.toLowerCase().indexOf(str.toLowerCase()) === 0);
   }
 
   constructor(private httpService: HttpService) {
@@ -140,10 +143,10 @@ export class AddNewCardComponent implements OnInit {
         map(cardType => cardType ? this.filterCardTypes(cardType) : this.cardTypes.slice())
       );
 
-    this.filteredUserIDs = this.userIDControl.valueChanges
+    this.filteredUsernames = this.usernameControl.valueChanges
       .pipe(
         startWith(''),
-        map(val => this.filterUserIDs(val))
+        map(val => this.filterUsernames(val))
     );
   }
 
@@ -159,15 +162,15 @@ export class AddNewCardComponent implements OnInit {
   }
 
   getCardTypeInputFontColor() {
-    if (this.newCard.cardType) {
+    if (this.newCard.cardType != null) {
       return 'black';
     } else {
       return 'gray';
     }
   }
 
-  getUserIDInputFontColor() {
-    if (this.newCard.userID) {
+  getUsernameInputFontColor() {
+    if (this.newCard.userID != null) {
       return 'black';
     } else {
       return 'gray';
@@ -183,31 +186,35 @@ export class AddNewCardComponent implements OnInit {
   }
 
   setCardNumber(data: any) {
-    this.newCard.cardNumber = data.data;
+    this.newCard.cardNumber = this.cardNumberInput;
   }
 
-  setUserID(data: any) {
-    if (this.userIDs.includes(this.userIDInput)) {
-      this.newCard.userID = this.userIDDict[this.userIDInput];
+  setUsername(data: any) {
+    if (this.usernames.includes(this.usernameInput)) {
+      this.newCard.userID = this.userDict[this.usernameInput].userID;
+      // this.userInput = this.userDict[this.usernameInput].user;
+      // this.newCard.user = this.userDict[this.usernameInput].user;
     } else {
       this.newCard.userID = null;
     }
   }
 
-  setUser(data: any) {
-    this.newCard.user = data.data;
-  }
+  /*setUser(data: any) {
+    this.newCard.user = this.userInput;
+    this.usernameInput = '';
+    this.newCard.userID = null;
+  }*/
 
   setLocation(data: any) {
-    this.newCard.location = data.data;
+    this.newCard.location = this.locationInput;
   }
 
   setComment(data: any) {
-    this.newCard.comment = data.data;
+    this.newCard.comment = this.commentInput;
   }
 
   setExpirationDate(data: any) {
-    this.newCard.expirationDate = data.value;
+    this.newCard.expirationDate = new Date(this.expirationDateInput);
   }
 
 }

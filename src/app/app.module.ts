@@ -27,7 +27,7 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import {
   AddNewCardComponent,
   CardTypeValidatorDirective,
-  UserIDValidatorDirective } from './pages/cards/components/add-new-card/add-new-card.component';
+  UsernameValidatorDirective } from './pages/cards/components/add-new-card/add-new-card.component';
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 
@@ -41,7 +41,9 @@ import {
   MatDatepickerModule,
   MatSelectModule,
   MatAutocompleteModule,
-  MatIconModule
+  MatIconModule,
+  MatToolbarModule,
+  MatRadioModule
 } from '@angular/material';
 
 @NgModule({
@@ -66,7 +68,7 @@ import {
     CardTableComponent,
     CardItemComponent,
     CardTypeValidatorDirective,
-    UserIDValidatorDirective
+    UsernameValidatorDirective
   ],
   imports: [
     BrowserModule,
@@ -84,7 +86,9 @@ import {
     MatDatepickerModule,
     MatSelectModule,
     MatAutocompleteModule,
-    MatIconModule
+    MatIconModule,
+    MatToolbarModule,
+    MatRadioModule
   ],
   providers: [HttpService],
   bootstrap: [AppComponent]
