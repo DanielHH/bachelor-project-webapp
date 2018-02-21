@@ -49,4 +49,9 @@ export class Card {
    */
   displayedDate?: string;
 
+  /**
+   * Status for card
+   */
+  status: boolean;
+
 }

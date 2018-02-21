@@ -1,69 +1,50 @@
 <div class="card">
     <div class="card-body">
+        <div class="row">
+            <div class="col-3 md-form">
+                <input mdbActive type="text" id="filterBinding" class="form-control" [(ngModel)]="filterInput">
+                <label for="filterBinding" class="">Filter by</label>
+            </div>
+        </div>
         <!-- Grid row -->
         <div class="row">
-
-            <!-- Grid column -->
-            <div class="col-md-12 mt-4">
-
-                <div class="input-group md-form form-sm form-2 pl-0">
-                    <input class="form-control my-0 py-1 grey-border" type="text" placeholder="Search" aria-label="Search">
-                    <div class="input-group-append">
-                        <span class="input-group-text waves-effect grey lighten-3" id="basic-addon1">
-                    <a><i class="fa fa-search text-grey" aria-hidden="true"></i></a>
+            <div class="col-1"></div>
+            <div class="col" (click)="sortCardType()">
+                <span id="hover">Card type
+                <img *ngIf="sortedCardType && sortAscendingCardType" src="../../../../../assets/up.png" alt="U" height="13" width="10">
+                <img *ngIf="sortedCardType && !sortAscendingCardType" src="../../../../../assets/down.png" alt="D" height="13" width="10">
                 </span>
-                    </div>
-                </div>
-
             </div>
-            <!-- Grid column -->
-
+            <div class="col" (click)="sortCardNumber()">
+                <span id="hover">Serial Number
+                    <img *ngIf="sortedCardNumber && sortAscendingCardNumber" src="../../../../../assets/up.png" alt="U" height="13" width="10">
+                    <img *ngIf="sortedCardNumber && !sortAscendingCardNumber" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+                </span>
+            </div>
+            <div class="col" (click)="sortCardNumber()">
+                <span id="hover">User ID
+                <img *ngIf="sortedUserID && sortAscendingUserID" src="../../../../../assets/up.png" alt="U" height="13" width="10">
+                <img *ngIf="sortedUserID && !sortAscendingUserID" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            </span></div>
+            <div class="col" (click)="sortLocation()">
+                <span id="hover">Location
+                <img *ngIf="sortedLocation && sortAscendingLocation" src="../../../../../assets/up.png" alt="U" height="13" width="10">
+                <img *ngIf="sortedLocation && !sortAscendingLocation" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            </span></div>
+            <div class="col" (click)="sortComment()">
+                <span id="hover">Comment
+                <img *ngIf="sortedComment && sortAscendingComment" src="../../../../../assets/up.png" alt="U" height="13" width="10">
+                <img *ngIf="sortedComment && !sortAscendingComment" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            </span></div>
+            <div class="col" (click)="sortDate()">
+                <span id="hover">Expiration date
+                <img *ngIf="sortedDate && sortAscendingDate" src="../../../../../assets/up.png" alt="U" height="13" width="10">
+                <img *ngIf="sortedDate && !sortAscendingDate" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            </span></div>
         </div>
-        <!-- Grid row -->
-
-        <table class="table table-hover table-responsive-md table-fixed">
-            <thead>
-                <tr>
-                    <th>Card type</th>
-                    <th>Serial Number</th>
-                    <th>User ID</th>
-                    <th>Username</th>
-                    <th>Location</th>
-                    <th>Comment</th>
-                    <th>Expiration date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr app-card-item [cardItem]="card" *ngFor="let card of cardList"></tr>
-            </tbody>
-
-        </table>
-        <!--- Borders for differentiating between data fields -->
-        <!---<div class="row pb-3">
-            <div class="col border border-dark">
-                <h4><strong>Card type</strong></h4>
-            </div>
-            <div class="col border border-dark">
-                <h4><strong>Serial number</strong></h4>
-            </div>
-            <div class="col border border-dark">
-                <h4><strong>User ID</strong></h4>
-            </div>
-            <div class="col border border-dark">
-                <h4><strong>Username</strong></h4>
-            </div>
-            <div class="col border border-dark">
-                <h4><strong>Location</strong></h4>
-            </div>
-            <div class="col border border-dark">
-                <h4><strong>Comment</strong></h4>
-            </div>
-            <div class="col border border-dark">
-                <h4><strong>Date of Expiry</strong></h4>
-            </div>
+        <hr>
+        <div *ngFor="let card of cardList">
+            <app-card-item [cardItem]="card" [filterInput]="filterInput"></app-card-item>
         </div>
-        <div *ngFor="let card of cardList" class="">
-            <app-card-item [cardItem]="card"></app-card-item>
-        </div>-->
     </div>
 </div>

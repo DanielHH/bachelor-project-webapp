@@ -1,32 +1,20 @@
-<!---<div class="row border border-dark">
-    <div class="col border border-dark">
-        {{cardItem?.cardType}}
-    </div>
-    <div class="col border border-dark">
-        {{cardItem?.cardNumber}}
-    </div>
-    <div class="col border border-dark">
-        {{cardItem?.userID}}
-    </div>
-    <div class="col border border-dark">
-        {{cardItem?.user}}
-    </div>
-    <div class="col border border-dark">
-        {{cardItem?.location}}
-    </div>
-    <div class="col border border-dark">
-        {{cardItem?.comment}}
-    </div>
-    <div class="col border border-dark">
-        {{cardItem?.displayedDate}}
-    </div>
-</div>
--->
+<div *ngIf="matchFilter()" class="row">
+    <div class="col-1" *ngIf="cardItem.status" text-center><button class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" (click)="openEditBar()">Return</button></div>
+    <div class="col-1" *ngIf="!cardItem.status"><button class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1" (click)="openEditBar()">Request</button></div>
 
-<td>{{cardItem?.cardType}}</td>
-<td>{{cardItem?.cardNumber}}</td>
-<td>{{cardItem?.userID}}</td>
-<td>{{cardItem?.user}}</td>
-<td>{{cardItem?.location}}</td>
-<td>{{cardItem?.comment}}</td>
-<td>{{cardItem?.displayedDate}}</td>
+
+    <div class="col">{{cardItem?.cardType}}</div>
+    <div class="col">{{cardItem?.cardNumber}}</div>
+    <div class="col">{{cardItem?.userID}}</div>
+    <div class="col">{{cardItem?.location}}</div>
+    <div class="col">{{cardItem?.comment}}</div>
+    <div class="col">{{cardItem?.displayedDate}}</div>
+</div>
+<div *ngIf="edit && !cardItem.status" id="editBar">
+    <button class="btn btn-blue-grey" (click)="closeEditBar()">Cancel</button>
+    <button class="btn btn-blue-grey" (click)="submitRequest()">Submit</button>
+</div>
+<div *ngIf="edit && cardItem.status" id="editBar">
+    <button class="btn btn-blue-grey" (click)="closeEditBar()">Cancel</button>
+    <button class="btn btn-blue-grey" (click)="submitReturn()">Submit</button>
+</div>
