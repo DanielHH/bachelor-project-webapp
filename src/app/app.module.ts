@@ -24,7 +24,10 @@ import { HttpService } from './services/http.service';
 import { GetComponent } from './pages/examples/code-examples/get/get.component';
 import { PostComponent } from './pages/examples/code-examples/post/post.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
-import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-new-card.component';
+import {
+  AddNewCardComponent,
+  CardTypeValidatorDirective,
+  UserIDValidatorDirective } from './pages/cards/components/add-new-card/add-new-card.component';
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 
@@ -61,7 +64,9 @@ import {
     SideMenuComponent,
     AddNewCardComponent,
     CardTableComponent,
-    CardItemComponent
+    CardItemComponent,
+    CardTypeValidatorDirective,
+    UserIDValidatorDirective
   ],
   imports: [
     BrowserModule,

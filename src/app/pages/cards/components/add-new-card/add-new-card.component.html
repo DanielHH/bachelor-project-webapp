@@ -2,72 +2,125 @@
 
   <!-- Row 1 cardType & cardNumber -->
   <div class="row">
-    <div class="col-12 col-md-6 p-3">
-      <div class="md-form">
-        <mat-form-field>
-          <input id="cardTypeInput" name="cardTypeInput" type="text" [style.color]="getCardTypeInputFontColor()"
-          placeholder="Card type" aria-label="Number" matInput [matAutocomplete]="auto"
-          [formControl]="cardTypeControl" (input)="newCard.cardType = null" required>
-          <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.cardType != null">done</mat-icon>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setCardType($event)">
-            <mat-option *ngFor="let cardType of filteredCardTypes | async" [value]="cardType">
-              {{ cardType }}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error *ngIf="cardTypeControl.hasError('required')">Please select a valid card type</mat-error>
-        </mat-form-field>
-      </div>
+    <div class="col-12 col-md-6">
+      <mat-form-field class="mat-form-field">
+        <!--Input-->
+        <input id="cardTypeInput" name="cardTypeInput" type="text" [(ngModel)]="cardTypeInput"
+        [style.color]="getCardTypeInputFontColor()" placeholder="Card type" aria-label="Number"
+        matInput [matAutocomplete]="auto" [formControl]="cardTypeControl"
+        (input)="setCardType($event)" appCardType required>
+        <!--Check and clear-->
+        <button mat-button matSuffix mat-icon-button [disabled]="true">
+          <mat-icon [style.color]="'green'" *ngIf="newCard.cardType != null">done</mat-icon>
+        </button>
+        <button mat-button *ngIf="cardTypeInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="cardTypeInput = null; newCard.cardNumber = null"><mat-icon>close</mat-icon></button>
+        <!--Dropdown-->
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setCardType($event)">
+          <mat-option *ngFor="let cardType of filteredCardTypes | async" [value]="cardType">
+            {{ cardType }}
+          </mat-option>
+        </mat-autocomplete>
+        <!--Error-->
+        <mat-error *ngIf="cardTypeControl.hasError('required')">Please select a card type</mat-error>
+        <mat-error *ngIf="cardTypeControl.hasError('appCardType') || !cardTypeControl.hasError('required')">
+          Please select a valid card type</mat-error>
+      </mat-form-field>
     </div>
-    <div class="col-12 col-md-6 p-3">
+    <div class="col-12 col-md-6">
       <mat-form-field>
-        <input matInput placeholder="Serial number" [formControl]="cardNumberControl" (input)="setCardNumber($event)" required>
-        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.cardNumber != null">done</mat-icon>
+        <!--Input-->
+        <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput" type="text"
+        placeholder="Serial number" [formControl]="cardNumberControl" (input)="setCardNumber($event)" required>
+        <!--Check and clear-->
+        <button mat-button matSuffix mat-icon-button [disabled]="true">
+          <mat-icon [style.color]="'green'" *ngIf="newCard.cardNumber != null">done</mat-icon>
+        </button>
+        <button mat-button *ngIf="cardNumberInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="cardNumberInput = ''; newCard.cardNumber = null"><mat-icon>close</mat-icon></button>
+        <!--Error-->
         <mat-error *ngIf="cardNumberControl.hasError('required')">Please enter location</mat-error>
       </mat-form-field>
     </div>
   </div>
 
   <!-- Row 2 userID & user (full name) -->
-  <div class="row mt-3">
-    <div class="col-12 col-md-6 p-3">
+  <div class="row">
+    <div class="col-12 col-md-6">
       <mat-form-field>
-        <input id="userIDInput" name="userIDInput" type="text" [style.color]="getUserIDInputFontColor()"
-        placeholder="User ID" aria-label="Number" matInput [matAutocomplete]="auto"
-        [formControl]="userIDControl" (input)="newCard.userID = null" required>
-        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.userID != null">done</mat-icon>
+        <!--Input-->
+        <input id="userIDInput" name="userIDInput" [(ngModel)]="userIDInput" type="text"
+        [style.color]="getUserIDInputFontColor()" placeholder="User ID" aria-label="Number"
+        matInput [matAutocomplete]="auto" [formControl]="userIDControl"
+        (input)="setUserID($event)" appUserID required>
+        <!--Check and clear-->
+        <button mat-button matSuffix mat-icon-button [disabled]="true">
+          <mat-icon [style.color]="'green'" *ngIf="newCard.userID != null">done</mat-icon>
+        </button>
+        <button mat-button *ngIf="userIDInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="userIDInput = ''; newCard.userID = null"><mat-icon>close</mat-icon></button>
+        <!--Dropdown-->
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="setUserID($event)">
           <mat-option *ngFor="let userID of filteredUserIDs | async" [value]="userID">
             {{ userID }}
           </mat-option>
         </mat-autocomplete>
-        <mat-error *ngIf="userIDControl.hasError('required')">Please select a valid user ID</mat-error>
+        <!--Error-->
+        <mat-error *ngIf="userIDControl.hasError('required')">Please select a user ID</mat-error>
+        <mat-error *ngIf="userIDControl.hasError('appUserID') || !userIDControl.hasError('required')">
+            Please select a valid user ID
+        </mat-error>
       </mat-form-field>
     </div>
-    <div class="col-12 col-md-6 p-3">
+    <div class="col-12 col-md-6">
       <mat-form-field>
-        <input matInput placeholder="Full name" [formControl]="nameControl" (input)="setUser($event)" required>
-        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.user != null">done</mat-icon>
+        <!--Input-->
+        <input matInput id="userInput" name="userInput" [(ngModel)]="userInput" type="text"
+        placeholder="Full name" [formControl]="nameControl" (input)="setUser($event)" required>
+        <!--Check and clear-->
+        <button mat-button matSuffix mat-icon-button [disabled]="true">
+          <mat-icon [style.color]="'green'" *ngIf="newCard.user != null">done</mat-icon>
+        </button>
+        <button mat-button *ngIf="userInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="userInput = ''; newCard.user = null"><mat-icon>close</mat-icon></button>
+        <!--Error-->
         <mat-error *ngIf="nameControl.hasError('required')">Please enter full name</mat-error>
       </mat-form-field>
     </div>
   </div>
 
   <!-- Row 3 location & expirationDate -->
-  <div class="row mt-3">
-    <div class="col-12 col-md-6 p-3">
+  <div class="row">
+    <div class="col-12 col-md-6">
       <mat-form-field>
-        <input matInput placeholder="Location" [formControl]="locationControl" (input)="setLocation($event)" required>
-        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.location != null">done</mat-icon>
+        <!--Input-->
+        <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text"
+        placeholder="Location" [formControl]="locationControl" (input)="setLocation($event)" required>
+        <!--Check and clear-->
+        <button mat-button matSuffix mat-icon-button [disabled]="true">
+          <mat-icon [style.color]="'green'" *ngIf="newCard.location != null">done</mat-icon>
+        </button>
+        <button mat-button *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="locationInput = ''; newCard.location = null"><mat-icon>close</mat-icon></button>
+        <!--Error-->
         <mat-error *ngIf="locationControl.hasError('required')">Please enter location</mat-error>
       </mat-form-field>
     </div>
-    <div class="col-12 col-md-6 p-3">
+    <div class="col-12 col-md-6">
       <mat-form-field>
-        <input matInput id="expirationDate" name="expirationDateInput"
-        type="text" placeholder="Expiration date" [matDatepicker]="picker" (dateInput)="setExpirationDate($event)"
+        <!--Input-->
+        <input matInput id="expirationDateInput" name="expirationDateInput" type="text" [(ngModel)]="expirationDateInput"
+        placeholder="Expiration date" [matDatepicker]="picker" (dateInput)="setExpirationDate($event)"
         [formControl]="expirationDateControl" required>
-        <mat-icon matSuffix [style.color]="'green'" *ngIf="newCard.expirationDate != null">done</mat-icon>
+        <!--Check and clear-->
+        <button mat-button matSuffix mat-icon-button [disabled]="true">
+          <mat-icon [style.color]="'green'" *ngIf="newCard.expirationDate != null">done</mat-icon>
+        </button>
+        <button mat-button *ngIf="expirationDateInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="expirationDateInput = ''; newCard.expirationDate = null"><mat-icon>close</mat-icon></button>
+        <!--DatePicker-->
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <!--Error-->
         <mat-error *ngIf="expirationDateControl.hasError('required')">Please select a date</mat-error>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
@@ -75,19 +128,23 @@
   </div>
 
   <!-- Row 4 comment -->
-  <div class="row mt-3">
-    <div class="col-12 p-3">
+  <div class="row">
+    <div class="col-12 commentInput">
         <mat-form-field>
-          <input matInput matInputAutosize matAutosizeMinRows="1"
-          matAutosizeMaxRows="5" placeholder="Comment" (input)="setComment($event)">
+          <!--Input-->
+          <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text"
+          placeholder="Comment" (input)="setComment($event)">
+          <!--Clear-->
+          <button mat-button *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear"
+          (click)="commentInput = ''; newCard.comment = null"><mat-icon>close</mat-icon></button>
         </mat-form-field>
     </div>
   </div>
 
   <!-- Row 5 -->
-  <div class="row mt-3">
-    <div class="col-12 p-3 text-center">
-      <button type="submit" class="btn btn-blue-grey">Send</button>
+  <div class="row">
+    <div class="col-12 submitButton">
+      <button id="submitButton" type="submit" class="btn btn-blue-grey">Submit</button>
     </div>
   </div>
 
