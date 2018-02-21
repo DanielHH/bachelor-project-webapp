@@ -128,10 +128,10 @@ export class AddNewCardComponent implements OnInit {
       cardType.toLowerCase().indexOf(str.toLowerCase()) === 0);
   }
 
-  /*filterUserIDs(str: string) {
+  filterUserIDs(str: string) {
     return this.userIDs.filter(userID =>
-      userID.name.toLowerCase().indexOf(str.toLowerCase()) === 0);
-  }*/
+      userID.toLowerCase().indexOf(str.toLowerCase()) === 0);
+  }
 
   constructor(private httpService: HttpService) {
     this.filteredCardTypes = this.cardTypeControl.valueChanges
@@ -140,11 +140,11 @@ export class AddNewCardComponent implements OnInit {
         map(cardType => cardType ? this.filterCardTypes(cardType) : this.cardTypes.slice())
       );
 
-    /*this.filteredUserIDs = this.userIDControl.valueChanges
+    this.filteredUserIDs = this.userIDControl.valueChanges
       .pipe(
         startWith(''),
         map(val => this.filterUserIDs(val))
-      );*/
+    );
   }
 
   ngOnInit() {
