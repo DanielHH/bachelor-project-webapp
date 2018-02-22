@@ -1,7 +1,6 @@
-<div *ngIf="matchFilter()" class="row">
-    <div class="col-1" *ngIf="cardItem.status" text-center><button class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" (click)="openEditBar()">Return</button></div>
-    <div class="col-1" *ngIf="!cardItem.status"><button class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1" (click)="openEditBar()">Request</button></div>
-
+<div class="row">
+    <div class="col-1" *ngIf="cardItem.status" text-center><button class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1">Return</button></div>
+    <div class="col-1" *ngIf="!cardItem.status"><button class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1">Request</button></div>
 
     <div class="col">{{cardItem?.cardType}}</div>
     <div class="col">{{cardItem?.cardNumber}}</div>
@@ -9,12 +8,5 @@
     <div class="col">{{cardItem?.location}}</div>
     <div class="col">{{cardItem?.comment}}</div>
     <div class="col">{{cardItem?.displayedDate}}</div>
-</div>
-<div *ngIf="edit && !cardItem.status" id="editBar">
-    <button class="btn btn-blue-grey" (click)="closeEditBar()">Cancel</button>
-    <button class="btn btn-blue-grey" (click)="submitRequest()">Submit</button>
-</div>
-<div *ngIf="edit && cardItem.status" id="editBar">
-    <button class="btn btn-blue-grey" (click)="closeEditBar()">Cancel</button>
-    <button class="btn btn-blue-grey" (click)="submitReturn()">Submit</button>
+    <div class="col-1"><i class="fa fa-cog"></i></div>
 </div>

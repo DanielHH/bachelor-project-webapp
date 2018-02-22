@@ -9,42 +9,31 @@
         <!-- Grid row -->
         <div class="row">
             <div class="col-1"></div>
-            <div class="col" (click)="sortCardType()">
-                <span id="hover">Card type
-                <img *ngIf="sortedCardType && sortAscendingCardType" src="../../../../../assets/up.png" alt="U" height="13" width="10">
-                <img *ngIf="sortedCardType && !sortAscendingCardType" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            <div class="col" (click)="sortTableList('cardType')">
+                <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'">Card type
                 </span>
             </div>
-            <div class="col" (click)="sortCardNumber()">
-                <span id="hover">Serial Number
-                    <img *ngIf="sortedCardNumber && sortAscendingCardNumber" src="../../../../../assets/up.png" alt="U" height="13" width="10">
-                    <img *ngIf="sortedCardNumber && !sortAscendingCardNumber" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            <div class="col" (click)="sortTableList('cardNumber')">
+                <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'">Serial Number
                 </span>
             </div>
-            <div class="col" (click)="sortCardNumber()">
-                <span id="hover">User ID
-                <img *ngIf="sortedUserID && sortAscendingUserID" src="../../../../../assets/up.png" alt="U" height="13" width="10">
-                <img *ngIf="sortedUserID && !sortAscendingUserID" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            <div class="col" (click)="sortTableList('userID')">
+                <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'">User ID
             </span></div>
-            <div class="col" (click)="sortLocation()">
-                <span id="hover">Location
-                <img *ngIf="sortedLocation && sortAscendingLocation" src="../../../../../assets/up.png" alt="U" height="13" width="10">
-                <img *ngIf="sortedLocation && !sortAscendingLocation" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            <div class="col" (click)="sortTableList('location')">
+                <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'">Location
             </span></div>
-            <div class="col" (click)="sortComment()">
-                <span id="hover">Comment
-                <img *ngIf="sortedComment && sortAscendingComment" src="../../../../../assets/up.png" alt="U" height="13" width="10">
-                <img *ngIf="sortedComment && !sortAscendingComment" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            <div class="col" (click)="sortTableList('comment')">
+                <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'">Comment
             </span></div>
-            <div class="col" (click)="sortDate()">
-                <span id="hover">Expiration date
-                <img *ngIf="sortedDate && sortAscendingDate" src="../../../../../assets/up.png" alt="U" height="13" width="10">
-                <img *ngIf="sortedDate && !sortAscendingDate" src="../../../../../assets/down.png" alt="D" height="13" width="10">
+            <div class="col" (click)="sortTableList('expirationDate')">
+                <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'">Expiration date
             </span></div>
+            <div class="col-1"></div>
         </div>
         <hr>
-        <div *ngFor="let card of cardList">
-            <app-card-item [cardItem]="card" [filterInput]="filterInput"></app-card-item>
+        <div *ngFor="let card of cardList | matchFilter:filterInput">
+            <app-card-item [cardItem]="card"></app-card-item>
         </div>
     </div>
 </div>

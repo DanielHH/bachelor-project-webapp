@@ -2,6 +2,21 @@ div.row {
     font-weight: bold;
 }
 
-#hover {
+.hover {
     cursor: pointer;
+
+    &.up-arrow::after {
+      content: "\f0de";
+      font-family: FontAwesome;
+      font-size: 12px;
+    }
+
+    &.down-arrow::after {
+      content: "\f0dd";
+      font-family: FontAwesome;
+      font-size: 12px;
+    }
+
+
 }
+
