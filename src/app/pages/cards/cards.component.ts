@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Card } from '../../datamodels/card';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-cards',
@@ -12,22 +13,12 @@ export class CardsComponent implements OnInit {
 
   cardList: Card[] = [];
 
-  constructor() {
+  constructor(public dataService: DataService) {
 
-    const cardOne: Card = {
-      id: 0,
-      cardType: 1,
-      cardNumber: '123',
-      userID: 1234,
-      user: 'Jennifer',
-      location: 'Zimbabwe',
-      comment: 'Varför?!?!??!',
-      expirationDate: new Date()
-    };
+    this.dataService.cardList.subscribe( (cardList) => {
+      this.cardList = cardList;
+    });
 
-    this.cardList.push(cardOne);
-    this.cardList.push(cardOne);
-    this.cardList.push(cardOne);
   }
 
   ngOnInit() {

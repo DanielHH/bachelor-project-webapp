@@ -25,11 +25,6 @@ export class Card {
   userID: number;
 
   /**
-   * Full name of current card holder
-   */
-  user: string;
-
-  /**
    * Current location of card
    */
   location: string;
@@ -43,5 +38,7 @@ export class Card {
    * Expiration date of the card
    */
   expirationDate: Date;
+
+  status: number;
 
 }

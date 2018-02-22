@@ -18,14 +18,14 @@ export class AddNewCardComponent implements OnInit {
 
   addNewCard() {
     this.newCard.userID = 1;
-    this.newCard.user = 'Niklas';
     this.newCard.location = 'Zimbabwe';
     this.newCard.comment = 'Varför är han där?';
     this.newCard.expirationDate = new Date();
+    this.newCard.status = 0;
 
-    this.httpService.httpPost<Card>('addNewCard/', this.newCard).then(data => {
+    this.httpService.httpPost<Card>('addNewCard/', this.newCard).then(res => {
 
-      console.log(data);
+      console.log(res.data);
 
     });
   }
