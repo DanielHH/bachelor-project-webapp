@@ -1,6 +1,9 @@
 <div class="row">
-    <div class="col-1" *ngIf="cardItem.status" text-center><button class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1">Return</button></div>
-    <div class="col-1" *ngIf="!cardItem.status"><button class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1">Request</button></div>
+    <div class="col-1" *ngIf="cardItem.status"><button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1"
+      data-toggle="modal" data-target="#requestModal" (click)="returnModClick.show()" mdbRippleRadius>Return</button></div>
+
+    <div class="col-1" *ngIf="!cardItem.status"><button type ="button" class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1"
+      data-toggle="modal" data-target="#requestModal" (click)="requestModClick.show()" mdbRippleRadius>Request</button></div>
 
     <div class="col">{{cardItem?.cardType}}</div>
     <div class="col">{{cardItem?.cardNumber}}</div>
@@ -10,3 +13,57 @@
     <div class="col">{{cardItem?.displayedDate}}</div>
     <div class="col-1"><i class="fa fa-cog"></i></div>
 </div>
+
+
+<!-- Modal for return -->
+<div mdbModal #returnModClick="mdb-modal" class="modal fade" id="return" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title w-100" id="myModalLabel">Return a card</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="returnModClick.hide()">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              Are you sure you want to return the following card?
+              <br><br>
+              <ul>
+                <li>Card type: {{cardItem?.cardType}}</li>
+                <li>Card number: {{cardItem?.cardNumber}}</li>
+                <li>User ID: {{cardItem?.userID}}</li>
+              </ul>
+
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="returnModClick.hide()" mdbRippleRadius>Cancel</button>
+              <button type="button" class="btn btn-primary btn-sm waves-light" mdbRippleRadius (click)="submitReturn()" (click)="returnModClick.hide()">Return</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+<!-- Modal for request -->
+<div mdbModal #requestModClick="mdb-modal" class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title w-100" id="myModalLabel">Request a card</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="requestModClick.hide()">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              ...
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="requestModClick.hide()" mdbRippleRadius>Cancel</button>
+              <button type="button" class="btn btn-primary btn-sm waves-light" mdbRippleRadius (click)="submitRequest()" (click)="requestModClick.hide()">Submit</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
