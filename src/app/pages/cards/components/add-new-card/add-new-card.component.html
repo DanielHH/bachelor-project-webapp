@@ -32,7 +32,7 @@
         </mat-autocomplete>
         <!--Error-->
         <mat-error *ngIf="cardTypeControl.hasError('required')">Please select a card type</mat-error>
-        <mat-error *ngIf="cardTypeControl.hasError('appCardType') || !cardTypeControl.hasError('required')">
+        <mat-error *ngIf="cardTypeControl.hasError('cardType')">
           Please select a valid card type</mat-error>
       </mat-form-field>
     </div>
@@ -74,8 +74,9 @@
       <mat-form-field>
         <!--Input-->
         <input matInput id="expirationDateInput" name="expirationDateInput" type="text" [(ngModel)]="expirationDateInput"
-        placeholder="Expiration date" [matDatepicker]="picker" (dateInput)="setExpirationDate($event)"
-        [formControl]="expirationDateControl" required>
+        placeholder="Expiration date" [matDatepicker]="picker" [style.color]="getExpirationDateInputFontColor()"
+        (input)="setExpirationDate($event);" (dateInput)="setExpirationDate($event)" [formControl]="expirationDateControl"
+        appExpirationDate required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
           <mat-icon [style.color]="'green'" *ngIf="newCard.expirationDate != null">done</mat-icon>
@@ -85,7 +86,12 @@
         <!--DatePicker-->
         <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
         <!--Error-->
-        <mat-error *ngIf="expirationDateControl.hasError('required')">Please select a date</mat-error>
+        <mat-error *ngIf="expirationDateControl.hasError('required')">
+          Please select a date
+        </mat-error>
+        <mat-error *ngIf="!expirationDateControl.hasError('required') && expirationDateControl.hasError('expirationDate')">
+          Invalid date format
+        </mat-error>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
@@ -127,7 +133,7 @@
             <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" type="text"
             [style.color]="getUsernameInputFontColor()" placeholder="Username" aria-label="Number"
             matInput [matAutocomplete]="userIDs" [formControl]="usernameControl"
-            (input)="setUsername($event)" appUserID required>
+            (input)="setUsername($event)" appUsername required>
             <!--Check and clear-->
             <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
               <mat-icon [style.color]="'green'" *ngIf="newCard.userID != null">done</mat-icon>
@@ -144,7 +150,7 @@
             <mat-error *ngIf="usernameControl.hasError('required')">
               Please select a user ID
             </mat-error>
-            <mat-error *ngIf="usernameControl.hasError('appUsername') || !usernameControl.hasError('required')">
+            <mat-error *ngIf="usernameControl.hasError('username')">
                 Please select a valid user ID
             </mat-error>
           </mat-form-field>

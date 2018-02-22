@@ -1,62 +1,11 @@
 import { Component, OnInit, Input, Directive } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
-
+import { FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 
-@Directive({
-  selector: '[appCardType]',
-  providers: [{provide: NG_VALIDATORS, useExisting: CardTypeValidatorDirective, multi: true}]
- })
- export class CardTypeValidatorDirective implements Validator {
-
-  validate(c: FormControl): ValidationErrors {
-    const input = String(c.value);
-    const cardTypes = [
-      'USB',
-      'MicroSD',
-      'Harddrive',
-      'Chip',
-    ];
-    const isValid = input && cardTypes.includes(input);
-    const message = {
-      'cardType': {
-        'message': 'Invalid card type'
-      }
-    };
-    return isValid ? null : message;
-  }
- }
-
- @Directive({
-  selector: '[appUsername]',
-  providers: [{provide: NG_VALIDATORS, useExisting: UsernameValidatorDirective, multi: true}]
- })
- export class UsernameValidatorDirective implements Validator {
-
-  validate(c: FormControl): ValidationErrors {
-    const input = String(c.value);
-    const usernames = [
-      'jenli414',
-      'nikni459',
-      'phibe092',
-      'johli252',
-      'davha914',
-      'danhe178',
-      'andlu984'
-    ];
-    const isValid = input && usernames.includes(input);
-    const message = {
-      'userID': {
-        'message': 'Invalid username'
-      }
-    };
-    return isValid ? null : message;
-  }
- }
 
 @Component({
   selector: 'app-add-new-card',
@@ -177,6 +126,14 @@ export class AddNewCardComponent implements OnInit {
     }
   }
 
+  getExpirationDateInputFontColor() {
+    if (this.newCard.expirationDate != null) {
+      return 'black';
+    } else {
+      return 'gray';
+    }
+  }
+
   setCardType(data: any) {
     if (this.cardTypes.includes(this.cardTypeInput)) {
       this.newCard.cardType = this.cardTypeDict[this.cardTypeInput];
@@ -214,7 +171,13 @@ export class AddNewCardComponent implements OnInit {
   }
 
   setExpirationDate(data: any) {
-    this.newCard.expirationDate = new Date(this.expirationDateInput);
+    console.log(this.expirationDateInput);
+    if (this.expirationDateControl.hasError('required') ||
+      this.expirationDateControl.hasError('expirationDate')) {
+      this.newCard.expirationDate = null;
+    } else {
+      this.newCard.expirationDate = new Date(this.expirationDateInput);
+    }
   }
 
 }
