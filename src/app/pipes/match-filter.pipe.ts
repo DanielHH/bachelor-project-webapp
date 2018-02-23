@@ -5,21 +5,27 @@ import * as _ from 'lodash';
 @Pipe({
   name: 'matchFilter'
 })
+
 export class MatchFilterPipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
-    return _.filter(value, (card) => {
-      return this.matchFilt(card, args);
-    });
+  transform(value: Card[], input: string): Card[] {
+    if (input !== '') {
+      return _.filter(value, (card) => {
+        return this.matchFilt(card, input);
+      });
+    }
+    return value;
   }
 
   matchFilt(card: Card, filterInput: string) {
-    if (card.cardNumber.indexOf(filterInput) === -1
-        && card.cardType.toString().indexOf(filterInput) === -1
-        && card.userID.toString().indexOf(filterInput) === -1
-        && card.comment.indexOf(filterInput) === -1
-        && card.location.indexOf(filterInput) === -1
-        && card.displayedDate.indexOf(filterInput) === -1) {
+    filterInput = _.lowerCase(filterInput);
+
+    if (_.includes(_.lowerCase(card.cardNumber), filterInput) === false
+    && (_.includes(_.lowerCase(_.toString(card.cardType)), filterInput) === false)
+    && (_.includes(_.lowerCase(_.toString(card.userID)), filterInput) === false)
+    && (_.includes(_.lowerCase(card.comment), filterInput) === false)
+    && (_.includes(_.lowerCase(card.location), filterInput) === false)
+    && (_.includes(_.lowerCase(card.displayedDate), filterInput) === false) ) {
       return false;
     }
     return true;

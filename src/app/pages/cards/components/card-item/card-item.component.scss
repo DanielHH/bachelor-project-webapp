@@ -6,3 +6,27 @@ div.row {
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+
+button.btn-wheel {
+  background-color: transparent !important;
+  color: black !important;
+  border-color: transparent !important;
+}
+
+button.btn-wheel:hover {
+  cursor: pointer;
+}
+
+
+div.dropdown-menu {
+  position:absolute;
+  right:0;
+  left:auto;
+  top:-50px;
+}
+
+
+a.dropdown-item:hover {
+  background-color: rgba(208, 214, 212, 0.479) !important;
+}

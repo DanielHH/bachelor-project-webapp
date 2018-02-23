@@ -11,8 +11,35 @@
     <div class="col">{{cardItem?.location}}</div>
     <div class="col">{{cardItem?.comment}}</div>
     <div class="col">{{cardItem?.displayedDate}}</div>
-    <div class="col-1"><i class="fa fa-cog"></i></div>
+    <div class="col-1">
+      <!--Dropdown-->
+      <div class="dropdown" dropdown>
+
+          <!--Trigger-->
+          <button dropdownToggle class="btn-wheel waves-light" mdbRippleRadius >
+              <i class="fa fa-cog"></i>
+          </button>
+
+          <!--Menu-->
+          <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Details</a>
+              <a class="dropdown-item" href="#">Edit</a>
+              <a class="dropdown-item" href="#">Archive</a>
+              <div class="divider dropdown-divider"></div>
+              <a class="dropdown-item">Close</a>
+          </div>
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
+
+
+
 
 
 <!-- Modal for return -->

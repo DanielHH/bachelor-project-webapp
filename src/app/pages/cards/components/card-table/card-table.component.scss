@@ -17,6 +17,12 @@ div.row {
       font-size: 12px;
     }
 
+    &.both-arrow::after {
+      content: "\f0dc";
+      font-family: FontAwesome;
+      font-size: 12px;
+    }
+
 
 }
 
