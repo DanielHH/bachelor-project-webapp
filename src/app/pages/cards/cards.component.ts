@@ -20,7 +20,9 @@ export class CardsComponent implements OnInit {
   ngOnInit() {
   }
 
+  // Get/Refresh cards
   getCards() {
+    // Add Sample cards to cardList
     const cardOne: Card = {
       id: 0,
       cardType: 1,
@@ -30,7 +32,7 @@ export class CardsComponent implements OnInit {
       location: 'Zimbabwe',
       comment: 'Varför?!?!??!',
       expirationDate: new Date(),
-      status: false
+      status: 0
     };
 
     const cardTwo: Card = {
@@ -42,7 +44,7 @@ export class CardsComponent implements OnInit {
       location: 'Kina',
       comment: 'Därför!!!!',
       expirationDate: new Date(),
-      status: false
+      status: 0
     };
 
     cardTwo.expirationDate.setDate(cardTwo.expirationDate.getDate() + 1);

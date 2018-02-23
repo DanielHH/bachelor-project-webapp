@@ -35,7 +35,12 @@ export class CardItemComponent implements OnInit {
    * Flips the card status active/inactive
    */
   flipStatus() {
-    this.cardItem.status = !this.cardItem.status;
+    if (this.cardItem.status === 1) {
+      this.cardItem.status = 0;
+    } else if (this.cardItem.status === 0) {
+      this.cardItem.status = 1;
+    }
+    // this.cardItem.status = !this.cardItem.status;
   }
 
 }

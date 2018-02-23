@@ -52,6 +52,6 @@ export class Card {
   /**
    * Status for card
    */
-  status: boolean;
+  status: number;
 
 }

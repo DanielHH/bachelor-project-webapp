@@ -26,6 +26,10 @@ export class CardTableComponent implements OnInit {
   }
 
 
+  /**
+   * Sorts the table depending on the property of the Card
+   * @param property
+   */
   sortTableList(property: string) {
     let newOrder = '';
 
@@ -69,6 +73,10 @@ export class CardTableComponent implements OnInit {
   }
 
 
+  /**
+   * Sets the order to sort by
+   * @param order
+   */
   sortTableListHelper(order: string) {
     switch (order) {
       case 'asc': return 'desc';
