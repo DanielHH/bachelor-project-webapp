@@ -1,0 +1,27 @@
+.row:hover {
+    background-color: rgba(208, 214, 212, 0.479)
+}
+
+.row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+// Hiding button around an object
+button.btn-wheel {
+    background-color: transparent !important;
+    color: black !important;
+    border-color: transparent !important;
+}
+
+.btn-wheel:hover {
+    cursor: pointer;
+}
+
+// Setting the dropdown to occur on the left side instead
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    left: auto;
+    top: -50px;
+}

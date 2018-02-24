@@ -28,6 +28,7 @@ import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-n
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 import { DataService } from './services/data.service';
+import { MatchFilterPipe } from './pipes/match-filter.pipe';
 
 
 
@@ -51,7 +52,8 @@ import { DataService } from './services/data.service';
     SideMenuComponent,
     AddNewCardComponent,
     CardTableComponent,
-    CardItemComponent
+    CardItemComponent,
+    MatchFilterPipe
   ],
   imports: [
     BrowserModule,

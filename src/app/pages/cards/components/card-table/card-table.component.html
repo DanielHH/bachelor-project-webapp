@@ -1,10 +1,43 @@
+<div class="card">
+    <div class="card-body">
+        <!-- Input field for filter -->
+        <div class="row">
+            <div class="col-3 md-form ml-3">
+                <input mdbActive type="text" id="filterBinding" class="form-control" [(ngModel)]="filterInput">
+                <label for="filterBinding" class="">Filter by</label>
+            </div>
+        </div>
 
+        <!-- Header row -->
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col" (click)="sortTableList('cardType')">
+                <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'" [class.both-arrow]="orderCardType == ''">Card type
+                </span>
+            </div>
+            <div class="col" (click)="sortTableList('cardNumber')">
+                <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'" [class.both-arrow]="orderCardNumber == ''">Serial Number
+                </span>
+            </div>
+            <div class="col" (click)="sortTableList('userID')">
+                <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">User ID
+            </span></div>
+            <div class="col" (click)="sortTableList('location')">
+                <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Location
+            </span></div>
+            <div class="col" (click)="sortTableList('comment')">
+                <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Comment
+            </span></div>
+            <div class="col" (click)="sortTableList('expirationDate')">
+                <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'" [class.both-arrow]="orderDate == ''">Expiration date
+            </span></div>
+            <div class="col-1"></div>
+        </div>
+        <hr>
 
-
-
-
-<div>
-  <div *ngFor="let card of cardList" class="p-3">
-    <app-card-item [cardItem]="card"></app-card-item>
-  </div>
+        <!-- Add cards to the table -->
+        <div *ngFor="let card of cardList | matchFilter:filterInput">
+            <app-card-item [cardItem]="card"></app-card-item>
+        </div>
+    </div>
 </div>
