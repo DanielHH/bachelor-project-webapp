@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Card } from '../../datamodels/card';
+import { HttpService } from '../../services/http.service';
+
 
 @Component({
   selector: 'app-cards',
@@ -9,11 +11,18 @@ import { Card } from '../../datamodels/card';
 export class CardsComponent implements OnInit {
 
   showAddNewCard = true;
-
   cardList: Card[] = [];
 
-  constructor() {
+  constructor(private httpService: HttpService) {
+    this.getCards();
+  }
 
+  ngOnInit() {
+  }
+
+  // Get/Refresh cards
+  getCards() {
+    // Add Sample cards to cardList
     const cardOne: Card = {
       id: 0,
       cardType: 1,
@@ -22,15 +31,30 @@ export class CardsComponent implements OnInit {
       user: 'Jennifer',
       location: 'Zimbabwe',
       comment: 'Varför?!?!??!',
-      expirationDate: new Date()
+      expirationDate: new Date(),
+      status: 0
     };
 
-    this.cardList.push(cardOne);
-    this.cardList.push(cardOne);
-    this.cardList.push(cardOne);
-  }
+    const cardTwo: Card = {
+      id: 0,
+      cardType: 2,
+      cardNumber: 'AW3',
+      userID: 909,
+      user: 'Niklas',
+      location: 'Kina',
+      comment: 'Därför!!!!',
+      expirationDate: new Date(),
+      status: 0
+    };
 
-  ngOnInit() {
+    cardTwo.expirationDate.setDate(cardTwo.expirationDate.getDate() + 1);
+
+    this.cardList.push(cardTwo);
+    this.cardList.push(cardOne);
+
   }
 
 }
+
+
+
