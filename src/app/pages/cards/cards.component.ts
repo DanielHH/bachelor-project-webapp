@@ -3,6 +3,10 @@ import { Card } from '../../datamodels/card';
 import { AddNewCardComponent } from './components/add-new-card/add-new-card.component';
 import {MatDialog} from '@angular/material';
 
+import { DataService } from '../../services/data.service';
+import { HttpService } from '../../services/http.service';
+
+
 @Component({
   selector: 'app-cards',
   templateUrl: './cards.component.html',
@@ -10,9 +14,14 @@ import {MatDialog} from '@angular/material';
 })
 export class CardsComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) {}
-
   ngOnInit() {
+  }
+
+  constructor(public dataService: DataService, public dialog: MatDialog) {
+
+    this.dataService.cardList.subscribe( (cardList) => {
+    });
+
   }
 
   openDialog() {
@@ -20,5 +29,7 @@ export class CardsComponent implements OnInit {
       width: '600px'
     });
   }
+
+
 
 }

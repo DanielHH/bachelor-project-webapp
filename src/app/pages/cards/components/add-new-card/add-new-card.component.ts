@@ -70,7 +70,6 @@ export class AddNewCardComponent implements OnInit {
   cardTypeControl = new FormControl('', Validators.required);
   cardNumberControl = new FormControl('', Validators.required);
   usernameControl = new FormControl('', Validators.required);
-  // NOT USED NOW userControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
   expirationDateControl = new FormControl('', Validators.required);
   expirationDatePickerControl = new FormControl();
@@ -104,10 +103,8 @@ export class AddNewCardComponent implements OnInit {
   }
 
   addNewCard() {
-    this.httpService.httpPost<Card>('addNewCard/', this.newCard).then(data => {
-
-      console.log(data);
-
+    this.httpService.httpPost<Card>('addNewCard/', this.newCard).then(res => {
+      console.log(res.data);
     });
   }
 
@@ -150,18 +147,10 @@ export class AddNewCardComponent implements OnInit {
   setUsername(data: any) {
     if (this.usernames.includes(this.usernameInput)) {
       this.newCard.userID = this.userDict[this.usernameInput].userID;
-      // this.userInput = this.userDict[this.usernameInput].user;
-      // this.newCard.user = this.userDict[this.usernameInput].user;
     } else {
       this.newCard.userID = null;
     }
   }
-
-  /*setUser(data: any) {
-    this.newCard.user = this.userInput;
-    this.usernameInput = '';
-    this.newCard.userID = null;
-  }*/
 
   setLocation(data: any) {
     this.newCard.location = this.locationInput;
@@ -196,7 +185,6 @@ export class AddNewCardComponent implements OnInit {
     this.cardTypeControl.reset();
     this.cardNumberControl.reset();
     this.usernameControl.reset();
-    // NOT USED NOW userControl.reset();
     this.locationControl.reset();
     this.expirationDateControl.reset();
     this.expirationDatePickerControl.reset();

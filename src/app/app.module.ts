@@ -39,12 +39,14 @@ import {
   MatRadioModule,
   MatFormFieldControl,
 } from '@angular/material';
-import {
-  MatDialogModule
- } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
 import { ExpirationDateValidatorDirective } from './directives/expiration-date.directive';
+import { DataService } from './services/data.service';
+import { MatchFilterPipe } from './pipes/match-filter.pipe';
+
+
 
 @NgModule({
   declarations: [
@@ -69,7 +71,8 @@ import { ExpirationDateValidatorDirective } from './directives/expiration-date.d
     CardItemComponent,
     UsernameValidatorDirective,
     CardTypeValidatorDirective,
-    ExpirationDateValidatorDirective
+    ExpirationDateValidatorDirective,
+    MatchFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -92,7 +95,7 @@ import { ExpirationDateValidatorDirective } from './directives/expiration-date.d
     MatRadioModule,
     MatDialogModule
   ],
-  providers: [HttpService],
+  providers: [HttpService, DataService],
   entryComponents: [AddNewCardComponent],
   bootstrap: [AppComponent]
 })
