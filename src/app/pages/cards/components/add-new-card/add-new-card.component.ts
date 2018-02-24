@@ -19,7 +19,6 @@ export class AddNewCardComponent implements OnInit {
   cardTypeInput = '';
   cardNumberInput = '';
   usernameInput = '';
-  // NOT USED NOW userInput = '';
   locationInput = '';
   expirationDateInput = '';
   expirationDateDatepickerInput = '';
