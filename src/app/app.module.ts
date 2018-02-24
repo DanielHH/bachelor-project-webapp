@@ -27,6 +27,7 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-new-card.component';
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
+import { DataService } from './services/data.service';
 import { MatchFilterPipe } from './pipes/match-filter.pipe';
 
 
@@ -61,7 +62,10 @@ import { MatchFilterPipe } from './pipes/match-filter.pipe';
     FormsModule,
     HttpModule
   ],
-  providers: [HttpService],
+  providers: [
+    HttpService,
+    DataService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
