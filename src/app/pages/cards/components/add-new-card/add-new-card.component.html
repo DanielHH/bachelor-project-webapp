@@ -48,7 +48,7 @@
         <button mat-button class="size-medium" *ngIf="cardNumberInput" matSuffix mat-icon-button aria-label="Clear"
         (click)="cardNumberInput = ''; newCard.cardNumber = null"><mat-icon>close</mat-icon></button>
         <!--Error-->
-        <mat-error *ngIf="cardNumberControl.hasError('required')">Please enter location</mat-error>
+        <mat-error *ngIf="cardNumberControl.hasError('required')">Please enter a card number</mat-error>
       </mat-form-field>
     </div>
   </div>
@@ -67,7 +67,7 @@
         <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear"
         (click)="locationInput = ''; newCard.location = null"><mat-icon>close</mat-icon></button>
         <!--Error-->
-        <mat-error *ngIf="locationControl.hasError('required')">Please enter location</mat-error>
+        <mat-error *ngIf="locationControl.hasError('required')">Please enter a location</mat-error>
       </mat-form-field>
     </div>
     <div class="col-12 col-md-6">

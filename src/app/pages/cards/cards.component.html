@@ -1,12 +1,13 @@
-<div *ngIf="showAddNewCard" class="input-container">
+<div class="input-container">
   <app-add-new-card></app-add-new-card>
 </div>
 
-<!--<button class="btn btn-blue-grey" (click)="showAddNewCard = !showAddNewCard">Nånting</button>-->
+<!--<button class="btn btn-blue-grey" (click)="showAddNewCard = !showAddNewCard">Nånting</button>
 <div class="col-12 wide-center">
   <button mat-raised-button id="addNewCardBtn" (click)="showAddNewCard = !showAddNewCard" color="primary">Add New Card</button>
-</div>
+</div>-->
 
+<button mat-raised-button (click)="openDialog()" color="primary">Add New Card</button>
 
 <div class="table-container">
   <app-card-table [cardList]="cardList"></app-card-table>

@@ -1,6 +1,7 @@
+import { HttpModule } from '@angular/http';
+import { HttpService } from './services/http.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { routing } from './routing';
@@ -17,7 +18,6 @@ import { ComponentInoutComponent } from './pages/examples/code-examples/componen
 import { InputTestComponent } from './pages/examples/code-examples/component-input/input-test/input-test.component';
 import { OutputTestComponent } from './pages/examples/code-examples/component-output/output-test/output-test.component';
 import { CardsComponent } from './pages/cards/cards.component';
-import { HttpService } from './services/http.service';
 import { GetComponent } from './pages/examples/code-examples/get/get.component';
 import { PostComponent } from './pages/examples/code-examples/post/post.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
@@ -37,8 +37,11 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatRadioModule,
-  MatFormFieldControl
+  MatFormFieldControl,
 } from '@angular/material';
+import {
+  MatDialogModule
+ } from '@angular/material/dialog';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
 import { ExpirationDateValidatorDirective } from './directives/expiration-date.directive';
@@ -70,11 +73,11 @@ import { ExpirationDateValidatorDirective } from './directives/expiration-date.d
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    HttpModule,
     routing,
     MDBBootstrapModule.forRoot(),
-    FormsModule,
     ReactiveFormsModule,
-    HttpModule,
     BrowserAnimationsModule,
     MatNativeDateModule,
     MatInputModule,
@@ -86,9 +89,11 @@ import { ExpirationDateValidatorDirective } from './directives/expiration-date.d
     MatAutocompleteModule,
     MatIconModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDialogModule
   ],
   providers: [HttpService],
+  entryComponents: [AddNewCardComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

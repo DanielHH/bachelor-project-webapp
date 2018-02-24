@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Directive } from '@angular/core';
+import { Component, OnInit, Input, Directive, Inject } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
-
 
 @Component({
   selector: 'app-add-new-card',
@@ -35,10 +34,10 @@ export class AddNewCardComponent implements OnInit {
   ];
 
   cardTypeDict = {
-    'USB': 0,
-    'MicroSD': 0,
-    'Harddrive': 0,
-    'Chip': 0
+    'USB': 1,
+    'MicroSD': 1,
+    'Harddrive': 1,
+    'Chip': 1
   };
 
   usernames = [
@@ -55,13 +54,13 @@ export class AddNewCardComponent implements OnInit {
    * Dictionary with username as key and {userID, user} as value.
    */
   userDict = {
-    'jenli414': {userID: 0, user: 'Jennifer Lindgren'},
-    'nikni459': {userID: 0, user: 'Niklas Nilsson'},
-    'phibe092': {userID: 0, user: 'Philip Bengtsson'},
-    'johli252': {userID: 0, user: 'Johan Lind'},
-    'davha914': {userID: 0, user: 'David Hasselquist'},
-    'danhe178': {userID: 0, user: 'Daniel Herzegh'},
-    'andlu984': {userID: 0, user: 'Andreas Lundquist'},
+    'jenli414': {userID: 1, user: 'Jennifer Lindgren'},
+    'nikni459': {userID: 1, user: 'Niklas Nilsson'},
+    'phibe092': {userID: 1, user: 'Philip Bengtsson'},
+    'johli252': {userID: 1, user: 'Johan Lind'},
+    'davha914': {userID: 1, user: 'David Hasselquist'},
+    'danhe178': {userID: 1, user: 'Daniel Herzegh'},
+    'andlu984': {userID: 1, user: 'Andreas Lundquist'},
   };
 
   filteredCardTypes: Observable<any[]>;
@@ -191,6 +190,16 @@ export class AddNewCardComponent implements OnInit {
 
       this.newCard.expirationDate = new Date(this.expirationDateInput);
     }
+  }
+
+  resetForm() {
+    this.cardTypeControl.reset();
+    this.cardNumberControl.reset();
+    this.usernameControl.reset();
+    // NOT USED NOW userControl.reset();
+    this.locationControl.reset();
+    this.expirationDateControl.reset();
+    this.expirationDatePickerControl.reset();
   }
 
 }
