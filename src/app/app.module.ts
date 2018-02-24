@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { routing } from './routing';
@@ -28,6 +30,8 @@ import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-n
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 
+import { AuthService } from './services/auth/auth.service';
+import { TokenInterceptor } from './auth/token.interceptor';
 
 
 @NgModule({
@@ -57,9 +61,18 @@ import { CardItemComponent } from './pages/cards/components/card-item/card-item.
     routing,
     MDBBootstrapModule.forRoot(),
     FormsModule,
-    HttpModule
+    HttpModule,
+    HttpClientModule
   ],
-  providers: [HttpService],
+  providers: [
+    HttpService,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

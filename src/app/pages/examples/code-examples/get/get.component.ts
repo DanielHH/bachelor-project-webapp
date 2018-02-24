@@ -19,9 +19,12 @@ export class GetComponent implements OnInit {
   }
 
   getValueFromHttp() {
+    console.log('get value from http');
     this.httpService.httpGet<Test>('').then(data => {
-      this.testData = data;
+      console.log('(comp)got data ', data);
+      // this.testData = data;
     });
   }
 
 }
+

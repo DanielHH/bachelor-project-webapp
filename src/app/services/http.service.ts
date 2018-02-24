@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-
+import { HttpClient } from '@angular/common/http';
+// import {Http } from '@angular/http';
 @Injectable()
 export class HttpService {
 
@@ -9,7 +9,7 @@ export class HttpService {
    */
   host = 'http://localhost:8080/';
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   /**
    * Get request to given url
@@ -17,7 +17,10 @@ export class HttpService {
    */
   httpGet<T>(url: string) {
     return this.http.get(this.host + url).toPromise()
-    .then(response => response.json())
+    .then(response => {
+      console.log('(service)promise resolve returns response ', response);
+      return response;
+    })
     .catch(error => {
       console.log(error);
     });
@@ -30,7 +33,6 @@ export class HttpService {
    */
   httpPost<T>(url: string, body?: any) {
     return this.http.post(this.host + url, body).toPromise()
-    .then(response => response.json())
     .catch(error => {
       console.log(error);
     });
@@ -43,7 +45,6 @@ export class HttpService {
    */
   httpPut<T>(url: string, body?: any) {
     return this.http.put(this.host + url, body).toPromise()
-    .then(response => response.json())
     .catch(error => {
       console.log(error);
     });
