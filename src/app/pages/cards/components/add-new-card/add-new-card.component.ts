@@ -23,6 +23,7 @@ export class AddNewCardComponent implements OnInit {
   // NOT USED NOW userInput = '';
   locationInput = '';
   expirationDateInput = '';
+  expirationDateDatepickerInput = '';
   commentInput = '';
   addCardHolder: Boolean = false;
 
@@ -73,6 +74,7 @@ export class AddNewCardComponent implements OnInit {
   // NOT USED NOW userControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
   expirationDateControl = new FormControl('', Validators.required);
+  expirationDatePickerControl = new FormControl();
 
   filterCardTypes(str: string) {
     console.log(this.cardTypes.toString);
@@ -170,12 +172,23 @@ export class AddNewCardComponent implements OnInit {
     this.newCard.comment = this.commentInput;
   }
 
-  setExpirationDate(data: any) {
-    console.log(this.expirationDateInput);
-    if (this.expirationDateControl.hasError('required') ||
-      this.expirationDateControl.hasError('expirationDate')) {
+  setExpirationDateFromInput() {
+    if (this.expirationDateControl.hasError('required') || this.expirationDateControl.hasError('expirationDate')) {
       this.newCard.expirationDate = null;
     } else {
+      this.expirationDateDatepickerInput = this.expirationDateInput; // Set date in Datepicker
+      this.newCard.expirationDate = new Date(this.expirationDateInput);
+    }
+  }
+
+  setExpirationDateFromDatepicker(data: any) {
+    if (data.value != null) {
+      const date: Date = data.value;
+      const month: Number = date.getMonth() + 1; // +1 because January is index 0
+      const monthStr: String = month < 10 ? '0' + month : String(month);
+      const dayStr = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+      this.expirationDateInput = date.getFullYear() + '-' + monthStr + '-' + dayStr;
+
       this.newCard.expirationDate = new Date(this.expirationDateInput);
     }
   }

@@ -36,7 +36,8 @@ import {
   MatAutocompleteModule,
   MatIconModule,
   MatToolbarModule,
-  MatRadioModule
+  MatRadioModule,
+  MatFormFieldControl
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';

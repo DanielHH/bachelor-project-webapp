@@ -74,9 +74,8 @@
       <mat-form-field>
         <!--Input-->
         <input matInput id="expirationDateInput" name="expirationDateInput" type="text" [(ngModel)]="expirationDateInput"
-        placeholder="Expiration date" [matDatepicker]="picker" [style.color]="getExpirationDateInputFontColor()"
-        (input)="setExpirationDate($event);" (dateInput)="setExpirationDate($event)" [formControl]="expirationDateControl"
-        appExpirationDate required>
+        placeholder="Expiration date" [style.color]="getExpirationDateInputFontColor()"
+        (input)="setExpirationDateFromInput();" [formControl]="expirationDateControl" appExpirationDate required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
           <mat-icon [style.color]="'green'" *ngIf="newCard.expirationDate != null">done</mat-icon>
@@ -84,15 +83,18 @@
         <button mat-button class="size-medium" *ngIf="expirationDateInput" matSuffix mat-icon-button aria-label="Clear"
         (click)="expirationDateInput = ''; newCard.expirationDate = null"><mat-icon>close</mat-icon></button>
         <!--DatePicker-->
+        <mat-datepicker #picker></mat-datepicker>
+        <!--Hidden input connected to the date picker-->
+        <input id="expirationDateDatepickerInput" name="expirationDateDatepickerInput" [(ngModel)]="expirationDateDatepickerInput"
+        [matDatepicker]="picker" (dateInput)="setExpirationDateFromDatepicker($event);" type="hidden">
         <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
-        <!--Error-->
+        <!--Errors-->
         <mat-error *ngIf="expirationDateControl.hasError('required')">
           Please select a date
         </mat-error>
         <mat-error *ngIf="!expirationDateControl.hasError('required') && expirationDateControl.hasError('expirationDate')">
           Invalid date format
         </mat-error>
-        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
   </div>
