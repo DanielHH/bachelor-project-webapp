@@ -14,14 +14,16 @@ import { HttpService } from '../../services/http.service';
 })
 export class CardsComponent implements OnInit {
 
-  ngOnInit() {
-  }
+  cardList: Card[] = [];
 
   constructor(public dataService: DataService, public dialog: MatDialog) {
-
     this.dataService.cardList.subscribe( (cardList) => {
+      this.cardList = cardList;
     });
 
+  }
+
+  ngOnInit() {
   }
 
   openDialog() {

@@ -1,5 +1,5 @@
-<div class="input-container">
-  <app-add-new-card></app-add-new-card>
-</div>
-
 <button mat-raised-button (click)="openDialog()" color="primary">Add New Card</button>
+
+<div class="table-container pt-3">
+  <app-card-table [cardList]="cardList"></app-card-table>
+</div>
