@@ -14,33 +14,34 @@ export class CardItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.cardItem.displayedDate = moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
   }
 
   /**
-   * Submits a checkout
-   */
+  * Submits a checkout
+  */
   submitRequest() {
-    this.flipStatus();
+    this.setStatus(1); // TODO: ENUM/DATATYPE?
   }
 
   /**
-   * Submits a checkin
-   */
+  * Submits a checkin
+  */
   submitReturn() {
-    this.flipStatus();
+    this.setStatus(0); // TODO: ENUM/DATATYPE?
   }
 
   /**
-   * Flips the card status active/inactive
+  * Inverts the card status active/inactive
+  */
+  setStatus(status: Number) { // TODO: ENUM/DATATYPE?
+    this.cardItem.status = status;
+  }
+
+  /**
+   * Returns a string representation of the expirationDate of the card
    */
-  flipStatus() {
-    if (this.cardItem.status === 1) {
-      this.cardItem.status = 0;
-    } else if (this.cardItem.status === 0) {
-      this.cardItem.status = 1;
-    }
-    // this.cardItem.status = !this.cardItem.status;
+  displayExpirationDate() {
+    return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
   }
 
 }

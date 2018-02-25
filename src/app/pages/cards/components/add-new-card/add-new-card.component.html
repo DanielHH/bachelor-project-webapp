@@ -70,7 +70,6 @@
         <mat-error *ngIf="locationControl.hasError('required')">Please enter a location</mat-error>
       </mat-form-field>
     </div>
-<<<<<<< HEAD
     <div class="col-12 col-md-6">
       <mat-form-field>
         <!--Input-->
@@ -98,8 +97,6 @@
         </mat-error>
       </mat-form-field>
     </div>
-=======
->>>>>>> 88d13d7ff92a1bc13c4f5ad718ef26bf4681fe4c
   </div>
 
   <!-- Row comment -->
@@ -173,18 +170,3 @@
 
 </form>
 
-
-<!--OLD USER FIELD (FULL NAME)
-  <div class="col-12 col-md-6">
-        <mat-form-field>
-          <input matInput id="userInput" name="userInput" [(ngModel)]="userInput" type="text"
-          placeholder="Full name" [formControl]="userControl" (input)="setUser($event)" required>
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="newCard.user != null">done</mat-icon>
-          </button>
-          <button mat-button class="size-medium" *ngIf="userInput" matSuffix mat-icon-button aria-label="Clear"
-          (click)="userInput = '';newCard.user = null"><mat-icon>close</mat-icon></button>
-          <mat-error *ngIf="userControl.hasError('required')">Please enter full name</mat-error>
-        </mat-form-field>
-      </div>
--->

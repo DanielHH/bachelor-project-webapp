@@ -40,13 +40,12 @@ export class Card {
   expirationDate: Date;
 
   /**
-   * Formatted Date to be displayed
+   * Card status
    */
-  displayedDate?: string;
+  status: Number;
 
-  /**
-   * Status for card
-   */
-  status: number;
+  constructor() {
+    this.status = 0;
+  }
 
 }

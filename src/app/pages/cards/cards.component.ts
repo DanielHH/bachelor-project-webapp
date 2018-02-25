@@ -26,7 +26,7 @@ export class CardsComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(AddNewCardComponent, {
-      width: '600px'
+      width: '800px'
     });
   }
 

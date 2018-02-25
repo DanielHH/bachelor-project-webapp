@@ -5,6 +5,7 @@ import { FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-new-card',
@@ -168,18 +169,26 @@ export class AddNewCardComponent implements OnInit {
     }
   }
 
+  /**
+   * Sets expirationDate from datePicker to visible expirationDateInput field
+   * and to expirationDate field in card.
+   * @param data from expirationDate datePicker
+   */
   setExpirationDateFromDatepicker(data: any) {
     if (data.value != null) {
-      const date: Date = data.value;
+      /*const date: Date = data.value;
       const month: Number = date.getMonth() + 1; // +1 because January is index 0
       const monthStr: String = month < 10 ? '0' + month : String(month);
       const dayStr = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-      this.expirationDateInput = date.getFullYear() + '-' + monthStr + '-' + dayStr;
-
+      this.expirationDateInput = date.getFullYear() + '-' + monthStr + '-' + dayStr;*/
+      this.expirationDateInput = moment(this.expirationDateInput).format('YYYY-MM-DD');
       this.newCard.expirationDate = new Date(this.expirationDateInput);
     }
   }
 
+  /**
+   * Reset form
+  */
   resetForm() {
     this.cardTypeControl.reset();
     this.cardNumberControl.reset();
