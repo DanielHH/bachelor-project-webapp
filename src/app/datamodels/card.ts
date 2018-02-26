@@ -44,8 +44,4 @@ export class Card {
    */
   status: Number;
 
-  constructor() {
-    this.status = 0;
-  }
-
 }

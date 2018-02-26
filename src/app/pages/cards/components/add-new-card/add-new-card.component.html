@@ -1,4 +1,4 @@
-<form #testForm="ngForm" (ngSubmit)="addNewCard()">
+<form #addNewCardForm="ngForm" (ngSubmit)="addNewCard()">
 
   <!-- Row cardType & cardNumber -->
   <div class="row">
@@ -161,10 +161,11 @@
       <div class="col-0 col-md-3"></div>
     </div>
 
-  <!-- Row Submit button -->
+  <!-- Row submit & discard buttons -->
   <div class="row">
     <div class="col-12 wide-center">
-      <button mat-raised-button id="submitBtn" type="submit" color="primary">Submit</button>
+      <button mat-raised-button id="discardBtn" type="button" (onClick)="closeDialog()" class="m-3" color="warn">Discard</button>
+      <button mat-raised-button id="submitBtn" type="submit" class="m-3" color="primary">Submit</button>
     </div>
   </div>
 

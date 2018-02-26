@@ -6,6 +6,7 @@ import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import * as moment from 'moment';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-add-new-card',
@@ -85,7 +86,8 @@ export class AddNewCardComponent implements OnInit {
       username.toLowerCase().indexOf(str.toLowerCase()) === 0);
   }
 
-  constructor(private httpService: HttpService) {
+  constructor(public dialogRef: MatDialogRef<AddNewCardComponent>,
+      private httpService: HttpService) {
     this.filteredCardTypes = this.cardTypeControl.valueChanges
       .pipe(
         startWith(''),
@@ -100,6 +102,10 @@ export class AddNewCardComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
   addNewCard() {
@@ -176,12 +182,7 @@ export class AddNewCardComponent implements OnInit {
    */
   setExpirationDateFromDatepicker(data: any) {
     if (data.value != null) {
-      /*const date: Date = data.value;
-      const month: Number = date.getMonth() + 1; // +1 because January is index 0
-      const monthStr: String = month < 10 ? '0' + month : String(month);
-      const dayStr = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-      this.expirationDateInput = date.getFullYear() + '-' + monthStr + '-' + dayStr;*/
-      this.expirationDateInput = moment(this.expirationDateInput).format('YYYY-MM-DD');
+      this.expirationDateInput = moment(data.value).format('YYYY-MM-DD');
       this.newCard.expirationDate = new Date(this.expirationDateInput);
     }
   }
