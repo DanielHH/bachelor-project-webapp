@@ -44,4 +44,14 @@ export class Card {
    */
   status: Number;
 
+  constructor() {
+    this.cardType = null;
+    this.cardNumber = null;
+    this.userID = null;
+    this.location = null;
+    this.comment = '';
+    this.expirationDate = null;
+    this.status = 0;
+  }
+
 }

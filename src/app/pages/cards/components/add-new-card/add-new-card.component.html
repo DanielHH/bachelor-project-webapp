@@ -14,20 +14,20 @@
     <div class="col-12 col-md-6">
       <mat-form-field>
         <!--Input-->
-        <input id="cardTypeInput" name="cardTypeInput" type="text" [(ngModel)]="cardTypeInput"
-        [style.color]="getCardTypeInputFontColor()" placeholder="Card type" aria-label="Number"
+        <input id="cardTypeInput" name="cardTypeInput" type="text" [(ngModel)]="cardTypeInput" maxlength="128"
+        [style.color]="newCard.cardType ? 'black' : 'gray'" placeholder="Card type" aria-label="Number"
         matInput [matAutocomplete]="cardTypes" [formControl]="cardTypeControl"
-        (input)="setCardType($event)" appCardType required>
+        (input)="setCardType($event)" maxlength="10" appCardType required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
           <mat-icon [style.color]="'green'" *ngIf="newCard.cardType != null">done</mat-icon>
         </button>
         <button mat-button class="size-medium" *ngIf="cardTypeInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="cardTypeInput = null; newCard.cardType = null"><mat-icon>close</mat-icon></button>
+        (click)="cardTypeInput = ''; newCard.cardType = null"><mat-icon>close</mat-icon></button>
         <!--Dropdown-->
         <mat-autocomplete #cardTypes="matAutocomplete" (optionSelected)="setCardType($event)">
-          <mat-option *ngFor="let cardType of filteredCardTypes | async" [value]="cardType">
-            {{ cardType }}
+          <mat-option *ngFor="let cardType of filteredCardTypes | async" [value]="cardType.name">
+            {{ cardType.name }}
           </mat-option>
         </mat-autocomplete>
         <!--Error-->
@@ -39,7 +39,7 @@
     <div class="col-12 col-md-6">
       <mat-form-field>
         <!--Input-->
-        <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput" type="text"
+        <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput" type="text" maxlength="128"
         placeholder="Serial number" [formControl]="cardNumberControl" (input)="setCardNumber($event)" required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -58,7 +58,7 @@
     <div class="col-12 col-md-6">
       <mat-form-field>
         <!--Input-->
-        <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text"
+        <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128"
         placeholder="Location" [formControl]="locationControl" (input)="setLocation($event)" required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -74,7 +74,7 @@
       <mat-form-field>
         <!--Input-->
         <input matInput id="expirationDateInput" name="expirationDateInput" type="text" [(ngModel)]="expirationDateInput"
-        placeholder="Expiration date" [style.color]="getExpirationDateInputFontColor()"
+        placeholder="Expiration date" [style.color]="newCard.expirationDate ? 'black' : 'gray'" maxlength="10"
         (input)="setExpirationDateFromInput();" [formControl]="expirationDateControl" appExpirationDate required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -105,7 +105,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text"
-          placeholder="Comment" (input)="setComment($event)">
+          maxlength="128" placeholder="Comment" (input)="setComment($event)">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear"
           (click)="commentInput = ''; newCard.comment = null"><mat-icon>close</mat-icon></button>
@@ -133,9 +133,9 @@
           <mat-form-field>
             <!--Input-->
             <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" type="text"
-            [style.color]="getUsernameInputFontColor()" placeholder="Username" aria-label="Number"
-            matInput [matAutocomplete]="userIDs" [formControl]="usernameControl"
-            (input)="setUsername($event)" appUsername required>
+            [style.color]="newCard.userID ? 'black' : 'gray'" placeholder="Username" aria-label="Number"
+            matInput [matAutocomplete]="userIDs" [formControl]="usernameControl" spellcheck="false"
+            maxlength="128" (input)="setUserID($event)" appUsername required>
             <!--Check and clear-->
             <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
               <mat-icon [style.color]="'green'" *ngIf="newCard.userID != null">done</mat-icon>
@@ -143,9 +143,9 @@
             <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button aria-label="Clear"
             (click)="usernameInput = ''; newCard.userID = null"><mat-icon>close</mat-icon></button>
             <!--Dropdown-->
-            <mat-autocomplete #userIDs="matAutocomplete" (optionSelected)="setUsername($event)">
-              <mat-option *ngFor="let user of filteredUsernames | async" [value]="user">
-                {{ user }}
+            <mat-autocomplete #userIDs="matAutocomplete" (optionSelected)="setUserID($event)">
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.username">
+                {{ user.username + ' <' + user.name + '>' }}
               </mat-option>
             </mat-autocomplete>
             <!--Error-->
@@ -164,7 +164,7 @@
   <!-- Row submit & discard buttons -->
   <div class="row">
     <div class="col-12 wide-center">
-      <button mat-raised-button id="discardBtn" type="button" (onClick)="closeDialog()" class="m-3" color="warn">Discard</button>
+      <button mat-raised-button id="discardBtn" type="button" (click)="closeDialog()" class="m-3" color="warn">Discard</button>
       <button mat-raised-button id="submitBtn" type="submit" class="m-3" color="primary">Submit</button>
     </div>
   </div>

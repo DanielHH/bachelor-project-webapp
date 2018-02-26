@@ -1,5 +1,8 @@
 import { Directive } from '@angular/core';
 import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
+import { User } from '../datamodels/user';
+import * as _ from 'lodash';
+import { DataService } from '../services/data.service';
 
 @Directive({
   selector: '[appUsername]',
@@ -7,18 +10,19 @@ import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} fr
  })
  export class UsernameValidatorDirective implements Validator {
 
+  users: User[] = [];
+
+  constructor(public dataService: DataService) {
+    // Get users from database
+    this.dataService.userList.subscribe( (users) => {
+      this.users = users;
+    });
+  }
+
   validate(c: FormControl): ValidationErrors {
     const input = String(c.value);
-    const usernames = [
-      'jenli414',
-      'nikni459',
-      'phibe092',
-      'johli252',
-      'davha914',
-      'danhe178',
-      'andlu984'
-    ];
-    const isValid = !input || usernames.includes(input);
+
+    const isValid = !input || _.find(this.users, (user) => user.username === input);
     const message = {
       'username': {
         'message': 'Invalid username'
