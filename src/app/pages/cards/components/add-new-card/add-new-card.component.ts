@@ -17,21 +17,15 @@ import * as _ from 'lodash';
 })
 export class AddNewCardComponent implements OnInit {
 
-  newCard = new Card();
-
   // Form variables
   cardTypeInput = '';
   cardNumberInput = '';
   locationInput = '';
   expirationDateInput = '';
   expirationDateDatepickerInput = '';
-  addCardHolder: Boolean = false;
   commentInput = '';
+  addCardHolder: Boolean = false;
   usernameInput = '';
-
-  // Database data
-  cardTypes = [];
-  users = [];
 
   // Form Controls
   cardTypeControl = new FormControl('', Validators.required);
@@ -40,6 +34,10 @@ export class AddNewCardComponent implements OnInit {
   locationControl = new FormControl('', Validators.required);
   expirationDateControl = new FormControl('', Validators.required);
   expirationDatePickerControl = new FormControl();
+
+  // Database data lists
+  cardTypes = [];
+  users = [];
 
   // Filtered lists
   filteredCardTypes: Observable<any[]> = this.cardTypeControl.valueChanges
@@ -57,12 +55,10 @@ export class AddNewCardComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AddNewCardComponent>,
       private httpService: HttpService, public dataService: DataService) {
 
-    // Get cardTypes from database
     this.dataService.cardTypeList.subscribe( (cardTypes) => {
       this.cardTypes = cardTypes;
     });
 
-    // Get users from database
     this.dataService.userList.subscribe( (users) => {
       this.users = users;
     });
@@ -72,7 +68,7 @@ export class AddNewCardComponent implements OnInit {
   }
 
   /**
-   * Close modal for addNewCard
+   * Close add new card dialog
   */
   closeDialog() {
     this.dialogRef.close();
@@ -101,31 +97,27 @@ export class AddNewCardComponent implements OnInit {
   */
   addNewCard(): Boolean {
     if (this.isValidInput()) {
-      this.setCardType();
-      this.setCardNumber();
-      this.setUserID();
-      this.setLocation();
-      this.setComment();
-      this.setExpirationDate();
+      const newCard = new Card();
 
-      this.httpService.httpPost<Card>('addNewCard/', this.newCard).then(res => {
+      newCard.cardType = this.getCardTypeID(this.cardTypeInput);
+      newCard.cardNumber = this.cardNumberInput;
+      newCard.location = this.locationInput;
+      newCard.expirationDate = new Date(this.expirationDateInput);
+      newCard.comment = this.commentInput;
+
+      if (this.addCardHolder && this.isValidUsername()) {
+        newCard.userID = this.getUserID(this.usernameInput);
+      } else {
+        newCard.userID = null;
+      }
+
+      this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
         console.log(res.data);
       });
 
       return true;
     }
     return false;
-  }
-
-  /**
-   * Set cardType in newCard to selected cardNumber in input field.
-   */
-  setCardType() {
-    if (this.isValidCardType()) {
-      this.newCard.cardType = this.getCardTypeID(this.cardTypeInput);
-    } else {
-      this.newCard.cardType = null;
-    }
   }
 
   /**
@@ -137,58 +129,11 @@ export class AddNewCardComponent implements OnInit {
   }
 
   /**
-   * Set cardNumber in newCard to cardNumber in input field.
-   */
-  setCardNumber() {
-    if (this.isValidCardNumber()) {
-      this.newCard.cardNumber = this.cardNumberInput;
-    } else {
-      this.newCard.cardNumber = null;
-    }
-  }
-
-  /**
-   * Set userID in newCard to userID associated with username in input field.
-   */
-  setUserID() {
-    if (this.addCardHolder && this.isValidUsername()) {
-      this.newCard.userID = this.getUserID(this.usernameInput);
-    } else {
-      this.newCard.userID = null;
-    }
-  }
-
-  /**
    * Returns user id of user with username
    * @param username Username of user
    */
   getUserID(username: String) {
     return _.find(this.users, (user) => user.username === username).id;
-  }
-
-  /**
-   * Set location in newCard to location in input field.
-   */
-  setLocation() {
-    if (this.isValidLocation()) {
-      this.newCard.location = this.locationInput;
-    } else {
-      this.newCard.location = null;
-    }
-  }
-
-  /**
-   * Set comment in newCard to comment in input field.
-   */
-  setComment() {
-    this.newCard.comment = this.commentInput;
-  }
-
-  /**
-   * Sets expirationDate field in newCard to entered date.
-   */
-  setExpirationDate() {
-    this.newCard.expirationDate = new Date(this.expirationDateInput);
   }
 
   /**
@@ -201,7 +146,7 @@ export class AddNewCardComponent implements OnInit {
   }
 
   /**
-   * Sets expirationDate from datePicker to visible input field
+   * Sets expirationDate from datePicker to visible input field in YYYY-MM-DD format
    * @param data Date selected in datePicker
    */
   setExpirationDateFromDatepicker(data: any) {
@@ -225,7 +170,7 @@ export class AddNewCardComponent implements OnInit {
   }
 
   /**
-   * Returns true if entered card number is valid, else false.
+   * Returns true if entered username is valid, else false.
   */
   isValidUsername() {
     return !this.addCardHolder ||
@@ -240,14 +185,14 @@ export class AddNewCardComponent implements OnInit {
   }
 
   /**
-   * Returns true if entered location is valid, else false.
+   * Returns true if entered expiration date is valid, else false.
   */
   isValidExpirationDate() {
     return !this.expirationDateControl.hasError('required') && !this.expirationDateControl.hasError('expirationDate');
   }
 
   /**
-   * Returns true if newCard is ready to be submitted to database, else false
+   * Returns true if everything in the form is valid, else false
   */
   isValidInput() {
     return this.isValidCardType() && this.isValidCardNumber() &&
