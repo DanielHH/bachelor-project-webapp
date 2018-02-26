@@ -1,9 +1,5 @@
-<div *ngIf="showAddNewCard" class="input-container">
-    <app-add-new-card></app-add-new-card>
-</div>
-
-<button class="btn btn-blue-grey" (click)="showAddNewCard = !showAddNewCard">Nånting</button>
+<button mat-raised-button (click)="openDialog()" color="primary">Add New Card</button>
 
 <div class="table-container pt-3">
-    <app-card-table [cardList]="cardList"></app-card-table>
+  <app-card-table [cardList]="cardList"></app-card-table>
 </div>

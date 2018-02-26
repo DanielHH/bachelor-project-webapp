@@ -147,7 +147,6 @@ export class DataService {
     this.httpService.httpGet<User>('getUsers').then(data => {
       this._userList = data;
       this.userList.next(this._userList);
-      console.log(data);
     });
   }
 
@@ -155,7 +154,6 @@ export class DataService {
     this.httpService.httpGet<Card>('getCards').then(data => {
       this._cardList = data;
       this.cardList.next(this._cardList);
-      console.log(data);
     });
   }
 
@@ -163,7 +161,6 @@ export class DataService {
     this.httpService.httpGet<CardType>('getCardTypes').then(data => {
       this._cardTypeList = data;
       this.cardTypeList.next(this._cardTypeList);
-      console.log(data);
     });
   }
 
@@ -171,7 +168,6 @@ export class DataService {
     this.httpService.httpGet<Document>('getDocuments').then(data => {
       this._documentList = data;
       this.documentList.next(this._documentList);
-      console.log(data);
     });
   }
 
@@ -179,7 +175,6 @@ export class DataService {
     this.httpService.httpGet<DocumentType>('getDocumentTypes').then(data => {
       this._documentTypeList = data;
       this.documentTypeList.next(this._documentTypeList);
-      console.log(data);
     });
   }
 
@@ -187,7 +182,6 @@ export class DataService {
     this.httpService.httpGet<Receipt>('getReceipts').then(data => {
       this._receiptList = data;
       this.receiptList.next(this._receiptList);
-      console.log(data);
     });
   }
 
@@ -195,7 +189,6 @@ export class DataService {
     this.httpService.httpGet<ItemType>('getItemTypes').then(data => {
       this._itemTypeList = data;
       this.itemTypeList.next(this._itemTypeList);
-      console.log(data);
     });
   }
 
@@ -203,7 +196,6 @@ export class DataService {
     this.httpService.httpGet<Verification>('getVerifications').then(data => {
       this._verificationList = data;
       this.verificationList.next(this._verificationList);
-      console.log(data);
     });
   }
 
@@ -211,7 +203,6 @@ export class DataService {
     this.httpService.httpGet<VerificationType>('getVerificationTypes').then(data => {
       this._verificationTypeList = data;
       this.verificationTypeList.next(this._verificationTypeList);
-      console.log(data);
     });
   }
 

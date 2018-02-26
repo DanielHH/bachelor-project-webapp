@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.mat-form-field-label-wrapper {
+  overflow: visible !important;
+}
+
+input {
+  border-bottom:none !important;
+  box-shadow:none !important;
+}
