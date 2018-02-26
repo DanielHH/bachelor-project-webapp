@@ -1,4 +1,4 @@
-<form #addNewCardForm="ngForm" (ngSubmit)="addNewCard()">
+<form #addNewCardForm="ngForm" (ngSubmit)="addNewCard() ? closeDialog() : false">
 
   <!-- Row cardType & cardNumber -->
   <div class="row">
@@ -15,17 +15,17 @@
       <mat-form-field>
         <!--Input-->
         <input id="cardTypeInput" name="cardTypeInput" type="text" [(ngModel)]="cardTypeInput" maxlength="128"
-        [style.color]="newCard.cardType ? 'black' : 'gray'" placeholder="Card type" aria-label="Number"
+        [style.color]="isValidCardType() ? 'black' : 'gray'" placeholder="Card type" aria-label="Number"
         matInput [matAutocomplete]="cardTypes" [formControl]="cardTypeControl"
-        (input)="setCardType($event)" maxlength="10" appCardType required>
+        maxlength="10" appCardType required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="newCard.cardType != null">done</mat-icon>
+          <mat-icon [style.color]="'green'" *ngIf="isValidCardType()">done</mat-icon>
         </button>
         <button mat-button class="size-medium" *ngIf="cardTypeInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="cardTypeInput = ''; newCard.cardType = null"><mat-icon>close</mat-icon></button>
+        (click)="cardTypeInput = ''"><mat-icon>close</mat-icon></button>
         <!--Dropdown-->
-        <mat-autocomplete #cardTypes="matAutocomplete" (optionSelected)="setCardType($event)">
+        <mat-autocomplete #cardTypes="matAutocomplete">
           <mat-option *ngFor="let cardType of filteredCardTypes | async" [value]="cardType.name">
             {{ cardType.name }}
           </mat-option>
@@ -40,13 +40,13 @@
       <mat-form-field>
         <!--Input-->
         <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput" type="text" maxlength="128"
-        placeholder="Serial number" [formControl]="cardNumberControl" (input)="setCardNumber($event)" required>
+        placeholder="Serial number" [formControl]="cardNumberControl" required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="newCard.cardNumber != null">done</mat-icon>
+          <mat-icon [style.color]="'green'" *ngIf="isValidCardNumber()">done</mat-icon>
         </button>
         <button mat-button class="size-medium" *ngIf="cardNumberInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="cardNumberInput = ''; newCard.cardNumber = null"><mat-icon>close</mat-icon></button>
+        (click)="cardNumberInput = ''"><mat-icon>close</mat-icon></button>
         <!--Error-->
         <mat-error *ngIf="cardNumberControl.hasError('required')">Please enter a card number</mat-error>
       </mat-form-field>
@@ -59,13 +59,13 @@
       <mat-form-field>
         <!--Input-->
         <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128"
-        placeholder="Location" [formControl]="locationControl" (input)="setLocation($event)" required>
+        placeholder="Location" [formControl]="locationControl" required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="newCard.location != null">done</mat-icon>
+          <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
         </button>
         <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="locationInput = ''; newCard.location = null"><mat-icon>close</mat-icon></button>
+        (click)="locationInput = ''"><mat-icon>close</mat-icon></button>
         <!--Error-->
         <mat-error *ngIf="locationControl.hasError('required')">Please enter a location</mat-error>
       </mat-form-field>
@@ -74,14 +74,14 @@
       <mat-form-field>
         <!--Input-->
         <input matInput id="expirationDateInput" name="expirationDateInput" type="text" [(ngModel)]="expirationDateInput"
-        placeholder="Expiration date" [style.color]="newCard.expirationDate ? 'black' : 'gray'" maxlength="10"
-        (input)="setExpirationDateFromInput();" [formControl]="expirationDateControl" appExpirationDate required>
+        placeholder="Expiration date" [style.color]="isValidExpirationDate() ? 'black' : 'gray'" maxlength="10"
+        (input)="setExpirationDateToDatePicker();" [formControl]="expirationDateControl" appExpirationDate required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="newCard.expirationDate != null">done</mat-icon>
+          <mat-icon [style.color]="'green'" *ngIf="isValidExpirationDate()">done</mat-icon>
         </button>
         <button mat-button class="size-medium" *ngIf="expirationDateInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="expirationDateInput = ''; newCard.expirationDate = null"><mat-icon>close</mat-icon></button>
+        (click)="expirationDateInput = ''"><mat-icon>close</mat-icon></button>
         <!--DatePicker-->
         <mat-datepicker #picker></mat-datepicker>
         <!--Hidden input connected to the date picker-->
@@ -92,7 +92,7 @@
         <mat-error *ngIf="expirationDateControl.hasError('required')">
           Please select a date
         </mat-error>
-        <mat-error *ngIf="!expirationDateControl.hasError('required') && expirationDateControl.hasError('expirationDate')">
+        <mat-error *ngIf="expirationDateControl.hasError('expirationDate')">
           Invalid date format
         </mat-error>
       </mat-form-field>
@@ -105,10 +105,10 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text"
-          maxlength="128" placeholder="Comment" (input)="setComment($event)">
+          maxlength="128" placeholder="Comment">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear"
-          (click)="commentInput = ''; newCard.comment = null"><mat-icon>close</mat-icon></button>
+          (click)="commentInput = ''"><mat-icon>close</mat-icon></button>
         </mat-form-field>
     </div>
   </div>
@@ -119,7 +119,7 @@
       <label class="p-2">Add cardholder:</label>
       <mat-radio-group>
         <mat-radio-button class="p-2" color="primary" [checked]="true" value="no"
-        (change)="addCardHolder = !addCardHolder;newCard.userID=null;usernameControl.reset();">No</mat-radio-button>
+        (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
         <mat-radio-button class="p-2" color="primary" value="yes"
         (change)="addCardHolder = !addCardHolder">Yes</mat-radio-button>
       </mat-radio-group>
@@ -133,17 +133,17 @@
           <mat-form-field>
             <!--Input-->
             <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" type="text"
-            [style.color]="newCard.userID ? 'black' : 'gray'" placeholder="Username" aria-label="Number"
+            [style.color]="isValidUsername() ? 'black' : 'gray'" placeholder="Username" aria-label="Number"
             matInput [matAutocomplete]="userIDs" [formControl]="usernameControl" spellcheck="false"
-            maxlength="128" (input)="setUserID($event)" appUsername required>
+            maxlength="128" appUsername required>
             <!--Check and clear-->
             <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-              <mat-icon [style.color]="'green'" *ngIf="newCard.userID != null">done</mat-icon>
+              <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
             </button>
             <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button aria-label="Clear"
-            (click)="usernameInput = ''; newCard.userID = null"><mat-icon>close</mat-icon></button>
+            (click)="usernameInput = ''"><mat-icon>close</mat-icon></button>
             <!--Dropdown-->
-            <mat-autocomplete #userIDs="matAutocomplete" (optionSelected)="setUserID($event)">
+            <mat-autocomplete #userIDs="matAutocomplete">
               <mat-option *ngFor="let user of filteredUsers | async" [value]="user.username">
                 {{ user.username + ' <' + user.name + '>' }}
               </mat-option>

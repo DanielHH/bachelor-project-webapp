@@ -10,6 +10,7 @@ import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} fr
 
     validate(c: FormControl): ValidationErrors {
       const input = String(c.value);
+
       const isValid = !input || this.isValidDateString(input);
       const message = {
         'expirationDate': {

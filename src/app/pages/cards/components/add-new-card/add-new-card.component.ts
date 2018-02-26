@@ -83,9 +83,8 @@ export class AddNewCardComponent implements OnInit {
    * @param str cardType input
    */
   filterCardTypes(str: string) {
-    console.log(this.cardTypes.toString);
     return this.cardTypes.filter(cardType =>
-      cardType.name.toLowerCase().indexOf(str.toLowerCase()) === 0);
+      str != null && cardType.name.toLowerCase().indexOf(str.toLowerCase()) === 0);
   }
 
   /**
@@ -94,18 +93,28 @@ export class AddNewCardComponent implements OnInit {
    */
   filterUsers(str: string) {
     return this.users.filter(user =>
-      user.username.toLowerCase().indexOf(str.toLowerCase()) === 0);
+      str != null && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0);
   }
 
   /**
-   * Submit new card to database if ok
+   * Attempts to submit new card to database and returns true if successful, else false
   */
-  addNewCard() {
-    if (this.isValidNewCard()) {
+  addNewCard(): Boolean {
+    if (this.isValidInput()) {
+      this.setCardType();
+      this.setCardNumber();
+      this.setUserID();
+      this.setLocation();
+      this.setComment();
+      this.setExpirationDate();
+
       this.httpService.httpPost<Card>('addNewCard/', this.newCard).then(res => {
         console.log(res.data);
       });
+
+      return true;
     }
+    return false;
   }
 
   /**
@@ -142,7 +151,7 @@ export class AddNewCardComponent implements OnInit {
    * Set userID in newCard to userID associated with username in input field.
    */
   setUserID() {
-    if (this.isValidUsername()) {
+    if (this.addCardHolder && this.isValidUsername()) {
       this.newCard.userID = this.getUserID(this.usernameInput);
     } else {
       this.newCard.userID = null;
@@ -171,32 +180,33 @@ export class AddNewCardComponent implements OnInit {
   /**
    * Set comment in newCard to comment in input field.
    */
-  setComment(data: any) {
+  setComment() {
     this.newCard.comment = this.commentInput;
   }
 
   /**
-   * Sets expirationDate from input field if the form control has no errors.
-   * Also sets the datePicker to that date.
+   * Sets expirationDate field in newCard to entered date.
+   */
+  setExpirationDate() {
+    this.newCard.expirationDate = new Date(this.expirationDateInput);
+  }
+
+  /**
+   * Sets the datePicker the date entered in the input field.
   */
-  setExpirationDateFromInput() {
-    if (this.expirationDateControl.hasError('required') || this.expirationDateControl.hasError('expirationDate')) {
-      this.newCard.expirationDate = null;
-    } else {
+  setExpirationDateToDatePicker() {
+    if (!this.expirationDateControl.hasError('required') && !this.expirationDateControl.hasError('expirationDate')) {
       this.expirationDateDatepickerInput = this.expirationDateInput; // Set date in Datepicker
-      this.newCard.expirationDate = new Date(this.expirationDateInput);
     }
   }
 
   /**
-   * Sets expirationDate from datePicker to visible expirationDateInput field
-   * and to expirationDate field in card.
+   * Sets expirationDate from datePicker to visible input field
    * @param data Date selected in datePicker
    */
   setExpirationDateFromDatepicker(data: any) {
     if (data.value != null) {
       this.expirationDateInput = moment(data.value).format('YYYY-MM-DD');
-      this.newCard.expirationDate = new Date(this.expirationDateInput);
     }
   }
 
@@ -218,11 +228,8 @@ export class AddNewCardComponent implements OnInit {
    * Returns true if entered card number is valid, else false.
   */
   isValidUsername() {
-    if (this.addCardHolder) {
-      return !this.usernameControl.hasError('required') && !this.usernameControl.hasError('username');
-    } else {
-      return this.newCard.userID == null;
-    }
+    return !this.addCardHolder ||
+      (!this.usernameControl.hasError('required') && !this.usernameControl.hasError('username'));
   }
 
   /**
@@ -242,7 +249,7 @@ export class AddNewCardComponent implements OnInit {
   /**
    * Returns true if newCard is ready to be submitted to database, else false
   */
-  isValidNewCard() {
+  isValidInput() {
     return this.isValidCardType() && this.isValidCardNumber() &&
     this.isValidUsername() && this.isValidLocation() && this.isValidExpirationDate();
   }
