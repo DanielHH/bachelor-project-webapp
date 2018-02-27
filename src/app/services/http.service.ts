@@ -7,7 +7,7 @@ export class HttpService {
   /**
    * API url
    */
-  host = 'http://api.nlsn.se/';
+  host = 'http:/localhost:8080/';
 
   constructor(private http: Http) { }
 

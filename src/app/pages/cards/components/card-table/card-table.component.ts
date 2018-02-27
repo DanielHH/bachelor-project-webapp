@@ -80,8 +80,7 @@ export class CardTableComponent implements OnInit {
   sortTableListHelper(order: string) {
     switch (order) {
       case 'asc': return 'desc';
-      case '': return 'asc';
-      default: return '';
+      default: return 'asc';
     }
   }
 

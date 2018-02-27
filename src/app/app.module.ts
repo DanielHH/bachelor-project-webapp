@@ -45,6 +45,8 @@ import { UsernameValidatorDirective } from './directives/username.directive';
 import { ExpirationDateValidatorDirective } from './directives/expiration-date.directive';
 import { DataService } from './services/data.service';
 import { MatchFilterPipe } from './pipes/match-filter.pipe';
+import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
+import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 
 
 
@@ -72,7 +74,9 @@ import { MatchFilterPipe } from './pipes/match-filter.pipe';
     UsernameValidatorDirective,
     CardTypeValidatorDirective,
     ExpirationDateValidatorDirective,
-    MatchFilterPipe
+    MatchFilterPipe,
+    DocumentItemComponent,
+    DocumentTableComponent
   ],
   imports: [
     BrowserModule,

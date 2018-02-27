@@ -40,6 +40,16 @@ export class Card {
   expirationDate: Date;
 
   /**
+   * Creation date of the card, date inserted into database
+   */
+  creationDate: Date;
+
+  /**
+   * Last modified date of the card
+   */
+  modifiedDate: Date;
+
+  /**
    * Card status
    */
   status: Number;
@@ -51,6 +61,8 @@ export class Card {
     this.location = null;
     this.comment = '';
     this.expirationDate = null;
+    this.creationDate = null;
+    this.modifiedDate = null;
     this.status = 0;
   }
 
