@@ -33,7 +33,7 @@ import { CardItemComponent } from './pages/cards/components/card-item/card-item.
 import { AuthService } from './auth/auth.service';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { LoginComponent } from './pages/login/login.component';
-import { AuthGuardService } from './auth/auth-guard.service';
+import { AuthGuard } from './auth/auth.guard';
 
 
 @NgModule({
@@ -70,7 +70,7 @@ import { AuthGuardService } from './auth/auth-guard.service';
   providers: [
     HttpService,
     AuthService,
-    AuthGuardService,
+    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

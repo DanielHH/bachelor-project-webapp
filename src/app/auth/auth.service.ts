@@ -13,7 +13,6 @@ export class AuthService {
   constructor(private httpService: HttpService) { }
 
   public getToken(): string {
-    localStorage.setItem('token', 'test-token-123');
     return localStorage.getItem('token');
   }
 
@@ -22,15 +21,14 @@ export class AuthService {
    * JSON Web Token.
   */
   public isAuthenticated(): boolean {
-    // get the token
     const token = this.getToken();
-    // return a boolean reflecting
-    // whether or not the token is expired
-    return tokenNotExpired(null, token);
+    // TODO: test if tokenNotExpired behaves as expected, uncomment notExpired call
+    return token === 'faked-jwt'; // && tokenNotExpired(token);
   }
 
   /**
-   * Attempt to log in the user by trading credentials for a JSON Web Token.
+   * Attempt to log in the user by trading credentials for a JSON Web Token,
+   * which can be used to access protected resources.
    * @param username The username of the user.
    * @param password The password of the user.
    */
@@ -42,7 +40,7 @@ export class AuthService {
             const token = response['token'];
             if (token) {
                 // store jwt token in local storage to keep user logged in between page refreshes
-                // TODO: stringify call?
+                // TODO: verify token?
                 localStorage.setItem('token', token);
                 console.log('server returned token ', token);
                 return true;

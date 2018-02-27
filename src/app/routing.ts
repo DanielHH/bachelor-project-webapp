@@ -7,42 +7,48 @@ import { LogsComponent } from './pages/logs/logs.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    data: { name: 'Startsidan' },
+    data: { name: 'Startsidan' }
   },
 
   {
     path: 'documents',
     component: DocumentsComponent,
     data: { name: 'Handlingar' },
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'receipts',
     component: ReceiptsComponent,
     data: { name: 'Kvittenser' },
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'logs',
     component: LogsComponent,
     data: { name: 'Loggar' },
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'examples',
     component: ExamplesComponent,
-    data: { name: 'Kodexempel'}
+    data: { name: 'Kodexempel'},
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'cards',
     component: CardsComponent,
-    data: { name: 'Kort' }
+    data: { name: 'Kort' },
+    canActivate: [AuthGuard]
   },
 
   {
