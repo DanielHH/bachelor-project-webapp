@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
 import { CardType } from '../../../../datamodels/cardType';
 import { User } from '../../../../datamodels/user';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-card-item',
@@ -51,15 +52,17 @@ export class CardItemComponent implements OnInit {
   }
 
   displayCardType() {
-    return this.cardTypeList[this.cardItem.cardType - 1].name;
+    if (this.cardItem.cardType) {
+      return _.find(this.cardTypeList, (cardType) => cardType.id === this.cardItem.cardType).name;
+    }
+    return '';
   }
 
   displayUserName() {
-    const name = this.userList[this.cardItem.userID - 1].name;
-    if (!name) {
-      return '';
+    if (this.cardItem.userID) {
+      return _.find(this.userList, (user) => user.id === this.cardItem.userID).name;
     }
-    return name;
+    return '';
   }
 
   /**
