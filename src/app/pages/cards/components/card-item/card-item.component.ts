@@ -1,6 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import * as moment from 'moment';
+import { DataService } from '../../../../services/data.service';
+import { CardType } from '../../../../datamodels/cardType';
+import { User } from '../../../../datamodels/user';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-card-item',
@@ -8,33 +12,66 @@ import * as moment from 'moment';
   styleUrls: ['./card-item.component.scss']
 })
 export class CardItemComponent implements OnInit {
-
   @Input() cardItem: Card;
 
-  constructor() { }
+  cardTypeList: CardType[] = [];
+  userList: User[] = [];
 
-  ngOnInit() {
+  constructor(public dataService: DataService) {
+    this.dataService.cardTypeList.subscribe(cardTypeList => {
+      this.cardTypeList = cardTypeList;
+    });
+    this.dataService.userList.subscribe(userList => {
+      this.userList = userList;
+    });
   }
 
+  ngOnInit() {}
+
   /**
-  * Submits a checkout
-  */
+   * Submits a checkout
+   */
   submitRequest() {
     this.setStatus(1); // TODO: ENUM/DATATYPE?
   }
 
   /**
-  * Submits a checkin
-  */
+   * Submits a checkin
+   */
   submitReturn() {
     this.setStatus(0); // TODO: ENUM/DATATYPE?
   }
 
   /**
-  * Inverts the card status active/inactive
-  */
-  setStatus(status: Number) { // TODO: ENUM/DATATYPE?
+   * Inverts the card status active/inactive
+   */
+  setStatus(status: Number) {
+    // TODO: ENUM/DATATYPE?
     this.cardItem.status = status;
+  }
+
+  /**
+   * Returns the name of the card type corresponding to the cardType
+   */
+  displayCardType() {
+    if (this.cardItem.cardType > 0) {
+      const cardTypeToDisplay = _.find( this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
+      if (cardTypeToDisplay) {
+        return cardTypeToDisplay.name;
+      }
+    }
+    return '';
+  }
+
+  /**
+   * Returns the name corresponding to the userID
+   */
+  displayUserName() {
+    if (this.cardItem.userID) {
+      return _.find(this.userList, user => user.id === this.cardItem.userID)
+        .name;
+    }
+    return '';
   }
 
   /**
@@ -43,5 +80,4 @@ export class CardItemComponent implements OnInit {
   displayExpirationDate() {
     return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
   }
-
 }
