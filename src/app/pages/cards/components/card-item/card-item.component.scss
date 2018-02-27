@@ -18,6 +18,13 @@ button.btn-wheel {
     cursor: pointer;
 }
 
+.detail-link {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
 // Setting the dropdown to occur on the left side instead
 .dropdown-menu {
     position: absolute;

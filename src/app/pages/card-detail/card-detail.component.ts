@@ -4,7 +4,6 @@ import { Location } from '@angular/common';
 
 import { Card } from '../../datamodels/card';
 
-
 @Component({
   selector: 'app-card-detail',
   templateUrl: './card-detail.component.html',
