@@ -24,7 +24,7 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-new-card.component';
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
-import { CardDetailComponent } from './pages/card-detail/card-detail.component';
+import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatNativeDateModule,
