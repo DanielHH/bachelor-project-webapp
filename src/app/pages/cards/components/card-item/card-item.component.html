@@ -12,11 +12,14 @@
   </div>
 
   <div class="col">{{cardItem?.cardType}}</div>
-  <div class="col">{{cardItem?.cardNumber}}</div>
+  <a routerLink="/detail/{{cardItem?.cardNumber}}">
+    <div class="col">{{cardItem?.cardNumber}}</div>
+  </a>
   <div class="col">{{cardItem?.userID}}</div>
   <div class="col">{{cardItem?.location}}</div>
   <div class="col">{{cardItem?.comment}}</div>
   <div class="col">{{displayExpirationDate()}}</div>
+
   <div class="col-1">
     <!--Dropdown-->
     <div class="dropdown" dropdown>
