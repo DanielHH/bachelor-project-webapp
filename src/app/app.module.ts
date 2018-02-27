@@ -30,8 +30,10 @@ import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-n
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 
-import { AuthService } from './services/auth/auth.service';
+import { AuthService } from './auth/auth.service';
 import { TokenInterceptor } from './auth/token.interceptor';
+import { LoginComponent } from './pages/login/login.component';
+import { AuthGuardService } from './auth/auth-guard.service';
 
 
 @NgModule({
@@ -54,7 +56,8 @@ import { TokenInterceptor } from './auth/token.interceptor';
     SideMenuComponent,
     AddNewCardComponent,
     CardTableComponent,
-    CardItemComponent
+    CardItemComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -62,11 +65,12 @@ import { TokenInterceptor } from './auth/token.interceptor';
     MDBBootstrapModule.forRoot(),
     FormsModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     HttpService,
     AuthService,
+    AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

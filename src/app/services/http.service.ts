@@ -17,14 +17,11 @@ export class HttpService {
    */
   httpGet<T>(url: string) {
     return this.http.get(this.host + url).toPromise()
-    .then(response => {
-      console.log('(service)promise resolve returns response ', response);
-      return response;
-    })
     .catch(error => {
       console.log(error);
     });
   }
+
 
   /**
    * Post request to given url

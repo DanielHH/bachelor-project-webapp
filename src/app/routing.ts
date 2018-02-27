@@ -6,14 +6,51 @@ import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { LogsComponent } from './pages/logs/logs.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
 import { CardsComponent } from './pages/cards/cards.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent, data: { name: 'Startsidan' } },
-    { path: 'documents', component: DocumentsComponent, data: { name: 'Handlingar' } },
-    { path: 'receipts', component: ReceiptsComponent, data: { name: 'Kvittenser' } },
-    { path: 'logs', component: LogsComponent, data: { name: 'Loggar' } },
-    { path: 'examples', component: ExamplesComponent, data: { name: 'Kodexempel' } },
-    { path: 'cards', component: CardsComponent, data: { name: 'Kort' } }
+  {
+    path: '',
+    component: HomeComponent,
+    data: { name: 'Startsidan' },
+  },
+
+  {
+    path: 'documents',
+    component: DocumentsComponent,
+    data: { name: 'Handlingar' },
+  },
+
+  {
+    path: 'receipts',
+    component: ReceiptsComponent,
+    data: { name: 'Kvittenser' },
+  },
+
+  {
+    path: 'logs',
+    component: LogsComponent,
+    data: { name: 'Loggar' },
+  },
+
+  {
+    path: 'examples',
+    component: ExamplesComponent,
+    data: { name: 'Kodexempel'}
+  },
+
+  {
+    path: 'cards',
+    component: CardsComponent,
+    data: { name: 'Kort' }
+  },
+
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: { name: 'Inloggning'}
+  }
+
 
   /* Resterande routes
 	{ path: '**', component: PageNotFoundComponent, data: { name: 'SidanHittadesInte', fullSizeBackgroundURL: '/assets/not-found.jpg' } }

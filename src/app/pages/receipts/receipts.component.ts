@@ -7,9 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReceiptsComponent implements OnInit {
 
-  constructor() {
-    console.log('kvittenser');
-  }
+  constructor() { }
 
   ngOnInit() {
   }
