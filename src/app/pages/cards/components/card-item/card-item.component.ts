@@ -50,17 +50,22 @@ export class CardItemComponent implements OnInit {
     this.cardItem.status = status;
   }
 
+  /**
+   * Returns the name of the card type corresponding to the cardType
+   */
   displayCardType() {
     if (this.cardItem.cardType > 0) {
-      const test = _.find( this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
-      console.log(test);
-      if (test) {
-        return test.name;
+      const cardTypeToDisplay = _.find( this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
+      if (cardTypeToDisplay) {
+        return cardTypeToDisplay.name;
       }
     }
     return '';
   }
 
+  /**
+   * Returns the name corresponding to the userID
+   */
   displayUserName() {
     if (this.cardItem.userID) {
       return _.find(this.userList, user => user.id === this.cardItem.userID)
