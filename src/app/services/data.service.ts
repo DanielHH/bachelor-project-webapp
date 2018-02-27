@@ -11,6 +11,7 @@ import { ItemType } from '../datamodels/itemType';
 import { User } from '../datamodels/user';
 import { Verification } from '../datamodels/verification';
 import { VerificationType } from '../datamodels/verificationType';
+import { StatusType } from '../datamodels/statusType';
 
 @Injectable()
 export class DataService {
@@ -117,10 +118,22 @@ export class DataService {
   _verificationTypeList: VerificationType[] = [];
 
   /**
-   * A subscriber to the card list
+   * A subscriber to the verification type list
    */
   verificationTypeList: BehaviorSubject<VerificationType[]> = new BehaviorSubject<VerificationType[]>(
     this._verificationTypeList
+  );
+
+  /**
+   * List with all status types
+   */
+  _statusTypeList: StatusType[] = [];
+
+  /**
+   * A subscriber to the status type list
+   */
+  statusTypeList: BehaviorSubject<StatusType[]> = new BehaviorSubject<StatusType[]>(
+    this._statusTypeList
   );
 
   constructor(public httpService: HttpService) {
@@ -141,6 +154,8 @@ export class DataService {
 
     this.getVerificationList();
     this.getVerificationTypeList();
+
+    this.getStatusTypeList();
   }
 
   getUserList() {
@@ -203,6 +218,14 @@ export class DataService {
     this.httpService.httpGet<VerificationType>('getVerificationTypes').then(data => {
       this._verificationTypeList = data;
       this.verificationTypeList.next(this._verificationTypeList);
+    });
+  }
+
+  getStatusTypeList() {
+    this.httpService.httpGet<StatusType>('getStatusTypes').then(data => {
+      this._statusTypeList = data;
+      this.statusTypeList.next(this._statusTypeList);
+      console.log(data);
     });
   }
 

@@ -104,6 +104,7 @@ export class AddNewCardComponent implements OnInit {
       newCard.location = this.locationInput;
       newCard.expirationDate = new Date(this.expirationDateInput);
       newCard.comment = this.commentInput;
+      newCard.status = 1;
 
       if (this.addCardHolder && this.isValidUsername()) {
         newCard.userID = this.getUserID(this.usernameInput);
