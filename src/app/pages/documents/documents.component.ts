@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Document } from '../../datamodels/document';
+import {MatDialog} from '@angular/material';
+
+import { DataService } from '../../services/data.service';
+import { HttpService } from '../../services/http.service';
+
 
 @Component({
   selector: 'app-documents',
@@ -7,7 +13,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentsComponent implements OnInit {
 
-  constructor() { }
+  documentList: Document[] = [];
+
+  constructor(public dataService: DataService, public dialog: MatDialog) {
+    this.dataService.documentList.subscribe( (documentList) => {
+      this.documentList = documentList;
+    });
+
+  }
 
   ngOnInit() {
   }

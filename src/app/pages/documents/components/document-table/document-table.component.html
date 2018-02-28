@@ -15,33 +15,33 @@
         <!-- Header row -->
         <div class="row">
             <div class="col-1"></div>
-            <div class="col" (click)="sortTableList('cardType')">
-                <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'" [class.both-arrow]="orderCardType == ''">Type
-                </span>
+            <div class="col" (click)="sortTableList('documentType')">
+                <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'" [class.both-arrow]="orderDocumentType == ''">Type
+              </span>
             </div>
-            <div class="col" (click)="sortTableList('cardNumber')">
-                <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'" [class.both-arrow]="orderCardNumber == ''">Serial Number
-                </span>
+            <div class="col" (click)="sortTableList('documentNumber')">
+                <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'" [class.both-arrow]="orderDocumentNumber == ''">Number
+              </span>
             </div>
+            <div class="col" (click)="sortTableList('name')">
+                <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Name
+          </span></div>
             <div class="col" (click)="sortTableList('userID')">
                 <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">User ID
-            </span></div>
+          </span></div>
             <div class="col" (click)="sortTableList('location')">
                 <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Location
-            </span></div>
+          </span></div>
             <div class="col" (click)="sortTableList('comment')">
                 <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Comment
-            </span></div>
-            <div class="col" (click)="sortTableList('expirationDate')">
-                <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'" [class.both-arrow]="orderDate == ''">Expiration date
-            </span></div>
+          </span></div>
             <div class="col-1"></div>
         </div>
         <hr>
 
-        <!-- Add cards to the table   -->
-        <div *ngFor="let card of cardList | matchFilterCard:filterInput">
-            <app-card-item *ngIf="card.status == 1 || card.status == 2" [cardItem]="card"></app-card-item>
+        <!-- Add cards to the table -->
+        <div *ngFor="let document of documentList | matchFilterDocument:filterInput">
+            <app-document-item *ngIf="document.status == 1 || document.status == 2" [documentItem]="document"></app-document-item>
         </div>
     </div>
 </div>
