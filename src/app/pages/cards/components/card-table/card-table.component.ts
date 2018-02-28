@@ -23,8 +23,15 @@ export class CardTableComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.sortTableListStart();
   }
 
+  /**
+   * Sorts table after modifiedDate ascending
+   */
+  sortTableListStart() {
+    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['asc']);
+  }
 
   /**
    * Sorts the table depending on the property of the Card

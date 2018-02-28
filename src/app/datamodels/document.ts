@@ -38,6 +38,15 @@ export class Document {
    */
   registrationDate: Date;
 
+ /**
+   * Creation date of document in database
+   */
+  creationDate: Date;
+
+  /**
+   * Last modified date of the document
+   */
+  modifiedDate: Date;
 
   /**
    * ID of current document holder
