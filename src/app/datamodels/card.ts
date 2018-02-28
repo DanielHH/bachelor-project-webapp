@@ -52,7 +52,7 @@ export class Card {
   /**
    * Card status
    */
-  status: Number;
+  status: number;
 
   constructor() {
     this.cardType = null;
@@ -61,8 +61,6 @@ export class Card {
     this.location = null;
     this.comment = '';
     this.expirationDate = null;
-    this.creationDate = null;
-    this.modifiedDate = null;
     this.creationDate = null;
     this.modifiedDate = null;
     this.status = 0;

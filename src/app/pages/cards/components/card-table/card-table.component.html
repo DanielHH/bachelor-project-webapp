@@ -2,16 +2,14 @@
     <div class="card-body">
         <!-- Input field for filter -->
         <div class="row">
-          <div class="col-4">
-              <mat-form-field>
-                <!--Input-->
-                <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
-                maxlength="128" placeholder="Filter by">
-                <!--Clear-->
-                <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
-                (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
-              </mat-form-field>
-          </div>
+            <div class="col-4">
+                <mat-form-field>
+                    <!--Input-->
+                    <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text" maxlength="128" placeholder="Filter by">
+                    <!--Clear-->
+                    <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+                </mat-form-field>
+            </div>
         </div>
 
         <!-- Header row -->
@@ -41,9 +39,9 @@
         </div>
         <hr>
 
-        <!-- Add cards to the table -->
-        <div *ngFor="let card of cardList | matchFilterCard:filterInput" >
-            <app-card-item [cardItem]="card"></app-card-item>
+        <!-- Add cards to the table   -->
+        <div *ngFor="let card of cardList | matchFilterCard:filterInput">
+            <app-card-item *ngIf="card.status == 1 || card.status == 2" [cardItem]="card"></app-card-item>
         </div>
     </div>
 </div>

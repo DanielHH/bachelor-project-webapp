@@ -1,9 +1,9 @@
 <div class="row">
-    <div class="col-1" *ngIf="cardItem.status">
+    <div class="col-1" *ngIf="cardItem.status == 2">
         <button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" data-toggle="modal" data-target="#requestModal" (click)="returnModClick.show()" mdbRippleRadius>Return</button>
     </div>
 
-    <div class="col-1" *ngIf="!cardItem.status">
+    <div class="col-1" *ngIf="cardItem.status == 1">
         <button type="button" class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1" data-toggle="modal" data-target="#requestModal" (click)="requestModClick.show()" mdbRippleRadius>Request</button>
     </div>
 
@@ -14,25 +14,7 @@
     <div class="col">{{cardItem?.comment}}</div>
     <div class="col">{{displayExpirationDate()}}</div>
     <div class="col-1">
-        <!--Dropdown-->
-        <div class="dropdown" dropdown>
-
-            <!--Trigger-->
-            <button dropdownToggle class="btn-menu waves-light" mdbRippleRadius>
-            <i class="material-icons">more_vert</i>
-      </button>
-
-            <!--Menu-->
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Details</a>
-                <a class="dropdown-item" href="#">Edit</a>
-                <a class="dropdown-item" href="#">Archive</a>
-                <a class="dropdown-item">{{cardItem.creationDate}}</a>
-                <a class="dropdown-item">{{cardItem.modifiedDate}}</a>
-                <div class="divider dropdown-divider"></div>
-                <a class="dropdown-item">Close</a>
-            </div>
-        </div>
+        <app-item-menu [item]="cardItem"></app-item-menu>
     </div>
 </div>
 

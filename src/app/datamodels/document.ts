@@ -66,7 +66,7 @@ export class Document {
   /**
    * document checked in/out status
    */
-  status: Number;
+  status: number;
 
   constructor() {
     this.id = null;
