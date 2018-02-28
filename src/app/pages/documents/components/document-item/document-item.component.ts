@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Document } from '../../../../datamodels/document';
+import * as moment from 'moment';
+import { DataService } from '../../../../services/data.service';
+import { DocumentType } from '../../../../datamodels/documentType';
+import { User } from '../../../../datamodels/user';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-document-item',
@@ -6,10 +12,65 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./document-item.component.scss']
 })
 export class DocumentItemComponent implements OnInit {
+  @Input() documentItem: Document;
 
-  constructor() { }
+  documentTypeList: DocumentType[] = [];
+  userList: User[] = [];
 
-  ngOnInit() {
+  constructor(public dataService: DataService) {
+    this.dataService.documentTypeList.subscribe(documentTypeList => {
+      this.documentTypeList = documentTypeList;
+    });
+    this.dataService.userList.subscribe(userList => {
+      this.userList = userList;
+    });
   }
 
+  ngOnInit() {}
+
+  /**
+   * Submits a checkout
+   */
+  submitRequest() {
+    this.setStatus(1); // TODO: ENUM/DATATYPE?
+  }
+
+  /**
+   * Submits a checkin
+   */
+  submitReturn() {
+    this.setStatus(0); // TODO: ENUM/DATATYPE?
+  }
+
+  /**
+   * Inverts the document status active/inactive
+   */
+  setStatus(status: Number) {
+    // TODO: ENUM/DATATYPE?
+    this.documentItem.status = status;
+  }
+
+  /**
+   * Returns the name of the document type corresponding to the documentType
+   */
+  displayDocumentType() {
+    if (this.documentItem.documentType > 0) {
+      const documentTypeToDisplay = _.find( this.documentTypeList, documentType => documentType.id === this.documentItem.documentType);
+      if (documentTypeToDisplay) {
+        return documentTypeToDisplay.name;
+      }
+    }
+    return '';
+  }
+
+  /**
+   * Returns the name corresponding to the userID
+   */
+  displayUserName() {
+    if (this.documentItem.userID) {
+      return _.find(this.userList, user => user.id === this.documentItem.userID)
+        .name;
+    }
+    return '';
+  }
 }

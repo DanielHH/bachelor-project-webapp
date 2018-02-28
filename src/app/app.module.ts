@@ -47,6 +47,7 @@ import { DataService } from './services/data.service';
 import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
+import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 
 
 
@@ -76,7 +77,8 @@ import { DocumentTableComponent } from './pages/documents/components/document-ta
     ExpirationDateValidatorDirective,
     MatchFilterCardPipe,
     DocumentItemComponent,
-    DocumentTableComponent
+    DocumentTableComponent,
+    MatchFilterDocumentPipe
   ],
   imports: [
     BrowserModule,

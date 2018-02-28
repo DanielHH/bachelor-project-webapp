@@ -66,6 +66,22 @@ export class Document {
   /**
    * document checked in/out status
    */
-  status: boolean;
+  status: Number;
+
+  constructor() {
+    this.id = null;
+    this.documentType = null;
+    this.documentNumber = null;
+    this.name = null;
+    this.sender = '';
+    this.documentDate = null;
+    this.registrationDate = null;
+    this.creationDate = null;
+    this.modifiedDate = null;
+    this.userID = null;
+    this.location = null;
+    this.comment = null;
+    this.status = 0;
+  }
 
 }

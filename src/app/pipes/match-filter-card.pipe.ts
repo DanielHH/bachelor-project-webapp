@@ -60,7 +60,7 @@ export class MatchFilterCardPipe implements PipeTransform {
   }
 
   getUserName(card: Card) {
-    if (card.cardType > 0) {
+    if (card.userID > 0) {
       const userToDisplay = _.find( this.userList, user => user.id === card.userID);
       if (userToDisplay) {
         return userToDisplay.name;
