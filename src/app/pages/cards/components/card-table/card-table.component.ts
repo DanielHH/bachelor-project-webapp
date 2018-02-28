@@ -30,7 +30,7 @@ export class CardTableComponent implements OnInit {
    * Sorts table after modifiedDate ascending
    */
   sortTableListStart() {
-    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['asc']);
+    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
   }
 
   /**

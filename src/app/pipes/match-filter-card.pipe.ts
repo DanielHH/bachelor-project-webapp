@@ -7,10 +7,10 @@ import { User } from '../datamodels/user';
 import { CardType } from '../datamodels/cardType';
 
 @Pipe({
-  name: 'matchFilter'
+  name: 'matchFilterCard'
 })
 
-export class MatchFilterPipe implements PipeTransform {
+export class MatchFilterCardPipe implements PipeTransform {
 
   cardTypeList: CardType[] = [];
   userList: User[] = [];

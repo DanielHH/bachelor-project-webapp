@@ -42,7 +42,7 @@
         <hr>
 
         <!-- Add cards to the table -->
-        <div *ngFor="let card of cardList | matchFilter:filterInput" >
+        <div *ngFor="let card of cardList | matchFilterCard:filterInput" >
             <app-card-item [cardItem]="card"></app-card-item>
         </div>
     </div>
