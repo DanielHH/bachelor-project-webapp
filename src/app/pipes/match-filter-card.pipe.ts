@@ -25,7 +25,6 @@ export class MatchFilterCardPipe implements PipeTransform {
     });
   }
 
-
   transform(value: Card[], input: string): Card[] {
     if (input !== '') {
       return _.filter(value, (card) => {
@@ -35,6 +34,12 @@ export class MatchFilterCardPipe implements PipeTransform {
     return value;
   }
 
+  /**
+   * Match filterInput to the various displayed fields of card
+   * @param card
+   * @param filterInput
+   * @returns True if match found
+   */
   matchFilt(card: Card, filterInput: string) {
     filterInput = lowerCase(filterInput);
     const displayDate = moment(card.expirationDate).format('YYYY-MM-DD');
@@ -50,6 +55,11 @@ export class MatchFilterCardPipe implements PipeTransform {
     return true;
   }
 
+  /**
+   * Gets the card type for a card
+   * @param card
+   * @returns The corresponding type of card
+   */
   getCardType(card: Card) {
     if (card.cardType > 0) {
       const cardTypeToDisplay = _.find( this.cardTypeList, cardType => cardType.id === card.cardType);
@@ -60,6 +70,11 @@ export class MatchFilterCardPipe implements PipeTransform {
     return '';
   }
 
+  /**
+   * Gets the card holder for a card
+   * @param card
+   * @returns The Card holder of card
+   */
   getUserName(card: Card) {
     if (card.userID > 0) {
       const userToDisplay = _.find( this.userList, user => user.id === card.userID);

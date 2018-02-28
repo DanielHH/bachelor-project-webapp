@@ -34,6 +34,12 @@ export class MatchFilterDocumentPipe implements PipeTransform {
     return value;
   }
 
+   /**
+   * Match filterInput to the various displayed fields of document
+   * @param document
+   * @param filterInput
+   * @returns True if match found
+   */
   matchFilt(document: Document, filterInput: string) {
     filterInput = lowerCase(filterInput);
 
@@ -48,6 +54,11 @@ export class MatchFilterDocumentPipe implements PipeTransform {
     return true;
   }
 
+   /**
+   * Gets the document type for a document
+   * @param document
+   * @returns The corresponding type of document
+   */
   getDocumentType(document: Document) {
     if (document.documentType > 0) {
       const documentTypeToDisplay = _.find( this.documentTypeList, documentType => documentType.id === document.documentType);
@@ -58,6 +69,11 @@ export class MatchFilterDocumentPipe implements PipeTransform {
     return '';
   }
 
+  /**
+   * Gets the document holder for a document
+   * @param document
+   * @returns The Document holder of document
+   */
   getUserName(document: Document) {
     if (document.userID > 0) {
       const userToDisplay = _.find( this.userList, user => user.id === document.userID);
