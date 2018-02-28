@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { DataService } from '../services/data.service';
 import { User } from '../datamodels/user';
 import { CardType } from '../datamodels/cardType';
+import { lowerCase } from '../services/utilities.service';
 
 @Pipe({
   name: 'matchFilterCard'
@@ -35,15 +36,15 @@ export class MatchFilterCardPipe implements PipeTransform {
   }
 
   matchFilt(card: Card, filterInput: string) {
-    filterInput = _.lowerCase(filterInput);
+    filterInput = lowerCase(filterInput);
     const displayDate = moment(card.expirationDate).format('YYYY-MM-DD');
 
-    if (_.includes(_.lowerCase(card.cardNumber), filterInput) === false
-    && (_.includes(_.lowerCase(this.getCardType(card)), filterInput) === false)
-    && (_.includes(_.lowerCase(this.getUserName(card)), filterInput) === false)
-    && (_.includes(_.lowerCase(card.comment), filterInput) === false)
-    && (_.includes(_.lowerCase(card.location), filterInput) === false)
-    && (_.includes(_.lowerCase(displayDate), filterInput) === false) ) {
+    if (_.includes(lowerCase(card.cardNumber), filterInput) === false
+    && (_.includes(lowerCase(this.getCardType(card)), filterInput) === false)
+    && (_.includes(lowerCase(this.getUserName(card)), filterInput) === false)
+    && (_.includes(lowerCase(card.comment), filterInput) === false)
+    && (_.includes(lowerCase(card.location), filterInput) === false)
+    && (_.includes(lowerCase(displayDate), filterInput) === false) ) {
       return false;
     }
     return true;

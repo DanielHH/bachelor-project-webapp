@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { DataService } from '../services/data.service';
 import { User } from '../datamodels/user';
 import { DocumentType } from '../datamodels/documentType';
+import { lowerCase } from '../services/utilities.service';
 
 @Pipe({
   name: 'matchFilterDocument'
@@ -34,14 +35,14 @@ export class MatchFilterDocumentPipe implements PipeTransform {
   }
 
   matchFilt(document: Document, filterInput: string) {
-    filterInput = _.lowerCase(filterInput);
+    filterInput = lowerCase(filterInput);
 
-    if (_.includes(_.lowerCase(this.getDocumentType(document)), filterInput) === false
-    && (_.includes(_.lowerCase(document.documentNumber), filterInput) === false)
-    && (_.includes(_.lowerCase(document.name), filterInput) === false)
-    && (_.includes(_.lowerCase(this.getUserName(document)), filterInput) === false)
-    && (_.includes(_.lowerCase(document.location), filterInput) === false)
-    && (_.includes(_.lowerCase(document.comment), filterInput) === false) ) {
+    if (_.includes(lowerCase(this.getDocumentType(document)), filterInput) === false
+    && (_.includes(lowerCase(document.documentNumber), filterInput) === false)
+    && (_.includes(lowerCase(document.name), filterInput) === false)
+    && (_.includes(lowerCase(this.getUserName(document)), filterInput) === false)
+    && (_.includes(lowerCase(document.location), filterInput) === false)
+    && (_.includes(lowerCase(document.comment), filterInput) === false) ) {
       return false;
     }
     return true;
