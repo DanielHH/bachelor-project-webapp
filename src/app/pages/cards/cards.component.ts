@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Card } from '../../datamodels/card';
 import { AddNewCardComponent } from './components/add-new-card/add-new-card.component';
 import {MatDialog} from '@angular/material';
@@ -16,6 +16,10 @@ export class CardsComponent implements OnInit {
 
   cardList: Card[] = [];
 
+  showAddNewModal = false;
+
+  @ViewChild(AddNewCardComponent) addNewCard: AddNewCardComponent;
+
   constructor(public dataService: DataService, public dialog: MatDialog) {
     this.dataService.cardList.subscribe( (cardList) => {
       this.cardList = cardList;
@@ -25,14 +29,5 @@ export class CardsComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  openDialog() {
-    const dialogRef = this.dialog.open(AddNewCardComponent, {
-      width: '800px',
-      autoFocus: false
-    });
-  }
-
-
 
 }

@@ -17,6 +17,10 @@ export class CardItemComponent implements OnInit {
   cardTypeList: CardType[] = [];
   userList: User[] = [];
 
+  showRequestModal = false;
+
+  showReturnModal = false;
+
   constructor(public dataService: DataService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;

@@ -49,6 +49,7 @@ import { DocumentItemComponent } from './pages/documents/components/document-ite
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 
 
@@ -80,7 +81,8 @@ import { ItemMenuComponent } from './components/item-menu/item-menu.component';
     DocumentItemComponent,
     DocumentTableComponent,
     MatchFilterDocumentPipe,
-    ItemMenuComponent
+    ItemMenuComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

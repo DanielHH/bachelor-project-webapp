@@ -6,7 +6,6 @@ import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import * as moment from 'moment';
-import { MatDialogRef } from '@angular/material';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 
@@ -52,8 +51,7 @@ export class AddNewCardComponent implements OnInit {
       map(val => this.filterUsers(val))
   );
 
-  constructor(public dialogRef: MatDialogRef<AddNewCardComponent>,
-      private httpService: HttpService, public dataService: DataService) {
+  constructor(private httpService: HttpService, public dataService: DataService) {
 
     this.dataService.cardTypeList.subscribe( (cardTypes) => {
       this.cardTypes = cardTypes;
@@ -65,13 +63,6 @@ export class AddNewCardComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  /**
-   * Close add new card dialog
-  */
-  closeDialog() {
-    this.dialogRef.close();
   }
 
   /**
