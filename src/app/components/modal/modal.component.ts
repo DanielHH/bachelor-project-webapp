@@ -44,7 +44,6 @@ export class ModalComponent implements OnInit, AfterViewInit {
   }
 
   setShow(value: boolean) {
-    console.log('hejhej');
     this.show = value;
     this.showChange.emit(this.show);
   }

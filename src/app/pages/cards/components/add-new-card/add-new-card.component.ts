@@ -3,6 +3,7 @@ import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/share';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import * as moment from 'moment';
@@ -55,6 +56,7 @@ export class AddNewCardComponent implements OnInit {
 
     this.dataService.cardTypeList.subscribe( (cardTypes) => {
       this.cardTypes = cardTypes;
+      this.cardTypeControl.updateValueAndValidity({ onlySelf: false, emitEvent: true });
     });
 
     this.dataService.userList.subscribe( (users) => {
