@@ -1,24 +1,24 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
+import { Document } from '../../../../datamodels/document';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-card-table',
-  templateUrl: './card-table.component.html',
-  styleUrls: ['./card-table.component.scss']
+  selector: 'app-document-table',
+  templateUrl: './document-table.component.html',
+  styleUrls: ['./document-table.component.scss']
 })
-export class CardTableComponent implements OnInit {
+export class DocumentTableComponent implements OnInit {
 
-  @Input() cardList: Card[];
+  @Input() documentList: Document[];
 
   filterInput = '';
 
-  orderCardType = '';
-  orderCardNumber = '';
+  orderDocumentType = '';
+  orderDocumentNumber = '';
+  orderName = '';
   orderUserID = '';
   orderLocation = '';
   orderComment = '';
-  orderDate = '';
 
   constructor() { }
 
@@ -30,7 +30,7 @@ export class CardTableComponent implements OnInit {
    * Sorts table after modifiedDate ascending
    */
   sortTableListStart() {
-    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
+    this.documentList = _.orderBy(this.documentList, ['modifiedDate'], ['desc']);
   }
 
   /**
@@ -41,14 +41,19 @@ export class CardTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'cardType': {
-        newOrder = this.sortTableListHelper(this.orderCardType);
-        this.orderCardType = newOrder;
+      case 'documentType': {
+        newOrder = this.sortTableListHelper(this.orderDocumentType);
+        this.orderDocumentType = newOrder;
         break;
       }
-      case 'cardNumber': {
-        newOrder = this.sortTableListHelper(this.orderCardNumber);
-        this.orderCardNumber = newOrder;
+      case 'documentNumber': {
+        newOrder = this.sortTableListHelper(this.orderDocumentNumber);
+        this.orderDocumentNumber = newOrder;
+        break;
+      }
+      case 'name': {
+        newOrder = this.sortTableListHelper(this.orderName);
+        this.orderName = newOrder;
         break;
       }
       case 'userID': {
@@ -66,15 +71,10 @@ export class CardTableComponent implements OnInit {
         this.orderComment = newOrder;
         break;
       }
-      case 'expirationDate': {
-        newOrder = this.sortTableListHelper(this.orderDate);
-        this.orderDate = newOrder;
-        break;
-      }
     }
 
     if (newOrder) {
-      this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
+      this.documentList = _.orderBy(this.documentList, [property], [newOrder]);
     }
 
   }
