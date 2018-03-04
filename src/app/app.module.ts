@@ -25,7 +25,7 @@ import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-n
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatNativeDateModule,
   MatInputModule,
@@ -38,7 +38,7 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatRadioModule,
-  MatFormFieldControl,
+  MatFormFieldControl
 } from '@angular/material';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
@@ -46,6 +46,7 @@ import { UsernameValidatorDirective } from './directives/username.directive';
 import { ExpirationDateValidatorDirective } from './directives/expiration-date.directive';
 import { DataService } from './services/data.service';
 import { MatchFilterPipe } from './pipes/match-filter.pipe';
+import { RouteDataService } from './services/route-data.service';
 
 @NgModule({
   declarations: [
@@ -95,8 +96,12 @@ import { MatchFilterPipe } from './pipes/match-filter.pipe';
     MatRadioModule,
     MatDialogModule
   ],
-  providers: [HttpService, DataService],
+  providers: [
+    HttpService,
+    DataService,
+    RouteDataService
+  ],
   entryComponents: [AddNewCardComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

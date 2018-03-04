@@ -6,6 +6,7 @@ import { Card } from '../../../../datamodels/card';
 
 import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
+import { RouteDataService } from '../../../../services/route-data.service';
 
 @Component({
   selector: 'app-card-detail',
@@ -14,21 +15,16 @@ import { HttpService } from '../../../../services/http.service';
 })
 export class CardDetailComponent implements OnInit {
 
-  @Input() cardDetail: Card;
+  cardDetail: Card;
 
-  constructor(private route: ActivatedRoute, private location: Location) {}
+  constructor(private routeDataService: RouteDataService) {
+    this.routeDataService.card.subscribe((card) => {
+      this.cardDetail = card;
+    });
+
+  }
 
   ngOnInit(): void {
-    this.getCardNumber();
-  }
-
-  getCardNumber(): void {
-    const cardNumber = +this.route.snapshot.paramMap.get('cardNumber');
-  }
-
-  getRoute(): string {
-    const segments: UrlSegment[] = this.route.snapshot.url;
-    return segments[1].path;
   }
 
 }

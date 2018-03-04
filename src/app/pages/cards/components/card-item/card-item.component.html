@@ -9,7 +9,7 @@
     </div>
     <div class="col">{{displayCardType()}}</div>
     <div class="col">
-      <span class="detail-link" routerLink="/detail/{{cardItem?.cardNumber}}">{{cardItem?.cardNumber}}</span>
+      <span class="detail-link" (click)="route()">{{cardItem?.cardNumber}}</span>
     </div>
     <div class="col">{{displayUserName()}}</div>
     <div class="col">{{cardItem?.location}}</div>
