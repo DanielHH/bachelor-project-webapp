@@ -34,20 +34,20 @@ export class CardItemComponent implements OnInit {
    * Submits a checkout
    */
   submitRequest() {
-    this.setStatus(1); // TODO: ENUM/DATATYPE?
+    this.setStatus(2); // TODO: ENUM/DATATYPE?
   }
 
   /**
    * Submits a checkin
    */
   submitReturn() {
-    this.setStatus(0); // TODO: ENUM/DATATYPE?
+    this.setStatus(1); // TODO: ENUM/DATATYPE?
   }
 
   /**
    * Inverts the card status active/inactive
    */
-  setStatus(status: Number) {
+  setStatus(status: number) {
     // TODO: ENUM/DATATYPE?
     this.cardItem.status = status;
   }
