@@ -8,7 +8,9 @@
     </div>
 
     <div class="col">{{displayDocumentType()}}</div>
-    <div class="col">{{documentItem.documentNumber}}</div>
+    <div class="col">
+        <span class="detail-link" (click)="route()">{{documentItem?.documentNumber}}</span>
+    </div>
     <div class="col">{{documentItem.name}}</div>
     <div class="col">{{displayUserName()}}</div>
     <div class="col">{{documentItem?.location}}</div>

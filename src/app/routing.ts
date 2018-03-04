@@ -7,6 +7,7 @@ import { LogsComponent } from './pages/logs/logs.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
+import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { name: 'Startsidan' } },
@@ -15,7 +16,9 @@ export const routes: Routes = [
     { path: 'logs', component: LogsComponent, data: { name: 'Loggar' } },
     { path: 'examples', component: ExamplesComponent, data: { name: 'Kodexempel' } },
     { path: 'cards', component: CardsComponent, data: { name: 'Kort' } },
-    { path: 'detail', component: CardDetailComponent, data: {name: 'Kortdetaljer'} }
+    { path: 'carddetail', component: CardDetailComponent, data: {name: 'Kortdetaljer'} },
+    { path: 'documentdetail', component: DocumentDetailComponent, data: {name: 'Dokumentdetaljer'} }
+
 
   /* Resterande routes
 	{ path: '**', component: PageNotFoundComponent, data: { name: 'SidanHittadesInte', fullSizeBackgroundURL: '/assets/not-found.jpg' } }

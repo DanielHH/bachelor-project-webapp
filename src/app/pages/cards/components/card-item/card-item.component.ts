@@ -88,6 +88,6 @@ export class CardItemComponent implements OnInit {
    */
   route() {
     this.routeDataService.card.next(this.cardItem);
-    this.router.navigate(['detail']);
+    this.router.navigate(['carddetail']);
   }
 }

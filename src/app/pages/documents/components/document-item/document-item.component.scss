@@ -6,3 +6,10 @@
 .row:hover {
     background-color: rgba(208, 214, 212, 0.479)
 }
+
+.detail-link {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
+}
