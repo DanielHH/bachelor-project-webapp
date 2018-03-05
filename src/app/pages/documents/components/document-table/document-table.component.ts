@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import * as _ from 'lodash';
 
@@ -10,8 +10,6 @@ import * as _ from 'lodash';
 export class DocumentTableComponent implements OnInit {
 
   @Input() documentList: Document[];
-
-  @Input() editDoc: Document;
 
   filterInput = '';
 

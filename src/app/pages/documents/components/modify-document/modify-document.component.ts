@@ -47,8 +47,6 @@ export class ModifyDocumentComponent implements OnInit {
   docTypes = [];
   users = [];
 
-  @Input() editDoc: Document;
-
   // Filtered lists
   filteredDocTypes: Observable<any[]> = this.docTypeControl.valueChanges
   .pipe(
@@ -143,22 +141,23 @@ export class ModifyDocumentComponent implements OnInit {
     return new Promise(resolve => {
 
       if (this.isValidInput()) {
-        this.editDoc.documentType = this.getDocTypeID(this.docTypeInput);
-        this.editDoc.documentNumber = this.docNumberInput;
-        this.editDoc.location = this.locationInput;
-        this.editDoc.documentDate = new Date(this.docDateInput);
-        this.editDoc.registrationDate = new Date(this.registrationDateInput);
-        this.editDoc.modifiedDate = this.utilitiesService.getLocalDate();
-        this.editDoc.comment = this.commentInput;
-        this.editDoc.status = 1;
+        const editDoc = new Document();
+        editDoc.documentType = this.getDocTypeID(this.docTypeInput);
+        editDoc.documentNumber = this.docNumberInput;
+        editDoc.location = this.locationInput;
+        editDoc.documentDate = new Date(this.docDateInput);
+        editDoc.registrationDate = new Date(this.registrationDateInput);
+        editDoc.modifiedDate = this.utilitiesService.getLocalDate();
+        editDoc.comment = this.commentInput;
+        editDoc.status = 1;
 
         if (this.addDocHolder && this.isValidUsername()) {
-          this.editDoc.userID = this.getUserID(this.usernameInput);
+          editDoc.userID = this.getUserID(this.usernameInput);
         } else {
-          this.editDoc.userID = null;
+          editDoc.userID = null;
         }
 
-        this.httpService.httpPut<Document>('editDocument/', this.editDoc).then(res => {
+        this.httpService.httpPut<Document>('editDocument/', editDoc).then(res => {
           if (res.message === 'success') {
             this.dataService.documentList.next(this.documentList);
             this.resetForm();
