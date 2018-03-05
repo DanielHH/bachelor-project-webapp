@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
@@ -22,6 +22,8 @@ export class CardItemComponent implements OnInit {
   showRequestModal = false;
 
   showReturnModal = false;
+
+  @Output() editItem = new EventEmitter<any>();
 
   constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -93,5 +95,9 @@ export class CardItemComponent implements OnInit {
   route() {
     this.routeDataService.card.next(this.cardItem);
     this.router.navigate(['card-detail']);
+  }
+
+  edit() {
+    this.editItem.next(this.cardItem);
   }
 }

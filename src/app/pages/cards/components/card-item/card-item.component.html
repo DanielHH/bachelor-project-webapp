@@ -15,7 +15,7 @@
     <div class="col">{{cardItem?.comment}}</div>
     <div class="col">{{displayExpirationDate()}}</div>
     <div class="col-1">
-        <app-item-menu [item]="cardItem"></app-item-menu>
+        <app-item-menu [item]="cardItem" (editItem)="edit()"></app-item-menu>
     </div>
 </div>
 

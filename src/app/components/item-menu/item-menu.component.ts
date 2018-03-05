@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouteDataService } from '../../services/route-data.service';
 import { Card } from '../../datamodels/card';
@@ -13,6 +13,8 @@ export class ItemMenuComponent implements OnInit {
 
   // Card or Document
   @Input() item: any;
+
+  @Output() editItem = new EventEmitter<any>();
 
   constructor(private routeDataService: RouteDataService, private router: Router) { }
 
@@ -32,5 +34,9 @@ export class ItemMenuComponent implements OnInit {
       this.routeDataService.document.next(this.item);
       this.router.navigate(['document-detail']);
     }
+  }
+
+  edit() {
+    this.editItem.next();
   }
 }

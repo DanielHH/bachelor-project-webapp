@@ -41,4 +41,8 @@ export class CardsComponent implements OnInit {
     });
   }
 
+  edit(item: any) {
+    console.log(item);
+  }
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import * as _ from 'lodash';
 
@@ -19,6 +19,8 @@ export class CardTableComponent implements OnInit {
   orderLocation = '';
   orderComment = '';
   orderDate = '';
+
+  @Output() editItem = new EventEmitter<any>();
 
   constructor() { }
 
@@ -89,6 +91,10 @@ export class CardTableComponent implements OnInit {
       case 'asc': return 'desc';
       default: return 'asc';
     }
+  }
+
+  edit(item: Card) {
+    this.editItem.next(item);
   }
 
 }
