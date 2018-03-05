@@ -57,7 +57,7 @@ import { AuthGuard } from './auth/auth.guard';
     AddNewCardComponent,
     CardTableComponent,
     CardItemComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
