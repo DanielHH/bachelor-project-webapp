@@ -5,6 +5,8 @@ import { DataService } from '../../../../services/data.service';
 import { DocumentType } from '../../../../datamodels/documentType';
 import { User } from '../../../../datamodels/user';
 import * as _ from 'lodash';
+import { RouteDataService } from '../../../../services/route-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-document-item',
@@ -17,7 +19,7 @@ export class DocumentItemComponent implements OnInit {
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
-  constructor(public dataService: DataService) {
+  constructor(public dataService: DataService, private routeDataService: RouteDataService, private router: Router) {
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
@@ -72,5 +74,9 @@ export class DocumentItemComponent implements OnInit {
         .name;
     }
     return '';
+  }
+  route() {
+    this.routeDataService.document.next(this.documentItem);
+    this.router.navigate(['document-detail']);
   }
 }
