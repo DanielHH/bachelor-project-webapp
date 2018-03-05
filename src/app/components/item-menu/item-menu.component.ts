@@ -25,12 +25,12 @@ export class ItemMenuComponent implements OnInit {
   route() {
     if (this.item.cardType) {
       this.routeDataService.card.next(this.item);
-      this.router.navigate(['carddetail']);
+      this.router.navigate(['card-detail']);
     }
 
     if (this.item.documentType) {
       this.routeDataService.document.next(this.item);
-      this.router.navigate(['documentdetail']);
+      this.router.navigate(['document-detail']);
     }
   }
 }

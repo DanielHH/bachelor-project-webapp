@@ -77,6 +77,6 @@ export class DocumentItemComponent implements OnInit {
   }
   route() {
     this.routeDataService.document.next(this.documentItem);
-    this.router.navigate(['documentdetail']);
+    this.router.navigate(['document-detail']);
   }
 }

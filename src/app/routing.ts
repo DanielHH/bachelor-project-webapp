@@ -16,8 +16,8 @@ export const routes: Routes = [
     { path: 'logs', component: LogsComponent, data: { name: 'Loggar' } },
     { path: 'examples', component: ExamplesComponent, data: { name: 'Kodexempel' } },
     { path: 'cards', component: CardsComponent, data: { name: 'Kort' } },
-    { path: 'carddetail', component: CardDetailComponent, data: {name: 'Kortdetaljer'} },
-    { path: 'documentdetail', component: DocumentDetailComponent, data: {name: 'Dokumentdetaljer'} }
+    { path: 'card-detail', component: CardDetailComponent, data: {name: 'Kortdetaljer'} },
+    { path: 'document-detail', component: DocumentDetailComponent, data: {name: 'Dokumentdetaljer'} }
 
 
   /* Resterande routes
