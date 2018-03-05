@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { MatDialogRef } from '@angular/material';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-add-new-card',
@@ -53,7 +54,8 @@ export class AddNewCardComponent implements OnInit {
   );
 
   constructor(public dialogRef: MatDialogRef<AddNewCardComponent>,
-      private httpService: HttpService, public dataService: DataService) {
+      private httpService: HttpService, public dataService: DataService,
+      private utilitiesService: UtilitiesService) {
 
     this.dataService.cardTypeList.subscribe( (cardTypes) => {
       this.cardTypes = cardTypes;
@@ -103,8 +105,8 @@ export class AddNewCardComponent implements OnInit {
       newCard.cardNumber = this.cardNumberInput;
       newCard.location = this.locationInput;
       newCard.expirationDate = new Date(this.expirationDateInput);
-      newCard.creationDate = new Date();
-      newCard.modifiedDate = new Date();
+      newCard.creationDate = this.utilitiesService.getLocalDate();
+      newCard.modifiedDate = this.utilitiesService.getLocalDate();
       newCard.comment = this.commentInput;
       newCard.status = 1;
 
@@ -191,7 +193,7 @@ export class AddNewCardComponent implements OnInit {
    * Returns true if entered expiration date is valid, else false.
   */
   isValidExpirationDate() {
-    return !this.expirationDateControl.hasError('required') && !this.expirationDateControl.hasError('expirationDate');
+    return !this.expirationDateControl.hasError('required') && !this.expirationDateControl.hasError('dateFormat');
   }
 
   /**

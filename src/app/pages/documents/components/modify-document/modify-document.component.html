@@ -1,59 +1,59 @@
-<form #addNewCardForm="ngForm" (ngSubmit)="addNewCard() ? closeDialog() : false">
+<form #addNewDocForm="ngForm" (ngSubmit)="addNewDoc() ? closeDialog() : false">
 
-  <!-- Row cardType & cardNumber -->
+  <!-- Row docType & docNumber -->
   <div class="row">
     <div class="col-12 wide-center">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
-          <span class="title-center">Add New Card</span>
+          <span class="title-center">Add New Document</span>
         </mat-toolbar-row></mat-toolbar>
     </div>
   </div>
-  <!-- Row cardType & cardNumber -->
+  <!-- Row docType & docNumber -->
   <div class="row">
     <div class="col-12 col-md-6">
       <mat-form-field>
         <!--Input-->
-        <input id="cardTypeInput" name="cardTypeInput" type="text" [(ngModel)]="cardTypeInput" maxlength="128"
-        [style.color]="isValidCardType() ? 'black' : 'gray'" placeholder="Card type" aria-label="Number"
-        matInput [matAutocomplete]="cardTypes" [formControl]="cardTypeControl"
-        maxlength="10" appCardType required>
+        <input id="docTypeInput" name="docTypeInput" type="text" [(ngModel)]="docTypeInput" maxlength="128"
+        [style.color]="isValidDocType() ? 'black' : 'gray'" placeholder="Document type" aria-label="Number"
+        matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl"
+        maxlength="10" appDocumentType required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="isValidCardType()">done</mat-icon>
+          <mat-icon [style.color]="'green'" *ngIf="isValidDocType()">done</mat-icon>
         </button>
-        <button mat-button class="size-medium" *ngIf="cardTypeInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="cardTypeInput = ''"><mat-icon>close</mat-icon></button>
+        <button mat-button class="size-medium" *ngIf="docTypeInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="docTypeInput = ''"><mat-icon>close</mat-icon></button>
         <!--Dropdown-->
-        <mat-autocomplete #cardTypes="matAutocomplete">
-          <mat-option *ngFor="let cardType of filteredCardTypes | async" [value]="cardType.name">
-            {{ cardType.name }}
+        <mat-autocomplete #docTypes="matAutocomplete">
+          <mat-option *ngFor="let docType of filteredDocTypes | async" [value]="docType.name">
+            {{ docType.name }}
           </mat-option>
         </mat-autocomplete>
         <!--Error-->
-        <mat-error *ngIf="cardTypeControl.hasError('required')">Please select a card type</mat-error>
-        <mat-error *ngIf="cardTypeControl.hasError('cardType')">
-          Please select a valid card type</mat-error>
+        <mat-error *ngIf="docTypeControl.hasError('required')">Please select a document type</mat-error>
+        <mat-error *ngIf="docTypeControl.hasError('docType')">
+          Please select a valid document type</mat-error>
       </mat-form-field>
     </div>
     <div class="col-12 col-md-6">
       <mat-form-field>
         <!--Input-->
-        <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput" type="text" maxlength="128"
-        placeholder="Serial number" [formControl]="cardNumberControl" required>
+        <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput" type="text" maxlength="128"
+        placeholder="Serial number" [formControl]="docNumberControl" required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="isValidCardNumber()">done</mat-icon>
+          <mat-icon [style.color]="'green'" *ngIf="isValidDocNumber()">done</mat-icon>
         </button>
-        <button mat-button class="size-medium" *ngIf="cardNumberInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="cardNumberInput = ''"><mat-icon>close</mat-icon></button>
+        <button mat-button class="size-medium" *ngIf="docNumberInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="docNumberInput = ''"><mat-icon>close</mat-icon></button>
         <!--Error-->
-        <mat-error *ngIf="cardNumberControl.hasError('required')">Please enter a card number</mat-error>
+        <mat-error *ngIf="docNumberControl.hasError('required')">Please enter a document number</mat-error>
       </mat-form-field>
     </div>
   </div>
 
-  <!-- Row 3 location & expirationDate -->
+  <!-- Row 3 location & docDate -->
   <div class="row">
     <div class="col-12 col-md-6">
       <mat-form-field>
@@ -73,35 +73,45 @@
     <div class="col-12 col-md-6">
       <mat-form-field>
         <!--Input-->
-        <input matInput id="expirationDateInput" name="expirationDateInput" type="text" [(ngModel)]="expirationDateInput"
-        placeholder="Expiration date" [style.color]="isValidExpirationDate() ? 'black' : 'gray'" maxlength="10"
-        (input)="setExpirationDateToDatePicker();" [formControl]="expirationDateControl" appDate required>
+        <input matInput id="docDateInput" name="docDateInput" type="text" [(ngModel)]="docDateInput"
+        placeholder="doc date" [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10"
+        (input)="setDocDateToDatePicker();" [formControl]="docDateControl" appDate required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="isValidExpirationDate()">done</mat-icon>
+          <mat-icon [style.color]="'green'" *ngIf="isValidDocDate()">done</mat-icon>
         </button>
-        <button mat-button class="size-medium" *ngIf="expirationDateInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="expirationDateInput = ''"><mat-icon>close</mat-icon></button>
+        <button mat-button class="size-medium" *ngIf="docDateInput" matSuffix mat-icon-button aria-label="Clear"
+        (click)="docDateInput = ''"><mat-icon>close</mat-icon></button>
         <!--DatePicker-->
         <mat-datepicker #picker></mat-datepicker>
         <!--Hidden input connected to the date picker-->
-        <input id="expirationDateDatepickerInput" name="expirationDateDatepickerInput" [(ngModel)]="expirationDateDatepickerInput"
-        [matDatepicker]="picker" (dateInput)="setExpirationDateFromDatepicker($event);" type="hidden">
+        <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="docDateDatepickerInput"
+        [matDatepicker]="picker" (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
         <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
         <!--Errors-->
-        <mat-error *ngIf="expirationDateControl.hasError('required')">
-          Please select an expiration date
+        <mat-error *ngIf="docDateControl.hasError('required')">
+          Please select a document date
         </mat-error>
-        <mat-error *ngIf="expirationDateControl.hasError('dateFormat')">
+        <mat-error *ngIf="docDateControl.hasError('dateFormat')">
           Invalid date format
         </mat-error>
       </mat-form-field>
     </div>
   </div>
 
-  <!-- Row comment -->
+  <!-- Document name & comment -->
   <div class="row">
-    <div class="col-12 comment-input">
+    <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput" type="text"
+          maxlength="128" placeholder="Description">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear"
+          (click)="nameInput = ''"><mat-icon>close</mat-icon></button>
+        </mat-form-field>
+    </div>
+    <div class="col-12 col-md-6 comment-input">
         <mat-form-field>
           <!--Input-->
           <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text"
@@ -113,15 +123,15 @@
     </div>
   </div>
 
-  <!--Add Cardholder Checkbox-->
+  <!--Add document holder Checkbox-->
   <div class="row">
     <div class="col-12 wide-center">
-      <label class="p-2">Add card holder:</label>
+      <label class="p-2">Add document holder:</label>
       <mat-radio-group>
         <mat-radio-button class="p-2" color="primary" [checked]="true" value="no"
-        (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
+        (change)="addDocHolder = !addDocHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
         <mat-radio-button class="p-2" color="primary" value="yes"
-        (change)="addCardHolder = !addCardHolder">Yes</mat-radio-button>
+        (change)="addDocHolder = !addDocHolder">Yes</mat-radio-button>
       </mat-radio-group>
     </div>
   </div>
@@ -129,7 +139,7 @@
   <div class="row">
       <div class="col-0 col-md-3"></div>
       <div class="col-12 col-md-6 wide-center">
-        <span class="third-center" *ngIf="addCardHolder">
+        <span class="third-center" *ngIf="addDocHolder">
           <mat-form-field>
             <!--Input-->
             <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" type="text"
@@ -170,4 +180,3 @@
   </div>
 
 </form>
-

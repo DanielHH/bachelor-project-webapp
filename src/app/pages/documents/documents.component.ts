@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material';
 
 import { DataService } from '../../services/data.service';
 import { HttpService } from '../../services/http.service';
+import { ModifyDocumentComponent } from './components/modify-document/modify-document.component';
 
 
 @Component({
@@ -23,6 +24,13 @@ export class DocumentsComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  openModifyDocumentDialog() {
+    const dialogRef = this.dialog.open(ModifyDocumentComponent, {
+      width: '800px',
+      autoFocus: false
+    });
   }
 
 }

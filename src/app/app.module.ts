@@ -41,14 +41,16 @@ import {
 } from '@angular/material';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
+import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
-import { ExpirationDateValidatorDirective } from './directives/expiration-date.directive';
+import { DateValidatorDirective } from './directives/date.directive';
 import { DataService } from './services/data.service';
 import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
+import { ModifyDocumentComponent } from './pages/documents/components/modify-document/modify-document.component';
 
 
 
@@ -75,12 +77,14 @@ import { ItemMenuComponent } from './components/item-menu/item-menu.component';
     CardItemComponent,
     UsernameValidatorDirective,
     CardTypeValidatorDirective,
-    ExpirationDateValidatorDirective,
+    DocumentTypeValidatorDirective,
+    DateValidatorDirective,
     MatchFilterCardPipe,
     DocumentItemComponent,
     DocumentTableComponent,
     MatchFilterDocumentPipe,
-    ItemMenuComponent
+    ItemMenuComponent,
+    ModifyDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -104,7 +108,7 @@ import { ItemMenuComponent } from './components/item-menu/item-menu.component';
     MatDialogModule
   ],
   providers: [HttpService, DataService],
-  entryComponents: [AddNewCardComponent],
+  entryComponents: [AddNewCardComponent, ModifyDocumentComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
