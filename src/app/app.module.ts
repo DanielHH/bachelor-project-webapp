@@ -24,7 +24,8 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-new-card.component';
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatNativeDateModule,
   MatInputModule,
@@ -37,20 +38,20 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatRadioModule,
-  MatFormFieldControl,
+  MatFormFieldControl
 } from '@angular/material';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
 import { ExpirationDateValidatorDirective } from './directives/expiration-date.directive';
 import { DataService } from './services/data.service';
+import { RouteDataService } from './services/route-data.service';
 import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
-
-
+import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
 
 @NgModule({
   declarations: [
@@ -77,10 +78,12 @@ import { ItemMenuComponent } from './components/item-menu/item-menu.component';
     CardTypeValidatorDirective,
     ExpirationDateValidatorDirective,
     MatchFilterCardPipe,
+    CardDetailComponent,
     DocumentItemComponent,
     DocumentTableComponent,
     MatchFilterDocumentPipe,
-    ItemMenuComponent
+    ItemMenuComponent,
+    DocumentDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -103,8 +106,12 @@ import { ItemMenuComponent } from './components/item-menu/item-menu.component';
     MatRadioModule,
     MatDialogModule
   ],
-  providers: [HttpService, DataService],
+  providers: [
+    HttpService,
+    DataService,
+    RouteDataService
+  ],
   entryComponents: [AddNewCardComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
