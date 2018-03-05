@@ -8,6 +8,7 @@ import { HttpService } from '../../services/http.service';
 
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
+import { ModifyDocumentComponent } from '../documents/components/modify-document/modify-document.component';
 
 
 @Component({

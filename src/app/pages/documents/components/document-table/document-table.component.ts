@@ -11,6 +11,8 @@ export class DocumentTableComponent implements OnInit {
 
   @Input() documentList: Document[];
 
+  @Input() editDoc: Document;
+
   filterInput = '';
 
   orderDocumentType = '';

@@ -23,6 +23,8 @@ export class ModifyDocumentComponent implements OnInit {
   docNumberInput = '';
   nameInput = '';
   senderInput = '';
+  registrationDateInput = '';
+  registrationDateDatepickerInput = '';
   docDateInput = '';
   docDateDatepickerInput = '';
   locationInput = '';
@@ -36,12 +38,16 @@ export class ModifyDocumentComponent implements OnInit {
   nameControl = new FormControl('', Validators.required);
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
+  registrationDateControl = new FormControl('', Validators.required);
+  registrationDatePickerControl = new FormControl();
   docDateControl = new FormControl('', Validators.required);
   docDatePickerControl = new FormControl();
 
   // Database data lists
   docTypes = [];
   users = [];
+
+  @Input() editDoc: Document;
 
   // Filtered lists
   filteredDocTypes: Observable<any[]> = this.docTypeControl.valueChanges
@@ -56,8 +62,10 @@ export class ModifyDocumentComponent implements OnInit {
       map(val => this.filterUsers(val))
   );
 
-  constructor(public dialogRef: MatDialogRef<ModifyDocumentComponent>,
-      private httpService: HttpService, public dataService: DataService,
+  @Input() documentList: Document[];
+
+  constructor(private httpService: HttpService,
+      public dataService: DataService,
       private utilitiesService: UtilitiesService) {
 
     this.dataService.documentTypeList.subscribe( (docTypes) => {
@@ -70,13 +78,6 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  /**
-   * Close modify document dialog
-  */
-  closeDialog() {
-    this.dialogRef.close();
   }
 
   /**
@@ -98,35 +99,74 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   /**
-   * Attempts to submit new document to database and returns true if successful, else false
+   * Attempts to submit new document to database
   */
-  addNewDoc(): Boolean {
-    if (this.isValidInput()) {
-      const doc = new Document();
+  addNewDocument(): Promise<any> {
+    return new Promise(resolve => {
 
-      doc.documentType = this.getDocTypeID(this.docTypeInput);
-      doc.documentNumber = this.docNumberInput;
-      doc.name = this.nameInput;
-      doc.location = this.locationInput;
-      doc.documentDate = new Date(this.docDateInput);
-      doc.creationDate = this.utilitiesService.getLocalDate();
-      doc.modifiedDate = this.utilitiesService.getLocalDate();
-      doc.comment = this.commentInput;
-      doc.status = 1;
+      if (this.isValidInput()) {
+        const newDoc = new Document();
 
-      if (this.addDocHolder && this.isValidUsername()) {
-        doc.userID = this.getUserID(this.usernameInput);
-      } else {
-        doc.userID = null;
+        newDoc.documentType = this.getDocTypeID(this.docTypeInput);
+        newDoc.documentNumber = this.docNumberInput;
+        newDoc.location = this.locationInput;
+        newDoc.documentDate = new Date(this.docDateInput);
+        newDoc.registrationDate = new Date(this.registrationDateInput);
+        newDoc.creationDate = this.utilitiesService.getLocalDate();
+        newDoc.modifiedDate = this.utilitiesService.getLocalDate();
+        newDoc.comment = this.commentInput;
+        newDoc.status = 1;
+
+        if (this.addDocHolder && this.isValidUsername()) {
+          newDoc.userID = this.getUserID(this.usernameInput);
+        } else {
+          newDoc.userID = null;
+        }
+
+        this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
+          if (res.message === 'success') {
+            this.documentList.unshift(res.data);
+            this.dataService.documentList.next(this.documentList);
+
+            this.resetForm();
+            resolve();
+          }
+        });
       }
+    });
+  }
 
-      this.httpService.httpPost<Document>('addNewDocument/', doc).then(res => {
-        console.log(res.data);
-      });
+    /**
+   * Attempts to submit changes to a document to database
+  */
+  editDocument(): Promise<any> {
+    return new Promise(resolve => {
 
-      return true;
-    }
-    return false;
+      if (this.isValidInput()) {
+        this.editDoc.documentType = this.getDocTypeID(this.docTypeInput);
+        this.editDoc.documentNumber = this.docNumberInput;
+        this.editDoc.location = this.locationInput;
+        this.editDoc.documentDate = new Date(this.docDateInput);
+        this.editDoc.registrationDate = new Date(this.registrationDateInput);
+        this.editDoc.modifiedDate = this.utilitiesService.getLocalDate();
+        this.editDoc.comment = this.commentInput;
+        this.editDoc.status = 1;
+
+        if (this.addDocHolder && this.isValidUsername()) {
+          this.editDoc.userID = this.getUserID(this.usernameInput);
+        } else {
+          this.editDoc.userID = null;
+        }
+
+        this.httpService.httpPut<Document>('editDocument/', this.editDoc).then(res => {
+          if (res.message === 'success') {
+            this.dataService.documentList.next(this.documentList);
+            this.resetForm();
+            resolve();
+          }
+        });
+      }
+    });
   }
 
   /**
@@ -213,6 +253,20 @@ export class ModifyDocumentComponent implements OnInit {
   isValidInput() {
     return this.isValidDocType() && this.isValidDocNumber() && this.isValidDocName() &&
     this.isValidUsername() && this.isValidLocation() && this.isValidDocDate();
+  }
+
+  /**
+   * Resets form by resetting form controls and clearing inputs
+   */
+  resetForm() {
+    this.docTypeControl.reset();
+    this.docNumberControl.reset();
+    this.nameControl.reset();
+    this.usernameControl.reset();
+    this.locationControl.reset();
+    this.docDateControl.reset();
+    this.docDatePickerControl.reset();
+    this.commentInput = '';
   }
 
 }

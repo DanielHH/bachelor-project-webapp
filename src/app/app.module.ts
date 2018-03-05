@@ -40,7 +40,6 @@ import {
   MatRadioModule,
   MatFormFieldControl
 } from '@angular/material';
-import { MatDialogModule } from '@angular/material/dialog';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
@@ -55,8 +54,6 @@ import { ModifyDocumentComponent } from './pages/documents/components/modify-doc
 import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { ModalComponent } from './components/modal/modal.component';
-
-
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
 
 @NgModule({
@@ -112,11 +109,10 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
     MatAutocompleteModule,
     MatIconModule,
     MatToolbarModule,
-    MatRadioModule,
-    MatDialogModule
+    MatRadioModule
   ],
   providers: [HttpService, DataService, RouteDataService, UtilitiesService],
-  entryComponents: [AddNewCardComponent, ModifyDocumentComponent],
+  entryComponents: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
