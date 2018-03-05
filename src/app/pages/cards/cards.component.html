@@ -1,5 +1,11 @@
-<button mat-raised-button (click)="openDialog()" color="primary">Add New Card</button>
+<button mat-raised-button (click)="showAddNewModal = true" color="primary">Add New Card</button>
 
 <div class="table-container pt-3">
   <app-card-table [cardList]="cardList"></app-card-table>
 </div>
+
+<form #addNewCardForm="ngForm" (ngSubmit)="submitNewCard()">
+  <app-modal [(show)]="showAddNewModal" [modalTitle]="'Add new card'" [closeName]="'Discard'" [submitName]="'Submit'">
+    <app-add-new-card #addNewCardComponent [cardList]="cardList"></app-add-new-card>
+  </app-modal>
+</form>

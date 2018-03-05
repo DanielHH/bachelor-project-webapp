@@ -5,6 +5,8 @@ import { DataService } from '../../../../services/data.service';
 import { CardType } from '../../../../datamodels/cardType';
 import { User } from '../../../../datamodels/user';
 import * as _ from 'lodash';
+import { RouteDataService } from '../../../../services/route-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card-item',
@@ -17,7 +19,11 @@ export class CardItemComponent implements OnInit {
   cardTypeList: CardType[] = [];
   userList: User[] = [];
 
-  constructor(public dataService: DataService) {
+  showRequestModal = false;
+
+  showReturnModal = false;
+
+  constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -79,5 +85,13 @@ export class CardItemComponent implements OnInit {
    */
   displayExpirationDate() {
     return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
+  }
+
+  /**
+   * Change route and send route data
+   */
+  route() {
+    this.routeDataService.card.next(this.cardItem);
+    this.router.navigate(['card-detail']);
   }
 }
