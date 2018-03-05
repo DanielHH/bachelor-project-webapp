@@ -1,10 +1,10 @@
 <div class="row">
     <div class="col-1" *ngIf="cardItem.status == 2">
-        <button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" data-toggle="modal" data-target="#requestModal" (click)="returnModClick.show()" mdbRippleRadius>Return</button>
+        <button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" (click)="showReturnModal = true" mdbRippleRadius>Return</button>
     </div>
 
     <div class="col-1" *ngIf="cardItem.status == 1">
-        <button type="button" class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1" data-toggle="modal" data-target="#requestModal" (click)="requestModClick.show()" mdbRippleRadius>Request</button>
+        <button type="button" class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1" (click)="showRequestModal = true" mdbRippleRadius>Request</button>
     </div>
     <div class="col">{{displayCardType()}}</div>
     <div class="col">
@@ -18,49 +18,23 @@
         <app-item-menu [item]="cardItem"></app-item-menu>
     </div>
 </div>
-<!-- Modal for return -->
-<div mdbModal #returnModClick="mdb-modal" class="modal fade" id="return" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title w-100" id="myModalLabel">Return a card</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="returnModClick.hide()">
-      <span aria-hidden="true">×</span>
-    </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to return the following card?
-                <br><br>
-                <ul>
-                    <li>Card type: {{cardItem?.cardType}}</li>
-                    <li>Card number: {{cardItem?.cardNumber}}</li>
-                    <li>User ID: {{cardItem?.userID}}</li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="returnModClick.hide()" mdbRippleRadius>Cancel</button>
-                <button type="button" class="btn btn-primary btn-sm waves-light" mdbRippleRadius (click)="submitReturn()" (click)="returnModClick.hide()">Return</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal for request -->
-<div mdbModal #requestModClick="mdb-modal" class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title w-100" id="myModalLabel">Request a card</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="requestModClick.hide()">
-          <span aria-hidden="true">×</span>
-        </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="requestModClick.hide()" mdbRippleRadius>Cancel</button>
-                <button type="button" class="btn btn-primary btn-sm waves-light" mdbRippleRadius (click)="submitRequest()" (click)="requestModClick.hide()">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+<app-modal [(show)]="showRequestModal" [modalTitle]="'Request card'" [submitName]="'Request'">
+  Are you sure you want to request the following card?
+  <br><br>
+  <ul>
+      <li>Card type: {{cardItem?.cardType}}</li>
+      <li>Card number: {{cardItem?.cardNumber}}</li>
+      <li>User ID: {{cardItem?.userID}}</li>
+  </ul>
+</app-modal>
+
+<app-modal [(show)]="showReturnModal" [modalTitle]="'Return card'" [submitName]="'Return'">
+  Are you sure you want to return the following card?
+  <br><br>
+  <ul>
+      <li>Card type: {{cardItem?.cardType}}</li>
+      <li>Card number: {{cardItem?.cardNumber}}</li>
+      <li>User ID: {{cardItem?.userID}}</li>
+  </ul>
+</app-modal>

@@ -51,6 +51,9 @@ import { DocumentItemComponent } from './pages/documents/components/document-ite
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
+import { ModalComponent } from './components/modal/modal.component';
+
+
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
 
 @NgModule({
@@ -83,6 +86,7 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
     DocumentTableComponent,
     MatchFilterDocumentPipe,
     ItemMenuComponent,
+    ModalComponent,
     DocumentDetailComponent
   ],
   imports: [
