@@ -74,7 +74,7 @@
       <mat-form-field>
         <!--Input-->
         <input matInput id="docDateInput" name="docDateInput" type="text" [(ngModel)]="docDateInput"
-        placeholder="doc date" [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10"
+        placeholder="Document date" [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10"
         (input)="setDocDateToDatePicker();" [formControl]="docDateControl" appDate required>
         <!--Check and clear-->
         <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -105,10 +105,12 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput" type="text"
-          maxlength="128" placeholder="Description">
+          [(formControl)]="nameControl" maxlength="128" placeholder="Document name" required>
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear"
           (click)="nameInput = ''"><mat-icon>close</mat-icon></button>
+          <!--Error-->
+          <mat-error *ngIf="nameControl.hasError('required')">Please enter a document name</mat-error>
         </mat-form-field>
     </div>
     <div class="col-12 col-md-6 comment-input">

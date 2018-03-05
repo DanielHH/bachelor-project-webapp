@@ -33,7 +33,7 @@ export class ModifyDocumentComponent implements OnInit {
   // Form Controls
   docTypeControl = new FormControl('', Validators.required);
   docNumberControl = new FormControl('', Validators.required);
-  docNameControl = new FormControl('', Validators.required);
+  nameControl = new FormControl('', Validators.required);
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
   docDateControl = new FormControl('', Validators.required);
@@ -182,7 +182,7 @@ export class ModifyDocumentComponent implements OnInit {
    * Returns true if entered document name is valid, else false.
   */
   isValidDocName() {
-    return !this.docNameControl.hasError('required');
+    return !this.nameControl.hasError('required');
   }
 
   /**
