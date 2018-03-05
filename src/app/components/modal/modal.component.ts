@@ -18,6 +18,10 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
   @Input() modalTitle: string;
 
+  @Input() submitName = 'Save';
+
+  @Input() closeName = 'Close';
+
   @Output() showChange = new EventEmitter();
 
   modalInit = false;

@@ -4,8 +4,8 @@
   <app-card-table [cardList]="cardList"></app-card-table>
 </div>
 
-<form #addNewCardForm="ngForm" (ngSubmit)="addNewCard.addNewCard()">
-  <app-modal [(show)]="showAddNewModal" [modalTitle]="'Add new card'">
-    <app-add-new-card #addNewCard></app-add-new-card>
+<form #addNewCardForm="ngForm" (ngSubmit)="submitNewCard()">
+  <app-modal [(show)]="showAddNewModal" [modalTitle]="'Add new card'" [closeName]="'Discard'" [submitName]="'Submit'">
+    <app-add-new-card #addNewCardComponent [cardList]="cardList"></app-add-new-card>
   </app-modal>
 </form>

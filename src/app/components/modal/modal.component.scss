@@ -14,6 +14,10 @@
 
     .modal-footer {
       justify-content: center !important;
+
+      button {
+        min-width: 120px;
+      }
     }
   }
 }

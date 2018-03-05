@@ -6,6 +6,9 @@ import {MatDialog} from '@angular/material';
 import { DataService } from '../../services/data.service';
 import { HttpService } from '../../services/http.service';
 
+import * as _ from 'lodash';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-cards',
@@ -18,9 +21,11 @@ export class CardsComponent implements OnInit {
 
   showAddNewModal = false;
 
-  @ViewChild(AddNewCardComponent) addNewCard: AddNewCardComponent;
+  @ViewChild(AddNewCardComponent) addNewCardComponent: AddNewCardComponent;
 
-  constructor(public dataService: DataService, public dialog: MatDialog) {
+  @ViewChild('addNewCardForm') addNewCardForm: NgForm;
+
+  constructor(public dataService: DataService) {
     this.dataService.cardList.subscribe( (cardList) => {
       this.cardList = cardList;
     });
@@ -28,6 +33,13 @@ export class CardsComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  submitNewCard() {
+    this.addNewCardComponent.addNewCard().then(() => {
+      this.showAddNewModal = false;
+      this.addNewCardForm.resetForm();
+    });
   }
 
 }
