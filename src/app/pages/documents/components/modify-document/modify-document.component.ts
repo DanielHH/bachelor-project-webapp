@@ -137,27 +137,26 @@ export class ModifyDocumentComponent implements OnInit {
   /**
    * Attempts to submit changes to a document to database
   */
-  editDocument(): Promise<any> {
+  editDocument(document: any): Promise<any> {
     return new Promise(resolve => {
 
       if (this.isValidInput()) {
-        const editDoc = new Document();
-        editDoc.documentType = this.getDocTypeID(this.docTypeInput);
-        editDoc.documentNumber = this.docNumberInput;
-        editDoc.location = this.locationInput;
-        editDoc.documentDate = new Date(this.docDateInput);
-        editDoc.registrationDate = new Date(this.registrationDateInput);
-        editDoc.modifiedDate = this.utilitiesService.getLocalDate();
-        editDoc.comment = this.commentInput;
-        editDoc.status = 1;
+        document.documentType = this.getDocTypeID(this.docTypeInput);
+        document.documentNumber = this.docNumberInput;
+        document.location = this.locationInput;
+        document.documentDate = new Date(this.docDateInput);
+        document.registrationDate = new Date(this.registrationDateInput);
+        document.modifiedDate = this.utilitiesService.getLocalDate();
+        document.comment = this.commentInput;
+        document.status = 1;
 
         if (this.addDocHolder && this.isValidUsername()) {
-          editDoc.userID = this.getUserID(this.usernameInput);
+          document.userID = this.getUserID(this.usernameInput);
         } else {
-          editDoc.userID = null;
+          document.userID = null;
         }
 
-        this.httpService.httpPut<Document>('updateDocument/', editDoc).then(res => {
+        this.httpService.httpPut<Document>('updateDocument/', document).then(res => {
           if (res.message === 'success') {
             this.dataService.documentList.next(this.documentList);
             this.resetForm();
