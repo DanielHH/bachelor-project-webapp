@@ -17,8 +17,7 @@ import { NgForm } from '@angular/forms';
 export class CardsComponent implements OnInit {
 
   cardList: Card[] = [];
-
-  editCard = null; // Card to be edited
+  editCard: Card = null; // Card to be edited
 
   showAddNewModal = false;
 
@@ -50,6 +49,12 @@ export class CardsComponent implements OnInit {
     this.addNewCardComponent.addNewCard().then(() => {
       this.showAddNewModal = false;
       this.addNewCardForm.resetForm();
+    });
+  }
+
+  setEditForm(card: any) {
+    this.editCardComponent.setForm(card).then(() => {
+      this.showEditModal = true;
     });
   }
 

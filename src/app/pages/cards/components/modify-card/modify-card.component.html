@@ -66,7 +66,7 @@
       <!--Input-->
       <input matInput id="expirationDateInput" name="expirationDateInput" type="text" [(ngModel)]="expirationDateInput" placeholder="Expiration date"
         [style.color]="isValidExpirationDate() ? 'black' : 'gray'" maxlength="10" (input)="setExpirationDateToDatePicker();"
-        [formControl]="expirationDateControl" appExpirationDate required>
+        [formControl]="expirationDateControl" appDate required>
       <!--Check and clear-->
       <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
         <mat-icon [style.color]="'green'" *ngIf="isValidExpirationDate()">done</mat-icon>

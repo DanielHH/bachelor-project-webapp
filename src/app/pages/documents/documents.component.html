@@ -10,7 +10,7 @@
   </app-modal>
 </form>
 
-<form #modifyDocumentForm="ngForm" (ngSubmit)="submitEditDocument()">
+<form #editDocumentForm="ngForm" (ngSubmit)="submitEditDocument()">
   <app-modal [(show)]="showEditModal" [modalTitle]="'Edit document'" [closeName]="'Discard'" [submitName]="'Submit'">
     <app-modify-document #editDocumentComponent [documentList]="documentList"></app-modify-document>
   </app-modal>
