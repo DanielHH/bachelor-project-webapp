@@ -43,6 +43,7 @@ export class CardsComponent implements OnInit {
 
   setEditCard(card: any) {
     this.editCard = card;
+    this.showEditModal = true;
   }
 
   submitNewCard() {

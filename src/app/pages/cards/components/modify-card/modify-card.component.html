@@ -110,8 +110,10 @@
   <div class="col-12 wide-center">
     <label class="p-2">Add cardholder:</label>
     <mat-radio-group>
-      <mat-radio-button class="p-2" color="primary" [checked]="true" value="no" (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
-      <mat-radio-button class="p-2" color="primary" value="yes" (change)="addCardHolder = !addCardHolder">Yes</mat-radio-button>
+      <mat-radio-button class="p-2" color="primary" [checked]="!addCardHolder" value="no"
+      (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
+      <mat-radio-button class="p-2" color="primary" [checked]="addCardHolder" value="yes"
+      (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">Yes</mat-radio-button>
     </mat-radio-group>
   </div>
 </div>

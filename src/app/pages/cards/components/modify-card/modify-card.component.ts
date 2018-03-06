@@ -67,7 +67,7 @@ export class ModifyCardComponent implements OnInit {
       this.locationInput = card.location;
       this.commentInput = card.comment;
       if (card.userID != null) {
-        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).name;
+        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).username;
         this.addCardHolder = true;
       } else {
         this.usernameInput = '';

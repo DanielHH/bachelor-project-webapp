@@ -186,7 +186,7 @@ export class ModifyDocumentComponent implements OnInit {
     this.locationInput = document.location;
     this.commentInput = document.comment;
     if (document.userID != null) {
-      this.usernameInput = _.find(this.users, (user) => user.id === document.userID).name;
+      this.usernameInput = _.find(this.users, (user) => user.id === document.userID).username;
       this.addDocHolder = true;
     } else {
       this.usernameInput = '';
