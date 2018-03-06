@@ -71,7 +71,7 @@ export class ModifyCardComponent implements OnInit {
         this.addCardHolder = false;
       }
     }
-  }
+  }  
 
   constructor(
     private httpService: HttpService,
@@ -88,6 +88,10 @@ export class ModifyCardComponent implements OnInit {
 
     this.dataService.userList.subscribe(users => {
       this.users = users;
+      this.usernameControl.updateValueAndValidity({
+        onlySelf: false,
+        emitEvent: true
+      });
     });
   }
 
@@ -159,7 +163,7 @@ export class ModifyCardComponent implements OnInit {
    */
   editCard(card: Card): Promise<any> {
     return new Promise(resolve => {
-
+      
       if (this.isValidInput()) {
         card.cardType = this.getCardTypeID(this.cardTypeInput);
         card.cardNumber = this.cardNumberInput;

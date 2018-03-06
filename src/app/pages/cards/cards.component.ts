@@ -23,9 +23,9 @@ export class CardsComponent implements OnInit {
 
   showEditModal = false;
 
-  @ViewChild(ModifyCardComponent) addNewCardComponent: ModifyCardComponent;
+  @ViewChild('addNewCardComponent') addNewCardComponent: ModifyCardComponent;
 
-  @ViewChild(ModifyCardComponent) editCardComponent: ModifyCardComponent;
+  @ViewChild('editCardComponent') editCardComponent: ModifyCardComponent;
 
   @ViewChild('addNewCardForm') addNewCardForm: NgForm;
 
