@@ -1,7 +1,7 @@
 <button mat-raised-button (click)="showAddNewModal = true" color="primary">Add New Card</button>
 
 <div class="table-container pt-3">
-  <app-card-table [cardList]="cardList" (editItem)="setEditCard($event); showEditModal=true"></app-card-table>
+  <app-card-table [cardList]="cardList" (editItem)="setEditForm($event);"></app-card-table>
 </div>
 
 <form #addNewCardForm="ngForm" (ngSubmit)="submitNewCard()">
