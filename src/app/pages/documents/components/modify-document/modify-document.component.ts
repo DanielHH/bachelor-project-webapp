@@ -175,22 +175,24 @@ export class ModifyDocumentComponent implements OnInit {
    * Sets form to display given document.
    */
   @Input('document') set document(document: Document) {
-    this.docTypeInput = _.find(this.docTypes, (cardType) => cardType.id === document.documentType).name;
-    this.docNumberInput = document.documentNumber;
-    this.nameInput = document.name;
-    this.senderInput = document.sender;
-    this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
-    this.registrationDateDatepickerInput = this.registrationDateInput;
-    this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
-    this.docDateDatepickerInput = this.docDateInput;
-    this.locationInput = document.location;
-    this.commentInput = document.comment;
-    if (document.userID != null) {
-      this.usernameInput = _.find(this.users, (user) => user.id === document.userID).username;
-      this.addDocHolder = true;
-    } else {
-      this.usernameInput = '';
-      this.addDocHolder = false;
+    if (document) {
+      this.docTypeInput = _.find(this.docTypes, (docType) => docType.id === document.documentType).name;
+      this.docNumberInput = document.documentNumber;
+      this.nameInput = document.name;
+      this.senderInput = document.sender;
+      this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
+      this.registrationDateDatepickerInput = this.registrationDateInput;
+      this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
+      this.docDateDatepickerInput = this.docDateInput;
+      this.locationInput = document.location;
+      this.commentInput = document.comment;
+      if (document.userID != null) {
+        this.usernameInput = _.find(this.users, (user) => user.id === document.userID).username;
+        this.addDocHolder = true;
+      } else {
+        this.usernameInput = '';
+        this.addDocHolder = false;
+      }
     }
   }
 

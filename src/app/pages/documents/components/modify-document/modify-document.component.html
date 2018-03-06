@@ -119,10 +119,10 @@
   <div class="col-12 wide-center">
     <label class="p-2">Add document holder:</label>
     <mat-radio-group>
-      <mat-radio-button class="p-2" color="primary" [checked]="true" value="no"
+      <mat-radio-button class="p-2" color="primary" [checked]="!addDocHolder" value="no"
       (change)="addDocHolder = !addDocHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
-      <mat-radio-button class="p-2" color="primary" value="yes"
-      (change)="addDocHolder = !addDocHolder">Yes</mat-radio-button>
+      <mat-radio-button class="p-2" color="primary" [checked]="addDocHolder" value="yes"
+      (change)="addDocHolder = !addDocHolder;usernameControl.reset();usernameInput='';">Yes</mat-radio-button>
     </mat-radio-group>
   </div>
 </div>
