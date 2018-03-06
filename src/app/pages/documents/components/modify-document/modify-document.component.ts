@@ -108,8 +108,12 @@ export class ModifyDocumentComponent implements OnInit {
         newDoc.documentType = this.getDocTypeID(this.docTypeInput);
         newDoc.documentNumber = this.docNumberInput;
         newDoc.location = this.locationInput;
+        newDoc.name = this.nameInput;
         newDoc.documentDate = new Date(this.docDateInput);
+        /* Lägg till input för denna
         newDoc.registrationDate = new Date(this.registrationDateInput);
+        */
+        newDoc.registrationDate = this.utilitiesService.getLocalDate();
         newDoc.creationDate = this.utilitiesService.getLocalDate();
         newDoc.modifiedDate = this.utilitiesService.getLocalDate();
         newDoc.comment = this.commentInput;
@@ -120,7 +124,7 @@ export class ModifyDocumentComponent implements OnInit {
         } else {
           newDoc.userID = null;
         }
-
+        
         this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
           if (res.message === 'success') {
             this.documentList.unshift(res.data);
@@ -199,7 +203,7 @@ export class ModifyDocumentComponent implements OnInit {
    * @param docTypeName Name of doc type
    */
   getDocTypeID(docTypeName: String) {
-    return _.find(this.docTypes, (docType) => docType.name === docTypeName).name;
+    return _.find(this.docTypes, (docType) => docType.name === docTypeName).id;
   }
 
   /**
