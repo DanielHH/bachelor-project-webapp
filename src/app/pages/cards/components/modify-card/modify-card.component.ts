@@ -55,8 +55,11 @@ export class ModifyCardComponent implements OnInit {
 
   @Input() cardList: Card[];
 
+  /**
+   * Set form to display card.
+   */
   @Input('card') set card(card: Card) {
-    if(card) {
+    if (card) {
       this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
       this.cardNumberInput = card.cardNumber;
       this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
@@ -64,7 +67,7 @@ export class ModifyCardComponent implements OnInit {
       this.locationInput = card.location;
       this.commentInput = card.comment;
       if (card.userID != null) {
-        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).name;
+        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).username;
         this.addCardHolder = true;
       } else {
         this.usernameInput = '';

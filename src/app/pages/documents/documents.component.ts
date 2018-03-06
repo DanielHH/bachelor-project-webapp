@@ -40,17 +40,15 @@ export class DocumentsComponent implements OnInit {
   ngOnInit() {
   }
 
+  setEditDocument(document: any) {
+    this.editDocument = document;
+    this.showEditModal = true;
+  }
+
   submitNewDocument() {
     this.addNewDocumentComponent.addNewDocument().then(() => {
       this.showAddNewModal = false;
       this.addNewDocumentForm.resetForm();
-    });
-  }
-
-  setEditForm(document: any) {
-    this.editDocumentComponent.setForm(document).then(() => {
-      this.editDocument = document;
-      this.showEditModal = true;
     });
   }
 

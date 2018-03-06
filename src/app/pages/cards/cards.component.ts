@@ -41,8 +41,9 @@ export class CardsComponent implements OnInit {
   ngOnInit() {
   }
 
-  setEditCard(item: any) {
-    this.editCard = item;
+  setEditCard(card: any) {
+    this.editCard = card;
+    this.showEditModal = true;
   }
 
   submitNewCard() {
@@ -50,11 +51,6 @@ export class CardsComponent implements OnInit {
       this.showAddNewModal = false;
       this.addNewCardForm.resetForm();
     });
-  }
-
-  setEditForm(card: any) {
-    this.editCard = card;
-    this.showEditModal = true;
   }
 
   submitEditCard() {
