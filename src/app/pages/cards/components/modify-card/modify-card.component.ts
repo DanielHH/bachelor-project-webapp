@@ -12,11 +12,11 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
-  selector: 'app-add-new-card',
-  templateUrl: './add-new-card.component.html',
-  styleUrls: ['./add-new-card.component.scss']
+  selector: 'app-modify-card',
+  templateUrl: './modify-card.component.html',
+  styleUrls: ['./modify-card.component.scss']
 })
-export class AddNewCardComponent implements OnInit {
+export class ModifyCardComponent implements OnInit {
   // Form variables
   cardTypeInput = '';
   cardNumberInput = '';
@@ -112,8 +112,8 @@ export class AddNewCardComponent implements OnInit {
         newCard.cardNumber = this.cardNumberInput;
         newCard.location = this.locationInput;
         newCard.expirationDate = new Date(this.expirationDateInput);
-        newCard.creationDate = new Date();
-        newCard.modifiedDate = new Date();
+        newCard.creationDate = this.utilitiesService.getLocalDate();
+        newCard.modifiedDate = this.utilitiesService.getLocalDate();
         newCard.comment = this.commentInput;
         newCard.status = 1;
 
@@ -126,6 +126,40 @@ export class AddNewCardComponent implements OnInit {
         this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
           if (res.message === 'success') {
             this.cardList.unshift(res.data);
+            this.dataService.cardList.next(this.cardList);
+
+            this.resetForm();
+            resolve();
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Attempts to submit edited card to database
+   */
+  editCard(card: Card): Promise<any> {
+    return new Promise(resolve => {
+
+      if (this.isValidInput()) {
+        card.cardType = this.getCardTypeID(this.cardTypeInput);
+        card.cardNumber = this.cardNumberInput;
+        card.location = this.locationInput;
+        card.expirationDate = new Date(this.expirationDateInput);
+        card.creationDate = this.utilitiesService.getLocalDate();
+        card.modifiedDate = this.utilitiesService.getLocalDate();
+        card.comment = this.commentInput;
+        card.status = 1;
+
+        if (this.addCardHolder && this.isValidUsername()) {
+          card.userID = this.getUserID(this.usernameInput);
+        } else {
+          card.userID = null;
+        }
+
+        this.httpService.httpPut<Card>('updateCard/', card).then(res => {
+          if (res.message === 'success') {
             this.dataService.cardList.next(this.cardList);
 
             this.resetForm();

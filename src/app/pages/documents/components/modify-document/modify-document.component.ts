@@ -134,7 +134,7 @@ export class ModifyDocumentComponent implements OnInit {
     });
   }
 
-    /**
+  /**
    * Attempts to submit changes to a document to database
   */
   editDocument(): Promise<any> {
@@ -157,7 +157,7 @@ export class ModifyDocumentComponent implements OnInit {
           editDoc.userID = null;
         }
 
-        this.httpService.httpPut<Document>('editDocument/', editDoc).then(res => {
+        this.httpService.httpPut<Document>('updateDocument/', editDoc).then(res => {
           if (res.message === 'success') {
             this.dataService.documentList.next(this.documentList);
             this.resetForm();
@@ -169,11 +169,37 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   /**
+   * Sets form to display given document.
+   */
+  setForm(document: Document): Promise<any> {
+    return new Promise(resolve => {
+      this.docTypeInput = _.find(this.docTypes, (docType) => docType.id === document.documentType).name;
+      this.docNumberInput = document.documentNumber;
+      this.nameInput = document.name;
+      this.senderInput = document.sender;
+      this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
+      this.registrationDateDatepickerInput = this.registrationDateInput;
+      this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
+      this.docDateDatepickerInput = this.docDateInput;
+      this.locationInput = document.location;
+      this.commentInput = document.comment;
+      if (document.userID != null) {
+        this.usernameInput = _.find(this.users, (user) => user.id === document.userID).name;
+        this.addDocHolder = true;
+      } else {
+        this.usernameInput = '';
+        this.addDocHolder = false;
+      }
+      resolve();
+    });
+  }
+
+  /**
    * Returns the id associated with docTypeName
    * @param docTypeName Name of doc type
    */
   getDocTypeID(docTypeName: String) {
-    return _.find(this.docTypes, (docType) => docType.name === docTypeName).id;
+    return _.find(this.docTypes, (docType) => docType.name === docTypeName).name;
   }
 
   /**

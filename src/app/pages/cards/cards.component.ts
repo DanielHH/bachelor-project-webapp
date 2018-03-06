@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Card } from '../../datamodels/card';
-import { AddNewCardComponent } from './components/add-new-card/add-new-card.component';
+import { ModifyCardComponent } from './components/modify-card/modify-card.component';
 import {MatDialog} from '@angular/material';
 
 import { DataService } from '../../services/data.service';
@@ -18,11 +18,19 @@ export class CardsComponent implements OnInit {
 
   cardList: Card[] = [];
 
+  editCard = null; // Card to be edited
+
   showAddNewModal = false;
 
-  @ViewChild(AddNewCardComponent) addNewCardComponent: AddNewCardComponent;
+  showEditModal = false;
+
+  @ViewChild(ModifyCardComponent) addNewCardComponent: ModifyCardComponent;
+
+  @ViewChild(ModifyCardComponent) editCardComponent: ModifyCardComponent;
 
   @ViewChild('addNewCardForm') addNewCardForm: NgForm;
+
+  @ViewChild('editCardForm') editCardForm: NgForm;
 
   constructor(public dataService: DataService) {
     this.dataService.cardList.subscribe( (cardList) => {
@@ -34,6 +42,10 @@ export class CardsComponent implements OnInit {
   ngOnInit() {
   }
 
+  setEditCard(item: any) {
+    this.editCard = item;
+  }
+
   submitNewCard() {
     this.addNewCardComponent.addNewCard().then(() => {
       this.showAddNewModal = false;
@@ -41,8 +53,11 @@ export class CardsComponent implements OnInit {
     });
   }
 
-  edit(item: any) {
-    console.log(item);
+  submitEditCard() {
+    this.editCardComponent.editCard(this.editCard).then(() => {
+      this.showEditModal = false;
+      this.editCardForm.resetForm();
+    });
   }
 
 }

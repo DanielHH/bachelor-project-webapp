@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 export class CardTableComponent implements OnInit {
 
   @Input() cardList: Card[];
+  @Output() editItem = new EventEmitter<any>();
 
   filterInput = '';
 
@@ -19,8 +20,6 @@ export class CardTableComponent implements OnInit {
   orderLocation = '';
   orderComment = '';
   orderDate = '';
-
-  @Output() editItem = new EventEmitter<any>();
 
   constructor() { }
 
@@ -93,6 +92,9 @@ export class CardTableComponent implements OnInit {
     }
   }
 
+  /**
+   * Set item to be outputted for editing.
+   */
   edit(item: Card) {
     this.editItem.next(item);
   }

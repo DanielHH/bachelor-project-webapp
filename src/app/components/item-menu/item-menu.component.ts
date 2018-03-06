@@ -36,6 +36,9 @@ export class ItemMenuComponent implements OnInit {
     }
   }
 
+  /**
+   * Set item to be outputted for editing.
+  */
   edit() {
     this.editItem.next();
   }

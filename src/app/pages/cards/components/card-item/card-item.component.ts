@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
+  @Output() editItem = new EventEmitter<any>();
 
   cardTypeList: CardType[] = [];
   userList: User[] = [];
@@ -22,8 +23,6 @@ export class CardItemComponent implements OnInit {
   showRequestModal = false;
 
   showReturnModal = false;
-
-  @Output() editItem = new EventEmitter<any>();
 
   constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -97,6 +96,9 @@ export class CardItemComponent implements OnInit {
     this.router.navigate(['card-detail']);
   }
 
+  /**
+   * Set card to be outputted for editing
+  */
   edit() {
     this.editItem.next(this.cardItem);
   }

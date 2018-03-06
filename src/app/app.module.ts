@@ -21,7 +21,7 @@ import { CardsComponent } from './pages/cards/cards.component';
 import { GetComponent } from './pages/examples/code-examples/get/get.component';
 import { PostComponent } from './pages/examples/code-examples/post/post.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
-import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-new-card.component';
+import { ModifyCardComponent } from './pages/cards/components/modify-card/modify-card.component';
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
@@ -74,7 +74,7 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
     GetComponent,
     PostComponent,
     SideMenuComponent,
-    AddNewCardComponent,
+    ModifyCardComponent,
     CardTableComponent,
     CardItemComponent,
     UsernameValidatorDirective,
