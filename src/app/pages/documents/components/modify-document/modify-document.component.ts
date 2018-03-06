@@ -21,27 +21,39 @@ export class ModifyDocumentComponent implements OnInit {
   // Form variables
   docTypeInput = '';
   docNumberInput = '';
-  nameInput = '';
-  senderInput = '';
+
   registrationDateInput = '';
   registrationDateDatepickerInput = '';
   docDateInput = '';
   docDateDatepickerInput = '';
+
+  nameInput = '';
+  senderInput = '';
+
   locationInput = '';
   commentInput = '';
+
   addDocHolder: Boolean = false;
   usernameInput = '';
 
   // Form Controls
   docTypeControl = new FormControl('', Validators.required);
   docNumberControl = new FormControl('', Validators.required);
-  nameControl = new FormControl('', Validators.required);
-  usernameControl = new FormControl('', Validators.required);
-  locationControl = new FormControl('', Validators.required);
+
   registrationDateControl = new FormControl('', Validators.required);
   registrationDatePickerControl = new FormControl();
   docDateControl = new FormControl('', Validators.required);
   docDatePickerControl = new FormControl();
+
+  nameControl = new FormControl('', Validators.required);
+  senderControl = new FormControl('', Validators.required);
+
+  locationControl = new FormControl('', Validators.required);
+
+  usernameControl = new FormControl('', Validators.required);
+
+
+
 
   // Database data lists
   docTypes = [];
@@ -97,6 +109,34 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   /**
+   * Sets fields in document according to form
+   * @param document Document to set form data to
+   */
+  setDocumentFromForm(document: Document) {
+    if (this.isValidInput()) {
+      document.documentType = this.getDocTypeID(this.docTypeInput);
+      document.documentNumber = this.docNumberInput;
+
+      document.documentDate = new Date(this.docDateInput);
+      document.registrationDate = new Date(this.registrationDateInput);
+
+      document.name = this.nameInput;
+      document.sender = this.senderInput;
+
+      document.location = this.locationInput;
+      document.comment = this.commentInput;
+
+      if (this.addDocHolder && this.isValidUsername()) {
+        document.userID = this.getUserID(this.usernameInput);
+      } else {
+        document.userID = null;
+      }
+
+      document.modifiedDate = this.utilitiesService.getLocalDate();
+    }
+  }
+
+  /**
    * Attempts to submit new document to database
   */
   addNewDocument(): Promise<any> {
@@ -105,25 +145,10 @@ export class ModifyDocumentComponent implements OnInit {
       if (this.isValidInput()) {
         const newDoc = new Document();
 
-        newDoc.documentType = this.getDocTypeID(this.docTypeInput);
-        newDoc.documentNumber = this.docNumberInput;
-        newDoc.location = this.locationInput;
-        newDoc.name = this.nameInput;
-        newDoc.documentDate = new Date(this.docDateInput);
-        /* Lägg till input för denna
-        newDoc.registrationDate = new Date(this.registrationDateInput);
-        */
-        newDoc.registrationDate = this.utilitiesService.getLocalDate();
-        newDoc.creationDate = this.utilitiesService.getLocalDate();
-        newDoc.modifiedDate = this.utilitiesService.getLocalDate();
-        newDoc.comment = this.commentInput;
-        newDoc.status = 1;
+        this.setDocumentFromForm(newDoc);
 
-        if (this.addDocHolder && this.isValidUsername()) {
-          newDoc.userID = this.getUserID(this.usernameInput);
-        } else {
-          newDoc.userID = null;
-        }
+        newDoc.status = 1;
+        newDoc.creationDate = this.utilitiesService.getLocalDate();
 
         this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
           if (res.message === 'success') {
@@ -145,19 +170,7 @@ export class ModifyDocumentComponent implements OnInit {
     return new Promise(resolve => {
 
       if (this.isValidInput()) {
-        document.documentType = this.getDocTypeID(this.docTypeInput);
-        document.documentNumber = this.docNumberInput;
-        document.location = this.locationInput;
-        document.documentDate = new Date(this.docDateInput);
-        document.registrationDate = new Date(this.registrationDateInput);
-        document.modifiedDate = this.utilitiesService.getLocalDate();
-        document.comment = this.commentInput;
-
-        if (this.addDocHolder && this.isValidUsername()) {
-          document.userID = this.getUserID(this.usernameInput);
-        } else {
-          document.userID = null;
-        }
+        this.setDocumentFromForm(document);
 
         this.httpService.httpPut<Document>('updateDocument/', document).then(res => {
           if (res.message === 'success') {
@@ -175,18 +188,22 @@ export class ModifyDocumentComponent implements OnInit {
    */
   @Input('document') set document(document: Document) {
     if (document) {
-      this.docTypeInput = _.find(this.docTypes, (docType) => docType.id === document.documentType).name;
+      this.docTypeInput = this.getDocTypeName(document.documentType);
       this.docNumberInput = document.documentNumber;
-      this.nameInput = document.name;
-      this.senderInput = document.sender;
+
       this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
       this.registrationDateDatepickerInput = this.registrationDateInput;
       this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
       this.docDateDatepickerInput = this.docDateInput;
+
+      this.nameInput = document.name;
+      this.senderInput = document.sender;
+
       this.locationInput = document.location;
       this.commentInput = document.comment;
+
       if (document.userID != null) {
-        this.usernameInput = _.find(this.users, (user) => user.id === document.userID).username;
+        this.usernameInput = this.getUsername(document.userID);
         this.addDocHolder = true;
       } else {
         this.usernameInput = '';
@@ -204,11 +221,46 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   /**
+   * Returns the name associated with docTypeID
+   * @param docTypeID ID of doc type
+   */
+  getDocTypeName(docTypeID: number) {
+    return _.find(this.docTypes, (docType) => docType.id === docTypeID).name;
+  }
+
+  /**
    * Returns user id of user with username
    * @param username Username of user
    */
   getUserID(username: String) {
     return _.find(this.users, (user) => user.username === username).id;
+  }
+
+  /**
+   * Returns user name of user with userID
+   * @param username UserID of user
+   */
+  getUsername(userID: number) {
+    return _.find(this.users, (user) => user.id === userID).username;
+  }
+
+  /**
+     * Sets the registration date datePicker the date entered in the input field.
+    */
+  setRegistrationDateToDatePicker() {
+    if (!this.registrationDateControl.hasError('required') && !this.registrationDateControl.hasError('dateFormat')) {
+      this.registrationDateDatepickerInput = this.registrationDateInput; // Set date in Datepicker
+    }
+  }
+
+  /**
+   * Sets registrationDate from datePicker to visible input field in YYYY-MM-DD format
+   * @param data Date selected in datePicker
+   */
+  setRegistrationDateFromDatepicker(data: any) {
+    if (data.value != null) {
+      this.registrationDateInput = moment(data.value).format('YYYY-MM-DD');
+    }
   }
 
   /**
@@ -252,6 +304,13 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   /**
+   * Returns true if entered sender is valid, else false.
+  */
+  isValidSender() {
+    return !this.senderControl.hasError('required');
+  }
+
+  /**
    * Returns true if entered username is valid, else false.
   */
   isValidUsername() {
@@ -267,6 +326,13 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   /**
+     * Returns true if entered registration date is valid, else false.
+    */
+  isValidRegistrationDate() {
+    return !this.registrationDateControl.hasError('required') && !this.registrationDateControl.hasError('dateFormat');
+  }
+
+  /**
    * Returns true if entered document date is valid, else false.
   */
   isValidDocDate() {
@@ -277,8 +343,9 @@ export class ModifyDocumentComponent implements OnInit {
    * Returns true if everything in the form is valid, else false
   */
   isValidInput() {
-    return this.isValidDocType() && this.isValidDocNumber() && this.isValidDocName() &&
-    this.isValidUsername() && this.isValidLocation() && this.isValidDocDate();
+    return this.isValidDocType() && this.isValidDocNumber() && this.isValidRegistrationDate() &&
+    this.isValidDocDate() && this.isValidDocName() && this.isValidSender() && this.isValidLocation() &&
+    this.isValidUsername();
   }
 
   /**
@@ -287,12 +354,19 @@ export class ModifyDocumentComponent implements OnInit {
   resetForm() {
     this.docTypeControl.reset();
     this.docNumberControl.reset();
-    this.nameControl.reset();
-    this.usernameControl.reset();
-    this.locationControl.reset();
+
+    this.registrationDateControl.reset();
+    this.registrationDatePickerControl = new FormControl();
     this.docDateControl.reset();
-    this.docDatePickerControl.reset();
+    this.docDatePickerControl = new FormControl();
+
+    this.nameControl.reset();
+    this.senderControl.reset();
+
+    this.locationControl.reset();
     this.commentInput = '';
+
+    this.usernameControl.reset();
   }
 
 }

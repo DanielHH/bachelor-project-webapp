@@ -17,6 +17,7 @@ import { NgForm } from '@angular/forms';
 export class CardsComponent implements OnInit {
 
   cardList: Card[] = [];
+
   editCard: Card = null; // Card to be edited
 
   showAddNewModal = false;
