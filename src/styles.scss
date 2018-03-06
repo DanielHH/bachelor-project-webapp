@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "../node_modules/material-design-icons/iconfont/material-icons.css";
+
+.mat-form-field-label-wrapper {
+  overflow: visible !important;
+}
+
+input {
+  border-bottom:none !important;
+  box-shadow:none !important;
+}
+
+.mat-form-field {
+  width: 100% !important;
+}

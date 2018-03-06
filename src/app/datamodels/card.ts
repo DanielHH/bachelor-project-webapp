@@ -25,11 +25,6 @@ export class Card {
   userID: number;
 
   /**
-   * Full name of current card holder
-   */
-  user: string;
-
-  /**
    * Current location of card
    */
   location: string;
@@ -43,5 +38,32 @@ export class Card {
    * Expiration date of the card
    */
   expirationDate: Date;
+
+  /**
+   * Creation date of card in database
+   */
+  creationDate: Date;
+
+  /**
+   * Last modified date of the card
+   */
+  modifiedDate: Date;
+
+  /**
+   * Card status
+   */
+  status: number;
+
+  constructor() {
+    this.cardType = null;
+    this.cardNumber = null;
+    this.userID = null;
+    this.location = null;
+    this.comment = '';
+    this.expirationDate = null;
+    this.creationDate = null;
+    this.modifiedDate = null;
+    this.status = 0;
+  }
 
 }
