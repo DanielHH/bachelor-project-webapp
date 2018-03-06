@@ -136,7 +136,7 @@ import { ItemMenuComponent } from './components/item-menu/item-menu.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
 
 
@@ -191,13 +191,15 @@ import { TokenInterceptor } from './auth/token.interceptor';
     MatIconModule,
     MatToolbarModule,
     MatRadioModule,
-    MatDialogModule
+    MatDialogModule,
+    HttpClientModule
   ],
   providers: [
     HttpService,
     DataService,
     AuthService,
     AuthGuard,
+    HttpClient,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
