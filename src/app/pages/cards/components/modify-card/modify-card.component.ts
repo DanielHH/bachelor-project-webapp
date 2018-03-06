@@ -55,8 +55,11 @@ export class ModifyCardComponent implements OnInit {
 
   @Input() cardList: Card[];
 
+  /**
+   * Set form to display card.
+   */
   @Input('card') set card(card: Card) {
-    if(card) {
+    if (card) {
       this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
       this.cardNumberInput = card.cardNumber;
       this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
