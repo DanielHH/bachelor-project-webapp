@@ -54,6 +54,7 @@ export class CardsComponent implements OnInit {
 
   setEditForm(card: any) {
     this.editCardComponent.setForm(card).then(() => {
+      this.editCard = card;
       this.showEditModal = true;
     });
   }

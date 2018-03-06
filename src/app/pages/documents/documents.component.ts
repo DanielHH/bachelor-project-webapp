@@ -16,6 +16,8 @@ export class DocumentsComponent implements OnInit {
 
   documentList: Document[] = [];
 
+  editDocument: Document = null; // Document to be edited
+
   showAddNewModal = false;
 
   showEditModal = false;
@@ -47,12 +49,13 @@ export class DocumentsComponent implements OnInit {
 
   setEditForm(document: any) {
     this.editDocumentComponent.setForm(document).then(() => {
+      this.editDocument = document;
       this.showEditModal = true;
     });
   }
 
   submitEditDocument() {
-    this.editDocumentComponent.editDocument().then(() => {
+    this.editDocumentComponent.editDocument(document).then(() => {
       this.showEditModal = false;
       this.editDocumentForm.resetForm();
     });
