@@ -175,7 +175,6 @@ export class ModifyCardComponent implements OnInit {
         card.creationDate = this.utilitiesService.getLocalDate();
         card.modifiedDate = this.utilitiesService.getLocalDate();
         card.comment = this.commentInput;
-        card.status = 1;
 
         if (this.addCardHolder && this.isValidUsername()) {
           card.userID = this.getUserID(this.usernameInput);

@@ -56,6 +56,7 @@ export class CardsComponent implements OnInit {
   submitEditCard() {
     this.editCardComponent.editCard(this.editCard).then(() => {
       this.showEditModal = false;
+      this.editCard = null;
       this.editCardForm.resetForm();
     });
   }

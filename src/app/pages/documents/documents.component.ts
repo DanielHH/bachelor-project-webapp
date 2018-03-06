@@ -22,9 +22,9 @@ export class DocumentsComponent implements OnInit {
 
   showEditModal = false;
 
-  @ViewChild(ModifyDocumentComponent) addNewDocumentComponent: ModifyDocumentComponent;
+  @ViewChild('addNewDocumentComponent') addNewDocumentComponent: ModifyDocumentComponent;
 
-  @ViewChild(ModifyDocumentComponent) editDocumentComponent: ModifyDocumentComponent;
+  @ViewChild('editDocumentComponent') editDocumentComponent: ModifyDocumentComponent;
 
   @ViewChild('addNewDocumentForm') addNewDocumentForm: NgForm;
 
@@ -53,8 +53,9 @@ export class DocumentsComponent implements OnInit {
   }
 
   submitEditDocument() {
-    this.editDocumentComponent.editDocument(document).then(() => {
+    this.editDocumentComponent.editDocument(this.editDocument).then(() => {
       this.showEditModal = false;
+      this.editDocument = null;
       this.editDocumentForm.resetForm();
     });
   }

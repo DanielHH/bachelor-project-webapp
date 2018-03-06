@@ -152,7 +152,6 @@ export class ModifyDocumentComponent implements OnInit {
         document.registrationDate = new Date(this.registrationDateInput);
         document.modifiedDate = this.utilitiesService.getLocalDate();
         document.comment = this.commentInput;
-        document.status = 1;
 
         if (this.addDocHolder && this.isValidUsername()) {
           document.userID = this.getUserID(this.usernameInput);
