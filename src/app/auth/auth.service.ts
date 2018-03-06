@@ -30,13 +30,14 @@ export class AuthService {
    * @param username The username of the user.
    * @param password The password of the user.
    */
-  login(username: string, password: string): Promise<boolean> {
+  public login(username: string, password: string): Promise<boolean> {
     return this.httpService
-      .httpPost('authenticate', { username: username, password: password })
+      /* TODO: change endpoint from 'testPost' to authentication once it has been set up server-side */
+      .httpPost('testPost', { username: username, password: password })
       .then((response: Response) => {
         console.log('login response: ', response);
         // if the response contains a token, the login is seen as successful
-        const token = response ? response['token'] : null;
+        /*const token = response ? response['token'] : null;
         if (token) {
           // store jwt token in local storage to keep user logged in between page refreshes
           // TODO: verify token?
@@ -46,15 +47,17 @@ export class AuthService {
         } else {
           console.log('failed login');
           return false;
-        }
+        }*/
+        // TODO: replace placeholder lines below with the block above (once server can respond)
+        localStorage.setItem('token', 'faked-jwt');
+        return true;
       });
   }
   /**
    * Log the user out by removing its auth-token.
    */
-  logout(): void {
+  public logout(): void {
     localStorage.removeItem('token');
     // TODO: send message to backend? (revoke token?)
-    // TODO: redirect to login page?
   }
 }
