@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Card } from '../../datamodels/card';
 import { ModifyCardComponent } from './components/modify-card/modify-card.component';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { DataService } from '../../services/data.service';
 import { HttpService } from '../../services/http.service';
@@ -32,7 +32,7 @@ export class CardsComponent implements OnInit {
   @ViewChild('editCardForm') editCardForm: NgForm;
 
   constructor(public dataService: DataService) {
-    this.dataService.cardList.subscribe( (cardList) => {
+    this.dataService.cardList.subscribe((cardList) => {
       this.cardList = cardList;
     });
 
@@ -53,10 +53,8 @@ export class CardsComponent implements OnInit {
   }
 
   setEditForm(card: any) {
-    this.editCardComponent.setForm(card).then(() => {
-      this.editCard = card;
-      this.showEditModal = true;
-    });
+    this.editCard = card;
+    this.showEditModal = true;
   }
 
   submitEditCard() {

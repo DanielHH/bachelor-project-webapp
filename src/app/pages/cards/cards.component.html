@@ -12,6 +12,6 @@
 
 <form #editCardForm="ngForm" (ngSubmit)="submitEditCard()">
   <app-modal [(show)]="showEditModal" [modalTitle]="'Edit card'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-card #editCardComponent [cardList]="cardList"></app-modify-card>
+    <app-modify-card #editCardComponent [cardList]="cardList" [card]="editCard"></app-modify-card>
   </app-modal>
 </form>

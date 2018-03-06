@@ -55,6 +55,24 @@ export class ModifyCardComponent implements OnInit {
 
   @Input() cardList: Card[];
 
+  @Input('card') set card(card: Card) {
+    if(card) {
+      this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
+      this.cardNumberInput = card.cardNumber;
+      this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
+      this.expirationDateDatepickerInput = this.expirationDateInput;
+      this.locationInput = card.location;
+      this.commentInput = card.comment;
+      if (card.userID != null) {
+        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).name;
+        this.addCardHolder = true;
+      } else {
+        this.usernameInput = '';
+        this.addCardHolder = false;
+      }
+    }
+  }
+
   constructor(
     private httpService: HttpService,
     public dataService: DataService,
@@ -167,28 +185,6 @@ export class ModifyCardComponent implements OnInit {
           }
         });
       }
-    });
-  }
-
-  /**
-   * Sets form to display given card.
-   */
-  setForm(card: Card): Promise<any> {
-    return new Promise(resolve => {
-      this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
-      this.cardNumberInput = card.cardNumber;
-      this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
-      this.expirationDateDatepickerInput = this.expirationDateInput;
-      this.locationInput = card.location;
-      this.commentInput = card.comment;
-      if (card.userID != null) {
-        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).name;
-        this.addCardHolder = true;
-      } else {
-        this.usernameInput = '';
-        this.addCardHolder = false;
-      }
-      resolve();
     });
   }
 
