@@ -17,4 +17,10 @@ export class UtilitiesService {
 
   constructor() { }
 
+  getLocalDate() {
+    const localDate = new Date();
+    localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
+    return localDate;
+  }
+
 }

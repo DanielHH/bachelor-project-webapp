@@ -55,6 +55,7 @@ export class Card {
   status: number;
 
   constructor() {
+    this.id = null;
     this.cardType = null;
     this.cardNumber = null;
     this.userID = null;

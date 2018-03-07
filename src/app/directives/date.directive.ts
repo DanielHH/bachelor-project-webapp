@@ -2,19 +2,19 @@ import { Directive } from '@angular/core';
 import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
 
   @Directive({
-    selector: '[appExpirationDate]',
-    providers: [{provide: NG_VALIDATORS, useExisting: ExpirationDateValidatorDirective, multi: true}]
+    selector: '[appDate]',
+    providers: [{provide: NG_VALIDATORS, useExisting: DateValidatorDirective, multi: true}]
   })
 
-  export class ExpirationDateValidatorDirective implements Validator {
+  export class DateValidatorDirective implements Validator {
 
     validate(c: FormControl): ValidationErrors {
       const input = String(c.value);
 
       const isValid = !input || this.isValidDateString(input);
       const message = {
-        'expirationDate': {
-          'message': 'Invalid expiration date'
+        'dateFormat': {
+          'message': 'Invalid date format'
         }
       };
       return isValid ? null : message;

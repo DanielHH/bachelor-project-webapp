@@ -21,7 +21,7 @@ import { CardsComponent } from './pages/cards/cards.component';
 import { GetComponent } from './pages/examples/code-examples/get/get.component';
 import { PostComponent } from './pages/examples/code-examples/post/post.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
-import { AddNewCardComponent } from './pages/cards/components/add-new-card/add-new-card.component';
+import { ModifyCardComponent } from './pages/cards/components/modify-card/modify-card.component';
 import { CardTableComponent } from './pages/cards/components/card-table/card-table.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
@@ -40,20 +40,20 @@ import {
   MatRadioModule,
   MatFormFieldControl
 } from '@angular/material';
-import { MatDialogModule } from '@angular/material/dialog';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
+import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
-import { ExpirationDateValidatorDirective } from './directives/expiration-date.directive';
+import { DateValidatorDirective } from './directives/date.directive';
 import { DataService } from './services/data.service';
 import { RouteDataService } from './services/route-data.service';
 import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
-import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
+import { ModifyDocumentComponent } from './pages/documents/components/modify-document/modify-document.component';
+import { UtilitiesService } from './services/utilities.service';
+import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { ModalComponent } from './components/modal/modal.component';
-
-
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
 
 @NgModule({
@@ -74,18 +74,20 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
     GetComponent,
     PostComponent,
     SideMenuComponent,
-    AddNewCardComponent,
+    ModifyCardComponent,
     CardTableComponent,
     CardItemComponent,
     UsernameValidatorDirective,
     CardTypeValidatorDirective,
-    ExpirationDateValidatorDirective,
+    DocumentTypeValidatorDirective,
+    DateValidatorDirective,
     MatchFilterCardPipe,
     CardDetailComponent,
     DocumentItemComponent,
     DocumentTableComponent,
     MatchFilterDocumentPipe,
     ItemMenuComponent,
+    ModifyDocumentComponent,
     ModalComponent,
     DocumentDetailComponent
   ],
@@ -107,15 +109,10 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
     MatAutocompleteModule,
     MatIconModule,
     MatToolbarModule,
-    MatRadioModule,
-    MatDialogModule
+    MatRadioModule
   ],
-  providers: [
-    HttpService,
-    DataService,
-    RouteDataService
-  ],
-  entryComponents: [AddNewCardComponent],
+  providers: [HttpService, DataService, RouteDataService, UtilitiesService],
+  entryComponents: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

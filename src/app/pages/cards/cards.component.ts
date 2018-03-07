@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Card } from '../../datamodels/card';
-import { AddNewCardComponent } from './components/add-new-card/add-new-card.component';
-import {MatDialog} from '@angular/material';
+import { ModifyCardComponent } from './components/modify-card/modify-card.component';
+import { MatDialog } from '@angular/material';
 
 import { DataService } from '../../services/data.service';
 import { HttpService } from '../../services/http.service';
 
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
-
 
 @Component({
   selector: 'app-cards',
@@ -19,14 +18,22 @@ export class CardsComponent implements OnInit {
 
   cardList: Card[] = [];
 
+  editCard: Card = null; // Card to be edited
+
   showAddNewModal = false;
 
-  @ViewChild(AddNewCardComponent) addNewCardComponent: AddNewCardComponent;
+  showEditModal = false;
+
+  @ViewChild('addNewCardComponent') addNewCardComponent: ModifyCardComponent;
+
+  @ViewChild('editCardComponent') editCardComponent: ModifyCardComponent;
 
   @ViewChild('addNewCardForm') addNewCardForm: NgForm;
 
+  @ViewChild('editCardForm') editCardForm: NgForm;
+
   constructor(public dataService: DataService) {
-    this.dataService.cardList.subscribe( (cardList) => {
+    this.dataService.cardList.subscribe((cardList) => {
       this.cardList = cardList;
     });
 
@@ -35,10 +42,23 @@ export class CardsComponent implements OnInit {
   ngOnInit() {
   }
 
+  setEditCard(card: any) {
+    this.editCard = card;
+    this.showEditModal = true;
+  }
+
   submitNewCard() {
     this.addNewCardComponent.addNewCard().then(() => {
       this.showAddNewModal = false;
       this.addNewCardForm.resetForm();
+    });
+  }
+
+  submitEditCard() {
+    this.editCardComponent.editCard(this.editCard).then(() => {
+      this.showEditModal = false;
+      this.editCard = null;
+      this.editCardForm.resetForm();
     });
   }
 

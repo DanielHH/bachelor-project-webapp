@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
+  @Output() editItem = new EventEmitter<any>();
 
   cardTypeList: CardType[] = [];
   userList: User[] = [];
@@ -93,5 +94,12 @@ export class CardItemComponent implements OnInit {
   route() {
     this.routeDataService.card.next(this.cardItem);
     this.router.navigate(['card-detail']);
+  }
+
+  /**
+   * Set card to be outputted for editing
+  */
+  edit() {
+    this.editItem.next(this.cardItem);
   }
 }

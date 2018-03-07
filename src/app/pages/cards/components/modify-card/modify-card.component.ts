@@ -9,13 +9,14 @@ import { map } from 'rxjs/operators/map';
 import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
-  selector: 'app-add-new-card',
-  templateUrl: './add-new-card.component.html',
-  styleUrls: ['./add-new-card.component.scss']
+  selector: 'app-modify-card',
+  templateUrl: './modify-card.component.html',
+  styleUrls: ['./modify-card.component.scss']
 })
-export class AddNewCardComponent implements OnInit {
+export class ModifyCardComponent implements OnInit {
   // Form variables
   cardTypeInput = '';
   cardNumberInput = '';
@@ -54,9 +55,31 @@ export class AddNewCardComponent implements OnInit {
 
   @Input() cardList: Card[];
 
+  /**
+   * Set form to display card.
+   */
+  @Input('card') set card(card: Card) {
+    if (card) {
+      this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
+      this.cardNumberInput = card.cardNumber;
+      this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
+      this.expirationDateDatepickerInput = this.expirationDateInput;
+      this.locationInput = card.location;
+      this.commentInput = card.comment;
+      if (card.userID != null) {
+        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).username;
+        this.addCardHolder = true;
+      } else {
+        this.usernameInput = '';
+        this.addCardHolder = false;
+      }
+    }
+  }
+
   constructor(
     private httpService: HttpService,
-    public dataService: DataService
+    public dataService: DataService,
+    private utilitiesService: UtilitiesService
   ) {
     this.dataService.cardTypeList.subscribe(cardTypes => {
       this.cardTypes = cardTypes;
@@ -68,6 +91,10 @@ export class AddNewCardComponent implements OnInit {
 
     this.dataService.userList.subscribe(users => {
       this.users = users;
+      this.usernameControl.updateValueAndValidity({
+        onlySelf: false,
+        emitEvent: true
+      });
     });
   }
 
@@ -98,7 +125,7 @@ export class AddNewCardComponent implements OnInit {
   }
 
   /**
-   * Attempts to submit new card to database and returns true if successful, else false
+   * Attempts to submit new card to database
    */
   addNewCard(): Promise<any> {
     return new Promise(resolve => {
@@ -110,8 +137,8 @@ export class AddNewCardComponent implements OnInit {
         newCard.cardNumber = this.cardNumberInput;
         newCard.location = this.locationInput;
         newCard.expirationDate = new Date(this.expirationDateInput);
-        newCard.creationDate = new Date();
-        newCard.modifiedDate = new Date();
+        newCard.creationDate = this.utilitiesService.getLocalDate();
+        newCard.modifiedDate = this.utilitiesService.getLocalDate();
         newCard.comment = this.commentInput;
         newCard.status = 1;
 
@@ -124,6 +151,39 @@ export class AddNewCardComponent implements OnInit {
         this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
           if (res.message === 'success') {
             this.cardList.unshift(res.data);
+            this.dataService.cardList.next(this.cardList);
+
+            this.resetForm();
+            resolve();
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Attempts to submit edited card to database
+   */
+  editCard(card: Card): Promise<any> {
+    return new Promise(resolve => {
+
+      if (this.isValidInput()) {
+        card.cardType = this.getCardTypeID(this.cardTypeInput);
+        card.cardNumber = this.cardNumberInput;
+        card.location = this.locationInput;
+        card.expirationDate = new Date(this.expirationDateInput);
+        card.creationDate = this.utilitiesService.getLocalDate();
+        card.modifiedDate = this.utilitiesService.getLocalDate();
+        card.comment = this.commentInput;
+
+        if (this.addCardHolder && this.isValidUsername()) {
+          card.userID = this.getUserID(this.usernameInput);
+        } else {
+          card.userID = null;
+        }
+
+        this.httpService.httpPut<Card>('updateCard/', card).then(res => {
+          if (res.message === 'success') {
             this.dataService.cardList.next(this.cardList);
 
             this.resetForm();
@@ -212,10 +272,8 @@ export class AddNewCardComponent implements OnInit {
    * Returns true if entered expiration date is valid, else false.
    */
   isValidExpirationDate() {
-    return (
-      !this.expirationDateControl.hasError('required') &&
-      !this.expirationDateControl.hasError('expirationDate')
-    );
+    return !this.expirationDateControl.hasError('required') &&
+    !this.expirationDateControl.hasError('dateFormat');
   }
 
   /**
@@ -231,6 +289,9 @@ export class AddNewCardComponent implements OnInit {
     );
   }
 
+  /**
+   * Resets form by resetting form controls and clearing inputs
+   */
   resetForm() {
     this.cardTypeControl.reset();
     this.cardNumberControl.reset();

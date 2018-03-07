@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 })
 export class DocumentItemComponent implements OnInit {
   @Input() documentItem: Document;
+  @Output() editItem = new EventEmitter<any>();
 
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
@@ -78,5 +79,12 @@ export class DocumentItemComponent implements OnInit {
   route() {
     this.routeDataService.document.next(this.documentItem);
     this.router.navigate(['document-detail']);
+  }
+
+  /**
+   * Set document to be outputted for editing
+  */
+  edit() {
+    this.editItem.next(this.documentItem);
   }
 }

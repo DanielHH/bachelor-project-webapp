@@ -66,7 +66,7 @@
       <!--Input-->
       <input matInput id="expirationDateInput" name="expirationDateInput" type="text" [(ngModel)]="expirationDateInput" placeholder="Expiration date"
         [style.color]="isValidExpirationDate() ? 'black' : 'gray'" maxlength="10" (input)="setExpirationDateToDatePicker();"
-        [formControl]="expirationDateControl" appExpirationDate required>
+        [formControl]="expirationDateControl" appDate required>
       <!--Check and clear-->
       <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
         <mat-icon [style.color]="'green'" *ngIf="isValidExpirationDate()">done</mat-icon>
@@ -110,8 +110,10 @@
   <div class="col-12 wide-center">
     <label class="p-2">Add cardholder:</label>
     <mat-radio-group>
-      <mat-radio-button class="p-2" color="primary" [checked]="true" value="no" (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
-      <mat-radio-button class="p-2" color="primary" value="yes" (change)="addCardHolder = !addCardHolder">Yes</mat-radio-button>
+      <mat-radio-button class="p-2" color="primary" [checked]="!addCardHolder" value="no"
+      (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
+      <mat-radio-button class="p-2" color="primary" [checked]="addCardHolder" value="yes"
+      (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">Yes</mat-radio-button>
     </mat-radio-group>
   </div>
 </div>
@@ -152,10 +154,3 @@
   <div class="col-0 col-md-3"></div>
 </div>
 
-<!-- Row submit & discard buttons
-  <div class="row">
-    <div class="col-12 wide-center">
-      <button mat-raised-button id="discardBtn" type="button" (click)="false" class="m-3" color="warn">Discard</button>
-      <button mat-raised-button id="submitBtn" type="submit" class="m-3" color="primary">Submit</button>
-    </div>
-  </div>-->
