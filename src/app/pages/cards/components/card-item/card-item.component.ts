@@ -7,6 +7,7 @@ import { User } from '../../../../datamodels/user';
 import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
+import { HttpService } from '../../../../services/http.service';
 
 @Component({
   selector: 'app-card-item',
@@ -24,7 +25,7 @@ export class CardItemComponent implements OnInit {
 
   showReturnModal = false;
 
-  constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router) {
+  constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -33,36 +34,28 @@ export class CardItemComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   /**
-   * Submits a checkout
+   * Change card status
    */
-  submitRequest() {
-    this.setStatus(2); // TODO: ENUM/DATATYPE?
-  }
-
-  /**
-   * Submits a checkin
-   */
-  submitReturn() {
-    this.setStatus(1); // TODO: ENUM/DATATYPE?
-  }
-
-  /**
-   * Inverts the card status active/inactive
-   */
-  setStatus(status: number) {
-    // TODO: ENUM/DATATYPE?
+  setCardStatus(status: number) {
     this.cardItem.status = status;
+    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+      if (res.message === 'success') {
+        this.showRequestModal = false;
+        this.showReturnModal = false;
+      }
+    });
   }
+
 
   /**
    * Returns the name of the card type corresponding to the cardType
    */
   displayCardType() {
     if (this.cardItem.cardType > 0) {
-      const cardTypeToDisplay = _.find( this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
+      const cardTypeToDisplay = _.find(this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
       if (cardTypeToDisplay) {
         return cardTypeToDisplay.name;
       }
@@ -101,5 +94,17 @@ export class CardItemComponent implements OnInit {
   */
   edit() {
     this.editItem.next(this.cardItem);
+  }
+
+  /**
+   * Show modal based on status
+   */
+  showModal() {
+    if (this.cardItem.status == 1) {
+      this.showRequestModal = true;
+    }
+    else {
+      this.showReturnModal = true;
+    }
   }
 }
