@@ -82,9 +82,9 @@
       <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
       <!--Errors-->
       <mat-error *ngIf="expirationDateControl.hasError('required')">
-        Please select a date
+        Please select an expiration date
       </mat-error>
-      <mat-error *ngIf="expirationDateControl.hasError('expirationDate')">
+      <mat-error *ngIf="expirationDateControl.hasError('dateFormat')">
         Invalid date format
       </mat-error>
     </mat-form-field>
