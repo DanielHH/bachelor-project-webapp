@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import * as _ from 'lodash';
+import { ModifyCardComponent } from '../modify-card/modify-card.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-card-table',
@@ -10,7 +12,20 @@ import * as _ from 'lodash';
 export class CardTableComponent implements OnInit {
 
   @Input() cardList: Card[];
-  @Output() editItem = new EventEmitter<any>();
+
+  editCard: Card = null; // Card to be edited
+
+  showAddNewModal = false;
+
+  showEditModal = false;
+
+  @ViewChild('addNewCardComponent') addNewCardComponent: ModifyCardComponent;
+
+  @ViewChild('editCardComponent') editCardComponent: ModifyCardComponent;
+
+  @ViewChild('addNewCardForm') addNewCardForm: NgForm;
+
+  @ViewChild('editCardForm') editCardForm: NgForm;
 
   filterInput = '';
 
@@ -80,7 +95,6 @@ export class CardTableComponent implements OnInit {
 
   }
 
-
   /**
    * Sets the order to sort by
    * @param order
@@ -93,10 +107,32 @@ export class CardTableComponent implements OnInit {
   }
 
   /**
-   * Set item to be outputted for editing.
+   * Set card to be edited. Called when edit option was clicked.
    */
-  edit(item: Card) {
-    this.editItem.next(item);
+  setEditCard(card: any) {
+    this.editCard = card;
+    this.showEditModal = true;
+  }
+
+  /**
+   * Triggers submission of new card to server.
+   */
+  submitNewCard() {
+    this.addNewCardComponent.addNewCard().then(() => {
+      this.showAddNewModal = false;
+      this.addNewCardForm.resetForm();
+    });
+  }
+
+  /**
+   * Triggers submission of edited card to server.
+   */
+  submitEditCard() {
+    this.editCardComponent.editCard(this.editCard).then(() => {
+      this.showEditModal = false;
+      this.editCard = null;
+      this.editCardForm.resetForm();
+    });
   }
 
 }

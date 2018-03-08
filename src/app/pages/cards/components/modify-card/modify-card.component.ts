@@ -125,6 +125,28 @@ export class ModifyCardComponent implements OnInit {
   }
 
   /**
+   * Sets fields in card according to form
+   * @param card Card to set form data to
+   */
+  setCardFromForm(card: Card) {
+    if (this.isValidInput()) {
+      card.cardType = this.getCardTypeID(this.cardTypeInput);
+      card.cardNumber = this.cardNumberInput;
+      card.location = this.locationInput;
+      card.expirationDate = new Date(this.expirationDateInput);
+      card.comment = this.commentInput;
+
+      if (this.addCardHolder && this.isValidUsername()) {
+        card.userID = this.getUserID(this.usernameInput);
+      } else {
+        card.userID = null;
+      }
+
+      card.modifiedDate = this.utilitiesService.getLocalDate();
+    }
+  }
+
+  /**
    * Attempts to submit new card to database
    */
   addNewCard(): Promise<any> {
@@ -133,20 +155,10 @@ export class ModifyCardComponent implements OnInit {
       if (this.isValidInput()) {
         const newCard = new Card();
 
-        newCard.cardType = this.getCardTypeID(this.cardTypeInput);
-        newCard.cardNumber = this.cardNumberInput;
-        newCard.location = this.locationInput;
-        newCard.expirationDate = new Date(this.expirationDateInput);
-        newCard.creationDate = this.utilitiesService.getLocalDate();
-        newCard.modifiedDate = this.utilitiesService.getLocalDate();
-        newCard.comment = this.commentInput;
-        newCard.status = 1;
+        this.setCardFromForm(newCard);
 
-        if (this.addCardHolder && this.isValidUsername()) {
-          newCard.userID = this.getUserID(this.usernameInput);
-        } else {
-          newCard.userID = null;
-        }
+        newCard.creationDate = this.utilitiesService.getLocalDate();
+        newCard.status = 1;
 
         this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
           if (res.message === 'success') {
@@ -168,19 +180,7 @@ export class ModifyCardComponent implements OnInit {
     return new Promise(resolve => {
 
       if (this.isValidInput()) {
-        card.cardType = this.getCardTypeID(this.cardTypeInput);
-        card.cardNumber = this.cardNumberInput;
-        card.location = this.locationInput;
-        card.expirationDate = new Date(this.expirationDateInput);
-        card.creationDate = this.utilitiesService.getLocalDate();
-        card.modifiedDate = this.utilitiesService.getLocalDate();
-        card.comment = this.commentInput;
-
-        if (this.addCardHolder && this.isValidUsername()) {
-          card.userID = this.getUserID(this.usernameInput);
-        } else {
-          card.userID = null;
-        }
+        this.setCardFromForm(card);
 
         this.httpService.httpPut<Card>('updateCard/', card).then(res => {
           if (res.message === 'success') {

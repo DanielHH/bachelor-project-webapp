@@ -25,7 +25,12 @@ export class DocumentItemComponent implements OnInit {
 
   showReturnModal = false;
 
-  constructor(public dataService: DataService, private routeDataService: RouteDataService, private router: Router, private httpService: HttpService) {
+  constructor(
+    public dataService: DataService,
+    private routeDataService: RouteDataService,
+    private router: Router,
+    private httpService: HttpService
+  ) {
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
@@ -88,10 +93,9 @@ export class DocumentItemComponent implements OnInit {
    * Show modal based on status
    */
   showModal() {
-    if (this.documentItem.status == 1) {
+    if (this.documentItem.status === 1) {
       this.showRequestModal = true;
-    }
-    else {
+    } else {
       this.showReturnModal = true;
     }
   }

@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import * as _ from 'lodash';
+import { ModifyDocumentComponent } from '../modify-document/modify-document.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-document-table',
@@ -10,7 +12,20 @@ import * as _ from 'lodash';
 export class DocumentTableComponent implements OnInit {
 
   @Input() documentList: Document[];
-  @Output() editItem = new EventEmitter<any>();
+
+  editDocument: Document = null; // Document to be edited
+
+  showAddNewModal = false;
+
+  showEditModal = false;
+
+  @ViewChild('addNewDocumentComponent') addNewDocumentComponent: ModifyDocumentComponent;
+
+  @ViewChild('editDocumentComponent') editDocumentComponent: ModifyDocumentComponent;
+
+  @ViewChild('addNewDocumentForm') addNewDocumentForm: NgForm;
+
+  @ViewChild('editDocumentForm') editDocumentForm: NgForm;
 
   filterInput = '';
 
@@ -93,10 +108,32 @@ export class DocumentTableComponent implements OnInit {
   }
 
   /**
-   * Set item to be outputted for editing.
+   * Set document to be edited. Called when edit option was clicked.
    */
-  edit(item: Document) {
-    this.editItem.next(item);
+  setEditDocument(document: any) {
+    this.editDocument = document;
+    this.showEditModal = true;
+  }
+
+  /**
+   * Triggers submission of new document to server.
+   */
+  submitNewDocument() {
+    this.addNewDocumentComponent.addNewDocument().then(() => {
+      this.showAddNewModal = false;
+      this.addNewDocumentForm.resetForm();
+    });
+  }
+
+  /**
+   * Triggers submission of edited document to server.
+   */
+  submitEditDocument() {
+    this.editDocumentComponent.editDocument(this.editDocument).then(() => {
+      this.showEditModal = false;
+      this.editDocument = null;
+      this.editDocumentForm.resetForm();
+    });
   }
 
 }

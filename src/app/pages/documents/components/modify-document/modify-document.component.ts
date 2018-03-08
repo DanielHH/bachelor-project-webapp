@@ -52,9 +52,6 @@ export class ModifyDocumentComponent implements OnInit {
 
   usernameControl = new FormControl('', Validators.required);
 
-
-
-
   // Database data lists
   docTypes = [];
   users = [];
@@ -78,12 +75,20 @@ export class ModifyDocumentComponent implements OnInit {
       public dataService: DataService,
       private utilitiesService: UtilitiesService) {
 
-    this.dataService.documentTypeList.subscribe( (docTypes) => {
-      this.docTypes = docTypes;
+    this.dataService.documentTypeList.subscribe(cardTypes => {
+      this.docTypes = cardTypes;
+      this.docTypeControl.updateValueAndValidity({
+        onlySelf: false,
+        emitEvent: true
+      });
     });
 
-    this.dataService.userList.subscribe( (users) => {
+    this.dataService.userList.subscribe(users => {
       this.users = users;
+      this.usernameControl.updateValueAndValidity({
+        onlySelf: false,
+        emitEvent: true
+      });
     });
   }
 
