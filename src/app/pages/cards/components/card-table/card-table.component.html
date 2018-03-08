@@ -41,7 +41,7 @@
 
         <!-- Add cards to the table   -->
         <div *ngFor="let card of cardList | matchFilterCard:filterInput">
-            <app-card-item *ngIf="card.status == 1 || card.status == 2" [cardItem]="card"></app-card-item>
+            <app-card-item *ngIf="card.status == 1 || card.status == 2" [cardItem]="card" (editItem)="edit($event)"></app-card-item>
         </div>
     </div>
 </div>

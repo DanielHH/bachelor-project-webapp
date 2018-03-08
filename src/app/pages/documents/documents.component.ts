@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Document } from '../../datamodels/document';
-import {MatDialog} from '@angular/material';
 
 import { DataService } from '../../services/data.service';
 import { HttpService } from '../../services/http.service';
+import { ModifyDocumentComponent } from './components/modify-document/modify-document.component';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -15,7 +16,21 @@ export class DocumentsComponent implements OnInit {
 
   documentList: Document[] = [];
 
-  constructor(public dataService: DataService, public dialog: MatDialog) {
+  editDocument: Document = null; // Document to be edited
+
+  showAddNewModal = false;
+
+  showEditModal = false;
+
+  @ViewChild('addNewDocumentComponent') addNewDocumentComponent: ModifyDocumentComponent;
+
+  @ViewChild('editDocumentComponent') editDocumentComponent: ModifyDocumentComponent;
+
+  @ViewChild('addNewDocumentForm') addNewDocumentForm: NgForm;
+
+  @ViewChild('editDocumentForm') editDocumentForm: NgForm;
+
+  constructor(public dataService: DataService) {
     this.dataService.documentList.subscribe( (documentList) => {
       this.documentList = documentList;
     });
@@ -23,6 +38,26 @@ export class DocumentsComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  setEditDocument(document: any) {
+    this.editDocument = document;
+    this.showEditModal = true;
+  }
+
+  submitNewDocument() {
+    this.addNewDocumentComponent.addNewDocument().then(() => {
+      this.showAddNewModal = false;
+      this.addNewDocumentForm.resetForm();
+    });
+  }
+
+  submitEditDocument() {
+    this.editDocumentComponent.editDocument(this.editDocument).then(() => {
+      this.showEditModal = false;
+      this.editDocument = null;
+      this.editDocumentForm.resetForm();
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import * as _ from 'lodash';
 
@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 export class DocumentTableComponent implements OnInit {
 
   @Input() documentList: Document[];
+  @Output() editItem = new EventEmitter<any>();
 
   filterInput = '';
 
@@ -89,6 +90,13 @@ export class DocumentTableComponent implements OnInit {
       case 'asc': return 'desc';
       default: return 'asc';
     }
+  }
+
+  /**
+   * Set item to be outputted for editing.
+   */
+  edit(item: Document) {
+    this.editItem.next(item);
   }
 
 }

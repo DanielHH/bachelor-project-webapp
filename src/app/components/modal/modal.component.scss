@@ -1,0 +1,23 @@
+.modal-dialog {
+  -webkit-max-width: 50%;
+  -moz-max-width: 50%;
+  -ms-max-width: 50%;
+  -o-max-width: 50%;
+  max-width: 50%;
+  .modal-content {
+    .modal-header {
+      background-color: #0d47a1 !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 0 !important;
+    }
+
+    .modal-footer {
+      justify-content: center !important;
+
+      button {
+        min-width: 120px;
+      }
+    }
+  }
+}

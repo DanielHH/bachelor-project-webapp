@@ -1,42 +1,38 @@
 <div class="row">
-    <div class="col-1" *ngIf="cardItem.status == 2">
-        <button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" data-toggle="modal" data-target="#requestModal" (click)="returnModClick.show()" mdbRippleRadius>Return</button>
+    <div class="col-1">
+        <button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="cardItem.status == 2" [class.btn-success]="cardItem.status == 1"
+            (click)="showModal()" mdbRippleRadius>
+            <span *ngIf="cardItem.status == 1">Request</span>
+            <span *ngIf="cardItem.status == 2">Return</span>
+        </button>
     </div>
-
-    <div class="col-1" *ngIf="cardItem.status == 1">
-        <button type="button" class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1" data-toggle="modal" data-target="#requestModal" (click)="requestModClick.show()" mdbRippleRadius>Request</button>
-    </div>
-
     <div class="col">{{displayCardType()}}</div>
-    <div class="col">{{cardItem?.cardNumber}}</div>
+    <div class="col">
+        <span class="detail-link" (click)="route()">{{cardItem?.cardNumber}}</span>
+    </div>
     <div class="col">{{displayUserName()}}</div>
     <div class="col">{{cardItem?.location}}</div>
     <div class="col">{{cardItem?.comment}}</div>
     <div class="col">{{displayExpirationDate()}}</div>
     <div class="col-1">
-        <app-item-menu [item]="cardItem"></app-item-menu>
+        <app-item-menu [item]="cardItem" (editItem)="edit()"></app-item-menu>
     </div>
 </div>
 
-<!-- Modal for return -->
-<div mdbModal #returnModClick="mdb-modal" class="modal fade" id="return" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title w-100" id="myModalLabel">Return a card</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="returnModClick.hide()">
-      <span aria-hidden="true">×</span>
-    </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to return the following card?
-                <br><br>
-                <ul>
-                    <li>Card type: {{cardItem?.cardType}}</li>
-                    <li>Card number: {{cardItem?.cardNumber}}</li>
-                    <li>User ID: {{cardItem?.userID}}</li>
-                </ul>
+<form #requestCardForm="ngForm" (ngSubmit)="setCardStatus(2)">
+    <app-modal [(show)]="showRequestModal" [modalTitle]="'Request card'" [submitName]="'Request'">
+        Are you sure you want to request the following card?
+        <br>
+        <br>
+        <ul>
+            <li>Card type: {{cardItem?.cardType}}</li>
+            <li>Card number: {{cardItem?.cardNumber}}</li>
+            <li>User ID: {{cardItem?.userID}}</li>
+        </ul>
+    </app-modal>
+</form>
 
+<<<<<<< HEAD
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="returnModClick.hide()" mdbRippleRadius>Cancel</button>
@@ -66,3 +62,17 @@
         </div>
     </div>
 </div>
+=======
+<form #returnCardForm="ngForm" (ngSubmit)="setCardStatus(1)">
+    <app-modal [(show)]="showReturnModal" [modalTitle]="'Return card'" [submitName]="'Return'">
+        Are you sure you want to return the following card?
+        <br>
+        <br>
+        <ul>
+            <li>Card type: {{cardItem?.cardType}}</li>
+            <li>Card number: {{cardItem?.cardNumber}}</li>
+            <li>User ID: {{cardItem?.userID}}</li>
+        </ul>
+    </app-modal>
+</form>
+>>>>>>> dev

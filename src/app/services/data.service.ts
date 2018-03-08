@@ -225,7 +225,6 @@ export class DataService {
     this.httpService.httpGet<StatusType>('getStatusTypes').then(data => {
       this._statusTypeList = data as StatusType[];
       this.statusTypeList.next(this._statusTypeList);
-      console.log(data);
     });
   }
 
