@@ -42,7 +42,7 @@ export class DocumentItemComponent implements OnInit {
   setDocumentStatus(status: number) {
     this.documentItem.status = status;
     this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-      if (res.message === 'success') {
+      if (res['message'] === 'success') {
         this.showRequestModal = false;
         this.showReturnModal = false;
       }

@@ -48,6 +48,7 @@ export class AuthService {
           console.log('failed login');
           return false;
         }*/
+
         // TODO: replace placeholder lines below with the block above (once server can respond)
         localStorage.setItem('token', 'faked-jwt');
         return true;

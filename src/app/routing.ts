@@ -56,13 +56,15 @@ export const routes: Routes = [
   {
     path: 'card-detail',
     component: CardDetailComponent,
-    data: {name: 'Kortdetaljer'}
+    data: {name: 'Kortdetaljer'},
+    canActivate: [AuthGuard]
   },
 
   {
     path: 'document-detail',
     component: DocumentDetailComponent,
-    data: {name: 'Dokumentdetaljer'}
+    data: {name: 'Dokumentdetaljer'},
+    canActivate: [AuthGuard]
   },
 
   {

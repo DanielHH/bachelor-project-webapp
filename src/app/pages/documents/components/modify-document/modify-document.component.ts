@@ -151,8 +151,10 @@ export class ModifyDocumentComponent implements OnInit {
         newDoc.creationDate = this.utilitiesService.getLocalDate();
 
         this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
-          if (res.message === 'success') {
-            this.documentList.unshift(res.data);
+          if (res['message'] === 'success') {
+            // this.documentList.unshift(res.data);
+            console.log('res is: ', res);
+            this.documentList.unshift(res['data'] as Document);
             this.dataService.documentList.next(this.documentList);
 
             this.resetForm();
@@ -173,7 +175,7 @@ export class ModifyDocumentComponent implements OnInit {
         this.setDocumentFromForm(document);
 
         this.httpService.httpPut<Document>('updateDocument/', document).then(res => {
-          if (res.message === 'success') {
+          if (res['message'] === 'success') {
             this.dataService.documentList.next(this.documentList);
             this.resetForm();
             resolve();

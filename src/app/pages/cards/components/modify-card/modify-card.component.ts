@@ -149,8 +149,9 @@ export class ModifyCardComponent implements OnInit {
         }
 
         this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
-          if (res.message === 'success') {
-            this.cardList.unshift(res.data);
+          if (res['message'] === 'success') {
+            console.log('res[data] is, ', res['data']);
+            this.cardList.unshift(res['data'] as Card);
             this.dataService.cardList.next(this.cardList);
 
             this.resetForm();
@@ -183,7 +184,7 @@ export class ModifyCardComponent implements OnInit {
         }
 
         this.httpService.httpPut<Card>('updateCard/', card).then(res => {
-          if (res.message === 'success') {
+          if (res['message'] === 'success') {
             this.dataService.cardList.next(this.cardList);
 
             this.resetForm();

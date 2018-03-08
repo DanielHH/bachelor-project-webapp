@@ -25,7 +25,10 @@ export class CardItemComponent implements OnInit {
 
   showReturnModal = false;
 
-  constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router, private httpService: HttpService) {
+  constructor(private dataService: DataService,
+              private routeDataService: RouteDataService,
+              private router: Router,
+              private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -42,7 +45,7 @@ export class CardItemComponent implements OnInit {
   setCardStatus(status: number) {
     this.cardItem.status = status;
     this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-      if (res.message === 'success') {
+      if (res['message'] === 'success') {
         this.showRequestModal = false;
         this.showReturnModal = false;
       }
@@ -100,10 +103,9 @@ export class CardItemComponent implements OnInit {
    * Show modal based on status
    */
   showModal() {
-    if (this.cardItem.status == 1) {
+    if (this.cardItem.status === 1) {
       this.showRequestModal = true;
-    }
-    else {
+    } else {
       this.showReturnModal = true;
     }
   }
