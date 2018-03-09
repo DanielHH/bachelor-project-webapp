@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Directive, Inject } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
-import {UtilitiesService} from '../../../../services/utilities.service';
-import { FormControl, Validators} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
+import { UtilitiesService } from '../../../../services/utilities.service';
+import { FormControl, Validators } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { startWith } from 'rxjs/operators/startWith';
+import { map } from 'rxjs/operators/map';
 import * as moment from 'moment';
 import { MatDialogRef } from '@angular/material';
 import { DataService } from '../../../../services/data.service';
@@ -58,22 +58,22 @@ export class ModifyDocumentComponent implements OnInit {
 
   // Filtered lists
   filteredDocTypes: Observable<any[]> = this.docTypeControl.valueChanges
-  .pipe(
-    startWith(''),
-    map(docType => docType ? this.filterDocTypes(docType) : this.docTypes.slice())
-  );
+    .pipe(
+      startWith(''),
+      map(docType => docType ? this.filterDocTypes(docType) : this.docTypes.slice())
+    );
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges
     .pipe(
       startWith(''),
       map(val => this.filterUsers(val))
-  );
+    );
 
   @Input() documentList: Document[];
 
   constructor(private httpService: HttpService,
-      public dataService: DataService,
-      private utilitiesService: UtilitiesService) {
+    public dataService: DataService,
+    private utilitiesService: UtilitiesService) {
 
     this.dataService.documentTypeList.subscribe(cardTypes => {
       this.docTypes = cardTypes;
@@ -158,6 +158,8 @@ export class ModifyDocumentComponent implements OnInit {
         this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
           if (res.message === 'success') {
             this.documentList.unshift(res.data);
+            //Trigger view refresh
+            this.documentList = this.documentList.slice();
             this.dataService.documentList.next(this.documentList);
 
             this.resetForm();
@@ -349,8 +351,8 @@ export class ModifyDocumentComponent implements OnInit {
   */
   isValidInput() {
     return this.isValidDocType() && this.isValidDocNumber() && this.isValidRegistrationDate() &&
-    this.isValidDocDate() && this.isValidDocName() && this.isValidSender() && this.isValidLocation() &&
-    this.isValidUsername();
+      this.isValidDocDate() && this.isValidDocName() && this.isValidSender() && this.isValidLocation() &&
+      this.isValidUsername();
   }
 
   /**

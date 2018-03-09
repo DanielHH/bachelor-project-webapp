@@ -98,7 +98,7 @@ export class ModifyCardComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   /**
    * Filters list of cardTypes based on cardType input
@@ -163,6 +163,8 @@ export class ModifyCardComponent implements OnInit {
         this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
           if (res.message === 'success') {
             this.cardList.unshift(res.data);
+            //Trigger view refresh
+            this.cardList = this.cardList.slice();
             this.dataService.cardList.next(this.cardList);
 
             this.resetForm();
@@ -273,7 +275,7 @@ export class ModifyCardComponent implements OnInit {
    */
   isValidExpirationDate() {
     return !this.expirationDateControl.hasError('required') &&
-    !this.expirationDateControl.hasError('dateFormat');
+      !this.expirationDateControl.hasError('dateFormat');
   }
 
   /**
