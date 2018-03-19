@@ -1,0 +1,10 @@
+.main-container {
+  display: flex;
+
+  .router-container {
+    padding: 8px 24px;
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+  }
+}

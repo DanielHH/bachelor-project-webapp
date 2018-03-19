@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-1">
+        <button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="cardItem.status == 2" [class.btn-success]="cardItem.status == 1"
+            (click)="showModal()" mdbRippleRadius>
+            <span *ngIf="cardItem.status == 1">Request</span>
+            <span *ngIf="cardItem.status == 2">Return</span>
+        </button>
+    </div>
+    <div class="col">{{displayCardType()}}</div>
+    <div class="col">
+        <span class="detail-link" (click)="route()">{{cardItem?.cardNumber}}</span>
+    </div>
+    <div class="col">{{displayUserName()}}</div>
+    <div class="col">{{cardItem?.location}}</div>
+    <div class="col">{{cardItem?.comment}}</div>
+    <div class="col">{{displayExpirationDate()}}</div>
+    <div class="col-1">
+        <app-item-menu [item]="cardItem" (editItem)="edit()"></app-item-menu>
+    </div>
+</div>
+
+<form #requestCardForm="ngForm" (ngSubmit)="setCardStatus(2)">
+    <app-modal [(show)]="showRequestModal" [modalTitle]="'Request card'" [submitName]="'Request'">
+        Are you sure you want to request the following card?
+        <br>
+        <br>
+        <ul>
+            <li>Card type: {{cardItem?.cardType}}</li>
+            <li>Card number: {{cardItem?.cardNumber}}</li>
+            <li>User ID: {{cardItem?.userID}}</li>
+        </ul>
+    </app-modal>
+</form>
+
+<form #returnCardForm="ngForm" (ngSubmit)="setCardStatus(1)">
+    <app-modal [(show)]="showReturnModal" [modalTitle]="'Return card'" [submitName]="'Return'">
+        Are you sure you want to return the following card?
+        <br>
+        <br>
+        <ul>
+            <li>Card type: {{cardItem?.cardType}}</li>
+            <li>Card number: {{cardItem?.cardNumber}}</li>
+            <li>User ID: {{cardItem?.userID}}</li>
+        </ul>
+    </app-modal>
+</form>

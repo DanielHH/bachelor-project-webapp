@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-1">
+        <button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="documentItem.status == 2"
+            [class.btn-success]="documentItem.status == 1" (click)="showModal()" mdbRippleRadius>
+            <span *ngIf="documentItem.status == 1">Request</span>
+            <span *ngIf="documentItem.status == 2">Return</span>
+        </button>
+    </div>
+
+    <div class="col">{{displayDocumentType()}}</div>
+    <div class="col">
+      <span class="detail-link" (click)="route()">{{documentItem?.documentNumber}}</span>
+    </div>
+    <div class="col">{{documentItem.name}}</div>
+    <div class="col">{{displayUserName()}}</div>
+    <div class="col">{{documentItem?.location}}</div>
+    <div class="col">{{documentItem?.comment}}</div>
+    <div class="col-1">
+        <app-item-menu [item]="documentItem" (editItem)="edit()"></app-item-menu>
+    </div>
+</div>
+
+<form #requestDocumentForm="ngForm" (ngSubmit)="setDocumentStatus(2)">
+    <app-modal [(show)]="showRequestModal" [modalTitle]="'Request document'" [submitName]="'Request'">
+        Are you sure you want to request the following document?
+        <br>
+        <br>
+        <ul>
+            <li>Document type: {{displayDocumentType()}}</li>
+            <li>Document number: {{documentItem?.documentNumber}}</li>
+            <li>User ID: {{displayUserName()}}</li>
+        </ul>
+    </app-modal>
+</form>
+
+<form #returnCardForm="ngForm" (ngSubmit)="setDocumentStatus(1)">
+    <app-modal [(show)]="showReturnModal" [modalTitle]="'Return document'" [submitName]="'Return'">
+        Are you sure you want to return the following document?
+        <br>
+        <br>
+        <ul>
+            <li>Document type: {{displayDocumentType()}}</li>
+            <li>Document number: {{documentItem?.documentNumber}}</li>
+            <li>User ID: {{displayUserName()}}</li>
+        </ul>
+    </app-modal>
+</form>

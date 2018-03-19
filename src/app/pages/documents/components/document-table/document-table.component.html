@@ -1,0 +1,70 @@
+<div class="card">
+    <div class="card-body">
+        <!-- Input field for filter -->
+        <div class="row">
+          <div class="col-4">
+              <mat-form-field>
+                  <!--Input-->
+                  <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
+                  maxlength="128" placeholder="Filter by">
+                  <!--Clear-->
+                  <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
+                  (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+              </mat-form-field>
+          </div>
+          <div class="col-6"></div>
+          <!-- Add new document button-->
+          <div class="col-2">
+            <button mat-raised-button (click)="showAddNewModal = true" color="primary">Add New Document</button>
+          </div>
+        </div>
+        <!-- Header row -->
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col" (click)="sortTableList('documentType')">
+            <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'"
+            [class.both-arrow]="orderDocumentType == ''">Type </span>
+          </div>
+          <div class="col" (click)="sortTableList('documentNumber')">
+            <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'"
+            [class.both-arrow]="orderDocumentNumber == ''">Number </span>
+          </div>
+          <div class="col" (click)="sortTableList('name')">
+            <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'"
+            [class.both-arrow]="orderName == ''">Name </span>
+          </div>
+          <div class="col" (click)="sortTableList('userID')">
+            <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
+            [class.both-arrow]="orderUserID == ''">User ID </span>
+          </div>
+          <div class="col" (click)="sortTableList('location')">
+            <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
+            [class.both-arrow]="orderLocation == ''">Location </span>
+          </div>
+          <div class="col" (click)="sortTableList('comment')">
+            <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
+            [class.both-arrow]="orderComment == ''">Comment </span>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        <hr>
+
+        <!-- Add cards to the table -->
+        <div *ngFor="let document of documentList | matchFilterDocument:filterInput">
+            <app-document-item *ngIf="document.status == 1 || document.status == 2" [documentItem]="document" (editItem)="setEditDocument($event)"></app-document-item>
+        </div>
+    </div>
+</div>
+
+<!-- Modals for adding new document or editing document -->
+<form #addNewDocumentForm="ngForm" (ngSubmit)="submitNewDocument()">
+  <app-modal [(show)]="showAddNewModal" [modalTitle]="'Add new document'" [closeName]="'Discard'" [submitName]="'Submit'">
+    <app-modify-document #addNewDocumentComponent [documentList]="documentList"></app-modify-document>
+  </app-modal>
+</form>
+
+<form #editDocumentForm="ngForm" (ngSubmit)="submitEditDocument()">
+  <app-modal [(show)]="showEditModal" [modalTitle]="'Edit document'" [closeName]="'Discard'" [submitName]="'Submit'">
+    <app-modify-document #editDocumentComponent [documentList]="documentList" [document]="editDocument"></app-modify-document>
+  </app-modal>
+</form>

@@ -1,0 +1,12 @@
+image: keymetrics/pm2:6
+stages:
+  - deploy
+deploy_prod:
+  stage: deploy
+  script:
+    - echo "make deploy"
+    - pm2 deploy ecosystem.config.js production
+  environment:
+    name: deploying
+  only:
+  - dev
