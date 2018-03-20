@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Directive, Inject } from '@angular/core';
+import { Component, OnInit, Input, Directive, Inject, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import { startWith } from 'rxjs/operators/startWith';
@@ -17,6 +17,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   styleUrls: ['./modify-card.component.scss']
 })
 export class ModifyCardComponent implements OnInit {
+
   // Form variables
   cardTypeInput = '';
   cardNumberInput = '';
@@ -59,7 +60,8 @@ export class ModifyCardComponent implements OnInit {
    * Set form to display card.
    */
   @Input('card') set card(card: Card) {
-    if (card) {
+    if (card && card.id) {
+      this.cardItem = card;
       this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
       this.cardNumberInput = card.cardNumber;
       this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
@@ -75,6 +77,27 @@ export class ModifyCardComponent implements OnInit {
       }
     }
   }
+
+  @Input() modalTitle = "";
+
+  @Input() modalType: number;
+
+  @ViewChild('modifyForm') modifyForm: NgForm;
+
+  @Input() showModal = false;
+
+  get _showModal() {
+    return this.showModal;
+  }
+  set _showModal(value: any) {
+    this.resetForm();
+
+    this.showModalChange.emit(false);
+  }
+
+  cardItem: Card;
+
+  @Output() showModalChange = new EventEmitter<any>();
 
   constructor(
     private httpService: HttpService,
@@ -149,51 +172,46 @@ export class ModifyCardComponent implements OnInit {
   /**
    * Attempts to submit new card to database
    */
-  addNewCard(): Promise<any> {
-    return new Promise(resolve => {
+  addNewCard() {
+    if (this.isValidInput()) {
+      let newCard = new Card();
 
-      if (this.isValidInput()) {
-        const newCard = new Card();
+      this.setCardFromForm(newCard);
 
-        this.setCardFromForm(newCard);
+      newCard.creationDate = this.utilitiesService.getLocalDate();
+      newCard.status = 1;
 
-        newCard.creationDate = this.utilitiesService.getLocalDate();
-        newCard.status = 1;
+      this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
+        if (res.message === 'success') {
+          this.cardList.unshift(res.data);
+          //Trigger view refresh
+          this.cardList = this.cardList.slice();
+          this.dataService.cardList.next(this.cardList);
 
-        this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
-          if (res.message === 'success') {
-            this.cardList.unshift(res.data);
-            //Trigger view refresh
-            this.cardList = this.cardList.slice();
-            this.dataService.cardList.next(this.cardList);
-
-            this.resetForm();
-            resolve();
-          }
-        });
-      }
-    });
+          this.resetForm();
+        }
+      });
+    };
   }
 
   /**
    * Attempts to submit edited card to database
    */
-  editCard(card: Card): Promise<any> {
-    return new Promise(resolve => {
+  editCard() {
+    if (this.isValidInput()) {
+      this.setCardFromForm(this.cardItem);
 
-      if (this.isValidInput()) {
-        this.setCardFromForm(card);
+      this.resetForm();
 
-        this.httpService.httpPut<Card>('updateCard/', card).then(res => {
-          if (res.message === 'success') {
-            this.dataService.cardList.next(this.cardList);
 
-            this.resetForm();
-            resolve();
-          }
-        });
-      }
-    });
+      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+        if (res.message === 'success') {
+
+          this.dataService.cardList.next(this.cardList);
+
+        }
+      });
+    };
   }
 
   /**
@@ -295,6 +313,7 @@ export class ModifyCardComponent implements OnInit {
    * Resets form by resetting form controls and clearing inputs
    */
   resetForm() {
+    
     this.cardTypeControl.reset();
     this.cardNumberControl.reset();
     this.usernameControl.reset();
@@ -302,5 +321,9 @@ export class ModifyCardComponent implements OnInit {
     this.expirationDateControl.reset();
     this.expirationDatePickerControl.reset();
     this.commentInput = '';
+    this.modifyForm.resetForm();
+    this.cardItem = Object.assign({}, new Card());
+    this.showModal = false;
+    this.showModalChange.emit(this.showModal);
   }
 }

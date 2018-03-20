@@ -15,17 +15,7 @@ export class CardTableComponent implements OnInit {
 
   editCard: Card = null; // Card to be edited
 
-  showAddNewModal = false;
-
-  showEditModal = false;
-
-  @ViewChild('addNewCardComponent') addNewCardComponent: ModifyCardComponent;
-
-  @ViewChild('editCardComponent') editCardComponent: ModifyCardComponent;
-
-  @ViewChild('addNewCardForm') addNewCardForm: NgForm;
-
-  @ViewChild('editCardForm') editCardForm: NgForm;
+  showModal = false;
 
   filterInput = '';
 
@@ -35,6 +25,10 @@ export class CardTableComponent implements OnInit {
   orderLocation = '';
   orderComment = '';
   orderDate = '';
+
+  modalTitle = "";
+
+  modalType = 0;
 
   constructor() { }
 
@@ -107,32 +101,23 @@ export class CardTableComponent implements OnInit {
   }
 
   /**
-   * Set card to be edited. Called when edit option was clicked.
+   * Set card to be edited and open edit modal
    */
-  setEditCard(card: any) {
+  openEdit(card: any) {
     this.editCard = card;
-    this.showEditModal = true;
+    this.modalTitle = "Edit card";
+    this.modalType = 1;
+    this.showModal = true;
   }
 
   /**
-   * Triggers submission of new card to server.
+   * Open add new card modal
    */
-  submitNewCard() {
-    this.addNewCardComponent.addNewCard().then(() => {
-      this.showAddNewModal = false;
-      this.addNewCardForm.resetForm();
-    });
-  }
-
-  /**
-   * Triggers submission of edited card to server.
-   */
-  submitEditCard() {
-    this.editCardComponent.editCard(this.editCard).then(() => {
-      this.showEditModal = false;
-      this.editCard = null;
-      this.editCardForm.resetForm();
-    });
+  openAddNewCard() {
+    this.editCard = Object.assign({}, new Card());
+    this.modalTitle = "Add new card";
+    this.modalType = 0;
+    this.showModal = true;
   }
 
 }

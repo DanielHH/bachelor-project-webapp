@@ -1,215 +1,222 @@
-<!-- Row docType & docNumber -->
-<div class="row">
-  <div class="col-12 col-md-6">
-    <mat-form-field>
-      <!--Input-->
-      <input id="docTypeInput" name="docTypeInput" type="text" [(ngModel)]="docTypeInput" maxlength="128"
-      [style.color]="isValidDocType() ? 'black' : 'gray'" placeholder="Document type" aria-label="Number"
-      matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl"
-      maxlength="10" appDocumentType required>
-      <!--Check and clear-->
-      <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-        <mat-icon [style.color]="'green'" *ngIf="isValidDocType()">done</mat-icon>
-      </button>
-      <button mat-button class="size-medium" *ngIf="docTypeInput" matSuffix mat-icon-button aria-label="Clear"
-      (click)="docTypeInput = ''"><mat-icon>close</mat-icon></button>
-      <!--Dropdown-->
-      <mat-autocomplete #docTypes="matAutocomplete">
-        <mat-option *ngFor="let docType of filteredDocTypes | async" [value]="docType.name">
-          {{ docType.name }}
-        </mat-option>
-      </mat-autocomplete>
-      <!--Error-->
-      <mat-error *ngIf="docTypeControl.hasError('required')">Please select a document type</mat-error>
-      <mat-error *ngIf="docTypeControl.hasError('docType')">
-        Please select a valid document type</mat-error>
-    </mat-form-field>
-  </div>
-  <div class="col-12 col-md-6">
-    <mat-form-field>
-      <!--Input-->
-      <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput" type="text" maxlength="128"
-      placeholder="Serial number" [formControl]="docNumberControl" required>
-      <!--Check and clear-->
-      <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-        <mat-icon [style.color]="'green'" *ngIf="isValidDocNumber()">done</mat-icon>
-      </button>
-      <button mat-button class="size-medium" *ngIf="docNumberInput" matSuffix mat-icon-button aria-label="Clear"
-      (click)="docNumberInput = ''"><mat-icon>close</mat-icon></button>
-      <!--Error-->
-      <mat-error *ngIf="docNumberControl.hasError('required')">Please enter a serial number</mat-error>
-    </mat-form-field>
-  </div>
-</div>
+<form #modifyForm="ngForm" (ngSubmit)="modalType ? editDocument() : addNewDocument()">
+  <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [closeName]="'Discard'" [submitName]="'Submit'">
 
-<!-- Row 3 registrationDate & docDate -->
-<div class="row">
-  <div class="col-12 col-md-6">
-    <mat-form-field>
-      <!--Input-->
-      <input matInput id="registrationDateInput" name="registrationDateInput" type="text" [(ngModel)]="registrationDateInput"
-      placeholder="Registration date" [style.color]="isValidRegistrationDate() ? 'black' : 'gray'" maxlength="10"
-      (input)="setRegistrationDateToDatePicker();" [formControl]="registrationDateControl" appDate required>
-      <!--Check and clear-->
-      <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-        <mat-icon [style.color]="'green'" *ngIf="isValidRegistrationDate()">done</mat-icon>
-      </button>
-      <button mat-button class="size-medium" *ngIf="registrationDateInput" matSuffix mat-icon-button aria-label="Clear"
-      (click)="registrationDateInput = ''"><mat-icon>close</mat-icon></button>
-      <!--DatePicker-->
-      <mat-datepicker #registrationDatepicker></mat-datepicker>
-      <!--Hidden input connected to the date picker-->
-      <input id="registrationDateDatepickerInput" name="registrationDateDatepickerInput" [(ngModel)]="registrationDateDatepickerInput"
-      [matDatepicker]="registrationDatepicker" (dateInput)="setRegistrationDateFromDatepicker($event);" type="hidden">
-      <mat-datepicker-toggle matSuffix class="size-big" [for]="registrationDatepicker"></mat-datepicker-toggle>
-      <!--Errors-->
-      <mat-error *ngIf="registrationDateControl.hasError('required')">
-        Please select a registration date
-      </mat-error>
-      <mat-error *ngIf="registrationDateControl.hasError('dateFormat')">
-        Invalid date format
-      </mat-error>
-    </mat-form-field>
-  </div>
-  <div class="col-12 col-md-6">
-    <mat-form-field>
-      <!--Input-->
-      <input matInput id="docDateInput" name="docDateInput" type="text" [(ngModel)]="docDateInput"
-      placeholder="Document date" [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10"
-      (input)="setDocDateToDatePicker();" [formControl]="docDateControl" appDate required>
-      <!--Check and clear-->
-      <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-        <mat-icon [style.color]="'green'" *ngIf="isValidDocDate()">done</mat-icon>
-      </button>
-      <button mat-button class="size-medium" *ngIf="docDateInput" matSuffix mat-icon-button aria-label="Clear"
-      (click)="docDateInput = ''"><mat-icon>close</mat-icon></button>
-      <!--DatePicker-->
-      <mat-datepicker #docDatepicker></mat-datepicker>
-      <!--Hidden input connected to the date picker-->
-      <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="docDateDatepickerInput"
-      [matDatepicker]="docDatepicker" (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
-      <mat-datepicker-toggle matSuffix class="size-big" [for]="docDatepicker"></mat-datepicker-toggle>
-      <!--Errors-->
-      <mat-error *ngIf="docDateControl.hasError('required')">
-        Please select a document date
-      </mat-error>
-      <mat-error *ngIf="docDateControl.hasError('dateFormat')">
-        Invalid date format
-      </mat-error>
-    </mat-form-field>
-  </div>
-</div>
+    <!-- Row docType & docNumber -->
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input id="docTypeInput" name="docTypeInput" type="text" [(ngModel)]="docTypeInput" maxlength="128" [style.color]="isValidDocType() ? 'black' : 'gray'"
+            placeholder="Document type" aria-label="Number" matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl"
+            maxlength="10" appDocumentType required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocType()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="docTypeInput" matSuffix mat-icon-button aria-label="Clear" (click)="docTypeInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Dropdown-->
+          <mat-autocomplete #docTypes="matAutocomplete">
+            <mat-option *ngFor="let docType of filteredDocTypes | async" [value]="docType.name">
+              {{ docType.name }}
+            </mat-option>
+          </mat-autocomplete>
+          <!--Error-->
+          <mat-error *ngIf="docTypeControl.hasError('required')">Please select a document type</mat-error>
+          <mat-error *ngIf="docTypeControl.hasError('docType')">
+            Please select a valid document type</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput" type="text" maxlength="128" placeholder="Serial number"
+            [formControl]="docNumberControl" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocNumber()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="docNumberInput" matSuffix mat-icon-button aria-label="Clear" (click)="docNumberInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="docNumberControl.hasError('required')">Please enter a serial number</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
 
-<!-- Document name & sender -->
-<div class="row">
-  <div class="col-12 col-md-6">
-      <mat-form-field>
-        <!--Input-->
-        <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput" type="text"
-        [(formControl)]="nameControl" maxlength="128" placeholder="Document name"
-        [style.color]="isValidDocName() ? 'black' : 'gray'" required>
-        <!--Check and clear-->
-        <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="isValidDocName()">done</mat-icon>
-        </button>
-        <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="nameInput = ''"><mat-icon>close</mat-icon></button>
-        <!--Error-->
-        <mat-error *ngIf="nameControl.hasError('required')">Please enter a document name</mat-error>
-      </mat-form-field>
-  </div>
-  <div class="col-12 col-md-6">
-    <mat-form-field>
-      <!--Input-->
-      <input matInput id="senderInput" name="senderInput" [(ngModel)]="senderInput" type="text"
-      maxlength="128" placeholder="Sender" [formControl]="senderControl"
-      [style.color]="isValidSender() ? 'black' : 'gray'" required>
-      <!--Check and clear-->
-      <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-        <mat-icon [style.color]="'green'" *ngIf="isValidSender()">done</mat-icon>
-      </button>
-      <button mat-button class="size-medium" *ngIf="senderInput" matSuffix mat-icon-button aria-label="Clear"
-      (click)="senderInput = ''"><mat-icon>close</mat-icon></button>
-      <!--Error-->
-      <mat-error *ngIf="senderControl.hasError('required')">Please enter a sender</mat-error>
-    </mat-form-field>
-  </div>
-</div>
+    <!-- Row 3 registrationDate & docDate -->
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="registrationDateInput" name="registrationDateInput" type="text" [(ngModel)]="registrationDateInput" placeholder="Registration date"
+            [style.color]="isValidRegistrationDate() ? 'black' : 'gray'" maxlength="10" (input)="setRegistrationDateToDatePicker();"
+            [formControl]="registrationDateControl" appDate required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidRegistrationDate()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="registrationDateInput" matSuffix mat-icon-button aria-label="Clear" (click)="registrationDateInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--DatePicker-->
+          <mat-datepicker #registrationDatepicker></mat-datepicker>
+          <!--Hidden input connected to the date picker-->
+          <input id="registrationDateDatepickerInput" name="registrationDateDatepickerInput" [(ngModel)]="registrationDateDatepickerInput"
+            [matDatepicker]="registrationDatepicker" (dateInput)="setRegistrationDateFromDatepicker($event);" type="hidden">
+          <mat-datepicker-toggle matSuffix class="size-big" [for]="registrationDatepicker"></mat-datepicker-toggle>
+          <!--Errors-->
+          <mat-error *ngIf="registrationDateControl.hasError('required')">
+            Please select a registration date
+          </mat-error>
+          <mat-error *ngIf="registrationDateControl.hasError('dateFormat')">
+            Invalid date format
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="docDateInput" name="docDateInput" type="text" [(ngModel)]="docDateInput" placeholder="Document date"
+            [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10" (input)="setDocDateToDatePicker();" [formControl]="docDateControl"
+            appDate required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocDate()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="docDateInput" matSuffix mat-icon-button aria-label="Clear" (click)="docDateInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--DatePicker-->
+          <mat-datepicker #docDatepicker></mat-datepicker>
+          <!--Hidden input connected to the date picker-->
+          <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="docDateDatepickerInput" [matDatepicker]="docDatepicker"
+            (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
+          <mat-datepicker-toggle matSuffix class="size-big" [for]="docDatepicker"></mat-datepicker-toggle>
+          <!--Errors-->
+          <mat-error *ngIf="docDateControl.hasError('required')">
+            Please select a document date
+          </mat-error>
+          <mat-error *ngIf="docDateControl.hasError('dateFormat')">
+            Invalid date format
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
 
-<!-- Location & comment -->
-<div class="row">
-  <div class="col-12 col-md-6">
-    <mat-form-field>
-      <!--Input-->
-      <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128"
-      placeholder="Location" [formControl]="locationControl" required>
-      <!--Check and clear-->
-      <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-        <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
-      </button>
-      <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear"
-      (click)="locationInput = ''"><mat-icon>close</mat-icon></button>
-      <!--Error-->
-      <mat-error *ngIf="locationControl.hasError('required')">Please enter a location</mat-error>
-    </mat-form-field>
-  </div>
-  <div class="col-12 col-md-6">
-      <mat-form-field>
-        <!--Input-->
-        <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text"
-        maxlength="128" placeholder="Comment">
-        <!--Clear-->
-        <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="commentInput = ''"><mat-icon>close</mat-icon></button>
-      </mat-form-field>
-  </div>
-</div>
+    <!-- Document name & sender -->
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput" type="text" [(formControl)]="nameControl" maxlength="128"
+            placeholder="Document name" [style.color]="isValidDocName() ? 'black' : 'gray'" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocName()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear" (click)="nameInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="nameControl.hasError('required')">Please enter a document name</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="senderInput" name="senderInput" [(ngModel)]="senderInput" type="text" maxlength="128" placeholder="Sender"
+            [formControl]="senderControl" [style.color]="isValidSender() ? 'black' : 'gray'" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidSender()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="senderInput" matSuffix mat-icon-button aria-label="Clear" (click)="senderInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="senderControl.hasError('required')">Please enter a sender</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
 
-<!--Add document holder Checkbox-->
-<div class="row">
-  <div class="col-12 wide-center">
-    <label class="p-2">Add document holder:</label>
-    <mat-radio-group>
-      <mat-radio-button class="p-2" color="primary" [checked]="!addDocHolder" value="no"
-      (change)="addDocHolder = !addDocHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
-      <mat-radio-button class="p-2" color="primary" [checked]="addDocHolder" value="yes"
-      (change)="addDocHolder = !addDocHolder;usernameControl.reset();usernameInput='';">Yes</mat-radio-button>
-    </mat-radio-group>
-  </div>
-</div>
-<!--Row username-->
-<div class="row">
-  <div class="col-0 col-md-3"></div>
-  <div class="col-12 col-md-6 wide-center">
-    <span class="third-center" *ngIf="addDocHolder">
-      <mat-form-field>
-        <!--Input-->
-        <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" type="text"
-        [style.color]="isValidUsername() ? 'black' : 'gray'" placeholder="Username" aria-label="Number"
-        matInput [matAutocomplete]="userIDs" [formControl]="usernameControl" spellcheck="false"
-        maxlength="128" appUsername required>
-        <!--Check and clear-->
-        <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-          <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
-        </button>
-        <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button aria-label="Clear"
-        (click)="usernameInput = ''"><mat-icon>close</mat-icon></button>
-        <!--Dropdown-->
-        <mat-autocomplete #userIDs="matAutocomplete">
-          <mat-option *ngFor="let user of filteredUsers | async" [value]="user.username">
-            {{ user.username + ' <' + user.name + '>' }}
-          </mat-option>
-        </mat-autocomplete>
-        <!--Error-->
-        <mat-error *ngIf="usernameControl.hasError('required')">
-          Please select a user ID
-        </mat-error>
-        <mat-error *ngIf="usernameControl.hasError('username')">
-            Please select a valid user ID
-        </mat-error>
-      </mat-form-field>
-    </span>
-  </div>
-  <div class="col-0 col-md-3"></div>
-</div>
+    <!-- Location & comment -->
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Location"
+            [formControl]="locationControl" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="locationControl.hasError('required')">Please enter a location</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text" maxlength="128" placeholder="Comment">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear" (click)="commentInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </div>
 
+    <!--Add document holder Checkbox-->
+    <div class="row">
+      <div class="col-12 wide-center">
+        <label class="p-2">Add document holder:</label>
+        <mat-radio-group>
+          <mat-radio-button class="p-2" color="primary" [checked]="!addDocHolder" value="no" (change)="addDocHolder = !addDocHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
+          <mat-radio-button class="p-2" color="primary" [checked]="addDocHolder" value="yes" (change)="addDocHolder = !addDocHolder;usernameControl.reset();usernameInput='';">Yes</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <!--Row username-->
+    <div class="row">
+      <div class="col-0 col-md-3"></div>
+      <div class="col-12 col-md-6 wide-center">
+        <span class="third-center" *ngIf="addDocHolder">
+          <mat-form-field>
+            <!--Input-->
+            <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" type="text" [style.color]="isValidUsername() ? 'black' : 'gray'"
+              placeholder="Username" aria-label="Number" matInput [matAutocomplete]="userIDs" [formControl]="usernameControl"
+              spellcheck="false" maxlength="128" appUsername required>
+            <!--Check and clear-->
+            <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+              <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
+            </button>
+            <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button aria-label="Clear" (click)="usernameInput = ''">
+              <mat-icon>close</mat-icon>
+            </button>
+            <!--Dropdown-->
+            <mat-autocomplete #userIDs="matAutocomplete">
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.username">
+                {{ user.username + '
+                < ' + user.name + '>' }}
+              </mat-option>
+            </mat-autocomplete>
+            <!--Error-->
+            <mat-error *ngIf="usernameControl.hasError('required')">
+              Please select a user ID
+            </mat-error>
+            <mat-error *ngIf="usernameControl.hasError('username')">
+              Please select a valid user ID
+            </mat-error>
+          </mat-form-field>
+        </span>
+      </div>
+      <div class="col-0 col-md-3"></div>
+    </div>
+  </app-modal>
+</form>
