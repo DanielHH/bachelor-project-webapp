@@ -4,6 +4,7 @@ import { RouteDataService } from '../../services/route-data.service';
 import { Card } from '../../datamodels/card';
 import { Document } from '../../datamodels/document';
 import { HttpService } from '../../services/http.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-item-menu',
@@ -62,4 +63,12 @@ export class ItemMenuComponent implements OnInit {
       });
     }
   }
+
+  /** 
+   * Format date
+  */
+  formatDate(date: Date) {
+    return moment(date).format('YYYY-MM-DD H:mm:ss');
+  }
+
 }

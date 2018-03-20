@@ -15,17 +15,7 @@ export class DocumentTableComponent implements OnInit {
 
   editDocument: Document = null; // Document to be edited
 
-  showAddNewModal = false;
-
-  showEditModal = false;
-
-  @ViewChild('addNewDocumentComponent') addNewDocumentComponent: ModifyDocumentComponent;
-
-  @ViewChild('editDocumentComponent') editDocumentComponent: ModifyDocumentComponent;
-
-  @ViewChild('addNewDocumentForm') addNewDocumentForm: NgForm;
-
-  @ViewChild('editDocumentForm') editDocumentForm: NgForm;
+  showModal = false;
 
   filterInput = '';
 
@@ -41,6 +31,9 @@ export class DocumentTableComponent implements OnInit {
   showOut = true;
   showArchived = false;
   showGone = false;
+  modalTitle = "";
+
+  modalType = 0;
 
   constructor() { }
 
@@ -119,33 +112,26 @@ export class DocumentTableComponent implements OnInit {
   }
 
   /**
-   * Set document to be edited. Called when edit option was clicked.
+   * Set document to be edited and open edit modal
    */
-  setEditDocument(document: any) {
+  openEdit(document: any) {
     this.editDocument = document;
-    this.showEditModal = true;
+    this.modalTitle = "Edit document";
+    this.modalType = 1;
+    this.showModal = true;
   }
 
   /**
-   * Triggers submission of new document to server.
+   * Set document to be edited and open edit modal
    */
-  submitNewDocument() {
-    this.addNewDocumentComponent.addNewDocument().then(() => {
-      this.showAddNewModal = false;
-      this.addNewDocumentForm.resetForm();
-    });
+  openAddNewDocument() {
+    this.editDocument = Object.assign({}, new Document());
+    this.modalTitle = "Add new document";
+    this.modalType = 0;
+    this.showModal = true;
   }
 
-  /**
-   * Triggers submission of edited document to server.
-   */
-  submitEditDocument() {
-    this.editDocumentComponent.editDocument(this.editDocument).then(() => {
-      this.showEditModal = false;
-      this.editDocument = null;
-      this.editDocumentForm.resetForm();
-    });
-  }
+
 
 }
 

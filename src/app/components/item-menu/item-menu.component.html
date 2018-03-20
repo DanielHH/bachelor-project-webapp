@@ -13,8 +13,8 @@
         <a class="dropdown-item" (click)="setStatus(3)" *ngIf="this.item.status != 3">Arkivera</a>
         <a class="dropdown-item" (click)="setStatus(4)" *ngIf="this.item.status != 4">Borttappat</a>
         <a class="dropdown-item" (click)="setStatus(1)" *ngIf="this.item.status == 3 || this.item.status == 4">Återställ</a>
-        <a class="dropdown-item">{{item.creationDate}}</a>
-        <a class="dropdown-item">{{item.modifiedDate}}</a>
+        <a class="dropdown-item">{{formatDate(item.creationDate)}}</a>
+        <a class="dropdown-item">{{formatDate(item.modifiedDate)}}</a>
         <div class="divider dropdown-divider"></div>
         <a class="dropdown-item">Close</a>
     </div>

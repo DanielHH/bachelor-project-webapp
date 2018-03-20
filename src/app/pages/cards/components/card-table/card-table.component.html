@@ -45,7 +45,7 @@
 
       <!-- Add new card button-->
       <div class="col-2">
-        <button mat-raised-button (click)="showAddNewModal = true" color="primary">Add New Card</button>
+        <button mat-raised-button (click)="openAddNewCard()" color="primary">Add New Card</button>
       </div>
     </div>
 
@@ -85,22 +85,9 @@
 
     <!-- Add cards to the table   -->
     <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
-        <app-card-item [cardItem]="card" (editItem)="setEditCard($event)"> </app-card-item>
+        <app-card-item [cardItem]="card" (editItem)="openEdit($event)"> </app-card-item>
     </div>
   </div>
 </div>
 
-{{runPipe}}
-
-<!-- Modals for adding new card or editing card -->
-<form #addNewCardForm="ngForm" (ngSubmit)="submitNewCard()">
-  <app-modal [(show)]="showAddNewModal" [modalTitle]="'Add new card'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-card #addNewCardComponent [cardList]="cardList"></app-modify-card>
-  </app-modal>
-</form>
-
-<form #editCardForm="ngForm" (ngSubmit)="submitEditCard()">
-  <app-modal [(show)]="showEditModal" [modalTitle]="'Edit card'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-card #editCardComponent [cardList]="cardList" [card]="editCard"></app-modify-card>
-  </app-modal>
-</form>
+<app-modify-card [cardList]="cardList" [card]="editCard" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-card>

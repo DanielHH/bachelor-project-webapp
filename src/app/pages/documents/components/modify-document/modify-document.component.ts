@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Directive, Inject } from '@angular/core';
+import { Component, OnInit, Input, Directive, Inject, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
@@ -70,6 +70,59 @@ export class ModifyDocumentComponent implements OnInit {
     );
 
   @Input() documentList: Document[];
+
+  /**
+   * Sets form to display given document.
+   */
+  @Input('document') set document(document: Document) {
+    if (document && document.id) {
+      this.documentItem = document;
+      this.docTypeInput = this.getDocTypeName(document.documentType);
+      this.docNumberInput = document.documentNumber;
+
+      this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
+      this.registrationDateDatepickerInput = this.registrationDateInput;
+      this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
+      this.docDateDatepickerInput = this.docDateInput;
+
+      this.nameInput = document.name;
+      this.senderInput = document.sender;
+
+      this.locationInput = document.location;
+      this.commentInput = document.comment;
+
+      if (document.userID != null) {
+        this.usernameInput = this.getUsername(document.userID);
+        this.addDocHolder = true;
+      } else {
+        this.usernameInput = '';
+        this.addDocHolder = false;
+      }
+    }
+  }
+
+  @Input() modalTitle = "";
+
+  @Input() modalType: number;
+
+  @ViewChild('modifyForm') modifyForm: NgForm;
+
+  @Input() showModal = false;
+
+  get _showModal() {
+    return this.showModal;
+  }
+  set _showModal(value: any) {
+    if (!value) {
+      this.resetForm();
+    }
+    this.showModalChange.emit(value);
+  }
+
+  documentItem: Document;
+
+  @Output() showModalChange = new EventEmitter<any>();
+
 
   constructor(private httpService: HttpService,
     public dataService: DataService,
@@ -144,79 +197,44 @@ export class ModifyDocumentComponent implements OnInit {
   /**
    * Attempts to submit new document to database
   */
-  addNewDocument(): Promise<any> {
-    return new Promise(resolve => {
+  addNewDocument() {
+    if (this.isValidInput()) {
+      let newDoc = new Document();
 
-      if (this.isValidInput()) {
-        const newDoc = new Document();
+      this.setDocumentFromForm(newDoc);
 
-        this.setDocumentFromForm(newDoc);
+      newDoc.creationDate = this.utilitiesService.getLocalDate();
+      newDoc.status = 1;
 
-        newDoc.status = 1;
-        newDoc.creationDate = this.utilitiesService.getLocalDate();
+      this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
+        if (res.message === 'success') {
+          this.documentList.unshift(res.data);
+          //Trigger view refresh
+          this.documentList = this.documentList.slice();
+          this.dataService.documentList.next(this.documentList);
 
-        this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
-          if (res.message === 'success') {
-            this.documentList.unshift(res.data);
-            //Trigger view refresh
-            this.documentList = this.documentList.slice();
-            this.dataService.documentList.next(this.documentList);
+          this.resetForm();
 
-            this.resetForm();
-            resolve();
-          }
-        });
-      }
-    });
+        }
+      });
+    };
   }
 
   /**
    * Attempts to submit changes to a document to database
   */
-  editDocument(document: any): Promise<any> {
-    return new Promise(resolve => {
+  editDocument() {
+    if (this.isValidInput()) {
+      this.setDocumentFromForm(this.documentItem);
 
-      if (this.isValidInput()) {
-        this.setDocumentFromForm(document);
+      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+        if (res.message === 'success') {
+          this.dataService.documentList.next(this.documentList);
 
-        this.httpService.httpPut<Document>('updateDocument/', document).then(res => {
-          if (res.message === 'success') {
-            this.dataService.documentList.next(this.documentList);
-            this.resetForm();
-            resolve();
-          }
-        });
-      }
-    });
-  }
-
-  /**
-   * Sets form to display given document.
-   */
-  @Input('document') set document(document: Document) {
-    if (document) {
-      this.docTypeInput = this.getDocTypeName(document.documentType);
-      this.docNumberInput = document.documentNumber;
-
-      this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
-      this.registrationDateDatepickerInput = this.registrationDateInput;
-      this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
-      this.docDateDatepickerInput = this.docDateInput;
-
-      this.nameInput = document.name;
-      this.senderInput = document.sender;
-
-      this.locationInput = document.location;
-      this.commentInput = document.comment;
-
-      if (document.userID != null) {
-        this.usernameInput = this.getUsername(document.userID);
-        this.addDocHolder = true;
-      } else {
-        this.usernameInput = '';
-        this.addDocHolder = false;
-      }
-    }
+          this.resetForm();
+        }
+      });
+    };
   }
 
   /**
@@ -374,6 +392,11 @@ export class ModifyDocumentComponent implements OnInit {
     this.commentInput = '';
 
     this.usernameControl.reset();
+
+    this.modifyForm.resetForm();
+    this.documentItem = Object.assign({}, new Document());
+    this.showModal = false;
+    this.showModalChange.emit(this.showModal);
   }
 
 }

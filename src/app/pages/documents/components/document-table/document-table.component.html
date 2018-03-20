@@ -45,7 +45,7 @@
 
           <!-- Add new document button-->
           <div class="col-2">
-            <button mat-raised-button (click)="showAddNewModal = true" color="primary">Add New Document</button>
+            <button mat-raised-button (click)="openAddNewDocument()" color="primary">Add New Document</button>
           </div>
         </div>
         <!-- Header row -->
@@ -84,20 +84,9 @@
 
         <!-- Add cards to the table -->
         <div *ngFor="let document of documentList | matchFilterDocument:filterInput:showIn:showOut:showArchived:showGone">
-            <app-document-item [documentItem]="document" (editItem)="setEditDocument($event)"></app-document-item>
+            <app-document-item [documentItem]="document" (editItem)="openEdit($event)"></app-document-item>
         </div>
     </div>
 </div>
 
-<!-- Modals for adding new document or editing document -->
-<form #addNewDocumentForm="ngForm" (ngSubmit)="submitNewDocument()">
-  <app-modal [(show)]="showAddNewModal" [modalTitle]="'Add new document'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-document #addNewDocumentComponent [documentList]="documentList"></app-modify-document>
-  </app-modal>
-</form>
-
-<form #editDocumentForm="ngForm" (ngSubmit)="submitEditDocument()">
-  <app-modal [(show)]="showEditModal" [modalTitle]="'Edit document'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-document #editDocumentComponent [documentList]="documentList" [document]="editDocument"></app-modify-document>
-  </app-modal>
-</form>
+<app-modify-document [documentList]="documentList" [document]="editDocument" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-document>
