@@ -223,7 +223,7 @@ export class ModifyDocumentComponent implements OnInit {
   /**
    * Attempts to submit changes to a document to database
   */
-  editDocument(document: any) {
+  editDocument() {
     if (this.isValidInput()) {
       this.setDocumentFromForm(this.documentItem);
 
