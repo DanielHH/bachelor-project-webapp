@@ -25,7 +25,7 @@ export class MatchFilterCardPipe implements PipeTransform {
     });
   }
 
-  transform(value: Card[], input: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean, runPipe: boolean): Card[] {
+  transform(value: Card[], input: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean): Card[] {
     return _.filter(value, (card) => {
         return this.matchFilt(card, input, showIn, showOut, showArchived, showGone);
     });
