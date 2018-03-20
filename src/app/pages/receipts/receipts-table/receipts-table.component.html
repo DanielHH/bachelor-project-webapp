@@ -1,0 +1,84 @@
+<div class="card">
+  <div class="card-body">
+    <!-- Input field for filter -->
+    <div class="row">
+      <div class="col-4">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
+          maxlength="128" placeholder="Filter by">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button
+          aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+        </mat-form-field>
+      </div>
+      <div class="col-4"></div>
+
+      <div class="col-2">
+        <div class="form-check">
+
+            <div class="form-check">
+              <input type="checkbox" class="filled-in form-check-input" id="showCardID" [(ngModel)]=showCard>
+              <label class="form-check-label" for="showCardID">Kort</label>
+            </div>
+  
+          <div class="form-check">
+              <input type="checkbox" class="filled-in form-check-input" id="showDocumentID" [(ngModel)]=showDocument>
+              <label class="form-check-label" for="showDocumentID">Handlingar</label>
+          </div>
+        </div>
+      </div> 
+      
+      <div class="col-2">
+          <div class="form-check">
+
+              <div class="form-check">
+                <input type="checkbox" class="filled-in form-check-input" id="showActiveID" [(ngModel)]=showActive>
+                <label class="form-check-label" for="showActiveID">Aktiva</label>
+              </div>
+    
+            <div class="form-check">
+                <input type="checkbox" class="filled-in form-check-input" id="showInactiveID" [(ngModel)]=showInactive>
+                <label class="form-check-label" for="showInactiveID">Inaktiva</label>
+            </div>
+          </div>
+        </div> 
+
+      </div>
+
+    <!-- Header row -->
+    <div class="row">
+      <div class="col-1" (click)="sortTableList('status')">
+        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+        [class.both-arrow]="orderStatus == ''">Status </span>
+      </div>
+      <div class="col" (click)="sortTableList('receiptType')">
+        <span class="hover" [class.up-arrow]="orderReceiptType == 'asc'" [class.down-arrow]="orderReceiptType == 'desc'"
+        [class.both-arrow]="orderReceiptType == ''">Typ </span>
+      </div>
+      <div class="col" (click)="sortTableList('IDNumber')">
+        <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'"
+        [class.both-arrow]="orderIDNumber == ''">Id-nummer </span>
+      </div>
+      <div class="col" (click)="sortTableList('userID')">
+        <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
+        [class.both-arrow]="orderUserID == ''">Användare </span>
+      </div>
+      <div class="col" (click)="sortTableList('startDate')">
+        <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'"
+        [class.both-arrow]="orderStartDate == ''">Startdatum </span>
+      </div>
+      <div class="col" (click)="sortTableList('endDate')">
+        <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
+        [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
+      </div>
+      <div class="col-1"></div>
+    </div>
+    <hr>
+
+    <!-- Add receipts to the table  -->
+    <div *ngFor="let receipt of receiptList | matchFilterReceipt:filterInput:showCard:showDocument:showActive:showInactive">
+        <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>
+    </div>
+  </div>
+</div>
