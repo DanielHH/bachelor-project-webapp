@@ -11,8 +11,8 @@
         <a class="dropdown-item" (click)="route()">Details</a>
         <a class="dropdown-item" (click)="edit()">Edit</a>
         <a class="dropdown-item" href="#">Archive</a>
-        <a class="dropdown-item">{{item.creationDate}}</a>
-        <a class="dropdown-item">{{item.modifiedDate}}</a>
+        <a class="dropdown-item">{{formatDate(item.creationDate)}}</a>
+        <a class="dropdown-item">{{formatDate(item.modifiedDate)}}</a>
         <div class="divider dropdown-divider"></div>
         <a class="dropdown-item">Close</a>
     </div>

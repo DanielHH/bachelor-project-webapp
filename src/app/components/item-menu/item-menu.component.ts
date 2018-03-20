@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouteDataService } from '../../services/route-data.service';
 import { Card } from '../../datamodels/card';
 import { Document } from '../../datamodels/document';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-item-menu',
@@ -41,5 +42,12 @@ export class ItemMenuComponent implements OnInit {
   */
   edit() {
     this.editItem.next();
+  }
+
+  /**
+   * Format date
+   */
+  formatDate(date: Date) {
+    return moment(date).format('YYYY-MM-DD H:mm:ss');
   }
 }
