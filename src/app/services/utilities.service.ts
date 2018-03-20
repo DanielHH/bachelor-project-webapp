@@ -15,6 +15,8 @@ export const lowerCase = (str) => _.reduce(
 @Injectable()
 export class UtilitiesService {
 
+  runPipe = false;
+
   constructor() { }
 
   getLocalDate() {

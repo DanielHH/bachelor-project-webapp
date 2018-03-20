@@ -29,6 +29,7 @@ export class CardTableComponent implements OnInit {
 
   filterInput = '';
 
+  orderStatus = '';
   orderCardType = '';
   orderCardNumber = '';
   orderUserID = '';
@@ -36,7 +37,12 @@ export class CardTableComponent implements OnInit {
   orderComment = '';
   orderDate = '';
 
-  constructor() { }
+  showIn = true;
+  showOut = true;
+  showArchived = false;
+  showGone = false;
+
+  constructor() {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -57,6 +63,11 @@ export class CardTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
+      case 'status': {
+        newOrder = this.sortTableListHelper(this.orderStatus);
+        this.orderStatus = newOrder;
+        break;
+      }
       case 'cardType': {
         newOrder = this.sortTableListHelper(this.orderCardType);
         this.orderCardType = newOrder;

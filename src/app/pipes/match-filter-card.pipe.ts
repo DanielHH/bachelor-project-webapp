@@ -25,13 +25,10 @@ export class MatchFilterCardPipe implements PipeTransform {
     });
   }
 
-  transform(value: Card[], input: string): Card[] {
-    if (input !== '') {
-      return _.filter(value, (card) => {
-        return this.matchFilt(card, input);
-      });
-    }
-    return value;
+  transform(value: Card[], input: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean, runPipe: boolean): Card[] {
+    return _.filter(value, (card) => {
+        return this.matchFilt(card, input, showIn, showOut, showArchived, showGone);
+    });
   }
 
   /**
@@ -40,7 +37,13 @@ export class MatchFilterCardPipe implements PipeTransform {
    * @param filterInput
    * @returns True if match found
    */
-  matchFilt(card: Card, filterInput: string) {
+  matchFilt(card: Card, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
+
+    if( (card.status == 1 && !showIn) || (card.status == 2 && !showOut) ||
+        (card.status == 3 && !showArchived) || (card.status == 4 && !showGone) ) {
+      return false;
+    }
+
     filterInput = lowerCase(filterInput);
     const displayDate = moment(card.expirationDate).format('YYYY-MM-DD');
 

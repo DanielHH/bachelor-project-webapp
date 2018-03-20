@@ -13,7 +13,6 @@ export class ItemMenuComponent implements OnInit {
 
   // Card or Document
   @Input() item: any;
-
   @Output() editItem = new EventEmitter<any>();
 
   constructor(private routeDataService: RouteDataService, private router: Router) { }
@@ -41,5 +40,23 @@ export class ItemMenuComponent implements OnInit {
   */
   edit() {
     this.editItem.next();
+  }
+
+  /** 
+   * Set item status to be archived
+  */
+  archive() {
+    this.item.status = 3;
+  }
+
+  /**
+  * Set item status to be gone
+  */
+  gone() {
+    this.item.status = 4;
+  }
+
+  reset() {
+    this.item.status = 1;
   }
 }
