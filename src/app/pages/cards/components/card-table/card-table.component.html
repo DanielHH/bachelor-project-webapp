@@ -13,6 +13,7 @@
         </mat-form-field>
       </div>
       <div class="col-3"></div>
+      
       <div class="col-1">
           <div class="form-check">
 
@@ -83,7 +84,7 @@
     <hr>
 
     <!-- Add cards to the table   -->
-    <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone:runPipe">
+    <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
         <app-card-item [cardItem]="card" (editItem)="setEditCard($event)"> </app-card-item>
     </div>
   </div>

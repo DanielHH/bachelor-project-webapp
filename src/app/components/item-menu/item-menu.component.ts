@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouteDataService } from '../../services/route-data.service';
 import { Card } from '../../datamodels/card';
 import { Document } from '../../datamodels/document';
+import { HttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-item-menu',
@@ -15,7 +16,8 @@ export class ItemMenuComponent implements OnInit {
   @Input() item: any;
   @Output() editItem = new EventEmitter<any>();
 
-  constructor(private routeDataService: RouteDataService, private router: Router) { }
+  constructor(private routeDataService: RouteDataService, private router: Router,
+    private httpService: HttpService) { }
 
   ngOnInit() {
   }
@@ -42,21 +44,22 @@ export class ItemMenuComponent implements OnInit {
     this.editItem.next();
   }
 
-  /** 
-   * Set item status to be archived
-  */
-  archive() {
-    this.item.status = 3;
-  }
-
   /**
-  * Set item status to be gone
-  */
-  gone() {
-    this.item.status = 4;
-  }
+   * Setter for item status
+   * @param value value to be set in the database
+   */
+  setStatus(value: number) {
+    this.item.status = value;
 
-  reset() {
-    this.item.status = 1;
+    if(this.item.cardType) {
+      this.httpService.httpPut<Card>('updateCard/', this.item).then(res => {
+        if (res.message === 'success') {}
+     });
+
+    } else if (this.item.documentType) {
+      this.httpService.httpPut<Document>('updateDocument/', this.item).then(res => {
+        if (res.message === 'success') {}
+      });
+    }
   }
 }
