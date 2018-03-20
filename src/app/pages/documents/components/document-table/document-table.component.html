@@ -12,7 +12,37 @@
                   (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
               </mat-form-field>
           </div>
-          <div class="col-6"></div>
+          <div class="col-3"></div>
+
+          <div class="col-1">
+            <div class="form-check">
+  
+                <div class="form-check">
+                  <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showIn>
+                  <label class="form-check-label" for="showInID">Inne</label>
+                </div>
+      
+              <div class="form-check">
+                  <input type="checkbox" class="filled-in form-check-input" id="showOutID" [(ngModel)]=showOut>
+                  <label class="form-check-label" for="showOutID">Ute</label>
+              </div>
+            </div>
+          </div> 
+  
+        <div class="col-2">
+          <div class="form-check">
+  
+              <input type="checkbox" class="filled-in form-check-input" id="showArchivedID" [(ngModel)]=showArchived>
+              <label class="form-check-label" for="showArchivedID">Arkiverade</label>
+          </div>
+  
+          <div class="form-check">
+              <input type="checkbox" class="filled-in form-check-input" id="showGoneID" [(ngModel)]=showGone>
+              <label class="form-check-label" for="showGoneID">Borta</label>
+          </div>
+  
+        </div>
+
           <!-- Add new document button-->
           <div class="col-2">
             <button mat-raised-button (click)="openAddNewDocument()" color="primary">Add New Document</button>
@@ -20,7 +50,10 @@
         </div>
         <!-- Header row -->
         <div class="row">
-          <div class="col-1"></div>
+          <div class="col-1" (click)="sortTableList('status')">
+            <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+            [class.both-arrow]="orderStatus == ''">Status </span>
+          </div>
           <div class="col" (click)="sortTableList('documentType')">
             <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'"
             [class.both-arrow]="orderDocumentType == ''">Type </span>
@@ -50,8 +83,8 @@
         <hr>
 
         <!-- Add cards to the table -->
-        <div *ngFor="let document of documentList | matchFilterDocument:filterInput">
-            <app-document-item *ngIf="document.status == 1 || document.status == 2" [documentItem]="document" (editItem)="openEdit($event)"></app-document-item>
+        <div *ngFor="let document of documentList | matchFilterDocument:filterInput:showIn:showOut:showArchived:showGone">
+            <app-document-item [documentItem]="document" (editItem)="openEdit($event)"></app-document-item>
         </div>
     </div>
 </div>

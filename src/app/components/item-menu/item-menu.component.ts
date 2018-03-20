@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RouteDataService } from '../../services/route-data.service';
 import { Card } from '../../datamodels/card';
 import { Document } from '../../datamodels/document';
+import { HttpService } from '../../services/http.service';
 import * as moment from 'moment';
 
 @Component({
@@ -14,10 +15,10 @@ export class ItemMenuComponent implements OnInit {
 
   // Card or Document
   @Input() item: any;
-
   @Output() editItem = new EventEmitter<any>();
 
-  constructor(private routeDataService: RouteDataService, private router: Router) { }
+  constructor(private routeDataService: RouteDataService, private router: Router,
+    private httpService: HttpService) { }
 
   ngOnInit() {
   }
@@ -45,9 +46,29 @@ export class ItemMenuComponent implements OnInit {
   }
 
   /**
-   * Format date
+   * Setter for item status
+   * @param value value to be set in the database
    */
+  setStatus(value: number) {
+    this.item.status = value;
+
+    if(this.item.cardType) {
+      this.httpService.httpPut<Card>('updateCard/', this.item).then(res => {
+        if (res.message === 'success') {}
+     });
+
+    } else if (this.item.documentType) {
+      this.httpService.httpPut<Document>('updateDocument/', this.item).then(res => {
+        if (res.message === 'success') {}
+      });
+    }
+  }
+
+  /** 
+   * Format date
+  */
   formatDate(date: Date) {
     return moment(date).format('YYYY-MM-DD H:mm:ss');
   }
+
 }

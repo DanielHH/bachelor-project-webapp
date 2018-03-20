@@ -19,6 +19,7 @@ export class DocumentTableComponent implements OnInit {
 
   filterInput = '';
 
+  orderStatus = '';
   orderDocumentType = '';
   orderDocumentNumber = '';
   orderName = '';
@@ -26,6 +27,10 @@ export class DocumentTableComponent implements OnInit {
   orderLocation = '';
   orderComment = '';
 
+  showIn = true;
+  showOut = true;
+  showArchived = false;
+  showGone = false;
   modalTitle = "";
 
   modalType = 0;
@@ -51,6 +56,11 @@ export class DocumentTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
+      case 'status': {
+        newOrder = this.sortTableListHelper(this.orderStatus);
+        this.orderStatus = newOrder;
+        break;
+      }
       case 'documentType': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;

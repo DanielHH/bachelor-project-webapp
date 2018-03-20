@@ -12,7 +12,37 @@
           aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
         </mat-form-field>
       </div>
-      <div class="col-6"></div>
+      <div class="col-3"></div>
+      
+      <div class="col-1">
+          <div class="form-check">
+
+              <div class="form-check">
+                <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showIn>
+                <label class="form-check-label" for="showInID">Inne</label>
+              </div>
+    
+            <div class="form-check">
+                <input type="checkbox" class="filled-in form-check-input" id="showOutID" [(ngModel)]=showOut>
+                <label class="form-check-label" for="showOutID">Ute</label>
+            </div>
+          </div>
+        </div> 
+
+      <div class="col-2">
+        <div class="form-check">
+
+            <input type="checkbox" class="filled-in form-check-input" id="showArchivedID" [(ngModel)]=showArchived>
+            <label class="form-check-label" for="showArchivedID">Arkiverade</label>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox" class="filled-in form-check-input" id="showGoneID" [(ngModel)]=showGone>
+            <label class="form-check-label" for="showGoneID">Borta</label>
+        </div>
+
+      </div>
+
       <!-- Add new card button-->
       <div class="col-2">
         <button mat-raised-button (click)="openAddNewCard()" color="primary">Add New Card</button>
@@ -21,7 +51,10 @@
 
     <!-- Header row -->
     <div class="row">
-      <div class="col-1"></div>
+      <div class="col-1" (click)="sortTableList('status')">
+        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+        [class.both-arrow]="orderStatus == ''">Status </span>
+      </div>
       <div class="col" (click)="sortTableList('cardType')">
         <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'"
         [class.both-arrow]="orderCardType == ''">Type </span>
@@ -51,9 +84,8 @@
     <hr>
 
     <!-- Add cards to the table   -->
-    <div *ngFor="let card of cardList | matchFilterCard:filterInput">
-        <app-card-item *ngIf="card.status == 1 || card.status == 2" [cardItem]="card"
-        (editItem)="openEdit($event)"></app-card-item>
+    <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
+        <app-card-item [cardItem]="card" (editItem)="openEdit($event)"> </app-card-item>
     </div>
   </div>
 </div>

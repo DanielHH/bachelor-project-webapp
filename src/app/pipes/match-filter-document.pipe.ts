@@ -25,13 +25,10 @@ export class MatchFilterDocumentPipe implements PipeTransform {
   }
 
 
-  transform(value: Document[], input: string): Document[] {
-    if (input !== '') {
-      return _.filter(value, (document) => {
-        return this.matchFilt(document, input);
-      });
-    }
-    return value;
+  transform(value: Document[], input: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean): Document[] {
+    return _.filter(value, (document) => {
+      return this.matchFilt(document, input, showIn, showOut, showArchived, showGone);
+    });
   }
 
    /**
@@ -40,8 +37,13 @@ export class MatchFilterDocumentPipe implements PipeTransform {
    * @param filterInput
    * @returns True if match found
    */
-  matchFilt(document: Document, filterInput: string) {
+  matchFilt(document: Document, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
     filterInput = lowerCase(filterInput);
+
+    if( (document.status == 1 && !showIn) || (document.status == 2 && !showOut) ||
+    (document.status == 3 && !showArchived) || (document.status == 4 && !showGone) ) {
+      return false;
+    }
 
     if (_.includes(lowerCase(this.getDocumentType(document)), filterInput) === false
     && (_.includes(lowerCase(document.documentNumber), filterInput) === false)

@@ -19,12 +19,18 @@ export class CardTableComponent implements OnInit {
 
   filterInput = '';
 
+  orderStatus = '';
   orderCardType = '';
   orderCardNumber = '';
   orderUserID = '';
   orderLocation = '';
   orderComment = '';
   orderDate = '';
+
+  showIn = true;
+  showOut = true;
+  showArchived = false;
+  showGone = false;
 
   modalTitle = "";
 
@@ -51,6 +57,11 @@ export class CardTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
+      case 'status': {
+        newOrder = this.sortTableListHelper(this.orderStatus);
+        this.orderStatus = newOrder;
+        break;
+      }
       case 'cardType': {
         newOrder = this.sortTableListHelper(this.orderCardType);
         this.orderCardType = newOrder;
