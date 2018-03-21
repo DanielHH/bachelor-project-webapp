@@ -14,7 +14,7 @@ export class ReceiptsTableComponent implements OnInit {
   filterInput = '';
 
   orderStatus = '';
-  orderReceiptType = '';
+  orderItemTypeID = '';
   orderIDNumber = '';
   orderUserID = '';
   orderStartDate = '';
@@ -52,9 +52,9 @@ export class ReceiptsTableComponent implements OnInit {
         this.orderStatus = newOrder;
         break;
       }
-      case 'receiptType': {
-        newOrder = this.sortTableListHelper(this.orderReceiptType);
-        this.orderReceiptType = newOrder;
+      case 'itemTypeID': {
+        newOrder = this.sortTableListHelper(this.orderItemTypeID);
+        this.orderItemTypeID = newOrder;
         break;
       }
       case 'IDNumber': {
@@ -79,7 +79,10 @@ export class ReceiptsTableComponent implements OnInit {
       }
     }
 
-    if (newOrder) {
+    if (newOrder && property == 'IDNumber') {
+      this.receiptList = _.orderBy(this.receiptList, ['cardID'], [newOrder]);
+      this.receiptList = _.orderBy(this.receiptList, ['documentID'], [newOrder]);
+    } else if (newOrder) {
       this.receiptList = _.orderBy(this.receiptList, [property], [newOrder]);
     }
 

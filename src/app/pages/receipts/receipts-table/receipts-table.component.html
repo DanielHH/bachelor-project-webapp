@@ -48,13 +48,13 @@
 
     <!-- Header row -->
     <div class="row">
-      <div class="col-1" (click)="sortTableList('status')">
-        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
-        [class.both-arrow]="orderStatus == ''">Status </span>
+      <div class="col-1" (click)="sortTableList('endDate')">
+        <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
+        [class.both-arrow]="orderEndDate == ''">Status </span>
       </div>
-      <div class="col" (click)="sortTableList('receiptType')">
-        <span class="hover" [class.up-arrow]="orderReceiptType == 'asc'" [class.down-arrow]="orderReceiptType == 'desc'"
-        [class.both-arrow]="orderReceiptType == ''">Typ </span>
+      <div class="col" (click)="sortTableList('itemTypeID')">
+        <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'"
+        [class.both-arrow]="orderItemTypeID == ''">Typ </span>
       </div>
       <div class="col" (click)="sortTableList('IDNumber')">
         <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'"
