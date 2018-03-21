@@ -10,8 +10,8 @@
   <div class="col">{{itemTypeToDisplay}}</div>
   <div class="col">{{itemIDToDisplay}}</div>
   <div class="col">{{itemUserNameToDisplay}}</div>
-  <div class="col">{{receiptItem.startDate}}</div>
-  <div class="col">{{receiptItem.endDate}}</div>
+  <div class="col">{{displayStartDate()}}</div>
+  <div class="col">{{displayEndDate()}}</div>
   <div class="col-1">
       <app-item-menu [item]="receiptItem"></app-item-menu>
   </div>

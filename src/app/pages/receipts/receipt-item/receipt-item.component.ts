@@ -8,6 +8,7 @@ import { User } from '../../../datamodels/user';
 import { DocumentType } from '../../../datamodels/documentType';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../services/utilities.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-receipt-item',
@@ -41,6 +42,17 @@ export class ReceiptItemComponent implements OnInit {
 
   setActiveReceipt() {
     this.itemActive = (this.receiptItem.endDate == null);
+  }
+
+  displayStartDate() {
+    return moment(this.receiptItem.startDate).format('YYYY-MM-DD');
+  }
+
+  displayEndDate() {
+    if (this.receiptItem.endDate != null) {
+      return moment(this.receiptItem.endDate).format('YYYY-MM-DD');
+    }
+
   }
 
 }
