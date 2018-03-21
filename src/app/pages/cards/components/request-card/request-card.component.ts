@@ -36,8 +36,9 @@ export class RequestCardComponent implements OnInit {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.resetForm();
-    this.modalClosed.emit(false);
+    if (this.showModal) {
+      this.closeForm();
+    }
   }
 
   users = [];
@@ -126,21 +127,22 @@ export class RequestCardComponent implements OnInit {
       this.cardItem.status = 2; // TODO: ENUM FOR STATUS, 2 = Requested
       this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
         if (res.message === 'success') {
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }
   }
 
   /**
-   * Resets form by resetting form controls and clearing inputs
+   * Closes form. Also resets it by resetting form controls and clearing inputs
    */
-  resetForm() {
+  closeForm() {
     this.usernameControl.reset();
     this.locationControl.reset();
     this.requestForm.resetForm();
     this.cardItem = Object.assign({}, new Card());
     this.showModal = false;
+    this.modalClosed.emit(false);
   }
 
 }

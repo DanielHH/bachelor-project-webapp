@@ -28,7 +28,7 @@
             <mat-error *ngIf="usernameControl.hasError('required')">
               Please select a user ID
             </mat-error>
-            <mat-error *ngIf="usernameControl.hasError('username')">
+            <mat-error *ngIf="!usernameControl.hasError('required') && usernameControl.hasError('username')">
               Please select a valid user ID
             </mat-error>
           </mat-form-field>

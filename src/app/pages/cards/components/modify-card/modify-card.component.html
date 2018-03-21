@@ -86,7 +86,7 @@
           <mat-error *ngIf="expirationDateControl.hasError('required')">
             Please select an expiration date
           </mat-error>
-          <mat-error *ngIf="expirationDateControl.hasError('dateFormat')">
+          <mat-error *ngIf="!expirationDateControl.hasError('required') && expirationDateControl.hasError('dateFormat')">
             Invalid date format
           </mat-error>
         </mat-form-field>
@@ -105,53 +105,6 @@
           </button>
         </mat-form-field>
       </div>
-    </div>
-
-    <!--Add Cardholder Checkbox-->
-    <div class="row">
-      <div class="col-12 wide-center">
-        <label class="p-2">Add cardholder:</label>
-        <mat-radio-group>
-          <mat-radio-button class="p-2" color="primary" [checked]="!addCardHolder" value="no" (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">No</mat-radio-button>
-          <mat-radio-button class="p-2" color="primary" [checked]="addCardHolder" value="yes" (change)="addCardHolder = !addCardHolder;usernameControl.reset();usernameInput='';">Yes</mat-radio-button>
-        </mat-radio-group>
-      </div>
-    </div>
-    <!--Row username-->
-    <div class="row">
-      <div class="col-0 col-md-3"></div>
-      <div class="col-12 col-md-6 wide-center">
-        <span class="third-center" *ngIf="addCardHolder">
-          <mat-form-field>
-            <!--Input-->
-            <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" type="text" [style.color]="isValidUsername() ? 'black' : 'gray'"
-              placeholder="Username" aria-label="Number" matInput [matAutocomplete]="userIDs" [formControl]="usernameControl"
-              spellcheck="false" maxlength="128" appUsername required>
-            <!--Check and clear-->
-            <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-              <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
-            </button>
-            <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button aria-label="Clear" (click)="usernameInput = ''">
-              <mat-icon>close</mat-icon>
-            </button>
-            <!--Dropdown-->
-            <mat-autocomplete #userIDs="matAutocomplete">
-              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.username">
-                {{ user.username + '
-                < ' + user.name + '>' }}
-              </mat-option>
-            </mat-autocomplete>
-            <!--Error-->
-            <mat-error *ngIf="usernameControl.hasError('required')">
-              Please select a user ID
-            </mat-error>
-            <mat-error *ngIf="usernameControl.hasError('username')">
-              Please select a valid user ID
-            </mat-error>
-          </mat-form-field>
-        </span>
-      </div>
-      <div class="col-0 col-md-3"></div>
     </div>
   </app-modal>
 </form>

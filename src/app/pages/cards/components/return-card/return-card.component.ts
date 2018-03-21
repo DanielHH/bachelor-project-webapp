@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-return-card',
@@ -9,6 +9,8 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./return-card.component.scss']
 })
 export class ReturnCardComponent implements OnInit {
+
+  @ViewChild('returnForm') returnForm: NgForm;
 
   @Input() showModal = false;
 
@@ -18,7 +20,9 @@ export class ReturnCardComponent implements OnInit {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.modalClosed.emit(false);
+    if (this.showModal) {
+      this.closeForm();
+    }
   }
 
   cardItem: Card = null;
@@ -58,10 +62,21 @@ export class ReturnCardComponent implements OnInit {
       this.cardItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
       this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
         if (res.message === 'success') {
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }
+  }
+
+  /**
+   * Closes form. Also resets it by resetting form controls and clearing inputs
+   */
+  closeForm() {
+    this.locationControl.reset();
+    this.returnForm.resetForm();
+    this.cardItem = Object.assign({}, new Card());
+    this.showModal = false;
+    this.modalClosed.emit(false);
   }
 
 }

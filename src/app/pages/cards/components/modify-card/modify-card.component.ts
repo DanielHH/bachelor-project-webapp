@@ -26,19 +26,16 @@ export class ModifyCardComponent implements OnInit {
   expirationDateDatepickerInput = '';
   commentInput = '';
   addCardHolder: Boolean = false;
-  usernameInput = '';
 
   // Form Controls
   cardTypeControl = new FormControl('', Validators.required);
   cardNumberControl = new FormControl('', Validators.required);
-  usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
   expirationDateControl = new FormControl('', Validators.required);
   expirationDatePickerControl = new FormControl();
 
   // Database data lists
   cardTypes = [];
-  users = [];
 
   // Filtered lists
   filteredCardTypes: Observable<any[]> = this.cardTypeControl.valueChanges.pipe(
@@ -47,11 +44,6 @@ export class ModifyCardComponent implements OnInit {
       cardType =>
         cardType ? this.filterCardTypes(cardType) : this.cardTypes.slice()
     )
-  );
-
-  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
-    startWith(''),
-    map(val => this.filterUsers(val))
   );
 
   @Input() cardList: Card[];
@@ -68,13 +60,6 @@ export class ModifyCardComponent implements OnInit {
       this.expirationDateDatepickerInput = this.expirationDateInput;
       this.locationInput = card.location;
       this.commentInput = card.comment;
-      if (card.userID != null) {
-        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).username;
-        this.addCardHolder = true;
-      } else {
-        this.usernameInput = '';
-        this.addCardHolder = false;
-      }
     }
   }
 
@@ -92,9 +77,7 @@ export class ModifyCardComponent implements OnInit {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.resetForm();
-
-    this.showModalChange.emit(false);
+    this.closeForm();
   }
 
   cardItem: Card;
@@ -107,14 +90,6 @@ export class ModifyCardComponent implements OnInit {
     this.dataService.cardTypeList.subscribe(cardTypes => {
       this.cardTypes = cardTypes;
       this.cardTypeControl.updateValueAndValidity({
-        onlySelf: false,
-        emitEvent: true
-      });
-    });
-
-    this.dataService.userList.subscribe(users => {
-      this.users = users;
-      this.usernameControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
       });
@@ -136,18 +111,6 @@ export class ModifyCardComponent implements OnInit {
   }
 
   /**
-   * Filters list of usernames based on username input
-   * @param str username input
-   */
-  filterUsers(str: string) {
-    return this.users.filter(
-      user =>
-        str != null &&
-        user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
-
-  /**
    * Sets fields in card according to form
    * @param card Card to set form data to
    */
@@ -158,12 +121,6 @@ export class ModifyCardComponent implements OnInit {
       card.location = this.locationInput;
       card.expirationDate = new Date(this.expirationDateInput);
       card.comment = this.commentInput;
-
-      if (this.addCardHolder && this.isValidUsername()) {
-        card.userID = this.getUserID(this.usernameInput);
-      } else {
-        card.userID = null;
-      }
 
       card.modifiedDate = this.utilitiesService.getLocalDate();
     }
@@ -180,6 +137,7 @@ export class ModifyCardComponent implements OnInit {
 
       newCard.creationDate = this.utilitiesService.getLocalDate();
       newCard.status = 1;
+      newCard.userID = null;
 
       this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
         if (res.message === 'success') {
@@ -188,7 +146,7 @@ export class ModifyCardComponent implements OnInit {
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
 
-          this.resetForm();
+          this.closeForm();
         }
       });
     }
@@ -201,14 +159,12 @@ export class ModifyCardComponent implements OnInit {
     if (this.isValidInput()) {
       this.setCardFromForm(this.cardItem);
 
-      this.resetForm();
-
-
       this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
         if (res.message === 'success') {
 
           this.dataService.cardList.next(this.cardList);
 
+          this.closeForm();
         }
       });
     }
@@ -221,14 +177,6 @@ export class ModifyCardComponent implements OnInit {
   getCardTypeID(cardTypeName: String) {
     return _.find(this.cardTypes, cardType => cardType.name === cardTypeName)
       .id;
-  }
-
-  /**
-   * Returns user id of user with username
-   * @param username Username of user
-   */
-  getUserID(username: String) {
-    return _.find(this.users, user => user.username === username).id;
   }
 
   /**
@@ -271,17 +219,6 @@ export class ModifyCardComponent implements OnInit {
   }
 
   /**
-   * Returns true if entered username is valid, else false.
-   */
-  isValidUsername() {
-    return (
-      !this.addCardHolder ||
-      (!this.usernameControl.hasError('required') &&
-        !this.usernameControl.hasError('username'))
-    );
-  }
-
-  /**
    * Returns true if entered location is valid, else false.
    */
   isValidLocation() {
@@ -303,19 +240,17 @@ export class ModifyCardComponent implements OnInit {
     return (
       this.isValidCardType() &&
       this.isValidCardNumber() &&
-      this.isValidUsername() &&
       this.isValidLocation() &&
       this.isValidExpirationDate()
     );
   }
 
   /**
-   * Resets form by resetting form controls and clearing inputs
+   * Closes form. Also resets form by resetting form controls and clearing inputs
    */
-  resetForm() {
+  closeForm() {
     this.cardTypeControl.reset();
     this.cardNumberControl.reset();
-    this.usernameControl.reset();
     this.locationControl.reset();
     this.expirationDateControl.reset();
     this.expirationDatePickerControl.reset();
@@ -323,6 +258,6 @@ export class ModifyCardComponent implements OnInit {
     this.modifyForm.resetForm();
     this.cardItem = Object.assign({}, new Card());
     this.showModal = false;
-    // this.showModalChange.emit(this.showModal);
+    this.showModalChange.emit(false);
   }
 }
