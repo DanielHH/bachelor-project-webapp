@@ -22,10 +22,14 @@ export class CardItemComponent implements OnInit {
   userList: User[] = [];
 
   showRequestModal = false;
-
   showReturnModal = false;
 
-  constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router, private httpService: HttpService) {
+  constructor(
+    private dataService: DataService,
+    private routeDataService: RouteDataService,
+    private router: Router,
+    private httpService: HttpService
+  ) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -39,7 +43,7 @@ export class CardItemComponent implements OnInit {
   /**
    * Change card status
    */
-  setCardStatus(status: number) {
+  /*setCardStatus(status: number) {
     this.cardItem.status = status;
     this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
       if (res.message === 'success') {
@@ -47,14 +51,14 @@ export class CardItemComponent implements OnInit {
         this.showReturnModal = false;
       }
     });
-  }
+  }*/
 
 
   /**
    * Returns the name of the card type corresponding to the cardType
    */
   displayCardType() {
-    if (this.cardItem.cardType > 0) {
+    if (this.cardItem && this.cardItem.cardType > 0) {
       const cardTypeToDisplay = _.find(this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
       if (cardTypeToDisplay) {
         return cardTypeToDisplay.name;
@@ -67,7 +71,7 @@ export class CardItemComponent implements OnInit {
    * Returns the name corresponding to the userID
    */
   displayUserName() {
-    if (this.cardItem.userID) {
+    if (this.cardItem && this.cardItem.userID) {
       return _.find(this.userList, user => user.id === this.cardItem.userID)
         .name;
     }
@@ -100,10 +104,10 @@ export class CardItemComponent implements OnInit {
    * Show modal based on status
    */
   showModal() {
-    if (this.cardItem.status == 1) {
+    const requested = 1;
+    if (this.cardItem.status == requested) { // Don't change to ===, doesn't work
       this.showRequestModal = true;
-    }
-    else {
+    } else {
       this.showReturnModal = true;
     }
   }

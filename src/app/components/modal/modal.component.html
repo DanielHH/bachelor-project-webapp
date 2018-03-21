@@ -1,4 +1,6 @@
-<div mdbModal #modalComponent="mdb-modal" (onHidden)="setShow(false)" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: false}">
+<div mdbModal #modalComponent="mdb-modal" (onHidden)="setShow(false)" class="modal fade"
+tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true"
+[config]="{backdrop: true, ignoreBackdropClick: false}">
   <div class="modal-dialog" role="document">
       <div class="modal-content">
           <div class="modal-header">
@@ -12,8 +14,11 @@
             </div>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-outline-primary waves-light" aria-label="Close" (click)="setShow(false)" mdbRippleRadius>{{closeName}}</button>
-              <button type="submit" class="btn btn-primary waves-light" mdbRippleRadius>{{submitName}}</button>
+              <button type="button" class="btn btn-outline-primary waves-light"
+              aria-label="Close" (click)="setShow(false)" mdbRippleRadius>{{closeName}}</button>
+              <button type="submit" class="btn btn-primary waves-light" mdbRippleRadius>
+                {{submitName}}
+              </button>
           </div>
       </div>
   </div>

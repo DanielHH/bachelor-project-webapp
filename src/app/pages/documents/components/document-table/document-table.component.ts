@@ -31,7 +31,7 @@ export class DocumentTableComponent implements OnInit {
   showOut = true;
   showArchived = false;
   showGone = false;
-  modalTitle = "";
+  modalTitle = '';
 
   modalType = 0;
 
@@ -116,7 +116,7 @@ export class DocumentTableComponent implements OnInit {
    */
   openEdit(document: any) {
     this.editDocument = document;
-    this.modalTitle = "Edit document";
+    this.modalTitle = 'Edit document';
     this.modalType = 1;
     this.showModal = true;
   }
@@ -126,7 +126,7 @@ export class DocumentTableComponent implements OnInit {
    */
   openAddNewDocument() {
     this.editDocument = Object.assign({}, new Document());
-    this.modalTitle = "Add new document";
+    this.modalTitle = 'Add new document';
     this.modalType = 0;
     this.showModal = true;
   }

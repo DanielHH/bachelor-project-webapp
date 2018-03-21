@@ -78,13 +78,15 @@ export class ModifyCardComponent implements OnInit {
     }
   }
 
-  @Input() modalTitle = "";
+  @Input() modalTitle = '';
 
   @Input() modalType: number;
 
   @ViewChild('modifyForm') modifyForm: NgForm;
 
   @Input() showModal = false;
+
+  @Output() showModalChange = new EventEmitter<any>();
 
   get _showModal() {
     return this.showModal;
@@ -96,8 +98,6 @@ export class ModifyCardComponent implements OnInit {
   }
 
   cardItem: Card;
-
-  @Output() showModalChange = new EventEmitter<any>();
 
   constructor(
     private httpService: HttpService,
@@ -174,7 +174,7 @@ export class ModifyCardComponent implements OnInit {
    */
   addNewCard() {
     if (this.isValidInput()) {
-      let newCard = new Card();
+      const newCard = new Card();
 
       this.setCardFromForm(newCard);
 
@@ -184,14 +184,14 @@ export class ModifyCardComponent implements OnInit {
       this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
         if (res.message === 'success') {
           this.cardList.unshift(res.data);
-          //Trigger view refresh
+          // Trigger view refresh
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
 
           this.resetForm();
         }
       });
-    };
+    }
   }
 
   /**
@@ -211,7 +211,7 @@ export class ModifyCardComponent implements OnInit {
 
         }
       });
-    };
+    }
   }
 
   /**
@@ -313,7 +313,6 @@ export class ModifyCardComponent implements OnInit {
    * Resets form by resetting form controls and clearing inputs
    */
   resetForm() {
-    
     this.cardTypeControl.reset();
     this.cardNumberControl.reset();
     this.usernameControl.reset();
@@ -324,6 +323,6 @@ export class ModifyCardComponent implements OnInit {
     this.modifyForm.resetForm();
     this.cardItem = Object.assign({}, new Card());
     this.showModal = false;
-    this.showModalChange.emit(this.showModal);
+    // this.showModalChange.emit(this.showModal);
   }
 }

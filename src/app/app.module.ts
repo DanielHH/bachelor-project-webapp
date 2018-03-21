@@ -55,6 +55,8 @@ import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
+import { RequestCardComponent } from './pages/cards/components/request-card/request-card.component';
+import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
     ItemMenuComponent,
     ModifyDocumentComponent,
     ModalComponent,
-    DocumentDetailComponent
+    DocumentDetailComponent,
+    RequestCardComponent,
+    ReturnCardComponent
   ],
   imports: [
     BrowserModule,
