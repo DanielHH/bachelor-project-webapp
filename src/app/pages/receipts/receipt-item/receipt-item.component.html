@@ -1,15 +1,15 @@
 <div class="row">
     <div class="col-1">
-        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="!activeReceipt()" [class.btn-success]="activeReceipt()"
+        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="!itemActive" [class.btn-success]="itemActive"
             mdbRippleRadius disabled>
-            <span *ngIf="activeReceipt()">Aktiv</span>
-            <span *ngIf="!activeReceipt()">Inaktiv</span>
+            <span *ngIf="itemActive">Aktiv</span>
+            <span *ngIf="!itemActive">Inaktiv</span>
         </button>
     </div>
 
-  <div class="col">{{receiptItem.itemTypeID}}</div>
-  <div class="col">{{receiptItem.cardID}}</div>
-  <div class="col">{{receiptItem.userID}}</div>
+  <div class="col">{{itemTypeToDisplay}}</div>
+  <div class="col">{{itemIDToDisplay}}</div>
+  <div class="col">{{itemUserNameToDisplay}}</div>
   <div class="col">{{receiptItem.startDate}}</div>
   <div class="col">{{receiptItem.endDate}}</div>
   <div class="col-1">
