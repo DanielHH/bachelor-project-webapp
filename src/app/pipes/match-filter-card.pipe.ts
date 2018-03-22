@@ -35,6 +35,10 @@ export class MatchFilterCardPipe implements PipeTransform {
    * Match filterInput to the various displayed fields of card
    * @param card
    * @param filterInput
+   * @param showIn true if checkbox showIn checked
+   * @param showOut true if checkbox showOut checked
+   * @param showArchived true if checkbox showArchived checked
+   * @param showGone true if checkbox showGone checked
    * @returns True if match found
    */
   matchFilt(card: Card, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {

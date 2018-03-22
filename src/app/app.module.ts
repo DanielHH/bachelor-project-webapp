@@ -58,6 +58,9 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { DeliveryTableComponent } from './pages/deliveries/components/delivery-table/delivery-table.component';
 import { DeliveryItemComponent } from './pages/deliveries/components/delivery-item/delivery-item.component';
+import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
+import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
+import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +98,10 @@ import { DeliveryItemComponent } from './pages/deliveries/components/delivery-it
     DocumentDetailComponent,
     DeliveriesComponent,
     DeliveryTableComponent,
-    DeliveryItemComponent
+    DeliveryItemComponent,
+    ReceiptTableComponent,
+    MatchFilterReceiptPipe,
+    ReceiptItemComponent
   ],
   imports: [
     BrowserModule,
