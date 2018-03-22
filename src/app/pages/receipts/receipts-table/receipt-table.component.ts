@@ -3,11 +3,11 @@ import { Receipt } from '../../../datamodels/receipt';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-receipts-table',
-  templateUrl: './receipts-table.component.html',
-  styleUrls: ['./receipts-table.component.scss']
+  selector: 'app-receipt-table',
+  templateUrl: './receipt-table.component.html',
+  styleUrls: ['./receipt-table.component.scss']
 })
-export class ReceiptsTableComponent implements OnInit {
+export class ReceiptTableComponent implements OnInit {
 
   @Input() receiptList: Receipt[];
 

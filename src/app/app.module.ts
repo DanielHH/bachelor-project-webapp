@@ -55,7 +55,7 @@ import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
-import { ReceiptsTableComponent } from './pages/receipts/receipts-table/receipts-table.component';
+import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
 
@@ -93,7 +93,7 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
     ModifyDocumentComponent,
     ModalComponent,
     DocumentDetailComponent,
-    ReceiptsTableComponent,
+    ReceiptTableComponent,
     MatchFilterReceiptPipe,
     ReceiptItemComponent
   ],
