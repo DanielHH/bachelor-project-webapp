@@ -153,7 +153,6 @@ export class RequestDocumentComponent implements OnInit {
           this.dataService.receiptList.next(this.receipts);
 
           this.documentItem.activeReceipt = receiptRes.data.id;
-          console.log(this.documentItem.activeReceipt);
 
           this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
             if (documentRes.message === 'success') {

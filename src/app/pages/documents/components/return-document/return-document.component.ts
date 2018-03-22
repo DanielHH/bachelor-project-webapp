@@ -67,8 +67,6 @@ export class ReturnDocumentComponent implements OnInit {
    * @param id Id of receipt
    */
   getReceipt(id: number) {
-    console.log(id);
-    console.log(this.receipts);
     return _.find(this.receipts, (receipt) => receipt.id === id);
   }
 
