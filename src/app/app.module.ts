@@ -60,6 +60,9 @@ import { ReturnCardComponent } from './pages/cards/components/return-card/return
 import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
 import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
 import { EditService } from './services/edit.service';
+import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
+import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
+import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +101,10 @@ import { EditService } from './services/edit.service';
     RequestCardComponent,
     ReturnCardComponent,
     RequestDocumentComponent,
-    ReturnDocumentComponent
+    ReturnDocumentComponent,
+    ReceiptTableComponent,
+    MatchFilterReceiptPipe,
+    ReceiptItemComponent
   ],
   imports: [
     BrowserModule,

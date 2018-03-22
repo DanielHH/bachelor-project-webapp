@@ -52,7 +52,7 @@ export class Receipt {
     this.userID = null;
     this.startDate = null;
     this.endDate = null;
-    this.comment = '';
+    this.comment = null;
   }
 
 }
