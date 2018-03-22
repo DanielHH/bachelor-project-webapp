@@ -62,7 +62,7 @@ export class Document {
   /**
    * Comment
    */
-  comment: string;
+  comment?: string;
 
   /**
    * Document checked in/out status
@@ -72,7 +72,7 @@ export class Document {
   /**
    * Active receipt (if any)
    */
-  activeReceipt: number;
+  activeReceipt?: number;
 
   constructor() {
     this.id = null;

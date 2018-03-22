@@ -106,7 +106,7 @@ export class ModifyDocumentComponent implements OnInit {
     this.editService.document.subscribe((document) => {
       if (document && document.id) {
         this.documentItem = document;
-        
+
         this.docTypeInput = this.getDocTypeName(document.documentType);
         this.docNumberInput = document.documentNumber;
 
