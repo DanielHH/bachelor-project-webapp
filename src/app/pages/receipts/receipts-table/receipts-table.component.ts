@@ -40,7 +40,7 @@ export class ReceiptsTableComponent implements OnInit {
   }
 
   /**
-   * Sorts the table depending on the property of the Card
+   * Sorts the table depending on the property of the receipt
    * @param property
    */
   sortTableList(property: string) {

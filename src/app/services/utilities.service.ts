@@ -50,7 +50,15 @@ export class UtilitiesService {
     });
     
   }
-
+  
+/**
+ * Helper function to get the actual unique serial number, type and user of a receipt
+ * to be displayed
+ * 
+ * @returns an string array containing [serial number, item type, user name]
+ * 
+ * @param receipt receipt that the displayed data should be extracted from
+ */
   getReceiptDisplay(receipt: Receipt) {
     
     if(receipt.itemTypeID == 1) { // itemTypeID 1: card
@@ -83,6 +91,9 @@ export class UtilitiesService {
     return [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay]
   }
 
+  /**
+   * Helper function to get the local date
+   */
   getLocalDate() {
     const localDate = new Date();
     localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);

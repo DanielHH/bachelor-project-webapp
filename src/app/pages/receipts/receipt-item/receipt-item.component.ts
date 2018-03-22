@@ -35,19 +35,30 @@ export class ReceiptItemComponent implements OnInit {
   }
 
   ngOnInit() {
+    // get actual data to be displayed
     [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
       this.utilitiesService.getReceiptDisplay(this.receiptItem);
+
     this.setActiveReceipt();
   }
 
+  /**
+   * Set the receipt to be active or not depending on if end date exists
+   */
   setActiveReceipt() {
     this.itemActive = (this.receiptItem.endDate == null);
   }
 
+  /**
+   * Returns a string representation of the displayedStartDate of the card
+   */
   displayStartDate() {
     return moment(this.receiptItem.startDate).format('YYYY-MM-DD');
   }
 
+   /**
+   * Returns a string representation of the displayedEndDate of the card
+   */
   displayEndDate() {
     if (this.receiptItem.endDate != null) {
       return moment(this.receiptItem.endDate).format('YYYY-MM-DD');

@@ -16,7 +16,6 @@ export class ReceiptsComponent implements OnInit {
     this.dataService.receiptList.subscribe((receiptList) => {
       this.receiptList = receiptList;
     });
-    
    }
 
   ngOnInit() {

@@ -34,6 +34,16 @@ export class MatchFilterReceiptPipe implements PipeTransform {
   });
   }
 
+    /**
+   * Match filterInput to the various displayed fields of receipts
+   * @param card
+   * @param filterInput
+   * @param showCard true if checkbox showCard checked
+   * @param showDocument true if checkbox showDocument checked
+   * @param showActive true if checkbox showActive checked
+   * @param showInactive true if checkbox showInactive checked
+   * @returns True if match found
+   */
   matchFilt(receipt: Receipt, filterInput: string, showCard: boolean, showDocument: boolean, showActive: boolean, showInactive: boolean) {
     if( (receipt.endDate == null && !showActive) || (receipt.endDate != null && !showInactive) || 
         (receipt.itemTypeID == 1 && !showCard) || (receipt.itemTypeID == 2 && !showDocument) ){
@@ -44,6 +54,7 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     const startDate = moment(receipt.startDate).format('YYYY-MM-DD');
     const endDate = moment(receipt.endDate).format('YYYY-MM-DD');
 
+    // get actual data to be displayed
     [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
       this.utilitiesService.getReceiptDisplay(receipt);
 
