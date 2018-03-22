@@ -2,6 +2,10 @@ import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angu
 import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
+import { Receipt } from '../../../../datamodels/receipt';
+import { UtilitiesService } from '../../../../services/utilities.service';
+import { DataService } from '../../../../services/data.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-return-document',
@@ -14,7 +18,7 @@ export class ReturnDocumentComponent implements OnInit {
 
   @Input() showModal = false;
 
-  @Output() modalClosed = new EventEmitter<boolean>();
+  @Output() showModalChange = new EventEmitter<boolean>();
 
   get _showModal() {
     return this.showModal;
@@ -22,6 +26,9 @@ export class ReturnDocumentComponent implements OnInit {
   set _showModal(value: any) {
     this.closeForm();
   }
+
+  documents: Document[] = [];
+  receipts: Receipt[] = [];
 
   documentItem: Document = null;
 
@@ -38,9 +45,31 @@ export class ReturnDocumentComponent implements OnInit {
 
   locationInput = '';
 
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    private dataService: DataService,
+    private utilitiesService: UtilitiesService
+  ) {
+    this.dataService.receiptList.subscribe(receipts => {
+      this.receipts = receipts;
+    });
+
+    this.dataService.documentList.subscribe(documents => {
+      this.documents = documents;
+    });
+  }
 
   ngOnInit() {
+  }
+
+  /**
+   * Returns receipts from id
+   * @param id Id of receipt
+   */
+  getReceipt(id: number) {
+    console.log(id);
+    console.log(this.receipts);
+    return _.find(this.receipts, (receipt) => receipt.id === id);
   }
 
   /**
@@ -51,16 +80,28 @@ export class ReturnDocumentComponent implements OnInit {
   }
 
   /**
-   * Change status of a document to returned
+   * Change status of a document to returned and update receipt
    */
   returnDocument() {
     if (this.isValidLocation()) {
       this.documentItem.userID = null;
       this.documentItem.location = this.locationInput;
       this.documentItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
-      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-        if (res.message === 'success') {
-          this.showModal = false;
+
+      const activeReceipt = this.getReceipt(this.documentItem.activeReceipt);
+      activeReceipt.endDate = this.utilitiesService.getLocalDate();
+
+      this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
+        if (receiptRes.message === 'success') {
+          this.dataService.receiptList.next(this.receipts);
+          this.documentItem.activeReceipt = null;
+
+          this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
+            if (documentRes.message === 'success') {
+              this.dataService.documentList.next(this.documents);
+              this.closeForm();
+            }
+          });
         }
       });
     }
@@ -74,7 +115,7 @@ export class ReturnDocumentComponent implements OnInit {
     this.returnForm.resetForm();
     this.documentItem = Object.assign({}, new Document());
     this.showModal = false;
-    this.modalClosed.emit(false);
+    this.showModalChange.emit(false);
   }
 
 }

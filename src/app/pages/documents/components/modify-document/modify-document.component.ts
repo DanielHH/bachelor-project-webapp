@@ -108,8 +108,8 @@ export class ModifyDocumentComponent implements OnInit {
     public dataService: DataService,
     private utilitiesService: UtilitiesService) {
 
-    this.dataService.documentTypeList.subscribe(cardTypes => {
-      this.docTypes = cardTypes;
+    this.dataService.documentTypeList.subscribe(docTypes => {
+      this.docTypes = docTypes;
       this.docTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true

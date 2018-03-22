@@ -44,6 +44,15 @@ export class Receipt {
    */
   comment: string;
 
-
+  constructor() {
+    this.id = null;
+    this.itemTypeID = null;
+    this.cardID = null;
+    this.documentID = null;
+    this.userID = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.comment = '';
+  }
 
 }

@@ -7,6 +7,8 @@ import { DataService } from '../../../../services/data.service';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
+import { Receipt } from '../../../../datamodels/receipt';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-request-document',
@@ -30,7 +32,7 @@ export class RequestDocumentComponent implements OnInit {
     }
   }
 
-  @Output() modalClosed = new EventEmitter<boolean>();
+  @Output() showModalChange = new EventEmitter<boolean>();
 
   get _showModal() {
     return this.showModal;
@@ -40,6 +42,8 @@ export class RequestDocumentComponent implements OnInit {
   }
 
   users = [];
+  documents: Document[] = [];
+  receipts: Receipt[] = [];
 
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
@@ -54,7 +58,8 @@ export class RequestDocumentComponent implements OnInit {
 
   constructor(
     private httpService: HttpService,
-    private dataService: DataService
+    private dataService: DataService,
+    private utilitiesService: UtilitiesService
   ) {
     this.dataService.userList.subscribe(users => {
       this.users = users;
@@ -62,6 +67,14 @@ export class RequestDocumentComponent implements OnInit {
         onlySelf: false,
         emitEvent: true
       });
+    });
+
+    this.dataService.documentList.subscribe(documents => {
+      this.documents = documents;
+    });
+
+    this.dataService.receiptList.subscribe(receipts => {
+      this.receipts = receipts;
     });
   }
 
@@ -123,9 +136,31 @@ export class RequestDocumentComponent implements OnInit {
       this.documentItem.userID = this.getUserID(this.usernameInput);
       this.documentItem.location = this.locationInput;
       this.documentItem.status = 2; // TODO: ENUM FOR STATUS, 2 = Requested
-      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-        if (res.message === 'success') {
-          this.showModal = false;
+
+
+      const receipt = new Receipt();
+
+      receipt.itemTypeID = 2; // TODO: ENUM, 2 means document
+      receipt.documentID = this.documentItem.id;
+      receipt.userID = this.documentItem.userID;
+      receipt.startDate = this.utilitiesService.getLocalDate();
+
+      this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
+        if (receiptRes.message === 'success') {
+          this.receipts.unshift(receiptRes.data);
+          // Trigger view refresh
+          this.receipts = this.receipts.slice();
+          this.dataService.receiptList.next(this.receipts);
+
+          this.documentItem.activeReceipt = receiptRes.data.id;
+          console.log(this.documentItem.activeReceipt);
+
+          this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
+            if (documentRes.message === 'success') {
+              this.dataService.documentList.next(this.documents);
+              this.closeForm();
+            }
+          });
         }
       });
     }
@@ -140,7 +175,7 @@ export class RequestDocumentComponent implements OnInit {
     this.requestForm.resetForm();
     this.documentItem = Object.assign({}, new Document());
     this.showModal = false;
-    this.modalClosed.emit(false);
+    this.showModalChange.emit(false);
   }
 
 }

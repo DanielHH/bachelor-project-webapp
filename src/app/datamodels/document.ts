@@ -1,3 +1,4 @@
+
 /**
  * Document data model
 */
@@ -64,9 +65,14 @@ export class Document {
   comment: string;
 
   /**
-   * document checked in/out status
+   * Document checked in/out status
    */
   status: number;
+
+  /**
+   * Active receipt (if any)
+   */
+  activeReceipt: number;
 
   constructor() {
     this.id = null;
@@ -82,6 +88,7 @@ export class Document {
     this.location = null;
     this.comment = null;
     this.status = 0;
+    this.activeReceipt = null;
   }
 
 }

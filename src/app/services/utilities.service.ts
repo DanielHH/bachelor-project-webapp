@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { HttpService } from './http.service';
+import { Receipt } from '../datamodels/receipt';
+import { Document } from '../datamodels/document';
 
 
 /**
@@ -15,9 +18,14 @@ export const lowerCase = (str) => _.reduce(
 @Injectable()
 export class UtilitiesService {
 
-  constructor() { }
+  constructor(
+    private httpService: HttpService
+  ) { }
 
-  getLocalDate() {
+  /**
+   * Returns a Date object representing current local time
+   */
+  getLocalDate(): Date {
     const localDate = new Date();
     localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
     return localDate;
