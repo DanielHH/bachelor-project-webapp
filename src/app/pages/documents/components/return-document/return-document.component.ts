@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
@@ -6,6 +6,7 @@ import { Receipt } from '../../../../datamodels/receipt';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
+import { ReturnService } from '../../../../services/return.service';
 
 @Component({
   selector: 'app-return-document',
@@ -16,30 +17,22 @@ export class ReturnDocumentComponent implements OnInit {
 
   @ViewChild('returnForm') returnForm: NgForm;
 
-  @Input() showModal = false;
-
-  @Output() showModalChange = new EventEmitter<boolean>();
+  showModal = false;
 
   get _showModal() {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.closeForm();
+    if (!value) {
+      this.closeForm();
+    }
+    this.showModal = value;
   }
 
   documents: Document[] = [];
   receipts: Receipt[] = [];
 
   documentItem: Document = null;
-
-  /**
-   * Set document that is being returned.
-   */
-  @Input('document') set document(document: Document) {
-    if (document && document.id) {
-      this.documentItem = document;
-    }
-  }
 
   locationControl = new FormControl('', Validators.required);
 
@@ -48,7 +41,8 @@ export class ReturnDocumentComponent implements OnInit {
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private returnService: ReturnService
   ) {
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
@@ -56,6 +50,18 @@ export class ReturnDocumentComponent implements OnInit {
 
     this.dataService.documentList.subscribe(documents => {
       this.documents = documents;
+    });
+
+    this.returnService.document.subscribe((document) => {
+      if (document && document.id) {
+        this.documentItem = document;
+
+        // this.startDateInput = moment(utilitiesService.getLocalDate).format('YYYY-MM-DD');
+        // this.startDateDatepickerInput = this.docDateInput;
+
+        this._showModal = true;
+
+      }
     });
   }
 
@@ -67,6 +73,7 @@ export class ReturnDocumentComponent implements OnInit {
    * @param id Id of receipt
    */
   getReceipt(id: number) {
+    console.log(id);
     return _.find(this.receipts, (receipt) => receipt.id === id);
   }
 
@@ -91,13 +98,18 @@ export class ReturnDocumentComponent implements OnInit {
 
       this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
-          this.dataService.receiptList.next(this.receipts);
           this.documentItem.activeReceipt = null;
 
           this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
             if (documentRes.message === 'success') {
+              // Update receipt list
+              this.receipts = this.receipts.slice();
+              this.dataService.receiptList.next(this.receipts);
+
+              // Update document list
               this.dataService.documentList.next(this.documents);
-              this.closeForm();
+
+              this.showModal = false;
             }
           });
         }
@@ -110,10 +122,12 @@ export class ReturnDocumentComponent implements OnInit {
    */
   closeForm() {
     this.locationControl.reset();
-    this.returnForm.resetForm();
+    this.returnForm.resetForm(); // Clears form errors
+
     this.documentItem = Object.assign({}, new Document());
+    this.returnService.document.next(this.documentItem);
+
     this.showModal = false;
-    this.showModalChange.emit(false);
   }
 
 }

@@ -60,7 +60,7 @@ export class Card {
     this.cardNumber = null;
     this.userID = null;
     this.location = null;
-    this.comment = '';
+    this.comment = null;
     this.expirationDate = null;
     this.creationDate = null;
     this.modifiedDate = null;

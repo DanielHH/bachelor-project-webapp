@@ -84,9 +84,13 @@
 
         <!-- Add cards to the table -->
         <div *ngFor="let document of documentList | matchFilterDocument:filterInput:showIn:showOut:showArchived:showGone">
-            <app-document-item [documentItem]="document" (editItem)="openEdit($event)"></app-document-item>
+            <app-document-item [documentItem]="document"></app-document-item>
         </div>
     </div>
 </div>
 
 <app-modify-document [documentList]="documentList" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-document>
+
+<app-request-document></app-request-document>
+
+<app-return-document></app-return-document>

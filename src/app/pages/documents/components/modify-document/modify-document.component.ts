@@ -32,7 +32,7 @@ export class ModifyDocumentComponent implements OnInit {
   senderInput = '';
 
   locationInput = '';
-  commentInput = '';
+  commentInput = null;
 
   // Form Controls
   docTypeControl = new FormControl('', Validators.required);
@@ -88,7 +88,6 @@ export class ModifyDocumentComponent implements OnInit {
   documentItem: Document;
 
   @Output() showModalChange = new EventEmitter<any>();
-
 
   constructor(private httpService: HttpService,
     private dataService: DataService,
@@ -343,7 +342,7 @@ export class ModifyDocumentComponent implements OnInit {
     this.senderControl.reset();
 
     this.locationControl.reset();
-    this.commentInput = '';
+    this.commentInput = null;
 
     this.modifyForm.resetForm();
     this.documentItem = Object.assign({}, new Document());

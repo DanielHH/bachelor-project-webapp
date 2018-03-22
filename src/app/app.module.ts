@@ -63,6 +63,8 @@ import { EditService } from './services/edit.service';
 import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
+import { RequestService } from './services/request.service';
+import { ReturnService } from './services/return.service';
 
 @NgModule({
   declarations: [
@@ -126,7 +128,15 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
     MatToolbarModule,
     MatRadioModule
   ],
-  providers: [HttpService, DataService, RouteDataService, UtilitiesService, EditService],
+  providers: [
+    HttpService,
+    DataService,
+    RouteDataService,
+    UtilitiesService,
+    EditService,
+    RequestService,
+    ReturnService
+  ],
   entryComponents: [],
   bootstrap: [AppComponent]
 })

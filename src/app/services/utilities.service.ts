@@ -29,7 +29,7 @@ export class UtilitiesService {
   userList: User[] = [];
 
   itemTypeToDisplay: string;
-  itemIDToDisplay: string;
+  itemIdToDisplay: string;
   itemUserNameToDisplay: string;
 
   constructor(private dataService: DataService) {
@@ -62,7 +62,7 @@ export class UtilitiesService {
     if (receipt.itemTypeID == 1) { // itemTypeID 1: card
       const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
 
-      this.itemIDToDisplay = cardItem.cardNumber;
+      this.itemIdToDisplay = cardItem.cardNumber;
 
       const itemType = _.find(this.cardTypeList, cardType => cardType.id === cardItem.cardType);
       this.itemTypeToDisplay = itemType.name;
@@ -70,7 +70,7 @@ export class UtilitiesService {
     } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
       const documentItem = _.find(this.documentList, document => document.id === receipt.documentID);
 
-      this.itemIDToDisplay = documentItem.documentNumber;
+      this.itemIdToDisplay = documentItem.documentNumber;
 
       const itemType = _.find(this.documentTypeList, documentType => documentType.id === documentItem.documentType);
       this.itemTypeToDisplay = itemType.name;
@@ -82,7 +82,7 @@ export class UtilitiesService {
       this.itemUserNameToDisplay = itemUser.name;
     }
 
-    return [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay];
+    return [this.itemIdToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay];
   }
 
   /**

@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
 import { Receipt } from '../../../../datamodels/receipt';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { RequestService } from '../../../../services/request.service';
 
 @Component({
   selector: 'app-request-document',
@@ -21,24 +22,16 @@ export class RequestDocumentComponent implements OnInit {
 
   documentItem: Document = null; // Document that is requested
 
-  @Input() showModal = false;
-
-  /**
-   * Set document that is being requested.
-   */
-  @Input('document') set document(document: Document) {
-    if (document && document.id) {
-      this.documentItem = document;
-    }
-  }
-
-  @Output() showModalChange = new EventEmitter<boolean>();
+  showModal = false;
 
   get _showModal() {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.closeForm();
+    if (!value) {
+      this.closeForm();
+    }
+    this.showModal = value;
   }
 
   users = [];
@@ -59,7 +52,8 @@ export class RequestDocumentComponent implements OnInit {
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private requestService: RequestService
   ) {
     this.dataService.userList.subscribe(users => {
       this.users = users;
@@ -75,6 +69,18 @@ export class RequestDocumentComponent implements OnInit {
 
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
+    });
+
+    this.requestService.document.subscribe((document) => {
+      if (document && document.id) {
+        this.documentItem = document;
+
+        // this.startDateInput = moment(utilitiesService.getLocalDate).format('YYYY-MM-DD');
+        // this.startDateDatepickerInput = this.docDateInput;
+
+        this._showModal = true;
+
+      }
     });
   }
 
@@ -147,17 +153,20 @@ export class RequestDocumentComponent implements OnInit {
 
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
-          this.receipts.unshift(receiptRes.data);
-          // Trigger view refresh
-          this.receipts = this.receipts.slice();
-          this.dataService.receiptList.next(this.receipts);
-
           this.documentItem.activeReceipt = receiptRes.data.id;
 
           this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
             if (documentRes.message === 'success') {
+              // Update receipt list
+              this.receipts.unshift(receiptRes.data);
+              // Trigger view refresh
+              this.receipts = this.receipts.slice();
+              this.dataService.receiptList.next(this.receipts);
+
+              // Update document list
               this.dataService.documentList.next(this.documents);
-              this.closeForm();
+
+              this.showModal = false;
             }
           });
         }
@@ -171,10 +180,12 @@ export class RequestDocumentComponent implements OnInit {
   closeForm() {
     this.usernameControl.reset();
     this.locationControl.reset();
-    this.requestForm.resetForm();
+    this.requestForm.resetForm(); // Clears form errors
+
     this.documentItem = Object.assign({}, new Document());
+    this.requestService.document.next(this.documentItem);
+
     this.showModal = false;
-    this.showModalChange.emit(false);
   }
 
 }

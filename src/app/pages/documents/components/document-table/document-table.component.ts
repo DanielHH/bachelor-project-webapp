@@ -97,7 +97,6 @@ export class DocumentTableComponent implements OnInit {
 
   }
 
-
   /**
    * Sets the order to sort by
    * @param order
@@ -107,15 +106,6 @@ export class DocumentTableComponent implements OnInit {
       case 'asc': return 'desc';
       default: return 'asc';
     }
-  }
-
-  /**
-   * Set document to be edited and open edit modal
-   */
-  openEdit(document: any) {
-    this.modalTitle = 'Edit document';
-    this.modalType = 1;
-    this.showModal = true;
   }
 
   /**
