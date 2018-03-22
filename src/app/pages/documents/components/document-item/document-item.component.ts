@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
+import { EditService } from '../../../../services/edit.service';
 
 @Component({
   selector: 'app-document-item',
@@ -29,8 +30,8 @@ export class DocumentItemComponent implements OnInit {
     public dataService: DataService,
     private routeDataService: RouteDataService,
     private router: Router,
-    private httpService: HttpService
-  ) {
+    private httpService: HttpService,
+    private editService: EditService) {
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
@@ -39,7 +40,7 @@ export class DocumentItemComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   /**
    * Returns the name of the document type corresponding to the documentType
@@ -73,7 +74,7 @@ export class DocumentItemComponent implements OnInit {
    * Set document to be outputted for editing
    */
   edit() {
-    this.editItem.next(this.documentItem);
+    this.editService.document.next(this.documentItem);
   }
 
   /**
@@ -86,5 +87,14 @@ export class DocumentItemComponent implements OnInit {
     } else {
       this.showReturnModal = true;
     }
+  }
+
+  /**
+   * Sets the status of the document
+   */
+  editStatus() {
+    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+      if (res.message === 'success') { }
+    });
   }
 }

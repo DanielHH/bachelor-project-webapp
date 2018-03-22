@@ -15,7 +15,10 @@ export class ItemMenuComponent implements OnInit {
 
   // Card or Document
   @Input() item: any;
+
   @Output() editItem = new EventEmitter<any>();
+
+  @Output() editStatus = new EventEmitter<any>();
 
   constructor(private routeDataService: RouteDataService, private router: Router,
     private httpService: HttpService) { }
@@ -56,16 +59,9 @@ export class ItemMenuComponent implements OnInit {
       this.item.status = value;
     }
 
-    if (this.item.cardType) {
-      this.httpService.httpPut<Card>('updateCard/', this.item).then(res => {
-        if (res.message === 'success') {}
-     });
+    this.editStatus.emit();
 
-    } else if (this.item.documentType) {
-      this.httpService.httpPut<Document>('updateDocument/', this.item).then(res => {
-        if (res.message === 'success') {}
-      });
-    }
+    
   }
 
   /**

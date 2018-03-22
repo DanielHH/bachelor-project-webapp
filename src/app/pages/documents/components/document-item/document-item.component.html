@@ -22,7 +22,7 @@
     <div class="col">{{documentItem?.location}}</div>
     <div class="col">{{documentItem?.comment}}</div>
     <div class="col-1">
-        <app-item-menu [item]="documentItem" (editItem)="edit()"></app-item-menu>
+        <app-item-menu [item]="documentItem" (editItem)="edit()" (editStatus)="editStatus()"></app-item-menu>
     </div>
 </div>
 
