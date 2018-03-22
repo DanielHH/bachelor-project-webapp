@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
+import { EditService } from '../../../../services/edit.service';
 
 @Component({
   selector: 'app-card-item',
@@ -16,7 +17,6 @@ import { HttpService } from '../../../../services/http.service';
 })
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
-  @Output() editItem = new EventEmitter<any>();
 
   cardTypeList: CardType[] = [];
   userList: User[] = [];
@@ -28,8 +28,8 @@ export class CardItemComponent implements OnInit {
     private dataService: DataService,
     private routeDataService: RouteDataService,
     private router: Router,
-    private httpService: HttpService
-  ) {
+    private httpService: HttpService,
+    private editService: EditService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -84,7 +84,7 @@ export class CardItemComponent implements OnInit {
    * Set card to be outputted for editing
   */
   edit() {
-    this.editItem.next(this.cardItem);
+    this.editService.card.next(this.cardItem);
   }
 
   /**
@@ -97,6 +97,15 @@ export class CardItemComponent implements OnInit {
     } else {
       this.showReturnModal = true;
     }
+  }
+
+  /**
+   * Sets the status of the card
+   */
+  editStatus() {
+    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+      if (res.message === 'success') { }
+    });
   }
 }
 

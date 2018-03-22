@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { MatDialogRef } from '@angular/material';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
+import { EditService } from '../../../../services/edit.service';
 
 @Component({
   selector: 'app-modify-document',
@@ -63,23 +64,7 @@ export class ModifyDocumentComponent implements OnInit {
    * Sets form to display given document.
    */
   @Input('document') set document(document: Document) {
-    if (document && document.id) {
-      this.documentItem = document;
-      this.docTypeInput = this.getDocTypeName(document.documentType);
-      this.docNumberInput = document.documentNumber;
 
-      this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
-      this.registrationDateDatepickerInput = this.registrationDateInput;
-      this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
-      this.docDateDatepickerInput = this.docDateInput;
-
-      this.nameInput = document.name;
-      this.senderInput = document.sender;
-
-      this.locationInput = document.location;
-      this.commentInput = document.comment;
-
-    }
   }
 
   @Input() modalTitle = '';
@@ -97,6 +82,7 @@ export class ModifyDocumentComponent implements OnInit {
     if (!value) {
       this.closeForm();
     }
+    this.showModal = value;
   }
 
   documentItem: Document;
@@ -105,8 +91,9 @@ export class ModifyDocumentComponent implements OnInit {
 
 
   constructor(private httpService: HttpService,
-    public dataService: DataService,
-    private utilitiesService: UtilitiesService) {
+    private dataService: DataService,
+    private utilitiesService: UtilitiesService,
+    private editService: EditService) {
 
     this.dataService.documentTypeList.subscribe(docTypes => {
       this.docTypes = docTypes;
@@ -115,6 +102,31 @@ export class ModifyDocumentComponent implements OnInit {
         emitEvent: true
       });
     });
+
+    this.editService.document.subscribe((document) => {
+      if (document && document.id) {
+        this.documentItem = document;
+        
+        this.docTypeInput = this.getDocTypeName(document.documentType);
+        this.docNumberInput = document.documentNumber;
+
+        this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
+        this.registrationDateDatepickerInput = this.registrationDateInput;
+        this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
+        this.docDateDatepickerInput = this.docDateInput;
+
+        this.nameInput = document.name;
+        this.senderInput = document.sender;
+
+        this.locationInput = document.location;
+        this.commentInput = document.comment;
+
+        this._showModal = true;
+        this.modalType = 1;
+
+      }
+    });
+
   }
 
   ngOnInit() {

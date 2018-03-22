@@ -59,6 +59,7 @@ import { RequestCardComponent } from './pages/cards/components/request-card/requ
 import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
 import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
 import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
+import { EditService } from './services/edit.service';
 
 @NgModule({
   declarations: [
@@ -119,8 +120,8 @@ import { ReturnDocumentComponent } from './pages/documents/components/return-doc
     MatToolbarModule,
     MatRadioModule
   ],
-  providers: [HttpService, DataService, RouteDataService, UtilitiesService],
+  providers: [HttpService, DataService, RouteDataService, UtilitiesService, EditService],
   entryComponents: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

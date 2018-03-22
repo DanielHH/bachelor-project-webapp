@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { EditService } from '../../../../services/edit.service';
 
 @Component({
   selector: 'app-modify-card',
@@ -50,21 +51,6 @@ export class ModifyCardComponent implements OnInit {
 
   cardItem: Card;
 
-  /**
-   * Set form to display card.
-   */
-  @Input('card') set card(card: Card) {
-    this.cardItem = card;
-    if (card && card.id) {
-      this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
-      this.cardNumberInput = card.cardNumber;
-      this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
-      this.expirationDateDatepickerInput = this.expirationDateInput;
-      this.locationInput = card.location;
-      this.commentInput = card.comment;
-    }
-  }
-
   @Input() modalTitle = '';
 
   @Input() modalType: number;
@@ -80,14 +66,18 @@ export class ModifyCardComponent implements OnInit {
   }
 
   set _showModal(value: any) {
-    this.closeForm();
+    if (!value) {
+      this.closeForm();
+    }
+    this.showModal = value;
   }
 
   constructor(
     private httpService: HttpService,
-    public dataService: DataService,
-    private utilitiesService: UtilitiesService
-  ) {
+    private dataService: DataService,
+    private utilitiesService: UtilitiesService,
+    private editService: EditService) {
+
     this.dataService.cardTypeList.subscribe(cardTypes => {
       this.cardTypes = cardTypes;
       this.cardTypeControl.updateValueAndValidity({
@@ -95,6 +85,23 @@ export class ModifyCardComponent implements OnInit {
         emitEvent: true
       });
     });
+
+    this.editService.card.subscribe((card) => {
+      if (card && card.id) {
+        this.cardItem = card;
+
+        this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
+        this.cardNumberInput = card.cardNumber;
+        this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
+        this.expirationDateDatepickerInput = this.expirationDateInput;
+        this.locationInput = card.location;
+        this.commentInput = card.comment;
+
+        this._showModal = true;
+        this.modalType = 1;
+      }
+    });
+
   }
 
   ngOnInit() { }
@@ -157,6 +164,7 @@ export class ModifyCardComponent implements OnInit {
    * Attempts to submit edited card to database
    */
   editCard() {
+
     if (this.isValidInput()) {
       this.setCardFromForm(this.cardItem);
 
