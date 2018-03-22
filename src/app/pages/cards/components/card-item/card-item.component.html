@@ -1,13 +1,16 @@
 <div class="row">
     <div class="col-1" *ngIf="cardItem.status == 1 || cardItem.status == 2">
-        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="cardItem.status == 2" [class.btn-success]="cardItem.status == 1"
-            (click)="showModal()" mdbRippleRadius>
+        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1"
+        [class.btn-danger]="cardItem.status == 2"
+        [class.btn-success]="cardItem.status == 1"
+        (click)="showModal()" mdbRippleRadius>
             <span *ngIf="cardItem.status == 1">Kvittera ut</span>
             <span *ngIf="cardItem.status == 2">Kvittera in</span>
         </button>
     </div>
     <div class="col-1" *ngIf="cardItem.status == 3 || cardItem.status == 4">
-        <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1"
+        mdbRippleRadius disabled>
             <span *ngIf="cardItem.status == 3">Arkiverad</span>
             <span *ngIf="cardItem.status == 4">Borttappad</span>
         </button>
@@ -26,32 +29,8 @@
     </div>
 </div>
 
-<app-request-card [card]="cardItem" [(showModal)]="showRequestModal" (modalClosed)="showRequestModal=false"></app-request-card>
+<app-request-card [(card)]="cardItem" [(showModal)]="showRequestModal"
+(modalClosed)="showRequestModal=false"></app-request-card>
 
-<app-return-card [card]="cardItem" [(showModal)]="showReturnModal" (modalClosed)="showReturnModal=false"></app-return-card>
-
-<!--<form #requestCardForm="ngForm" (ngSubmit)="setCardStatus(2)">
-    <app-modal [(show)]="showRequestModal" [modalTitle]="'Request card'" [submitName]="'Request'">
-        Are you sure you want to request the following card?
-        <br>
-        <br>
-        <ul>
-            <li>Card type: {{cardItem?.cardType}}</li>
-            <li>Card number: {{cardItem?.cardNumber}}</li>
-            <li>User ID: {{cardItem?.userID}}</li>
-        </ul>
-    </app-modal>
-</form>
-
-<form #returnCardForm="ngForm" (ngSubmit)="false">
-  <app-modal [(show)]="showReturnModal" [modalTitle]="'Return card'" [submitName]="'Return'">
-      Are you sure you want to return the following card?
-      <br>
-      <br>
-      <ul>
-          <li>Card type: {{cardItem?.cardType}}</li>
-          <li>Card number: {{cardItem?.cardNumber}}</li>
-          <li>User ID: {{cardItem?.userID}}</li>
-      </ul>
-  </app-modal>
-</form>-->
+<app-return-card [(card)]="cardItem" [(showModal)]="showReturnModal"
+(modalClosed)="showReturnModal=false"></app-return-card>

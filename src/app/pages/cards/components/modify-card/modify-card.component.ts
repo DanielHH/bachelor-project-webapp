@@ -146,7 +146,7 @@ export class ModifyCardComponent implements OnInit {
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
 
-          this.closeForm();
+          this.showModal = false;
         }
       });
     }
@@ -164,7 +164,7 @@ export class ModifyCardComponent implements OnInit {
 
           this.dataService.cardList.next(this.cardList);
 
-          this.closeForm();
+          this.showModal = false;
         }
       });
     }

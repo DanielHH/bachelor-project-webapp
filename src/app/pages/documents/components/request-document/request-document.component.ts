@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Card } from '../../../../datamodels/card';
+import { Document } from '../../../../datamodels/document';
 import { Observable } from 'rxjs/Observable';
 import { DataService } from '../../../../services/data.service';
 import { startWith } from 'rxjs/operators/startWith';
@@ -9,24 +9,24 @@ import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-request-card',
-  templateUrl: './request-card.component.html',
-  styleUrls: ['./request-card.component.scss']
+  selector: 'app-request-document',
+  templateUrl: './request-document.component.html',
+  styleUrls: ['./request-document.component.scss']
 })
-export class RequestCardComponent implements OnInit {
+export class RequestDocumentComponent implements OnInit {
 
   @ViewChild('requestForm') requestForm: NgForm;
 
-  cardItem: Card = null; // Card that is requested
+  documentItem: Document = null; // Document that is requested
 
   @Input() showModal = false;
 
   /**
-   * Set card that is being requested.
+   * Set document that is being requested.
    */
-  @Input('card') set card(card: Card) {
-    if (card && card.id) {
-      this.cardItem = card;
+  @Input('document') set document(document: Document) {
+    if (document && document.id) {
+      this.documentItem = document;
     }
   }
 
@@ -116,14 +116,14 @@ export class RequestCardComponent implements OnInit {
   }
 
   /**
-   * Change status of a card to requested
+   * Change status of a document to requested
    */
-  requestCard() {
+  requestDocument() {
     if (this.isValidInput()) {
-      this.cardItem.userID = this.getUserID(this.usernameInput);
-      this.cardItem.location = this.locationInput;
-      this.cardItem.status = 2; // TODO: ENUM FOR STATUS, 2 = Requested
-      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+      this.documentItem.userID = this.getUserID(this.usernameInput);
+      this.documentItem.location = this.locationInput;
+      this.documentItem.status = 2; // TODO: ENUM FOR STATUS, 2 = Requested
+      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
         if (res.message === 'success') {
           this.showModal = false;
         }
@@ -138,7 +138,7 @@ export class RequestCardComponent implements OnInit {
     this.usernameControl.reset();
     this.locationControl.reset();
     this.requestForm.resetForm();
-    this.cardItem = Object.assign({}, new Card());
+    this.documentItem = Object.assign({}, new Document());
     this.showModal = false;
     this.modalClosed.emit(false);
   }

@@ -57,6 +57,8 @@ import { ModalComponent } from './components/modal/modal.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
 import { RequestCardComponent } from './pages/cards/components/request-card/request-card.component';
 import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
+import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
+import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +95,9 @@ import { ReturnCardComponent } from './pages/cards/components/return-card/return
     ModalComponent,
     DocumentDetailComponent,
     RequestCardComponent,
-    ReturnCardComponent
+    ReturnCardComponent,
+    RequestDocumentComponent,
+    ReturnDocumentComponent
   ],
   imports: [
     BrowserModule,

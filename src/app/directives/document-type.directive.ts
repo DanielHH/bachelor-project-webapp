@@ -24,7 +24,7 @@ import * as _ from 'lodash';
     const isValid = !input || _.find(this.docTypes, (docType) => docType.name === input);
     const message = {
       'docType': {
-        'message': 'Invalid document type'
+        'message': 'Ogiltig typ'
       }
     };
     return isValid ? null : message;

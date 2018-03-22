@@ -50,9 +50,13 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    this.item.status = value;
+    if (this.item.userID && value == 1) { // If has owner and is restored
+      this.item.status = 2;
+    } else {
+      this.item.status = value;
+    }
 
-    if(this.item.cardType) {
+    if (this.item.cardType) {
       this.httpService.httpPut<Card>('updateCard/', this.item).then(res => {
         if (res.message === 'success') {}
      });
@@ -64,7 +68,7 @@ export class ItemMenuComponent implements OnInit {
     }
   }
 
-  /** 
+  /**
    * Format date
   */
   formatDate(date: Date) {

@@ -1,14 +1,14 @@
 import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
+import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-return-card',
-  templateUrl: './return-card.component.html',
-  styleUrls: ['./return-card.component.scss']
+  selector: 'app-return-document',
+  templateUrl: './return-document.component.html',
+  styleUrls: ['./return-document.component.scss']
 })
-export class ReturnCardComponent implements OnInit {
+export class ReturnDocumentComponent implements OnInit {
 
   @ViewChild('returnForm') returnForm: NgForm;
 
@@ -23,14 +23,14 @@ export class ReturnCardComponent implements OnInit {
     this.closeForm();
   }
 
-  cardItem: Card = null;
+  documentItem: Document = null;
 
   /**
-   * Set card that is being returned.
+   * Set document that is being returned.
    */
-  @Input('card') set card(card: Card) {
-    if (card && card.id) {
-      this.cardItem = card;
+  @Input('document') set document(document: Document) {
+    if (document && document.id) {
+      this.documentItem = document;
     }
   }
 
@@ -51,14 +51,14 @@ export class ReturnCardComponent implements OnInit {
   }
 
   /**
-   * Change status of a card to returned
+   * Change status of a document to returned
    */
-  returnCard() {
+  returnDocument() {
     if (this.isValidLocation()) {
-      this.cardItem.userID = null;
-      this.cardItem.location = this.locationInput;
-      this.cardItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
-      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+      this.documentItem.userID = null;
+      this.documentItem.location = this.locationInput;
+      this.documentItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
+      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
         if (res.message === 'success') {
           this.showModal = false;
         }
@@ -72,7 +72,7 @@ export class ReturnCardComponent implements OnInit {
   closeForm() {
     this.locationControl.reset();
     this.returnForm.resetForm();
-    this.cardItem = Object.assign({}, new Card());
+    this.documentItem = Object.assign({}, new Document());
     this.showModal = false;
     this.modalClosed.emit(false);
   }

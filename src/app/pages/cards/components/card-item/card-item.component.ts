@@ -41,25 +41,12 @@ export class CardItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
-   * Change card status
-   */
-  /*setCardStatus(status: number) {
-    this.cardItem.status = status;
-    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-      if (res.message === 'success') {
-        this.showRequestModal = false;
-        this.showReturnModal = false;
-      }
-    });
-  }*/
-
-
-  /**
    * Returns the name of the card type corresponding to the cardType
    */
   displayCardType() {
     if (this.cardItem && this.cardItem.cardType > 0) {
-      const cardTypeToDisplay = _.find(this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
+      const cardTypeToDisplay = _.find(this.cardTypeList, cardType =>
+        cardType.id === this.cardItem.cardType);
       if (cardTypeToDisplay) {
         return cardTypeToDisplay.name;
       }
@@ -104,8 +91,8 @@ export class CardItemComponent implements OnInit {
    * Show modal based on status
    */
   showModal() {
-    const requested = 1;
-    if (this.cardItem.status == requested) { // Don't change to ===, doesn't work
+    const returnedStatus = 1;
+    if (this.cardItem.status == returnedStatus) { // Don't change to ===, doesn't work
       this.showRequestModal = true;
     } else {
       this.showReturnModal = true;

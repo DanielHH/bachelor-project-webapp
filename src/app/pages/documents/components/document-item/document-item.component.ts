@@ -39,20 +39,7 @@ export class DocumentItemComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
-
-  /**
-   * Change card status
-   */
-  setDocumentStatus(status: number) {
-    this.documentItem.status = status;
-    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-      if (res.message === 'success') {
-        this.showRequestModal = false;
-        this.showReturnModal = false;
-      }
-    });
-  }
+  ngOnInit() {}
 
   /**
    * Returns the name of the document type corresponding to the documentType
@@ -93,7 +80,8 @@ export class DocumentItemComponent implements OnInit {
    * Show modal based on status
    */
   showModal() {
-    if (this.documentItem.status === 1) {
+    const returnedStatus = 1;
+    if (this.documentItem.status == returnedStatus) { // Don't change to ===, doesn't work
       this.showRequestModal = true;
     } else {
       this.showReturnModal = true;

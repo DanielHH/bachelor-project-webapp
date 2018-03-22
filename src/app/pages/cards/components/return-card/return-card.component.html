@@ -2,10 +2,11 @@
   <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera in kort'" [closeName]="'Avbryt'" [submitName]="'Kvittera in'">
     <!-- Row location -->
     <div class="row">
+      <div class="col-0 col-md-3"></div>
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Location"
+          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Plats"
             [formControl]="locationControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -15,7 +16,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
-          <mat-error *ngIf="locationControl.hasError('required')">Please enter a location</mat-error>
+          <mat-error *ngIf="locationControl.hasError('required')">Ange en plats</mat-error>
         </mat-form-field>
       </div>
     </div>
