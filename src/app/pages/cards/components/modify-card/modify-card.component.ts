@@ -48,12 +48,14 @@ export class ModifyCardComponent implements OnInit {
 
   @Input() cardList: Card[];
 
+  cardItem: Card;
+
   /**
    * Set form to display card.
    */
   @Input('card') set card(card: Card) {
+    this.cardItem = card;
     if (card && card.id) {
-      this.cardItem = card;
       this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
       this.cardNumberInput = card.cardNumber;
       this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
@@ -76,11 +78,10 @@ export class ModifyCardComponent implements OnInit {
   get _showModal() {
     return this.showModal;
   }
+
   set _showModal(value: any) {
     this.closeForm();
   }
-
-  cardItem: Card;
 
   constructor(
     private httpService: HttpService,
@@ -146,7 +147,7 @@ export class ModifyCardComponent implements OnInit {
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
 
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }
@@ -164,7 +165,7 @@ export class ModifyCardComponent implements OnInit {
 
           this.dataService.cardList.next(this.cardList);
 
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }

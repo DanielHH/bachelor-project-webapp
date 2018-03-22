@@ -29,8 +29,6 @@
     </div>
 </div>
 
-<app-request-card [(card)]="cardItem" [(showModal)]="showRequestModal"
-(modalClosed)="showRequestModal=false"></app-request-card>
+<app-request-card [card]="cardItem" [(showModal)]="showRequestModal"></app-request-card>
 
-<app-return-card [(card)]="cardItem" [(showModal)]="showReturnModal"
-(modalClosed)="showReturnModal=false"></app-return-card>
+<app-return-card [card]="cardItem" [(showModal)]="showReturnModal"></app-return-card>

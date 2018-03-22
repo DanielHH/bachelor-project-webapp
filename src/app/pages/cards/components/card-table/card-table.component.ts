@@ -115,6 +115,8 @@ export class CardTableComponent implements OnInit {
    * Set card to be edited and open edit modal
    */
   openEdit(card: any) {
+    this.editCard = Object.assign({}, new Card());
+    this.editCard.id = 5;
     this.editCard = card;
     this.modalTitle = 'Edit card';
     this.modalType = 1;

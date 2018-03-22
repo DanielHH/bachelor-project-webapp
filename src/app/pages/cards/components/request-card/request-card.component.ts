@@ -19,8 +19,6 @@ export class RequestCardComponent implements OnInit {
 
   cardItem: Card = null; // Card that is requested
 
-  @Input() showModal = false;
-
   /**
    * Set card that is being requested.
    */
@@ -30,7 +28,9 @@ export class RequestCardComponent implements OnInit {
     }
   }
 
-  @Output() modalClosed = new EventEmitter<boolean>();
+  @Input() showModal = false;
+
+  @Output() showModalChange = new EventEmitter<boolean>();
 
   get _showModal() {
     return this.showModal;
@@ -140,7 +140,7 @@ export class RequestCardComponent implements OnInit {
     this.requestForm.resetForm();
     this.cardItem = Object.assign({}, new Card());
     this.showModal = false;
-    this.modalClosed.emit(false);
+    this.showModalChange.emit(false);
   }
 
 }

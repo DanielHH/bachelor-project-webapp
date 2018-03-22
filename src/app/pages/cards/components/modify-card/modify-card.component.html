@@ -23,7 +23,7 @@
           </mat-autocomplete>
           <!--Error-->
           <mat-error *ngIf="cardTypeControl.hasError('required')">Ange en typ</mat-error>
-          <mat-error *ngIf="cardTypeControl.hasError('cardType')">
+          <mat-error *ngIf="!cardTypeControl.hasError('required') && cardTypeControl.hasError('cardType')">
             Ogiltig typ</mat-error>
         </mat-form-field>
       </div>

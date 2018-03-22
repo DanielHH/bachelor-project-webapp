@@ -14,7 +14,7 @@ export class ReturnCardComponent implements OnInit {
 
   @Input() showModal = false;
 
-  @Output() modalClosed = new EventEmitter<boolean>();
+  @Output() showModalChange = new EventEmitter<boolean>();
 
   get _showModal() {
     return this.showModal;
@@ -74,7 +74,7 @@ export class ReturnCardComponent implements OnInit {
     this.returnForm.resetForm();
     this.cardItem = Object.assign({}, new Card());
     this.showModal = false;
-    this.modalClosed.emit(false);
+    this.showModalChange.emit(false);
   }
 
 }

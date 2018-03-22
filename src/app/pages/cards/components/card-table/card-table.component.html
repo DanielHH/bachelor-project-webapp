@@ -12,7 +12,7 @@
           aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
         </mat-form-field>
       </div>
-      <div class="col-3"></div>
+      <div class="col-2"></div>
 
       <div class="col-1">
           <div class="form-check">
@@ -29,7 +29,7 @@
           </div>
         </div>
 
-      <div class="col-2">
+      <div class="col-1 mx-3">
         <div class="form-check">
 
             <input type="checkbox" class="filled-in form-check-input" id="showArchivedID" [(ngModel)]=showArchived>
@@ -42,9 +42,9 @@
         </div>
 
       </div>
-
+      <div class="col-1"></div>
       <!-- Add new card button-->
-      <div class="col-2">
+      <div class="col-1">
         <button mat-raised-button (click)="openAddNewCard()" color="primary">Lägg till nytt kort</button>
       </div>
     </div>
@@ -90,4 +90,5 @@
   </div>
 </div>
 
-<app-modify-card [cardList]="cardList" [card]="editCard" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-card>
+<app-modify-card [cardList]="cardList" [card]="editCard" [modalTitle]="modalTitle" [modalType]="modalType"
+[(showModal)]="showModal"></app-modify-card>
