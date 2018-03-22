@@ -8,6 +8,7 @@ import { ExamplesComponent } from './pages/examples/examples.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
+import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { name: 'Startsidan' } },
@@ -16,6 +17,7 @@ export const routes: Routes = [
     { path: 'logs', component: LogsComponent, data: { name: 'Loggar' } },
     { path: 'examples', component: ExamplesComponent, data: { name: 'Kodexempel' } },
     { path: 'cards', component: CardsComponent, data: { name: 'Kort' } },
+    { path: 'deliveries', component: DeliveriesComponent, data: { name: 'Leveranser' } },
     { path: 'card-detail', component: CardDetailComponent, data: {name: 'Kortdetaljer'} },
     { path: 'document-detail', component: DocumentDetailComponent, data: {name: 'Dokumentdetaljer'} }
 
