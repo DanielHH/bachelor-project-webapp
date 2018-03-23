@@ -38,11 +38,12 @@ export class ReturnCardComponent implements OnInit {
   locationControl = new FormControl('', Validators.required);
 
   locationInput = '';
+  commentInput = '';
 
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private returnService: ReturnService
   ) {
 
@@ -58,8 +59,7 @@ export class ReturnCardComponent implements OnInit {
       if (card && card.id) {
         this.cardItem = card;
 
-        // this.startDateInput = moment(utilitiesService.getLocalDate).format('YYYY-MM-DD');
-        // this.startDateDatepickerInput = this.docDateInput;
+        this.commentInput = this.cardItem.comment;
 
         this._showModal = true;
 
@@ -124,6 +124,7 @@ export class ReturnCardComponent implements OnInit {
   closeForm() {
     this.locationControl.reset();
     this.returnForm.resetForm();
+    this.commentInput = null;
 
     this.cardItem = Object.assign({}, new Card());
     this.returnService.card.next(this.cardItem);

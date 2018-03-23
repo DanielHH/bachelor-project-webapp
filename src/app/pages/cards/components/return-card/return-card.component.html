@@ -1,9 +1,98 @@
 <form #returnForm="ngForm" (ngSubmit)="returnCard()">
   <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera in kort'" [closeName]="'Avbryt'" [submitName]="'Kvittera in'">
-    <!-- Row location -->
+
+    <!-- Row card info -->
     <div class="row">
-      <div class="col-0 col-md-3"></div>
-      <div class="col-12 col-md-6">
+      <div class="col-0 col-md-1"></div>
+      <div class="col-0 col-md-10 wide-center">
+        <mat-card [style.background]="'#E8EAF6'">
+          <!-- Row 1 -->
+          <div class="row my-1">
+            <div class="col-0 col-md-3"></div>
+            <div class="col-0 col-md-6">
+              <h5><b>Kortdetaljer</b></h5>
+            </div>
+            <div class="col-0 col-md-3"></div>
+          </div>
+          <!-- Row 2 Space -->
+          <div class="row my-1"></div>
+          <!-- Row 3 -->
+          <div class="row my-1">
+            <div class="col-0 col-md-1"></div>
+            <div class="col-0 col-md-5">
+              <b>Typ:</b>
+            </div>
+            <div class="col-0 col-md-5">
+              <b>Serienummer:</b>
+            </div>
+            <div class="col-0 col-md-1"></div>
+          </div>
+          <!-- Row 4 -->
+          <div class="row my-1">
+            <div class="col-0 col-md-1"></div>
+            <div class="col-0 col-md-5">
+              {{cardItem && cardItem.id? utilitiesService.getCardTypeString(cardItem.cardType) : ''}}
+            </div>
+            <div class="col-0 col-md-5">
+              {{cardItem && cardItem.id ? cardItem.cardNumber : ''}}
+            </div>
+            <div class="col-0 col-md-1"></div>
+          </div>
+          <!-- Row 5 Space -->
+          <div class="row my-2"></div>
+          <!-- Row 6 -->
+          <div class="row my-1">
+            <div class="col-0 col-md-1"></div>
+            <div class="col-0 col-md-5">
+              <b>Utgångsdatum:</b>
+            </div>
+            <div class="col-0 col-md-5">
+              <b>Nuvarande plats:</b>
+            </div>
+            <div class="col-0 col-md-1"></div>
+          </div>
+          <!-- Row 7 -->
+          <div class="row my-1">
+            <div class="col-0 col-md-1"></div>
+            <div class="col-0 col-md-5">
+              {{cardItem && cardItem.id ? utilitiesService.getDateString(cardItem.expirationDate) : ''}}
+            </div>
+            <div class="col-0 col-md-5">
+              {{cardItem && cardItem.id ? cardItem.location : ''}}
+            </div>
+            <div class="col-0 col-md-1"></div>
+          </div>
+          <!-- Row 6 -->
+          <div class="row my-1">
+            <div class="col-0 col-md-1"></div>
+            <div class="col-0 col-md-5">
+              <b>Användare:</b>
+            </div>
+            <div class="col-0 col-md-6"></div>
+          </div>
+          <!-- Row 7 -->
+          <div class="row my-1">
+            <div class="col-0 col-md-1"></div>
+            <div class="col-0 col-md-5">
+              {{cardItem && cardItem.id ? utilitiesService.getUserString(cardItem.userID) : ''}}
+            </div>
+            <div class="col-0 col-md-6"></div>
+          </div>
+
+        </mat-card>
+      </div>
+      <div class="col-0 col-md-1"></div>
+    </div>
+
+    <!-- Row Space -->
+    <div class="row my-2"></div>
+
+    <!-- Row new location and comment -->
+    <div class="row">
+      <div class="col-0 col-md-1"></div>
+
+      <!-- Location -->
+      <div class="col-12 col-md-5 wide-center">
         <mat-form-field>
           <!--Input-->
           <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Plats"
@@ -19,6 +108,21 @@
           <mat-error *ngIf="locationControl.hasError('required')">Ange en plats</mat-error>
         </mat-form-field>
       </div>
+
+      <!-- Comment -->
+      <div class="col-12 col-md-5 wide-center">
+        <mat-form-field>
+            <!--Input-->
+            <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text" maxlength="128" placeholder="Kommentar"
+            matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="5">
+            <!--Clear-->
+            <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear" (click)="commentInput = ''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+      </div>
+
+      <div class="col-0 col-md-1"></div>
     </div>
   </app-modal>
 </form>

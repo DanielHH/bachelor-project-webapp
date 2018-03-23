@@ -120,8 +120,10 @@ export class ModifyDocumentComponent implements OnInit {
         this.locationInput = document.location;
         this.commentInput = document.comment;
 
-        this._showModal = true;
         this.modalType = 1;
+        this.modalTitle = 'Ändra handling';
+
+        this._showModal = true;
 
       }
     });

@@ -97,8 +97,10 @@ export class ModifyCardComponent implements OnInit {
         this.locationInput = card.location;
         this.commentInput = card.comment;
 
-        this._showModal = true;
         this.modalType = 1;
+        this.modalTitle = 'Ändra kort';
+
+        this._showModal = true;
       }
     });
 
@@ -265,7 +267,9 @@ export class ModifyCardComponent implements OnInit {
     this.expirationDatePickerControl.reset();
     this.commentInput = '';
     this.modifyForm.resetForm();
+
     this.cardItem = Object.assign({}, new Card());
+
     this.showModal = false;
     this.showModalChange.emit(false);
   }

@@ -113,7 +113,7 @@ export class CardTableComponent implements OnInit {
    * Open add new card modal
    */
   openAddNewCard() {
-    this.modalTitle = 'Add new card';
+    this.modalTitle = 'Lägg till nytt kort';
     this.modalType = 0;
     this.showModal = true;
   }

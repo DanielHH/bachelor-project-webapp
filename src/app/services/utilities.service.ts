@@ -34,18 +34,23 @@ export class UtilitiesService {
   itemUserNameToDisplay: string;
 
   constructor(private dataService: DataService) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
-      this.cardTypeList = cardTypeList;
-    });
+
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
+
+    this.dataService.cardTypeList.subscribe((cardTypeList) => {
+      this.cardTypeList = cardTypeList;
+    });
+
     this.dataService.cardList.subscribe((cardList) => {
       this.cardList = cardList;
     });
+
     this.dataService.documentList.subscribe((documentList) => {
       this.documentList = documentList;
     });
+
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
@@ -100,6 +105,30 @@ export class UtilitiesService {
    */
   getDateString(date: Date): string {
     return moment(date).format('YYYY-MM-DD');
+  }
+
+  /**
+   * Returns the string associated with cardTypeId
+   * @param cardTypeId Id of card type
+   */
+  getCardTypeString(cardTypeId: number) {
+    return _.find(this.cardTypeList, cardType => cardType.id === cardTypeId).name;
+  }
+
+  /**
+   * Returns the string associated with cardTypeId
+   * @param documentTypeId Id of card type
+   */
+  getDocumentTypeString(documentTypeId: number) {
+    return _.find(this.documentTypeList, documentType => documentType.id === documentTypeId).name;
+  }
+
+  /**
+   * Returns the string associated with userId
+   * @param userId Id of user
+   */
+  getUserString(userId: number) {
+    return _.find(this.userList, user => user.id === userId).name;
   }
 
 }

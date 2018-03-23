@@ -40,7 +40,6 @@ export class RequestCardComponent implements OnInit {
   users: User[] = [];
   receipts: Receipt[] = [];
   cards: Card[] = [];
-  cardTypes: CardType[] = [];
 
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
@@ -50,6 +49,7 @@ export class RequestCardComponent implements OnInit {
   locationInput = '';
   startDateInput = '';
   startDateDatepickerInput = '';
+  commentInput = '';
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
@@ -71,10 +71,6 @@ export class RequestCardComponent implements OnInit {
       });
     });
 
-    this.dataService.cardTypeList.subscribe(cardTypes => {
-      this.cardTypes = cardTypes;
-    });
-
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
@@ -89,6 +85,7 @@ export class RequestCardComponent implements OnInit {
 
         this.startDateInput = moment(utilitiesService.getLocalDate()).format('YYYY-MM-DD');
         this.startDateDatepickerInput = this.startDateInput;
+        this.commentInput = this.cardItem.comment;
 
         this._showModal = true;
 
@@ -117,15 +114,6 @@ export class RequestCardComponent implements OnInit {
    */
   getUserID(username: String) {
     return _.find(this.users, user => user.username === username).id;
-  }
-
-  /**
-   * Returns the string associated with cardTypeId
-   * @param cardTypeId Id of card type
-   */
-  getCardTypeString(cardTypeId: number) {
-    return _.find(this.cardTypes, cardType => cardType.id === cardTypeId)
-      .name;
   }
 
   /**

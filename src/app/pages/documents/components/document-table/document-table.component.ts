@@ -112,7 +112,7 @@ export class DocumentTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDocument() {
-    this.modalTitle = 'Add new document';
+    this.modalTitle = 'Lägg till ny handling';
     this.modalType = 0;
     this.showModal = true;
   }

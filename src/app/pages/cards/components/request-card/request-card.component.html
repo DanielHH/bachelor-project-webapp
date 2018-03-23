@@ -15,9 +15,9 @@
             </div>
             <div class="col-0 col-md-3"></div>
           </div>
-          <!-- Row 3 Space -->
+          <!-- Row 2 Space -->
           <div class="row my-1"></div>
-          <!-- Row 1 -->
+          <!-- Row 3 -->
           <div class="row my-1">
             <div class="col-0 col-md-1"></div>
             <div class="col-0 col-md-5">
@@ -28,38 +28,38 @@
             </div>
             <div class="col-0 col-md-1"></div>
           </div>
-          <!-- Row 2 -->
+          <!-- Row 4 -->
           <div class="row my-1">
             <div class="col-0 col-md-1"></div>
             <div class="col-0 col-md-5">
-              {{cardItem && cardItem.id? getCardTypeString(cardItem.cardType) : ''}}
+              {{cardItem && cardItem.id? utilitiesService.getCardTypeString(cardItem.cardType) : ''}}
             </div>
             <div class="col-0 col-md-5">
               {{cardItem && cardItem.id ? cardItem.cardNumber : ''}}
             </div>
             <div class="col-0 col-md-1"></div>
           </div>
-          <!-- Row 3 Space -->
+          <!-- Row 5 Space -->
           <div class="row my-2"></div>
-          <!-- Row 4 -->
+          <!-- Row 6 -->
           <div class="row my-1">
             <div class="col-0 col-md-1"></div>
             <div class="col-0 col-md-5">
               <b>Utgångsdatum:</b>
             </div>
             <div class="col-0 col-md-5">
-              <b>Kommentar:</b>
+              <b>Nuvarande plats:</b>
             </div>
             <div class="col-0 col-md-1"></div>
           </div>
-          <!-- Row 5 -->
+          <!-- Row 7 -->
           <div class="row my-1">
             <div class="col-0 col-md-1"></div>
             <div class="col-0 col-md-5">
               {{cardItem && cardItem.id ? utilitiesService.getDateString(cardItem.expirationDate) : ''}}
             </div>
             <div class="col-0 col-md-5">
-              {{cardItem && cardItem.id && cardItem.comment ? cardItem.comment : ''}}
+              {{cardItem && cardItem.id ? cardItem.location : ''}}
             </div>
             <div class="col-0 col-md-1"></div>
           </div>
@@ -72,10 +72,10 @@
     <!-- Row Space -->
     <div class="row my-2"></div>
 
-    <!-- Row username and location -->
+    <!-- Row username and new location -->
     <div class="row">
-      <div class="col-0 col-md-2"></div>
-      <div class="col-12 col-md-4 wide-center">
+      <div class="col-0 col-md-1"></div>
+      <div class="col-12 col-md-5 wide-center">
         <span class="third-center">
           <mat-form-field>
             <!--Input-->
@@ -110,28 +110,31 @@
           </mat-form-field>
         </span>
       </div>
-      <div class="col-12 col-md-4 wide-center">
+      <div class="col-12 col-md-5 wide-center">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Plats"
+          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput"
+          type="text" maxlength="128" placeholder="Ny plats"
             [formControl]="locationControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''">
+          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button
+          aria-label="Clear" (click)="locationInput = ''">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
           <mat-error *ngIf="locationControl.hasError('required')">Ange en plats</mat-error>
         </mat-form-field>
       </div>
-      <div class="col-0 col-md-2"></div>
+      <div class="col-0 col-md-1"></div>
     </div>
-    <!-- Row Start Date -->
+    <!-- Row Start Date and comment -->
     <div class="row">
-      <div class="col-0 col-md-3"></div>
-      <div class="col-12 col-md-6 wide-center">
+      <div class="col-0 col-md-1"></div>
+      <!-- Start date -->
+      <div class="col-12 col-md-5 wide-center">
         <mat-form-field>
           <!--Input-->
           <input matInput id="startDateInput" name="startDateInput" type="text" [(ngModel)]="startDateInput" placeholder="Startdatum"
@@ -159,7 +162,22 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div class="col-0 col-md-3"></div>
+      <!-- Comment -->
+      <div class="col-12 col-md-5">
+        <div class="col-12 comment-input">
+          <mat-form-field>
+            <!--Input-->
+            <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text" maxlength="128" placeholder="Kommentar">
+            <!--Clear-->
+            <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear" (click)="commentInput = ''">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-1"></div>
+
     </div>
   </app-modal>
 </form>
