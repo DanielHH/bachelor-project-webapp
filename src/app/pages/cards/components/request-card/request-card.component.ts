@@ -200,7 +200,7 @@ export class RequestCardComponent implements OnInit {
       receipt.itemTypeID = 1; // TODO: ENUM, 1 means card
       receipt.cardID = this.cardItem.id;
       receipt.userID = this.cardItem.userID;
-      receipt.startDate = this.utilitiesService.getLocalDate();
+      receipt.startDate = new Date(this.startDateInput);
 
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
