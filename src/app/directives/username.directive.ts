@@ -25,7 +25,7 @@ import { DataService } from '../services/data.service';
     const isValid = !input || _.find(this.users, (user) => user.username === input);
     const message = {
       'username': {
-        'message': 'Invalid username'
+        'message': 'Ogiltigt användarnamn'
       }
     };
     return isValid ? null : message;

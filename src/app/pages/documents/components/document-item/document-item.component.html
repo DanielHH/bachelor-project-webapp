@@ -2,14 +2,14 @@
     <div class="col-1" *ngIf="documentItem.status == 1 || documentItem.status == 2">
         <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="documentItem.status == 2" [class.btn-success]="documentItem.status == 1"
             (click)="showModal()" mdbRippleRadius>
-            <span *ngIf="documentItem.status == 1">Kvittera</span>
-            <span *ngIf="documentItem.status == 2">Tillbaka</span>
+            <span *ngIf="documentItem.status == 1">Kvittera ut</span>
+            <span *ngIf="documentItem.status == 2">Kvittera in</span>
         </button>
     </div>
     <div class="col-1" *ngIf="documentItem.status == 3 || documentItem.status == 4">
         <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
-            <span *ngIf="documentItem.status == 3">Arkiv</span>
-            <span *ngIf="documentItem.status == 4">Borta</span>
+            <span *ngIf="documentItem.status == 3">Arkiverad</span>
+            <span *ngIf="documentItem.status == 4">Borttappad</span>
         </button>
     </div>
 
@@ -22,32 +22,12 @@
     <div class="col">{{documentItem?.location}}</div>
     <div class="col">{{documentItem?.comment}}</div>
     <div class="col-1">
-        <app-item-menu [item]="documentItem" (editItem)="edit()"></app-item-menu>
+        <app-item-menu [item]="documentItem" (editItem)="edit()" (editStatus)="editStatus()"></app-item-menu>
     </div>
 </div>
 
-<form #requestDocumentForm="ngForm" (ngSubmit)="setDocumentStatus(2)">
-    <app-modal [(show)]="showRequestModal" [modalTitle]="'Request document'" [submitName]="'Request'">
-        Are you sure you want to request the following document?
-        <br>
-        <br>
-        <ul>
-            <li>Document type: {{displayDocumentType()}}</li>
-            <li>Document number: {{documentItem?.documentNumber}}</li>
-            <li>User ID: {{displayUserName()}}</li>
-        </ul>
-    </app-modal>
-</form>
+<app-request-document [document]="documentItem" [(showModal)]="showRequestModal"
+(modalClosed)="showRequestModal=false"></app-request-document>
 
-<form #returnDocumentForm="ngForm" (ngSubmit)="setDocumentStatus(1)">
-    <app-modal [(show)]="showReturnModal" [modalTitle]="'Return document'" [submitName]="'Return'">
-        Are you sure you want to return the following document?
-        <br>
-        <br>
-        <ul>
-            <li>Document type: {{displayDocumentType()}}</li>
-            <li>Document number: {{documentItem?.documentNumber}}</li>
-            <li>User ID: {{displayUserName()}}</li>
-        </ul>
-    </app-modal>
-</form>
+<app-return-document [document]="documentItem" [(showModal)]="showReturnModal"
+(modalClosed)="showReturnModal=false"></app-return-document>

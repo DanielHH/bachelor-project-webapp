@@ -1,0 +1,60 @@
+<form #requestForm="ngForm" (ngSubmit)="requestDocument()">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut handling'" [closeName]="'Avbryt'" [submitName]="'Kvittera ut'">
+    <!-- Row username -->
+    <div class="row">
+      <div class="col-0 col-md-3"></div>
+      <div class="col-12 col-md-6 wide-center">
+        <span class="third-center">
+          <mat-form-field>
+            <!--Input-->
+            <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" type="text" [style.color]="isValidUsername() ? 'black' : 'gray'"
+              placeholder="Användarnamn" aria-label="Number" matInput [matAutocomplete]="userIDs" [formControl]="usernameControl"
+              spellcheck="false" maxlength="128" appUsername required>
+            <!--Check and clear-->
+            <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+              <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
+            </button>
+            <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button aria-label="Clear" (click)="usernameInput = ''">
+              <mat-icon>close</mat-icon>
+            </button>
+            <!--Dropdown-->
+            <mat-autocomplete #userIDs="matAutocomplete">
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.username">
+                {{ user.username + '
+                < ' + user.name + '>' }}
+              </mat-option>
+            </mat-autocomplete>
+            <!--Error-->
+            <mat-error *ngIf="usernameControl.hasError('required')">
+              Ange ett användarnamn
+            </mat-error>
+            <mat-error *ngIf="!usernameControl.hasError('required') && usernameControl.hasError('username')">
+              Ogiltigt användarnamn
+            </mat-error>
+          </mat-form-field>
+        </span>
+      </div>
+    </div>
+    <!-- Row location -->
+    <div class="row">
+      <div class="col-0 col-md-3"></div>
+      <div class="col-12 col-md-6 wide-center">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Plats"
+            [formControl]="locationControl" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="locationControl.hasError('required')">Ange en plats</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </app-modal>
+</form>
+

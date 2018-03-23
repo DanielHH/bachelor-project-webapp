@@ -15,7 +15,10 @@ export class ItemMenuComponent implements OnInit {
 
   // Card or Document
   @Input() item: any;
+
   @Output() editItem = new EventEmitter<any>();
+
+  @Output() editStatus = new EventEmitter<any>();
 
   constructor(private routeDataService: RouteDataService, private router: Router,
     private httpService: HttpService) { }
@@ -50,21 +53,18 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    this.item.status = value;
-
-    if(this.item.cardType) {
-      this.httpService.httpPut<Card>('updateCard/', this.item).then(res => {
-        if (res.message === 'success') {}
-     });
-
-    } else if (this.item.documentType) {
-      this.httpService.httpPut<Document>('updateDocument/', this.item).then(res => {
-        if (res.message === 'success') {}
-      });
+    if (this.item.userID && value == 1) { // If has owner and is restored
+      this.item.status = 2;
+    } else {
+      this.item.status = value;
     }
+
+    this.editStatus.emit();
+
+    
   }
 
-  /** 
+  /**
    * Format date
   */
   formatDate(date: Date) {

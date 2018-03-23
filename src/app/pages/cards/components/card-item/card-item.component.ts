@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
+import { EditService } from '../../../../services/edit.service';
 
 @Component({
   selector: 'app-card-item',
@@ -16,16 +17,19 @@ import { HttpService } from '../../../../services/http.service';
 })
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
-  @Output() editItem = new EventEmitter<any>();
 
   cardTypeList: CardType[] = [];
   userList: User[] = [];
 
   showRequestModal = false;
-
   showReturnModal = false;
 
-  constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router, private httpService: HttpService) {
+  constructor(
+    private dataService: DataService,
+    private routeDataService: RouteDataService,
+    private router: Router,
+    private httpService: HttpService,
+    private editService: EditService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -37,25 +41,12 @@ export class CardItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
-   * Change card status
-   */
-  setCardStatus(status: number) {
-    this.cardItem.status = status;
-    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-      if (res.message === 'success') {
-        this.showRequestModal = false;
-        this.showReturnModal = false;
-      }
-    });
-  }
-
-
-  /**
    * Returns the name of the card type corresponding to the cardType
    */
   displayCardType() {
-    if (this.cardItem.cardType > 0) {
-      const cardTypeToDisplay = _.find(this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
+    if (this.cardItem && this.cardItem.cardType > 0) {
+      const cardTypeToDisplay = _.find(this.cardTypeList, cardType =>
+        cardType.id === this.cardItem.cardType);
       if (cardTypeToDisplay) {
         return cardTypeToDisplay.name;
       }
@@ -67,7 +58,7 @@ export class CardItemComponent implements OnInit {
    * Returns the name corresponding to the userID
    */
   displayUserName() {
-    if (this.cardItem.userID) {
+    if (this.cardItem && this.cardItem.userID) {
       return _.find(this.userList, user => user.id === this.cardItem.userID)
         .name;
     }
@@ -93,19 +84,28 @@ export class CardItemComponent implements OnInit {
    * Set card to be outputted for editing
   */
   edit() {
-    this.editItem.next(this.cardItem);
+    this.editService.card.next(this.cardItem);
   }
 
   /**
    * Show modal based on status
    */
   showModal() {
-    if (this.cardItem.status == 1) {
+    const returnedStatus = 1;
+    if (this.cardItem.status == returnedStatus) { // Don't change to ===, doesn't work
       this.showRequestModal = true;
-    }
-    else {
+    } else {
       this.showReturnModal = true;
     }
+  }
+
+  /**
+   * Sets the status of the card
+   */
+  editStatus() {
+    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+      if (res.message === 'success') { }
+    });
   }
 }
 

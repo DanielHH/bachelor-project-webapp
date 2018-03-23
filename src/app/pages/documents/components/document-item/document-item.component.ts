@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
+import { EditService } from '../../../../services/edit.service';
 
 @Component({
   selector: 'app-document-item',
@@ -29,8 +30,8 @@ export class DocumentItemComponent implements OnInit {
     public dataService: DataService,
     private routeDataService: RouteDataService,
     private router: Router,
-    private httpService: HttpService
-  ) {
+    private httpService: HttpService,
+    private editService: EditService) {
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
@@ -40,19 +41,6 @@ export class DocumentItemComponent implements OnInit {
   }
 
   ngOnInit() { }
-
-  /**
-   * Change card status
-   */
-  setDocumentStatus(status: number) {
-    this.documentItem.status = status;
-    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-      if (res.message === 'success') {
-        this.showRequestModal = false;
-        this.showReturnModal = false;
-      }
-    });
-  }
 
   /**
    * Returns the name of the document type corresponding to the documentType
@@ -86,17 +74,27 @@ export class DocumentItemComponent implements OnInit {
    * Set document to be outputted for editing
    */
   edit() {
-    this.editItem.next(this.documentItem);
+    this.editService.document.next(this.documentItem);
   }
 
   /**
    * Show modal based on status
    */
   showModal() {
-    if (this.documentItem.status === 1) {
+    const returnedStatus = 1;
+    if (this.documentItem.status == returnedStatus) { // Don't change to ===, doesn't work
       this.showRequestModal = true;
     } else {
       this.showReturnModal = true;
     }
+  }
+
+  /**
+   * Sets the status of the document
+   */
+  editStatus() {
+    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+      if (res.message === 'success') { }
+    });
   }
 }

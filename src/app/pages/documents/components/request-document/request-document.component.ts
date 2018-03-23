@@ -1,0 +1,146 @@
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { HttpService } from '../../../../services/http.service';
+import { FormControl, Validators, NgForm } from '@angular/forms';
+import { Document } from '../../../../datamodels/document';
+import { Observable } from 'rxjs/Observable';
+import { DataService } from '../../../../services/data.service';
+import { startWith } from 'rxjs/operators/startWith';
+import { map } from 'rxjs/operators/map';
+import * as _ from 'lodash';
+
+@Component({
+  selector: 'app-request-document',
+  templateUrl: './request-document.component.html',
+  styleUrls: ['./request-document.component.scss']
+})
+export class RequestDocumentComponent implements OnInit {
+
+  @ViewChild('requestForm') requestForm: NgForm;
+
+  documentItem: Document = null; // Document that is requested
+
+  @Input() showModal = false;
+
+  /**
+   * Set document that is being requested.
+   */
+  @Input('document') set document(document: Document) {
+    if (document && document.id) {
+      this.documentItem = document;
+    }
+  }
+
+  @Output() modalClosed = new EventEmitter<boolean>();
+
+  get _showModal() {
+    return this.showModal;
+  }
+  set _showModal(value: any) {
+    this.closeForm();
+  }
+
+  users = [];
+
+  usernameControl = new FormControl('', Validators.required);
+  locationControl = new FormControl('', Validators.required);
+
+  usernameInput = '';
+  locationInput = '';
+
+  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
+    startWith(''),
+    map(val => this.filterUsers(val))
+  );
+
+  constructor(
+    private httpService: HttpService,
+    private dataService: DataService
+  ) {
+    this.dataService.userList.subscribe(users => {
+      this.users = users;
+      this.usernameControl.updateValueAndValidity({
+        onlySelf: false,
+        emitEvent: true
+      });
+    });
+  }
+
+  ngOnInit() {
+  }
+
+  /**
+   * Filters list of usernames based on username input
+   * @param str username input
+   */
+  filterUsers(str: string) {
+    return this.users.filter(
+      user =>
+        str != null &&
+        user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
+    );
+  }
+
+  /**
+   * Returns user id of user with username
+   * @param username Username of user
+   */
+  getUserID(username: String) {
+    return _.find(this.users, user => user.username === username).id;
+  }
+
+  /**
+   * Returns true if entered username is valid, else false.
+   */
+  isValidUsername() {
+    return (
+      !this.usernameControl.hasError('required') &&
+      !this.usernameControl.hasError('username')
+    );
+  }
+
+  /**
+   * Returns true if entered location is valid, else false.
+   */
+  isValidLocation() {
+    return !this.locationControl.hasError('required');
+  }
+
+  /**
+   * Returns true if everything in the form is valid, else false
+   */
+  isValidInput() {
+    return (
+      this.isValidUsername() &&
+      this.isValidLocation()
+    );
+  }
+
+  /**
+   * Change status of a document to requested
+   */
+  requestDocument() {
+    if (this.isValidInput()) {
+      this.documentItem.userID = this.getUserID(this.usernameInput);
+      this.documentItem.location = this.locationInput;
+      this.documentItem.status = 2; // TODO: ENUM FOR STATUS, 2 = Requested
+      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+        if (res.message === 'success') {
+          this.showModal = false;
+        }
+      });
+    }
+  }
+
+  /**
+   * Closes form. Also resets it by resetting form controls and clearing inputs
+   */
+  closeForm() {
+    this.usernameControl.reset();
+    this.locationControl.reset();
+    this.requestForm.resetForm();
+    this.documentItem = Object.assign({}, new Document());
+    this.showModal = false;
+    this.modalClosed.emit(false);
+  }
+
+}
