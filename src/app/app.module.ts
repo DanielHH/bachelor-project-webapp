@@ -58,6 +58,7 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
 import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
+import { InventoryComponent } from './pages/inventory/inventory.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
     DocumentDetailComponent,
     ReceiptTableComponent,
     MatchFilterReceiptPipe,
-    ReceiptItemComponent
+    ReceiptItemComponent,
+    InventoryComponent
   ],
   imports: [
     BrowserModule,
