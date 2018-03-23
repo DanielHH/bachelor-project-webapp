@@ -60,8 +60,6 @@ export class ItemMenuComponent implements OnInit {
     }
 
     this.editStatus.emit();
-
-    
   }
 
   /**

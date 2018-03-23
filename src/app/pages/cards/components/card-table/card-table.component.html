@@ -85,10 +85,14 @@
 
     <!-- Add cards to the table   -->
     <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
-        <app-card-item [cardItem]="card" (editItem)="openEdit($event)"> </app-card-item>
+        <app-card-item [cardItem]="card"> </app-card-item>
     </div>
   </div>
 </div>
 
 <app-modify-card [cardList]="cardList" [modalTitle]="modalTitle" [modalType]="modalType"
 [(showModal)]="showModal"></app-modify-card>
+
+<app-request-card></app-request-card>
+
+<app-return-card></app-return-card>

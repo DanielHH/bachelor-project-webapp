@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Card } from '../../../../datamodels/card';
@@ -7,6 +7,12 @@ import { DataService } from '../../../../services/data.service';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
+import { RequestService } from '../../../../services/request.service';
+import { Receipt } from '../../../../datamodels/receipt';
+import { UtilitiesService } from '../../../../services/utilities.service';
+import { User } from '../../../../datamodels/user';
+import * as moment from 'moment';
+import { CardType } from '../../../../datamodels/cardType';
 
 @Component({
   selector: 'app-request-card',
@@ -19,33 +25,31 @@ export class RequestCardComponent implements OnInit {
 
   cardItem: Card = null; // Card that is requested
 
-  /**
-   * Set card that is being requested.
-   */
-  @Input('card') set card(card: Card) {
-    if (card && card.id) {
-      this.cardItem = card;
-    }
-  }
-
-  @Input() showModal = false;
-
-  @Output() showModalChange = new EventEmitter<boolean>();
+  showModal = false;
 
   get _showModal() {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.closeForm();
+    if (!value) {
+      this.closeForm();
+    }
+    this.showModal = value;
   }
 
-  users = [];
+  users: User[] = [];
+  receipts: Receipt[] = [];
+  cards: Card[] = [];
+  cardTypes: CardType[] = [];
 
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
+  startDateControl = new FormControl('', Validators.required);
 
   usernameInput = '';
   locationInput = '';
+  startDateInput = '';
+  startDateDatepickerInput = '';
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
@@ -54,14 +58,41 @@ export class RequestCardComponent implements OnInit {
 
   constructor(
     private httpService: HttpService,
-    private dataService: DataService
+    private dataService: DataService,
+    public utilitiesService: UtilitiesService,
+    private requestService: RequestService
   ) {
+
     this.dataService.userList.subscribe(users => {
       this.users = users;
       this.usernameControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
       });
+    });
+
+    this.dataService.cardTypeList.subscribe(cardTypes => {
+      this.cardTypes = cardTypes;
+    });
+
+    this.dataService.receiptList.subscribe(receipts => {
+      this.receipts = receipts;
+    });
+
+    this.dataService.cardList.subscribe(cards => {
+      this.cards = cards;
+    });
+
+    this.requestService.card.subscribe((card) => {
+      if (card && card.id) {
+        this.cardItem = card;
+
+        this.startDateInput = moment(utilitiesService.getLocalDate()).format('YYYY-MM-DD');
+        this.startDateDatepickerInput = this.startDateInput;
+
+        this._showModal = true;
+
+      }
     });
   }
 
@@ -89,6 +120,37 @@ export class RequestCardComponent implements OnInit {
   }
 
   /**
+   * Returns the string associated with cardTypeId
+   * @param cardTypeId Id of card type
+   */
+  getCardTypeString(cardTypeId: number) {
+    return _.find(this.cardTypes, cardType => cardType.id === cardTypeId)
+      .name;
+  }
+
+  /**
+   * Sets the start date datePicker the date entered in the input field.
+   */
+  setStartDateToDatePicker() {
+    if (
+      !this.startDateControl.hasError('required') &&
+      !this.startDateControl.hasError('startDate')
+    ) {
+      this.startDateDatepickerInput = this.startDateInput; // Set date in Datepicker
+    }
+  }
+
+  /**
+   * Sets start date from datePicker to visible input field in YYYY-MM-DD format
+   * @param data Date selected in datePicker
+   */
+  setStartDateFromDatepicker(data: any) {
+    if (data.value != null) {
+      this.startDateInput = moment(data.value).format('YYYY-MM-DD');
+    }
+  }
+
+  /**
    * Returns true if entered username is valid, else false.
    */
   isValidUsername() {
@@ -106,26 +168,58 @@ export class RequestCardComponent implements OnInit {
   }
 
   /**
+   * Returns true if entered start date is valid, else false.
+   */
+  isValidStartDate() {
+    return !this.startDateControl.hasError('required') &&
+      !this.startDateControl.hasError('dateFormat');
+  }
+
+  /**
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
     return (
       this.isValidUsername() &&
-      this.isValidLocation()
+      this.isValidLocation() &&
+      this.isValidStartDate()
     );
   }
 
   /**
-   * Change status of a card to requested
+   * Update requested card, create receipt and submit to database.
    */
   requestCard() {
     if (this.isValidInput()) {
       this.cardItem.userID = this.getUserID(this.usernameInput);
       this.cardItem.location = this.locationInput;
       this.cardItem.status = 2; // TODO: ENUM FOR STATUS, 2 = Requested
-      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-        if (res.message === 'success') {
-          this.showModal = false;
+
+      const receipt = new Receipt();
+
+      receipt.itemTypeID = 1; // TODO: ENUM, 1 means card
+      receipt.cardID = this.cardItem.id;
+      receipt.userID = this.cardItem.userID;
+      receipt.startDate = this.utilitiesService.getLocalDate();
+
+      this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
+        if (receiptRes.message === 'success') {
+          this.cardItem.activeReceipt = receiptRes.data.id;
+
+          this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(cardRes => {
+            if (cardRes.message === 'success') {
+              // Update receipt list
+              this.receipts.unshift(receiptRes.data);
+              // Trigger view refresh
+              this.receipts = this.receipts.slice();
+              this.dataService.receiptList.next(this.receipts);
+
+              // Update card list
+              this.dataService.cardList.next(this.cards);
+
+              this.showModal = false;
+            }
+          });
         }
       });
     }
@@ -138,9 +232,11 @@ export class RequestCardComponent implements OnInit {
     this.usernameControl.reset();
     this.locationControl.reset();
     this.requestForm.resetForm();
+
     this.cardItem = Object.assign({}, new Card());
+    this.requestService.card.next(this.cardItem);
+
     this.showModal = false;
-    this.showModalChange.emit(false);
   }
 
 }

@@ -194,7 +194,7 @@ export class ModifyCardComponent implements OnInit {
   setExpirationDateToDatePicker() {
     if (
       !this.expirationDateControl.hasError('required') &&
-      !this.expirationDateControl.hasError('expirationDate')
+      !this.expirationDateControl.hasError('dateFormat')
     ) {
       this.expirationDateDatepickerInput = this.expirationDateInput; // Set date in Datepicker
     }

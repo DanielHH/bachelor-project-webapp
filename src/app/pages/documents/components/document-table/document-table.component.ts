@@ -117,7 +117,5 @@ export class DocumentTableComponent implements OnInit {
     this.showModal = true;
   }
 
-
-
 }
 

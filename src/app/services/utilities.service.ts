@@ -8,6 +8,7 @@ import { Document } from '../datamodels/document';
 import { DocumentType } from '../datamodels/documentType';
 import { User } from '../datamodels/user';
 import { DataService } from '../services/data.service';
+import * as moment from 'moment';
 
 
 /**
@@ -92,6 +93,13 @@ export class UtilitiesService {
     const localDate = new Date();
     localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
     return localDate;
+  }
+
+  /**
+   * Returns a string representation of date
+   */
+  getDateString(date: Date): string {
+    return moment(date).format('YYYY-MM-DD');
   }
 
 }

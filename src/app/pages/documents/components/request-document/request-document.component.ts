@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { Receipt } from '../../../../datamodels/receipt';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { RequestService } from '../../../../services/request.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-request-document',
@@ -135,7 +136,7 @@ export class RequestDocumentComponent implements OnInit {
   }
 
   /**
-   * Change status of a document to requested
+   * Update requested document, create receipt and submit to database.
    */
   requestDocument() {
     if (this.isValidInput()) {

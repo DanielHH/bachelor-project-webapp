@@ -38,7 +38,8 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatRadioModule,
-  MatFormFieldControl
+  MatFormFieldControl,
+  MatCardModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -126,7 +127,8 @@ import { ReturnService } from './services/return.service';
     MatAutocompleteModule,
     MatIconModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCardModule
   ],
   providers: [
     HttpService,

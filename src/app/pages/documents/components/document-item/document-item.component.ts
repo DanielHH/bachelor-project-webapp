@@ -23,10 +23,6 @@ export class DocumentItemComponent implements OnInit {
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
-  showRequestModal = false;
-
-  showReturnModal = false;
-
   constructor(
     public dataService: DataService,
     private routeDataService: RouteDataService,
@@ -95,7 +91,7 @@ export class DocumentItemComponent implements OnInit {
   }
 
   /**
-   * Sets the status of the document
+   * Sets the status of the document in the database
    */
   editStatus() {
     this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
