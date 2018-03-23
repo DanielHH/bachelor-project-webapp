@@ -1,81 +1,93 @@
 <div class="card">
   <div class="card-body">
-    <!-- Input field for filter -->
+    <!-- Row text filter input and add new button -->
     <div class="row">
-      <div class="col-4">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
-          maxlength="128" placeholder="Filtrera på">
-          <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
-        </mat-form-field>
+
+        <!-- Input field for text filter -->
+        <div class="col-4">
+          <mat-form-field>
+              <!--Input-->
+              <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
+              maxlength="128" placeholder="Filtrera på">
+              <!--Clear-->
+              <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
+              (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6"></div> <!-- Space -->
+
+        <!-- Add new document button-->
+        <div class="col-2">
+          <span class="add-new-button">
+              <button mat-raised-button (click)="openAddNewCard()" color="primary">Lägg till nytt kort</button>
+          </span>
+        </div>
+
       </div>
-      <div class="col-2"></div>
 
-      <div class="col-1">
+      <!-- Row filter per status -->
+      <div class="row">
+
+        <div class="col-1 px-1">
           <div class="form-check">
-
-              <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showIn>
-                <label class="form-check-label" for="showInID">Inlämnade</label>
-              </div>
-
-            <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showOutID" [(ngModel)]=showOut>
-                <label class="form-check-label" for="showOutID">Utlämnade</label>
-            </div>
+            <input type="checkbox" class="filled-in form-check-input mx-1" id="showInID" [(ngModel)]=showIn>
+            <label class="form-check-label" for="showInID">Inlämnade</label>
           </div>
         </div>
 
-      <div class="col-1 mx-3">
-        <div class="form-check">
+        <div class="col-1 px-1">
+          <div class="form-check">
+            <input type="checkbox" class="filled-in form-check-input mx-1" id="showOutID" [(ngModel)]=showOut>
+            <label class="form-check-label" for="showOutID">Utlämnade</label>
+          </div>
+        </div>
 
-            <input type="checkbox" class="filled-in form-check-input" id="showArchivedID" [(ngModel)]=showArchived>
+        <div class="col-1 px-1">
+          <div class="form-check">
+            <input type="checkbox" class="filled-in form-check-input mx-1" id="showArchivedID" [(ngModel)]=showArchived>
             <label class="form-check-label" for="showArchivedID">Arkiverade</label>
+          </div>
         </div>
 
-        <div class="form-check">
-            <input type="checkbox" class="filled-in form-check-input" id="showGoneID" [(ngModel)]=showGone>
+        <div class="col-1 px-1">
+          <div class="form-check">
+            <input type="checkbox" class="filled-in form-check-input mx-1" id="showGoneID" [(ngModel)]=showGone>
             <label class="form-check-label" for="showGoneID">Borttappade</label>
+          </div>
         </div>
 
-      </div>
-      <div class="col-1"></div>
-      <!-- Add new card button-->
-      <div class="col-1">
-        <button mat-raised-button (click)="openAddNewCard()" color="primary">Lägg till nytt kort</button>
-      </div>
+        <div class="col-8"></div>
+
     </div>
 
-    <!-- Header row -->
-    <div class="row">
+    <!-- Row table header -->
+    <div class="row table-header">
       <div class="col-1" (click)="sortTableList('status')">
         <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
         [class.both-arrow]="orderStatus == ''">Status </span>
       </div>
-      <div class="col" (click)="sortTableList('cardType')">
+      <div class="col-1" (click)="sortTableList('cardType')">
         <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'"
         [class.both-arrow]="orderCardType == ''">Typ </span>
       </div>
-      <div class="col" (click)="sortTableList('cardNumber')">
+      <div class="col-2" (click)="sortTableList('cardNumber')">
         <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'"
         [class.both-arrow]="orderCardNumber == ''">Serienummer </span>
       </div>
-      <div class="col" (click)="sortTableList('userID')">
+      <div class="col-2" (click)="sortTableList('userID')">
         <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
         [class.both-arrow]="orderUserID == ''">Användare </span>
       </div>
-      <div class="col" (click)="sortTableList('location')">
+      <div class="col-2" (click)="sortTableList('location')">
         <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
         [class.both-arrow]="orderLocation == ''">Plats </span>
       </div>
-      <div class="col" (click)="sortTableList('comment')">
+      <div class="col-2" (click)="sortTableList('comment')">
         <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
         [class.both-arrow]="orderComment == ''">Kommentar </span>
       </div>
-      <div class="col" (click)="sortTableList('expirationDate')">
+      <div class="col-1 px-2" (click)="sortTableList('expirationDate')">
         <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'"
         [class.both-arrow]="orderDate == ''">Utgångsdatum </span>
       </div>
