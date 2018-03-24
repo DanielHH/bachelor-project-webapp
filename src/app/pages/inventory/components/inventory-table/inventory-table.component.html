@@ -84,7 +84,7 @@
 
     <!-- Add cards to the table   -->
     <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
-        <inventory-card-item [baseItem]="makeItem(card)" (editItem)="openEdit($event)"> </inventory-card-item>
+        <inventory-item [baseItem]="makeItem(card)" (editItem)="openEdit($event)"> </inventory-item>
     </div>
   </div>
 </div>

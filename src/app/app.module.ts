@@ -59,8 +59,8 @@ import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-t
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
-import { InventoryCardTableComponent } from './pages/inventory/components/card-table/card-table.component';
-import { InventoryCardItemComponent } from './pages/inventory/components/card-item/card-item.component';
+import { InventoryTableComponent } from './pages/inventory/components/inventory-table/inventory-table.component';
+import { InventoryItemComponent } from './pages/inventory/components/inventory-item/inventory-item.component';
 
 @NgModule({
   declarations: [
@@ -100,8 +100,8 @@ import { InventoryCardItemComponent } from './pages/inventory/components/card-it
     MatchFilterReceiptPipe,
     ReceiptItemComponent,
     InventoryComponent,
-    InventoryCardTableComponent,
-    InventoryCardItemComponent
+    InventoryTableComponent,
+    InventoryItemComponent
   ],
   imports: [
     BrowserModule,

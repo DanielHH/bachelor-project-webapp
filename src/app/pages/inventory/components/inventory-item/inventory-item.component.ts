@@ -11,11 +11,11 @@ import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
 
 @Component({
-  selector: 'inventory-card-item',
-  templateUrl: './card-item.component.html',
-  styleUrls: ['./card-item.component.scss']
+  selector: 'inventory-item',
+  templateUrl: './inventory-item.component.html',
+  styleUrls: ['./inventory-item.component.scss']
 })
-export class InventoryCardItemComponent implements OnInit {
+export class InventoryItemComponent implements OnInit {
   // @Input() cardItem: Card;
   @Input() baseItem: BaseItem;
   @Output() editItem = new EventEmitter<any>();

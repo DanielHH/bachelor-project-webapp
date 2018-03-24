@@ -7,12 +7,12 @@ import { ModifyCardComponent } from '../../../cards/components/modify-card/modif
 import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'inventory-card-table',
-  templateUrl: './card-table.component.html',
-  styleUrls: ['./card-table.component.scss']
+  selector: 'inventory-table',
+  templateUrl: './inventory-table.component.html',
+  styleUrls: ['./inventory-table.component.scss']
 })
 
-export class InventoryCardTableComponent implements OnInit {
+export class InventoryTableComponent implements OnInit {
 
   @Input() cardList: Card[];
 

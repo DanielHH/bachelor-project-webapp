@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Card } from '../../datamodels/card';
+import { Document } from '../../datamodels/document';
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -11,13 +12,15 @@ export class InventoryComponent implements OnInit {
 
 
   cardList: Card[] = [];
-  // documentList: Document[] = [];
+  documentList: Document[] = [];
 
   constructor(public dataService: DataService) {
     this.dataService.cardList.subscribe((cardList) => {
       this.cardList = cardList;
     });
-
+    this.dataService.documentList.subscribe((documentList) => {
+      this.documentList = documentList;
+    });
   }
 
 
