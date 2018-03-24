@@ -6,25 +6,28 @@ import { CardDetailComponent } from '../pages/cards/components/card-detail/card-
  * A BaseItem can be either a Card or a Document.
 */
 export class BaseItem {
-itemType: string;
 item: Card|Document;
 
-constructor(item: Card|Document, itemType: string) {
-  if (itemType !== 'card' && itemType !== 'document') {
-    console.error('Only document or card may be passed as type argument to BaseItem');
-    return;
-  }
-  this.itemType = itemType;
+constructor(item: Card|Document) {
   this.item = item;
 }
 
-getType(): string {
-  return this.itemType;
+getName(): string {
+  if (this.item instanceof Card) {
+    return 'Kort';
+  } else {
+    return 'Handling';
+  }
 }
 
-getInnerType(): string {
-  return;
+getType(): number {
+  if (this.item instanceof Card) {
+    return this.item.cardType;
+  } else {
+    return this.item.documentType;
+  }
 }
+
 /**
  * Get the unique serial number for this item.
 */
@@ -46,6 +49,10 @@ getLocation(): string {
 
 getComment(): string {
   return this.item.comment;
+}
+
+getStatus(): number {
+  return this.item.status;
 }
 
 }

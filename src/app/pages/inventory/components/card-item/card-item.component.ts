@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
+import { BaseItem } from '../../../../datamodels/baseItem';
 import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
 import { CardType } from '../../../../datamodels/cardType';
@@ -15,7 +16,8 @@ import { HttpService } from '../../../../services/http.service';
   styleUrls: ['./card-item.component.scss']
 })
 export class InventoryCardItemComponent implements OnInit {
-  @Input() cardItem: Card;
+  // @Input() cardItem: Card;
+  @Input() baseItem: BaseItem;
   @Output() editItem = new EventEmitter<any>();
 
   cardTypeList: CardType[] = [];
@@ -25,10 +27,12 @@ export class InventoryCardItemComponent implements OnInit {
 
   showReturnModal = false;
 
-  constructor(private dataService: DataService,
-              private routeDataService: RouteDataService,
-              private router: Router,
-              private httpService: HttpService) {
+  constructor(
+    private dataService: DataService,
+    private routeDataService: RouteDataService,
+    private router: Router,
+    private httpService: HttpService
+  ) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -37,11 +41,11 @@ export class InventoryCardItemComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   /**
    * Change card status
-   */
+
   setCardStatus(status: number) {
     this.cardItem.status = status;
     this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
@@ -50,71 +54,73 @@ export class InventoryCardItemComponent implements OnInit {
         this.showReturnModal = false;
       }
     });
-  }
-
+  }*/
 
   /**
    * Returns the name of the card type corresponding to the cardType
    */
   displayCardType() {
-    if (this.cardItem.cardType > 0) {
-      const cardTypeToDisplay = _.find(this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
-      if (cardTypeToDisplay) {
-        return cardTypeToDisplay.name;
+    if (this.baseItem.item instanceof Card) {
+      if (this.baseItem.getType() > 0) {
+        const cardTypeToDisplay = _.find(
+          this.cardTypeList,
+          cardType => cardType.id === this.baseItem.getType()
+        );
+        if (cardTypeToDisplay) {
+          return cardTypeToDisplay.name;
+        }
       }
+      return '';
     }
-    return '';
   }
 
   /**
    * Returns the name corresponding to the userID
    */
   displayUserName() {
-    if (this.cardItem.userID) {
-      return _.find(this.userList, user => user.id === this.cardItem.userID)
+    if (this.baseItem.getUserID()) {
+      return _.find(this.userList, user => user.id === this.baseItem.getUserID())
         .name;
     }
     return '';
   }
 
-  /**
-   * Returns a string representation of the expirationDate of the card
-   */
-  displayExpirationDate() {
-    return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
-  }
-
-  /**
+    /**
    * Change route and send route data
    */
   route() {
-    this.routeDataService.card.next(this.cardItem);
-    this.router.navigate(['card-detail']);
+    if (this.baseItem.item instanceof Card) {
+      this.routeDataService.card.next(this.baseItem.item);
+      this.router.navigate(['card-detail']);
+    }
+    /*if (this.baseItem.item instanceof Document) {
+      this.routeDataService.document.next(this.baseItem.item);
+      this.router.navigate(['document-detail']);
+    }*/
   }
 
   /**
-   * Set card to be outputted for editing
-  */
+   * Set item to be outputted for editing
+   */
   edit() {
-    this.editItem.next(this.cardItem);
+    this.editItem.next(this.baseItem.item);
   }
 
   /**
    * Send a messge to the backend updating when this item was last inventoried
    * to be the current time.
-  */
+   */
   verifyInventory(): void {
     // TODO: implement me!
     return;
   }
 
   /**
-  * Return a string representing when this item was last verified
-  * to be in the inventory.
-  */
+   * Return a string representing when this item was last verified
+   * to be in the inventory.
+   */
   displayLastVerified(): string {
     // TODO: ask the backend
     return 'Aldrig';
   }
-
 }

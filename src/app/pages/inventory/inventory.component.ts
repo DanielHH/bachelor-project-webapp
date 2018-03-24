@@ -11,6 +11,7 @@ export class InventoryComponent implements OnInit {
 
 
   cardList: Card[] = [];
+  // documentList: Document[] = [];
 
   constructor(public dataService: DataService) {
     this.dataService.cardList.subscribe((cardList) => {

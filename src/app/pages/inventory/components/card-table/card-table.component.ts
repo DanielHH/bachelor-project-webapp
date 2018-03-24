@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
+import { Document } from '../../../../datamodels/document';
+import { BaseItem } from '../../../../datamodels/baseItem';
 import * as _ from 'lodash';
 import { ModifyCardComponent } from '../../../cards/components/modify-card/modify-card.component';
 import { NgForm } from '@angular/forms';
@@ -130,6 +132,14 @@ export class InventoryCardTableComponent implements OnInit {
     this.modalTitle = 'Add new card';
     this.modalType = 0;
     this.showModal = true;
+  }
+
+/**
+ * Helper for the html file of this component.
+ * Constructs a new BaseItem from the given item.
+ */
+  makeItem(item: Card|Document): BaseItem {
+    return new BaseItem(item);
   }
 
 }
