@@ -18,14 +18,9 @@
           <div class="form-check">
 
               <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showIn>
+                <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showActive>
                 <label class="form-check-label" for="showInID">Inne</label>
               </div>
-
-            <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showOutID" [(ngModel)]=showOut>
-                <label class="form-check-label" for="showOutID">Ute</label>
-            </div>
           </div>
         </div>
 
@@ -83,7 +78,7 @@
       <hr>
 
       <!-- Add cards to the table -->
-      <div *ngFor="let delivery of deliveryList | matchFilterDelivery:filterInput:showIn:showOut:showArchived:showGone">
+      <div *ngFor="let delivery of deliveryList | matchFilterDelivery:filterInput:showActive:showArchived:showGone">
           <app-delivery-item [deliveryItem]="delivery" (editItem)="openEdit($event)"></app-delivery-item>
       </div>
   </div>

@@ -1,9 +1,8 @@
 <div class="row">
   <div class="col-1" *ngIf="deliveryItem.status == 1 || deliveryItem.status == 2">
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="deliveryItem.status == 2" [class.btn-success]="deliveryItem.status == 1"
-        (click)="showModal()" mdbRippleRadius>
-        <span *ngIf="deliveryItem.status == 1">Kvittera</span>
-        <span *ngIf="deliveryItem.status == 2">Tillbaka</span>
+    <button type="button" class="btn btn-success btn-rounded btn-sm m-0 px-2 py-1"
+        disabled mdbRippleRadius>
+        <span>Aktiv</span>
     </button>
 </div>
 <div class="col-1" *ngIf="deliveryItem.status == 3 || deliveryItem.status == 4">

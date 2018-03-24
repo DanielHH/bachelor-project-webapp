@@ -20,9 +20,9 @@ export class MatchFilterDeliveryPipe implements PipeTransform {
   }
 
 
-  transform(value: Delivery[], input: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean): Delivery[] {
+  transform(value: Delivery[], input: string, showActive: boolean, showArchived: boolean, showGone: boolean): Delivery[] {
     return _.filter(value, (delivery) => {
-      return this.matchFilt(delivery, input, showIn, showOut, showArchived, showGone);
+      return this.matchFilt(delivery, input, showActive, showArchived, showGone);
     });
   }
 
@@ -36,13 +36,13 @@ export class MatchFilterDeliveryPipe implements PipeTransform {
    * @param showGone true if checkbox showGone checked
    * @returns True if match found
    */
-  matchFilt(delivery: Delivery, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
+  matchFilt(delivery: Delivery, filterInput: string, showActive: boolean, showArchived: boolean, showGone: boolean) {
 
     const sentDate = moment(delivery.sentDate).format('YYYY-MM-DD');
     filterInput = lowerCase(filterInput);
 
     // tslint:disable-next-line:triple-equals
-    if ( (delivery.status == 1 && !showIn) || (delivery.status == 2 && !showOut) ||
+    if ( (delivery.status == 1 && !showActive) || (delivery.status == 2 && !showActive) ||
     // tslint:disable-next-line:triple-equals
     (delivery.status == 3 && !showArchived) || (delivery.status == 4 && !showGone) ) {
       return false;

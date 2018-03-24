@@ -25,8 +25,7 @@ export class DeliveryTableComponent implements OnInit {
   orderSentDate = '';
   orderComment = '';
 
-  showIn = true;
-  showOut = true;
+  showActive = true;
   showArchived = false;
   showGone = false;
 
