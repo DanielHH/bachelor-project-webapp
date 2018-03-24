@@ -13,7 +13,7 @@
         </mat-form-field>
       </div>
       <div class="col-3"></div>
-      
+
       <div class="col-1">
           <div class="form-check">
 
@@ -21,13 +21,13 @@
                 <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showIn>
                 <label class="form-check-label" for="showInID">Inne</label>
               </div>
-    
+
             <div class="form-check">
                 <input type="checkbox" class="filled-in form-check-input" id="showOutID" [(ngModel)]=showOut>
                 <label class="form-check-label" for="showOutID">Ute</label>
             </div>
           </div>
-        </div> 
+        </div>
 
       <div class="col-2">
         <div class="form-check">
@@ -75,9 +75,8 @@
         <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
         [class.both-arrow]="orderComment == ''">Comment </span>
       </div>
-      <div class="col" (click)="sortTableList('expirationDate')">
-        <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'"
-        [class.both-arrow]="orderDate == ''">Expiration date </span>
+      <div class="col">
+        <span>Inventerad</span>
       </div>
       <div class="col-1"></div>
     </div>
@@ -85,7 +84,7 @@
 
     <!-- Add cards to the table   -->
     <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
-        <app-card-item [cardItem]="card" (editItem)="openEdit($event)"> </app-card-item>
+        <inventory-card-item [cardItem]="card" (editItem)="openEdit($event)"> </inventory-card-item>
     </div>
   </div>
 </div>

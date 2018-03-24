@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-1" *ngIf="cardItem.status == 1 || cardItem.status == 2">
+        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-success]="true" mdbRippleRadius>
+            <span>Inventera</span>
+        </button>
+    </div>
+    <div class="col-1" *ngIf="cardItem.status == 3 || cardItem.status == 4">
+        <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+            <span *ngIf="cardItem.status == 3">Arkiv</span>
+            <span *ngIf="cardItem.status == 4">Borta</span>
+        </button>
+    </div>
+
+    <div class="col">{{displayCardType()}}</div>
+    <div class="col">
+        <span class="detail-link" (click)="route()">{{cardItem?.cardNumber}}</span>
+    </div>
+    <div class="col">{{displayUserName()}}</div>
+    <div class="col">{{cardItem?.location}}</div>
+    <div class="col">{{cardItem?.comment}}</div>
+    <div class="col">{{displayLastVerified()}}</div>
+    <div class="col-1">
+        <app-item-menu [item]="cardItem" (editItem)="edit()"></app-item-menu>
+    </div>
+</div>
