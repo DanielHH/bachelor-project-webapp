@@ -43,8 +43,8 @@ export class MatchFilterCardPipe implements PipeTransform {
    */
   matchFilt(card: Card, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
 
-    if( (card.status == 1 && !showIn) || (card.status == 2 && !showOut) ||
-        (card.status == 3 && !showArchived) || (card.status == 4 && !showGone) ) {
+    if( (card.status.id == 1 && !showIn) || (card.status.id == 2 && !showOut) ||
+        (card.status.id == 3 && !showArchived) || (card.status.id == 4 && !showGone) ) {
       return false;
     }
 
@@ -68,8 +68,8 @@ export class MatchFilterCardPipe implements PipeTransform {
    * @returns The corresponding type of card
    */
   getCardType(card: Card) {
-    if (card.cardType > 0) {
-      const cardTypeToDisplay = _.find( this.cardTypeList, cardType => cardType.id === card.cardType);
+    if (card.cardType.id > 0) {
+      const cardTypeToDisplay = _.find( this.cardTypeList, cardType => cardType.id === card.cardType.id);
       if (cardTypeToDisplay) {
         return cardTypeToDisplay.name;
       }
@@ -83,8 +83,8 @@ export class MatchFilterCardPipe implements PipeTransform {
    * @returns The Card holder of card
    */
   getUserName(card: Card) {
-    if (card.userID > 0) {
-      const userToDisplay = _.find( this.userList, user => user.id === card.userID);
+    if (card.user.id > 0) {
+      const userToDisplay = _.find( this.userList, user => user.id === card.user.id);
       if (userToDisplay) {
         return userToDisplay.name;
       }

@@ -7,6 +7,7 @@ import { Document } from '../datamodels/document';
 import { DocumentType } from '../datamodels/documentType';
 import { User } from '../datamodels/user';
 import { DataService } from '../services/data.service';
+import { StatusType } from '../datamodels/statusType';
 
 
 /**
@@ -25,14 +26,15 @@ export class UtilitiesService {
   cardList: Card[] = [];
   documentList: Document[] = [];
   cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
+  documentTypeList: DocumentType[] = [];
   userList: User[] = [];
+  statusTypeList: StatusType[] = [];
 
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
   itemUserNameToDisplay: string;
 
-  constructor(private dataService: DataService) { 
+  constructor(private dataService: DataService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -48,29 +50,32 @@ export class UtilitiesService {
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
-    
+    this.dataService.statusTypeList.subscribe(statusTypeList => {
+      this.statusTypeList = statusTypeList;
+    });
+
   }
-  
-/**
- * Helper function to get the actual unique serial number, type and user of a receipt
- * to be displayed
- * 
- * @returns an string array containing [serial number, item type, user name]
- * 
- * @param receipt receipt that the displayed data should be extracted from
- */
+
+  /**
+   * Helper function to get the actual unique serial number, type and user of a receipt
+   * to be displayed
+   * 
+   * @returns an string array containing [serial number, item type, user name]
+   * 
+   * @param receipt receipt that the displayed data should be extracted from
+   */
   getReceiptDisplay(receipt: Receipt) {
-    
-    if(receipt.itemTypeID == 1) { // itemTypeID 1: card
+
+    if (receipt.itemTypeID == 1) { // itemTypeID 1: card
       const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
 
       this.itemIDToDisplay = cardItem.cardNumber;
 
-      const itemType = _.find(this.cardTypeList, cardType => cardType.id === cardItem.cardType)
+      const itemType = _.find(this.cardTypeList, cardType => cardType.id === cardItem.cardType.id)
       this.itemTypeToDisplay = itemType.name;
 
       const user = _.find(this.userList, user => user.id === receipt.userID)
-      if(user) {
+      if (user) {
         this.itemUserNameToDisplay = user.name
       }
 
@@ -83,7 +88,7 @@ export class UtilitiesService {
       this.itemTypeToDisplay = itemType.name;
 
       const user = _.find(this.userList, user => user.id === receipt.userID)
-      if(user) {
+      if (user) {
         this.itemUserNameToDisplay = user.name
       }
 
@@ -99,5 +104,18 @@ export class UtilitiesService {
     localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
     return localDate;
   }
+
+  getStatusFromID(id: number) {
+    return _.find(this.statusTypeList, statusType => statusType.id == id);
+  }
+
+  /**
+   * Returns the cardType associated with name or id
+   * @param id ID of card type
+   * @param name Name of card type
+   */
+  getCardType(id?: number, name?: string) {
+    return _.find(this.cardTypeList, cardType => cardType.id == id || cardType.name == name);
+  }  
 
 }

@@ -18,9 +18,6 @@ import { EditService } from '../../../../services/edit.service';
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
 
-  cardTypeList: CardType[] = [];
-  userList: User[] = [];
-
   showRequestModal = false;
   showReturnModal = false;
 
@@ -30,40 +27,10 @@ export class CardItemComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private editService: EditService) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
-      this.cardTypeList = cardTypeList;
-    });
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
+
   }
 
   ngOnInit() { }
-
-  /**
-   * Returns the name of the card type corresponding to the cardType
-   */
-  displayCardType() {
-    if (this.cardItem && this.cardItem.cardType > 0) {
-      const cardTypeToDisplay = _.find(this.cardTypeList, cardType =>
-        cardType.id === this.cardItem.cardType);
-      if (cardTypeToDisplay) {
-        return cardTypeToDisplay.name;
-      }
-    }
-    return '';
-  }
-
-  /**
-   * Returns the name corresponding to the userID
-   */
-  displayUserName() {
-    if (this.cardItem && this.cardItem.userID) {
-      return _.find(this.userList, user => user.id === this.cardItem.userID)
-        .name;
-    }
-    return '';
-  }
 
   /**
    * Returns a string representation of the expirationDate of the card
@@ -92,7 +59,7 @@ export class CardItemComponent implements OnInit {
    */
   showModal() {
     const returnedStatus = 1;
-    if (this.cardItem.status == returnedStatus) { // Don't change to ===, doesn't work
+    if (this.cardItem.status.id == returnedStatus) { // Don't change to ===, doesn't work
       this.showRequestModal = true;
     } else {
       this.showReturnModal = true;

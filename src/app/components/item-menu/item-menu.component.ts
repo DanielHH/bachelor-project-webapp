@@ -5,6 +5,7 @@ import { Card } from '../../datamodels/card';
 import { Document } from '../../datamodels/document';
 import { HttpService } from '../../services/http.service';
 import * as moment from 'moment';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-item-menu',
@@ -21,7 +22,8 @@ export class ItemMenuComponent implements OnInit {
   @Output() editStatus = new EventEmitter<any>();
 
   constructor(private routeDataService: RouteDataService, private router: Router,
-    private httpService: HttpService) { }
+    private httpService: HttpService,
+    private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }
@@ -54,14 +56,12 @@ export class ItemMenuComponent implements OnInit {
    */
   setStatus(value: number) {
     if (this.item.userID && value == 1) { // If has owner and is restored
-      this.item.status = 2;
-    } else {
-      this.item.status = value;
+      value = 2;
     }
 
-    this.editStatus.emit();
+    this.item.status = this.utilitiesService.getStatusFromID(value);    
 
-    
+    this.editStatus.emit();
   }
 
   /**

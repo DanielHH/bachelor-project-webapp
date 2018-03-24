@@ -2,6 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angu
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
+import { User } from '../../../../datamodels/user';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-return-card',
@@ -38,7 +40,7 @@ export class ReturnCardComponent implements OnInit {
 
   locationInput = '';
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService, private utilitiesService: UtilitiesService) {}
 
   ngOnInit() {
   }
@@ -55,9 +57,9 @@ export class ReturnCardComponent implements OnInit {
    */
   returnCard() {
     if (this.isValidLocation()) {
-      this.cardItem.userID = null;
+      this.cardItem.user = new User();
       this.cardItem.location = this.locationInput;
-      this.cardItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
+      this.cardItem.status = this.utilitiesService.getStatusFromID(1); // TODO: ENUM FOR STATUS, 1 = Returned
       this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
         if (res.message === 'success') {
           this.showModal = false;

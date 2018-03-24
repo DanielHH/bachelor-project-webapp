@@ -1,26 +1,26 @@
 <div class="row">
-    <div class="col-1" *ngIf="cardItem.status == 1 || cardItem.status == 2">
+    <div class="col-1" *ngIf="cardItem?.status?.id == 1 || cardItem?.status?.id == 2">
         <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1"
-        [class.btn-danger]="cardItem.status == 2"
-        [class.btn-success]="cardItem.status == 1"
+        [class.btn-danger]="cardItem?.status?.id == 2"
+        [class.btn-success]="cardItem?.status?.id == 1"
         (click)="showModal()" mdbRippleRadius>
-            <span *ngIf="cardItem.status == 1">Kvittera ut</span>
-            <span *ngIf="cardItem.status == 2">Kvittera in</span>
+            <span *ngIf="cardItem?.status?.id == 1">Kvittera ut</span>
+            <span *ngIf="cardItem?.status?.id == 2">Kvittera in</span>
         </button>
     </div>
-    <div class="col-1" *ngIf="cardItem.status == 3 || cardItem.status == 4">
+    <div class="col-1" *ngIf="cardItem?.status?.id == 3 || cardItem?.status?.id == 4">
         <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1"
         mdbRippleRadius disabled>
-            <span *ngIf="cardItem.status == 3">Arkiverad</span>
-            <span *ngIf="cardItem.status == 4">Borttappad</span>
+            <span *ngIf="cardItem?.status?.id == 3">Arkiverad</span>
+            <span *ngIf="cardItem?.status?.id == 4">Borttappad</span>
         </button>
     </div>
 
-    <div class="col">{{displayCardType()}}</div>
+    <div class="col">{{cardItem?.cardType?.name}}</div>
     <div class="col">
         <span class="detail-link" (click)="route()">{{cardItem?.cardNumber}}</span>
     </div>
-    <div class="col">{{displayUserName()}}</div>
+    <div class="col">{{cardItem?.user?.username}}</div>
     <div class="col">{{cardItem?.location}}</div>
     <div class="col">{{cardItem?.comment}}</div>
     <div class="col">{{displayExpirationDate()}}</div>

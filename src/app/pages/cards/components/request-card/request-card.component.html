@@ -1,6 +1,7 @@
 <form #requestForm="ngForm" (ngSubmit)="requestCard()">
   <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut kort'" [closeName]="'Avbryt'" [submitName]="'Kvittera ut'">
     <!-- Row username -->
+    {{filteredUsers.length}}
     <div class="row">
       <div class="col-0 col-md-3"></div>
       <div class="col-12 col-md-6 wide-center">
@@ -18,8 +19,8 @@
               <mat-icon>close</mat-icon>
             </button>
             <!--Dropdown-->
-            <mat-autocomplete #userIDs="matAutocomplete">
-              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.username">
+            <mat-autocomplete #userIDs="matAutocomplete" [displayWith]="displayUser" >
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
                 {{ user.username + '
                 < ' + user.name + '>' }}
               </mat-option>

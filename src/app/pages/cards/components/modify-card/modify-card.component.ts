@@ -11,6 +11,7 @@ import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { EditService } from '../../../../services/edit.service';
+import { User } from '../../../../datamodels/user';
 
 @Component({
   selector: 'app-modify-card',
@@ -76,7 +77,8 @@ export class ModifyCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private editService: EditService) {
+    private editService: EditService,
+  ) {
 
     this.dataService.cardTypeList.subscribe(cardTypes => {
       this.cardTypes = cardTypes;
@@ -90,7 +92,7 @@ export class ModifyCardComponent implements OnInit {
       if (card && card.id) {
         this.cardItem = card;
 
-        this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
+        this.cardTypeInput = card.cardType.name;
         this.cardNumberInput = card.cardNumber;
         this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
         this.expirationDateDatepickerInput = this.expirationDateInput;
@@ -124,7 +126,7 @@ export class ModifyCardComponent implements OnInit {
    */
   setCardFromForm(card: Card) {
     if (this.isValidInput()) {
-      card.cardType = this.getCardTypeID(this.cardTypeInput);
+      card.cardType = this.utilitiesService.getCardType(0, this.cardTypeInput);
       card.cardNumber = this.cardNumberInput;
       card.location = this.locationInput;
       card.expirationDate = new Date(this.expirationDateInput);
@@ -144,8 +146,8 @@ export class ModifyCardComponent implements OnInit {
       this.setCardFromForm(newCard);
 
       newCard.creationDate = this.utilitiesService.getLocalDate();
-      newCard.status = 1;
-      newCard.userID = null;
+      newCard.status = this.utilitiesService.getStatusFromID(1);
+      newCard.user = new User();
 
       this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
         if (res.message === 'success') {
@@ -177,15 +179,6 @@ export class ModifyCardComponent implements OnInit {
         }
       });
     }
-  }
-
-  /**
-   * Returns the id associated with cardTypeName
-   * @param cardTypeName Name of card type
-   */
-  getCardTypeID(cardTypeName: String) {
-    return _.find(this.cardTypes, cardType => cardType.name === cardTypeName)
-      .id;
   }
 
   /**

@@ -1,9 +1,11 @@
+import { CardType } from "./cardType";
+import { User } from "./user";
+import { StatusType } from "./statusType";
 
 /**
  * Card data model
-*/
+ */
 export class Card {
-
   /**
    * Database ID of the card
    */
@@ -12,7 +14,7 @@ export class Card {
   /**
    * Card type
    */
-  cardType: number;
+  cardType: CardType;
 
   /**
    * Card serial number (can contain alphabetical characters)
@@ -22,7 +24,7 @@ export class Card {
   /**
    * ID of current card holder
    */
-  userID: number;
+  user: User;
 
   /**
    * Current location of card
@@ -50,21 +52,13 @@ export class Card {
   modifiedDate: Date;
 
   /**
-   * Card status
+   * Card checked in/out status
    */
-  status: number;
+  status: StatusType;
 
-  constructor() {
-    this.id = null;
-    this.cardType = null;
-    this.cardNumber = null;
-    this.userID = null;
-    this.location = null;
-    this.comment = '';
-    this.expirationDate = null;
-    this.creationDate = null;
-    this.modifiedDate = null;
-    this.status = 0;
-  }
+  /**
+   * Active receipt (if any)
+   */
+  activeReceipt?: number;
 
 }
