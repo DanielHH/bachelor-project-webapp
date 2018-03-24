@@ -25,7 +25,8 @@ export class CardItemComponent implements OnInit {
 
   showReturnModal = false;
 
-  constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router, private httpService: HttpService) {
+  constructor(private dataService: DataService, private routeDataService: RouteDataService,
+    private router: Router, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -100,10 +101,10 @@ export class CardItemComponent implements OnInit {
    * Show modal based on status
    */
   showModal() {
+    // tslint:disable-next-line:triple-equals
     if (this.cardItem.status == 1) {
       this.showRequestModal = true;
-    }
-    else {
+    } else {
       this.showReturnModal = true;
     }
   }

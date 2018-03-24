@@ -29,10 +29,10 @@ export class UtilitiesService {
   userList: User[] = [];
 
   itemTypeToDisplay: string;
-  itemIDToDisplay: string;
+  itemIdToDisplay: string;
   itemUserNameToDisplay: string;
 
-  constructor(private dataService: DataService) { 
+  constructor(private dataService: DataService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -48,47 +48,46 @@ export class UtilitiesService {
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
-    
+
   }
-  
+
 /**
  * Helper function to get the actual unique serial number, type and user of a receipt
  * to be displayed
- * 
+ *
  * @returns an string array containing [serial number, item type, user name]
- * 
+ *
  * @param receipt receipt that the displayed data should be extracted from
  */
   getReceiptDisplay(receipt: Receipt) {
-    
-    if(receipt.itemTypeID == 1) { // itemTypeID 1: card
+
+    // TODO FIX:
+    // tslint:disable-next-line:triple-equals
+    if (receipt.itemTypeID == 1) { // itemTypeID 1: card
       const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
 
-      this.itemIDToDisplay = cardItem.cardNumber;
+      this.itemIdToDisplay = cardItem.cardNumber;
 
-      const itemType = _.find(this.cardTypeList, cardType => cardType.id === cardItem.cardType)
+      const itemType = _.find(this.cardTypeList, cardType => cardType.id === cardItem.cardType);
       this.itemTypeToDisplay = itemType.name;
 
-      const user = _.find(this.userList, user => user.id === receipt.userID)
-      if(user) {
-        this.itemUserNameToDisplay = user.name
-      }
-
+    // tslint:disable-next-line:triple-equals
     } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
       const documentItem = _.find(this.documentList, document => document.id === receipt.documentID);
 
-      this.itemIDToDisplay = documentItem.documentNumber;
+      this.itemIdToDisplay = documentItem.documentNumber;
 
-      const itemType = _.find(this.documentTypeList, documentType => documentType.id === documentItem.documentType)
+      const itemType = _.find(this.documentTypeList, documentType => documentType.id === documentItem.documentType);
       this.itemTypeToDisplay = itemType.name;
 
-      const user = _.find(this.userList, user => user.id === receipt.userID)
-      if(user) {
-        this.itemUserNameToDisplay = user.name
-      }
-
     }
-    return [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay]
+
+    const itemUser = _.find(this.userList, user => user.id === receipt.userID);
+    if (itemUser) {
+      this.itemUserNameToDisplay = itemUser.name;
+    }
+
+    return [this.itemIdToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay];
   }
 
   /**

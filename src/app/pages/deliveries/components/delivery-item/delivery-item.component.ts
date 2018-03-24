@@ -6,7 +6,9 @@ import { DataService } from '../../../../services/data.service';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
-import _ = require('lodash');
+import * as _ from 'lodash';
+import { Delivery } from '../../../../datamodels/delivery';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-delivery-item',
@@ -14,11 +16,10 @@ import _ = require('lodash');
   styleUrls: ['./delivery-item.component.scss']
 })
 export class DeliveryItemComponent implements OnInit {
-  @Input() documentItem: Document;
+  @Input() deliveryItem: Delivery;
   @Output() editItem = new EventEmitter<any>();
 
   documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
 
   showRequestModal = false;
 
@@ -33,19 +34,17 @@ export class DeliveryItemComponent implements OnInit {
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   /**
    * Change card status
    */
-  setDocumentStatus(status: number) {
-    this.documentItem.status = status;
-    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+  setDeliveryStatus(status: number) {
+    this.deliveryItem.status = status;
+    this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
       if (res.message === 'success') {
         this.showRequestModal = false;
         this.showReturnModal = false;
@@ -57,8 +56,8 @@ export class DeliveryItemComponent implements OnInit {
    * Returns the name of the document type corresponding to the documentType
    */
   displayDocumentType() {
-    if (this.documentItem.documentType > 0) {
-      const documentTypeToDisplay = _.find(this.documentTypeList, documentType => documentType.id === this.documentItem.documentType);
+    if (this.deliveryItem.documentType > 0) {
+      const documentTypeToDisplay = _.find(this.documentTypeList, documentType => documentType.id === this.deliveryItem.documentType);
       if (documentTypeToDisplay) {
         return documentTypeToDisplay.name;
       }
@@ -66,33 +65,30 @@ export class DeliveryItemComponent implements OnInit {
     return '';
   }
 
-  /**
-   * Returns the name corresponding to the userID
-   */
-  displayUserName() {
-    if (this.documentItem.userID) {
-      return _.find(this.userList, user => user.id === this.documentItem.userID)
-        .name;
-    }
-    return '';
-  }
   route() {
-    this.routeDataService.document.next(this.documentItem);
-    this.router.navigate(['document-detail']);
+    this.routeDataService.delivery.next(this.deliveryItem);
+    this.router.navigate(['delivery-detail']);
+  }
+
+    /**
+   * Returns a string representation of the sentDate of the card
+   */
+  displayExpirationDate() {
+    return moment(this.deliveryItem.sentDate).format('YYYY-MM-DD');
   }
 
   /**
    * Set document to be outputted for editing
    */
   edit() {
-    this.editItem.next(this.documentItem);
+    this.editItem.next(this.deliveryItem);
   }
 
   /**
    * Show modal based on status
    */
   showModal() {
-    if (this.documentItem.status === 1) {
+    if (this.deliveryItem.status === 1) {
       this.showRequestModal = true;
     } else {
       this.showReturnModal = true;

@@ -31,7 +31,7 @@ export class ReceiptItemComponent implements OnInit {
 
   itemActive: boolean;
 
-  constructor(private utilitiesService: UtilitiesService) { 
+  constructor(private utilitiesService: UtilitiesService) {
   }
 
   ngOnInit() {

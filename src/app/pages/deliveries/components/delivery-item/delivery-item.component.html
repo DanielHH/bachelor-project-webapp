@@ -1,53 +1,49 @@
 <div class="row">
-  <div class="col-1" *ngIf="documentItem.status == 1 || documentItem.status == 2">
-      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="documentItem.status == 2" [class.btn-success]="documentItem.status == 1"
-          (click)="showModal()" mdbRippleRadius>
-          <span *ngIf="documentItem.status == 1">Kvittera</span>
-          <span *ngIf="documentItem.status == 2">Tillbaka</span>
-      </button>
-  </div>
-  <div class="col-1" *ngIf="documentItem.status == 3 || documentItem.status == 4">
-      <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
-          <span *ngIf="documentItem.status == 3">Arkiv</span>
-          <span *ngIf="documentItem.status == 4">Borta</span>
-      </button>
-  </div>
+  <div class="col-1" *ngIf="deliveryItem.status == 1 || deliveryItem.status == 2">
+    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="deliveryItem.status == 2" [class.btn-success]="deliveryItem.status == 1"
+        mdbRippleRadius disabled>
+        <span *ngIf="deliveryItem.status == 1">Aktiv</span>
+        <span *ngIf="deliveryItem.status == 2">Inaktiv</span>
+    </button>
+</div>
+<div class="col-1" *ngIf="deliveryItem.status == 3 || deliveryItem.status == 4">
+    <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <span *ngIf="deliveryItem.status == 3">Arkiv</span>
+        <span *ngIf="deliveryItem.status == 4">Borta</span>
+    </button>
+</div>
 
   <div class="col">{{displayDocumentType()}}</div>
-  <div class="col">
-    <span class="detail-link" (click)="route()">{{documentItem?.documentNumber}}</span>
-  </div>
-  <div class="col">{{documentItem.name}}</div>
-  <div class="col">{{displayUserName()}}</div>
-  <div class="col">{{documentItem?.location}}</div>
-  <div class="col">{{documentItem?.comment}}</div>
+  <div class="col">{{deliveryItem.documentNumber}}</div>
+  <div class="col">{{deliveryItem.name}}</div>
+  <div class="col">{{deliveryItem.receiver}}</div>
+  <div class="col">{{displayExpirationDate()}}</div>
+  <div class="col">{{deliveryItem.comment}}</div>
   <div class="col-1">
-      <app-item-menu [item]="documentItem" (editItem)="edit()"></app-item-menu>
+      <app-item-menu [item]="deliveryItem" (editItem)="edit()"></app-item-menu>
   </div>
 </div>
 
-<form #requestDocumentForm="ngForm" (ngSubmit)="setDocumentStatus(2)">
+<form #requestDocumentForm="ngForm" (ngSubmit)="setDeliveryStatus(2)">
   <app-modal [(show)]="showRequestModal" [modalTitle]="'Request document'" [submitName]="'Request'">
       Are you sure you want to request the following document?
       <br>
       <br>
       <ul>
           <li>Document type: {{displayDocumentType()}}</li>
-          <li>Document number: {{documentItem?.documentNumber}}</li>
-          <li>User ID: {{displayUserName()}}</li>
+          <li>Document number: {{deliveryItem?.documentNumber}}</li>
       </ul>
   </app-modal>
 </form>
 
-<form #returnDocumentForm="ngForm" (ngSubmit)="setDocumentStatus(1)">
+<form #returnDocumentForm="ngForm" (ngSubmit)="setDeliveryStatus(1)">
   <app-modal [(show)]="showReturnModal" [modalTitle]="'Return document'" [submitName]="'Return'">
       Are you sure you want to return the following document?
       <br>
       <br>
       <ul>
           <li>Document type: {{displayDocumentType()}}</li>
-          <li>Document number: {{documentItem?.documentNumber}}</li>
-          <li>User ID: {{displayUserName()}}</li>
+          <li>Document number: {{deliveryItem?.documentNumber}}</li>
       </ul>
   </app-modal>
 </form>

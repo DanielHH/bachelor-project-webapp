@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import _ = require('lodash');
+import { Delivery } from '../../../../datamodels/delivery';
 
 @Component({
   selector: 'app-delivery-table',
@@ -7,10 +8,10 @@ import _ = require('lodash');
   styleUrls: ['./delivery-table.component.scss']
 })
 export class DeliveryTableComponent implements OnInit {
-  
-  @Input() documentList: Document[];
 
-  editDocument: Document = null; // Document to be edited
+  @Input() deliveryList: Delivery[];
+
+  editDocument: Delivery = null; // delivery document to be edited
 
   showModal = false;
 
@@ -20,15 +21,16 @@ export class DeliveryTableComponent implements OnInit {
   orderDocumentType = '';
   orderDocumentNumber = '';
   orderName = '';
-  orderUserID = '';
-  orderLocation = '';
+  orderReceiver = '';
+  orderSentDate = '';
   orderComment = '';
 
   showIn = true;
   showOut = true;
   showArchived = false;
   showGone = false;
-  modalTitle = "";
+
+  modalTitle = '';
 
   modalType = 0;
 
@@ -42,7 +44,7 @@ export class DeliveryTableComponent implements OnInit {
    * Sorts table after modifiedDate ascending
    */
   sortTableListStart() {
-    this.documentList = _.orderBy(this.documentList, ['modifiedDate'], ['desc']);
+    this.deliveryList = _.orderBy(this.deliveryList, ['modifiedDate'], ['desc']);
   }
 
   /**
@@ -73,14 +75,14 @@ export class DeliveryTableComponent implements OnInit {
         this.orderName = newOrder;
         break;
       }
-      case 'userID': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'receiver': {
+        newOrder = this.sortTableListHelper(this.orderReceiver);
+        this.orderReceiver = newOrder;
         break;
       }
-      case 'location': {
-        newOrder = this.sortTableListHelper(this.orderLocation);
-        this.orderLocation = newOrder;
+      case 'sentDate': {
+        newOrder = this.sortTableListHelper(this.orderSentDate);
+        this.orderSentDate = newOrder;
         break;
       }
       case 'comment': {
@@ -91,7 +93,7 @@ export class DeliveryTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.documentList = _.orderBy(this.documentList, [property], [newOrder]);
+      this.deliveryList = _.orderBy(this.deliveryList, [property], [newOrder]);
     }
 
   }
@@ -113,7 +115,7 @@ export class DeliveryTableComponent implements OnInit {
    */
   openEdit(document: any) {
     this.editDocument = document;
-    this.modalTitle = "Edit document";
+    this.modalTitle = 'Edit document';
     this.modalType = 1;
     this.showModal = true;
   }
@@ -122,13 +124,11 @@ export class DeliveryTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDocument() {
-    this.editDocument = Object.assign({}, new Document());
-    this.modalTitle = "Add new document";
+    this.editDocument = Object.assign({}, new Delivery());
+    this.modalTitle = 'Add new document';
     this.modalType = 0;
     this.showModal = true;
   }
-
-
 
 }
 

@@ -25,10 +25,11 @@ export class MatchFilterReceiptPipe implements PipeTransform {
   itemIDToDisplay: string;
   itemUserNameToDisplay: string;
 
-  constructor(private utilitiesService: UtilitiesService) { 
+  constructor(private utilitiesService: UtilitiesService) {
   }
 
-  transform(value: Receipt[], input: string, showCard: boolean, showDocument: boolean, showActive: boolean, showInactive: boolean): Receipt[] {
+  transform(value: Receipt[], input: string, showCard: boolean, showDocument: boolean,
+    showActive: boolean, showInactive: boolean): Receipt[] {
     return _.filter(value, (receipt) => {
       return this.matchFilt(receipt, input, showCard, showDocument, showActive, showInactive);
   });
@@ -45,8 +46,9 @@ export class MatchFilterReceiptPipe implements PipeTransform {
    * @returns True if match found
    */
   matchFilt(receipt: Receipt, filterInput: string, showCard: boolean, showDocument: boolean, showActive: boolean, showInactive: boolean) {
-    if( (receipt.endDate == null && !showActive) || (receipt.endDate != null && !showInactive) || 
-        (receipt.itemTypeID == 1 && !showCard) || (receipt.itemTypeID == 2 && !showDocument) ){
+    if ( (receipt.endDate == null && !showActive) || (receipt.endDate != null && !showInactive) ||
+        // tslint:disable-next-line:triple-equals
+        (receipt.itemTypeID == 1 && !showCard) || (receipt.itemTypeID == 2 && !showDocument) ) {
       return false;
     }
 
@@ -65,7 +67,7 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     && (_.includes(lowerCase(endDate), filterInput) === false) ) {
       return false;
     }
-    
+
     return true;
   }
 

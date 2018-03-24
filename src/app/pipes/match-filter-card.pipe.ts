@@ -43,7 +43,9 @@ export class MatchFilterCardPipe implements PipeTransform {
    */
   matchFilt(card: Card, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
 
-    if( (card.status == 1 && !showIn) || (card.status == 2 && !showOut) ||
+    // tslint:disable-next-line:triple-equals
+    if ( (card.status == 1 && !showIn) || (card.status == 2 && !showOut) ||
+        // tslint:disable-next-line:triple-equals
         (card.status == 3 && !showArchived) || (card.status == 4 && !showGone) ) {
       return false;
     }

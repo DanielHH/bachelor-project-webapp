@@ -32,7 +32,7 @@ export class CardTableComponent implements OnInit {
   showArchived = false;
   showGone = false;
 
-  modalTitle = "";
+  modalTitle = '';
 
   modalType = 0;
 
@@ -116,7 +116,7 @@ export class CardTableComponent implements OnInit {
    */
   openEdit(card: any) {
     this.editCard = card;
-    this.modalTitle = "Edit card";
+    this.modalTitle = 'Edit card';
     this.modalType = 1;
     this.showModal = true;
   }
@@ -126,7 +126,7 @@ export class CardTableComponent implements OnInit {
    */
   openAddNewCard() {
     this.editCard = Object.assign({}, new Card());
-    this.modalTitle = "Add new card";
+    this.modalTitle = 'Add new card';
     this.modalType = 0;
     this.showModal = true;
   }

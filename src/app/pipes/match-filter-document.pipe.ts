@@ -44,7 +44,9 @@ export class MatchFilterDocumentPipe implements PipeTransform {
   matchFilt(document: Document, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
     filterInput = lowerCase(filterInput);
 
-    if( (document.status == 1 && !showIn) || (document.status == 2 && !showOut) ||
+    // tslint:disable-next-line:triple-equals
+    if ( (document.status == 1 && !showIn) || (document.status == 2 && !showOut) ||
+    // tslint:disable-next-line:triple-equals
     (document.status == 3 && !showArchived) || (document.status == 4 && !showGone) ) {
       return false;
     }

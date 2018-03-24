@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { Document } from '../../datamodels/document';
+import { Delivery } from '../../datamodels/delivery';
 import _ = require('lodash');
 
 @Component({
@@ -10,14 +10,11 @@ import _ = require('lodash');
 })
 export class DeliveriesComponent implements OnInit {
 
-  filteredDocumentList: Document[] = [];
+  deliveryList: Delivery[] = [];
 
   constructor(public dataService: DataService) {
-    this.dataService.documentList.subscribe( (documentList) => {
-
-      this.filteredDocumentList = _.filter(documentList, (document) => {
-        return document.sender == 'Sectra';
-      });
+    this.dataService.deliveryList.subscribe( (deliveryList) => {
+      this.deliveryList = deliveryList;
 
     });
 

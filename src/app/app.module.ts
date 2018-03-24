@@ -61,6 +61,7 @@ import { DeliveryItemComponent } from './pages/deliveries/components/delivery-it
 import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
+import { MatchFilterDeliveryPipe } from './pipes/match-filter-delivery.pipe';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
     DeliveryItemComponent,
     ReceiptTableComponent,
     MatchFilterReceiptPipe,
-    ReceiptItemComponent
+    ReceiptItemComponent,
+    MatchFilterDeliveryPipe
   ],
   imports: [
     BrowserModule,
