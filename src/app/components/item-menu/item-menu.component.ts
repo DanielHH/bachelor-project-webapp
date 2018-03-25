@@ -29,7 +29,7 @@ export class ItemMenuComponent implements OnInit {
   route() {
     if (this.item.cardType) {
       this.routeDataService.card.next(this.item);
-      this.router.navigate(['card-detail']);
+      this.router.navigate(['cardhistory']); // Daniel: Fixa att den navigerar till cardhistory
     }
 
     if (this.item.documentType) {
@@ -64,7 +64,7 @@ export class ItemMenuComponent implements OnInit {
     }
   }
 
-  /** 
+  /**
    * Format date
   */
   formatDate(date: Date) {

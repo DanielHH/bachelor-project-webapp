@@ -58,6 +58,8 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
 import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
+import { CardhistoryComponent } from './pages/cardhistory/cardhistory.component';
+import { CardhistoryTableComponent } from './pages/cardhistory/components/cardhistory-table/cardhistory-table.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +97,9 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
     DocumentDetailComponent,
     ReceiptTableComponent,
     MatchFilterReceiptPipe,
-    ReceiptItemComponent
+    ReceiptItemComponent,
+    CardhistoryComponent,
+    CardhistoryTableComponent
   ],
   imports: [
     BrowserModule,
