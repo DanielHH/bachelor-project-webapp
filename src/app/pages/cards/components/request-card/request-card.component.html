@@ -95,7 +95,7 @@
               <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
             </button>
             <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button
-            aria-label="Clear" (click)="usernameInput = ''">
+            aria-label="Clear" (click)="usernameInput = ''" tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
             <!--Dropdown-->
@@ -127,7 +127,7 @@
             <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
           </button>
           <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="locationInput = ''">
+          aria-label="Clear" (click)="locationInput = ''" tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -136,6 +136,9 @@
       </div>
       <div class="col-0 col-md-1"></div>
     </div>
+
+    <div class="row py-1"></div> <!-- Row Space -->
+
     <!-- Row Start Date and comment -->
     <div class="row">
       <div class="col-0 col-md-1"></div>
@@ -143,14 +146,16 @@
       <div class="col-12 col-md-5 wide-center">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="startDateInput" name="startDateInput" type="text" [(ngModel)]="startDateInput" placeholder="Startdatum"
-            [style.color]="isValidStartDate() ? 'black' : 'gray'" maxlength="10" (input)="setStartDateToDatePicker();"
-            [formControl]="startDateControl" appDate required>
+          <input matInput id="startDateInput" name="startDateInput" type="text"
+          [(ngModel)]="startDateInput" placeholder="Startdatum"
+          [style.color]="isValidStartDate() ? 'black' : 'gray'" maxlength="10"
+          (input)="setStartDateToDatePicker();" [formControl]="startDateControl" appDate required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidStartDate()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="startDateInput" matSuffix mat-icon-button aria-label="Clear" (click)="startDateInput = ''">
+          <button mat-button class="size-medium" *ngIf="startDateInput" matSuffix mat-icon-button
+          aria-label="Clear" (click)="startDateInput = ''" tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--DatePicker-->
@@ -173,9 +178,11 @@
         <div class="col-12 comment-input">
           <mat-form-field>
             <!--Input-->
-            <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text" maxlength="128" placeholder="Kommentar">
+            <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text"
+            maxlength="128" placeholder="Kommentar">
             <!--Clear-->
-            <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear" (click)="commentInput = ''">
+            <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
+            aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>

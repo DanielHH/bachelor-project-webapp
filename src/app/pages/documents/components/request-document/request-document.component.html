@@ -125,7 +125,7 @@
               <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
             </button>
             <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button
-            aria-label="Clear" (click)="usernameInput = ''">
+            aria-label="Clear" (click)="usernameInput = ''" tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
             <!--Dropdown-->
@@ -157,7 +157,7 @@
             <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
           </button>
           <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="locationInput = ''">
+          aria-label="Clear" (click)="locationInput = ''" tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -166,7 +166,10 @@
       </div>
       <div class="col-0 col-md-1"></div>
     </div>
-    <!-- Row Start Date and comment -->
+
+    <div class="row py-2"></div> <!-- Row Space -->
+
+    <!-- Row Start date and comment -->
     <div class="row">
       <div class="col-0 col-md-1"></div>
       <!-- Start date -->
@@ -183,7 +186,7 @@
             <mat-icon [style.color]="'green'" *ngIf="isValidStartDate()">done</mat-icon>
           </button>
           <button mat-button class="size-medium" *ngIf="startDateInput" matSuffix
-          mat-icon-button aria-label="Clear" (click)="startDateInput = ''">
+          mat-icon-button aria-label="Clear" (click)="startDateInput = ''" tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--DatePicker-->
@@ -192,7 +195,7 @@
           <input id="startDateDatepickerInput" name="startDateDatepickerInput"
           [(ngModel)]="startDateDatepickerInput"
             [matDatepicker]="picker" (dateInput)="setStartDateFromDatepicker($event);" type="hidden">
-          <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker-toggle matSuffix class="size-big" [for]="picker" [attr.tabindex]="-1"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="startDateControl.hasError('required')">
             Ange ett startdatum
@@ -211,7 +214,7 @@
             type="text" maxlength="128" placeholder="Kommentar">
             <!--Clear-->
             <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
-            aria-label="Clear" (click)="commentInput = ''">
+            aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>

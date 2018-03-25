@@ -112,7 +112,7 @@
             <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
           </button>
           <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="locationInput = ''">
+          aria-label="Clear" (click)="locationInput = ''" tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -129,7 +129,7 @@
             matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="5">
             <!--Clear-->
             <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
-            aria-label="Clear" (click)="commentInput = ''">
+            aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>

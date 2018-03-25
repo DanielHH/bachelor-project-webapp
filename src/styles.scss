@@ -40,3 +40,10 @@ input {
   height: 22px !important;
   width: 22px !important;
 }
+
+.form-check-label {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
