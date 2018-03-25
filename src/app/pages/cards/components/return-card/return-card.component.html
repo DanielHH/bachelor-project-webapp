@@ -1,5 +1,6 @@
 <form #returnForm="ngForm" (ngSubmit)="returnCard()">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera in kort'" [closeName]="'Avbryt'" [submitName]="'Kvittera in'">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera in kort'"
+  [closeName]="'Avbryt'" [submitName]="'Kvittera in'">
 
     <!-- Row card info -->
     <div class="row">
@@ -95,13 +96,15 @@
       <div class="col-12 col-md-5 wide-center">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Plats"
+          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput"
+          type="text" maxlength="128" placeholder="Plats"
             [formControl]="locationControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''">
+          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button
+          aria-label="Clear" (click)="locationInput = ''">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -113,10 +116,12 @@
       <div class="col-12 col-md-5 wide-center">
         <mat-form-field>
             <!--Input-->
-            <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text" maxlength="128" placeholder="Kommentar"
+            <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput"
+            type="text" maxlength="128" placeholder="Kommentar"
             matTextareaAutosize matAutosizeMinRows="1" matAutosizeMaxRows="5">
             <!--Clear-->
-            <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear" (click)="commentInput = ''">
+            <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
+            aria-label="Clear" (click)="commentInput = ''">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>

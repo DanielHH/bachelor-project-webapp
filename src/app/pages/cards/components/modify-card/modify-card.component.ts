@@ -26,7 +26,6 @@ export class ModifyCardComponent implements OnInit {
   expirationDateInput = '';
   expirationDateDatepickerInput = '';
   commentInput = '';
-  addCardHolder: Boolean = false;
 
   // Form Controls
   cardTypeControl = new FormControl('', Validators.required);

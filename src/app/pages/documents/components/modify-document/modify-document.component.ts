@@ -336,9 +336,9 @@ export class ModifyDocumentComponent implements OnInit {
     this.docNumberControl.reset();
 
     this.registrationDateControl.reset();
-    this.registrationDatePickerControl = new FormControl();
+    this.registrationDatePickerControl.reset();
     this.docDateControl.reset();
-    this.docDatePickerControl = new FormControl();
+    this.docDatePickerControl.reset();
 
     this.nameControl.reset();
     this.senderControl.reset();
@@ -347,7 +347,9 @@ export class ModifyDocumentComponent implements OnInit {
     this.commentInput = null;
 
     this.modifyForm.resetForm();
+
     this.documentItem = Object.assign({}, new Document());
+
     this.showModal = false;
     this.showModalChange.emit(false);
   }

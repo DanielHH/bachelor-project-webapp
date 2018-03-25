@@ -46,15 +46,17 @@ export class ReturnCardComponent implements OnInit {
     public utilitiesService: UtilitiesService,
     private returnService: ReturnService
   ) {
-
+    // Receipt list subscriber
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
+    // Card list subscriber
     this.dataService.cardList.subscribe(cards => {
       this.cards = cards;
     });
 
+    // Return card subscriber
     this.returnService.card.subscribe((card) => {
       if (card && card.id) {
         this.cardItem = card;
@@ -90,13 +92,18 @@ export class ReturnCardComponent implements OnInit {
    */
   returnCard() {
     if (this.isValidLocation()) {
+      // Set card information
       this.cardItem.userID = null;
       this.cardItem.location = this.locationInput;
+      this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.cardItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
+      this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
+      // Update receipt
       const activeReceipt = this.getReceipt(this.cardItem.activeReceipt);
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
+      // Submit changes to server
       this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
           this.cardItem.activeReceipt = null;
@@ -123,8 +130,8 @@ export class ReturnCardComponent implements OnInit {
    */
   closeForm() {
     this.locationControl.reset();
-    this.returnForm.resetForm();
     this.commentInput = null;
+    this.returnForm.resetForm();
 
     this.cardItem = Object.assign({}, new Card());
     this.returnService.card.next(this.cardItem);

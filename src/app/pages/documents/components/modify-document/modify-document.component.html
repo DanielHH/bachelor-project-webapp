@@ -93,8 +93,8 @@
           <mat-datepicker #docDatepicker></mat-datepicker>
           <!--Hidden input connected to the date picker-->
           <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="docDateDatepickerInput" [matDatepicker]="docDatepicker"
-            (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
-          <mat-datepicker-toggle matSuffix class="size-big" [for]="docDatepicker"></mat-datepicker-toggle>
+          (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
+          <mat-datepicker-toggle matSuffix [for]="docDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="docDateControl.hasError('required')">
             Ange ett handlingsdatum

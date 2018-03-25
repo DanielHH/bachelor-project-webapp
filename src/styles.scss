@@ -20,9 +20,33 @@ input {
 }
 
 .add-new-button {
-  position: relative !important;
-  float: left !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
+  position: absolute !important;
+  margin-top: 23px !important;
+  right: 40px !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.wide-center {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.title-center {
+  flex: 1 1 auto !important;
+  text-align: center !important;
+}
+
+.size-medium, .mat-datepicker-toggle .mat-icon-button {
+  font-size: 27px !important;
+  height: 27px !important;
+  width: 27px !important;
+}
+
+.size-big {
+  font-size: 32px !important;
+  height: 32px !important;
+  width: 32px !important;
 }

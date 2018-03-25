@@ -63,6 +63,7 @@ export class RequestCardComponent implements OnInit {
     private requestService: RequestService
   ) {
 
+    // User list subscriber
     this.dataService.userList.subscribe(users => {
       this.users = users;
       this.usernameControl.updateValueAndValidity({
@@ -71,14 +72,17 @@ export class RequestCardComponent implements OnInit {
       });
     });
 
+    // Receipt list subscriber
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
+    // Card list subscriber
     this.dataService.cardList.subscribe(cards => {
       this.cards = cards;
     });
 
+    // Request card list subscriber
     this.requestService.card.subscribe((card) => {
       if (card && card.id) {
         this.cardItem = card;
@@ -179,17 +183,21 @@ export class RequestCardComponent implements OnInit {
    */
   requestCard() {
     if (this.isValidInput()) {
+      // Set card information
       this.cardItem.userID = this.getUserID(this.usernameInput);
       this.cardItem.location = this.locationInput;
+      this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.cardItem.status = 2; // TODO: ENUM FOR STATUS, 2 = Requested
+      this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
+      // Create new receipt
       const receipt = new Receipt();
-
       receipt.itemTypeID = 1; // TODO: ENUM, 1 means card
       receipt.cardID = this.cardItem.id;
       receipt.userID = this.cardItem.userID;
       receipt.startDate = new Date(this.startDateInput);
 
+      // Submit changes to server
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
           this.cardItem.activeReceipt = receiptRes.data.id;
