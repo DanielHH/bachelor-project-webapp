@@ -41,9 +41,15 @@ input {
   width: 22px !important;
 }
 
-.form-check-label {
+.form-check-label, .table-header {
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
 }
+
+.table-header {
+  font-weight: bold;
+  white-space: nowrap;
+}
+

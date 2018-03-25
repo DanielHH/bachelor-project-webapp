@@ -56,34 +56,38 @@
 
     <!-- Header row -->
     <div class="row table-header">
-      <div class="col-1" (click)="sortTableList('endDate')">
+
+      <div class="col-1 mx-1 px-2" (click)="sortTableList('endDate')">
         <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
         [class.both-arrow]="orderEndDate == ''">Status </span>
       </div>
-      <div class="col" (click)="sortTableList('itemKindID')">
+      <div class="col mx-1 px-2" (click)="sortTableList('itemKindID')">
         <span class="hover" [class.up-arrow]="orderItemKindID == 'asc'" [class.down-arrow]="orderItemKindID == 'desc'"
         [class.both-arrow]="orderItemKindID == ''">Kort/handling </span>
       </div>
-      <div class="col" (click)="sortTableList('itemTypeID')">
+      <div class="col mx-1 px-2" (click)="sortTableList('itemTypeID')">
         <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'"
         [class.both-arrow]="orderItemTypeID == ''">Typ </span>
       </div>
-      <div class="col" (click)="sortTableList('IDNumber')">
+      <div class="col mx-1 px-2" (click)="sortTableList('IDNumber')">
         <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'"
         [class.both-arrow]="orderIDNumber == ''">ID </span>
       </div>
-      <div class="col" (click)="sortTableList('userID')">
+      <div class="col mx-1 px-2" (click)="sortTableList('userID')">
         <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
         [class.both-arrow]="orderUserID == ''">Användare </span>
       </div>
-      <div class="col" (click)="sortTableList('startDate')">
+      <div class="col mx-2 px-2" (click)="sortTableList('startDate')">
         <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'"
         [class.both-arrow]="orderStartDate == ''">Startdatum </span>
       </div>
-      <div class="col" (click)="sortTableList('endDate')">
+      <div class="col mx-2 px-2" (click)="sortTableList('endDate')">
         <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
         [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
       </div>
+
+      <div class="col-1 mx-1 px-2"></div> <!-- PDF button -->
+
     </div>
     <hr>
 
