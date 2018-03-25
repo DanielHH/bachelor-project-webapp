@@ -18,7 +18,6 @@ import { HttpService } from '../../../../services/http.service';
   styleUrls: ['./inventory-item.component.scss']
 })
 export class InventoryItemComponent implements OnInit {
-  // @Input() cardItem: Card;
   @Input() baseItem: BaseItem;
   @Output() editItem = new EventEmitter<any>();
 
@@ -93,6 +92,10 @@ export class InventoryItemComponent implements OnInit {
     } else {
       return '';
     }
+  }
+
+  displayItemType(): string {
+    return this.baseItem.isCard() ? 'Kort' : 'Handling';
   }
 
   /**
