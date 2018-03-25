@@ -11,12 +11,18 @@
           <div class="row my-1">
             <div class="col-0 col-md-3"></div>
             <div class="col-0 col-md-6">
-              <h5><b>Kortdetaljer</b></h5>
+              <h5><b>Detaljerad information</b></h5>
             </div>
             <div class="col-0 col-md-3"></div>
           </div>
-          <!-- Row 2 Space -->
-          <div class="row my-1"></div>
+          <!-- Row 2 Divider -->
+          <div class="row pt-1 pb-3">
+            <div class="col-0 col-md-1"></div>
+            <div class="col-0 col-md-10">
+              <mat-divider></mat-divider>
+            </div>
+            <div class="col-0 col-md-1"></div>
+          </div>
           <!-- Row 3 -->
           <div class="row my-1">
             <div class="col-0 col-md-1"></div>
@@ -24,7 +30,7 @@
               <b>Typ:</b>
             </div>
             <div class="col-0 col-md-5">
-              <b>Serienummer:</b>
+              <b>Kort-ID:</b>
             </div>
             <div class="col-0 col-md-1"></div>
           </div>
@@ -48,7 +54,7 @@
               <b>Utgångsdatum:</b>
             </div>
             <div class="col-0 col-md-5">
-              <b>Nuvarande plats:</b>
+              <b>Nuvarande förvaringsplats:</b>
             </div>
             <div class="col-0 col-md-1"></div>
           </div>
@@ -97,7 +103,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput"
-          type="text" maxlength="128" placeholder="Plats"
+          type="text" maxlength="128" placeholder="Ny förvaringsplats"
             [formControl]="locationControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -108,7 +114,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
-          <mat-error *ngIf="locationControl.hasError('required')">Ange en plats</mat-error>
+          <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
         </mat-form-field>
       </div>
 

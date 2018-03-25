@@ -91,7 +91,7 @@ export class ModifyCardComponent implements OnInit {
 
         this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
         this.cardNumberInput = card.cardNumber;
-        this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
+        this.expirationDateInput = utilitiesService.getDateString(card.expirationDate);
         this.expirationDateDatepickerInput = this.expirationDateInput;
         this.locationInput = card.location;
         this.commentInput = card.comment;
@@ -207,7 +207,7 @@ export class ModifyCardComponent implements OnInit {
    */
   setExpirationDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.expirationDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.expirationDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 

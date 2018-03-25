@@ -109,9 +109,9 @@ export class ModifyDocumentComponent implements OnInit {
         this.docTypeInput = this.getDocTypeName(document.documentType);
         this.docNumberInput = document.documentNumber;
 
-        this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
+        this.registrationDateInput = utilitiesService.getDateString(document.registrationDate);
         this.registrationDateDatepickerInput = this.registrationDateInput;
-        this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
+        this.docDateInput = utilitiesService.getDateString(document.documentDate);
         this.docDateDatepickerInput = this.docDateInput;
 
         this.nameInput = document.name;
@@ -238,7 +238,7 @@ export class ModifyDocumentComponent implements OnInit {
    */
   setRegistrationDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.registrationDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.registrationDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 
@@ -257,7 +257,7 @@ export class ModifyDocumentComponent implements OnInit {
    */
   setDocDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.docDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.docDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 

@@ -25,10 +25,6 @@ input {
   right: 40px !important;
 }
 
-.hidden {
-  display: none !important;
-}
-
 .wide-center {
   width: 100% !important;
   text-align: center !important;
@@ -40,13 +36,7 @@ input {
 }
 
 .size-medium, .mat-datepicker-toggle .mat-icon-button {
-  font-size: 27px !important;
-  height: 27px !important;
-  width: 27px !important;
-}
-
-.size-big {
-  font-size: 32px !important;
-  height: 32px !important;
-  width: 32px !important;
+  font-size: 22px !important;
+  height: 22px !important;
+  width: 22px !important;
 }

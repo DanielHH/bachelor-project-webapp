@@ -31,7 +31,7 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput" type="text" maxlength="128" placeholder="Serienummer"
+          <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput" type="text" maxlength="128" placeholder="Dokument-ID"
             [formControl]="docNumberControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -41,7 +41,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
-          <mat-error *ngIf="docNumberControl.hasError('required')">Ange ett serienummer</mat-error>
+          <mat-error *ngIf="docNumberControl.hasError('required')">Ange ett dokument-ID</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -51,7 +51,7 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="registrationDateInput" name="registrationDateInput" type="text" [(ngModel)]="registrationDateInput" placeholder="Registreringsdatum"
+          <input matInput id="registrationDateInput" name="registrationDateInput" type="text" [(ngModel)]="registrationDateInput" placeholder="Inkommet datum"
             [style.color]="isValidRegistrationDate() ? 'black' : 'gray'" maxlength="10" (input)="setRegistrationDateToDatePicker();"
             [formControl]="registrationDateControl" appDate required>
           <!--Check and clear-->
@@ -79,7 +79,7 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="docDateInput" name="docDateInput" type="text" [(ngModel)]="docDateInput" placeholder="Handlingsdatum"
+          <input matInput id="docDateInput" name="docDateInput" type="text" [(ngModel)]="docDateInput" placeholder="Daterat datum"
             [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10" (input)="setDocDateToDatePicker();" [formControl]="docDateControl"
             appDate required>
           <!--Check and clear-->
@@ -112,7 +112,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput" type="text" [(formControl)]="nameControl" maxlength="128"
-            placeholder="Namn" [style.color]="isValidDocName() ? 'black' : 'gray'" required>
+            placeholder="Benämning" [style.color]="isValidDocName() ? 'black' : 'gray'" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocName()">done</mat-icon>
@@ -121,7 +121,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
-          <mat-error *ngIf="nameControl.hasError('required')">Ange ett namn</mat-error>
+          <mat-error *ngIf="nameControl.hasError('required')">Ange en benämning</mat-error>
         </mat-form-field>
       </div>
       <div class="col-12 col-md-6">
@@ -147,7 +147,7 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Plats"
+          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Förvaringsplats"
             [formControl]="locationControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -157,7 +157,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
-          <mat-error *ngIf="locationControl.hasError('required')">Ange en plats</mat-error>
+          <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
         </mat-form-field>
       </div>
       <div class="col-12 col-md-6">

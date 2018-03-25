@@ -39,7 +39,8 @@ import {
   MatToolbarModule,
   MatRadioModule,
   MatFormFieldControl,
-  MatCardModule
+  MatCardModule,
+  MatDividerModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -128,7 +129,8 @@ import { ReturnService } from './services/return.service';
     MatIconModule,
     MatToolbarModule,
     MatRadioModule,
-    MatCardModule
+    MatCardModule,
+    MatDividerModule
   ],
   providers: [
     HttpService,

@@ -8,7 +8,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="locationInput" name="locationInput"
-            [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Plats"
+            [(ngModel)]="locationInput" type="text" maxlength="128" placeholder="Förvaringsplats"
             [formControl]="locationControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -19,7 +19,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
-          <mat-error *ngIf="locationControl.hasError('required')">Ange en plats</mat-error>
+          <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
         </mat-form-field>
       </div>
     </div>

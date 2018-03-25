@@ -91,6 +91,7 @@ export class ReturnDocumentComponent implements OnInit {
       this.documentItem.userID = null;
       this.documentItem.location = this.locationInput;
       this.documentItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
+      this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
 
       const activeReceipt = this.getReceipt(this.documentItem.activeReceipt);
       activeReceipt.endDate = this.utilitiesService.getLocalDate();

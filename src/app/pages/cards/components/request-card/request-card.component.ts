@@ -38,8 +38,8 @@ export class RequestCardComponent implements OnInit {
   }
 
   users: User[] = [];
-  receipts: Receipt[] = [];
   cards: Card[] = [];
+  receipts: Receipt[] = [];
 
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
@@ -62,7 +62,6 @@ export class RequestCardComponent implements OnInit {
     public utilitiesService: UtilitiesService,
     private requestService: RequestService
   ) {
-
     // User list subscriber
     this.dataService.userList.subscribe(users => {
       this.users = users;
@@ -82,12 +81,12 @@ export class RequestCardComponent implements OnInit {
       this.cards = cards;
     });
 
-    // Request card list subscriber
+    // Request card subscriber
     this.requestService.card.subscribe((card) => {
       if (card && card.id) {
         this.cardItem = card;
 
-        this.startDateInput = moment(utilitiesService.getLocalDate()).format('YYYY-MM-DD');
+        this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
         this.startDateDatepickerInput = this.startDateInput;
         this.commentInput = this.cardItem.comment;
 
@@ -138,7 +137,7 @@ export class RequestCardComponent implements OnInit {
    */
   setStartDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.startDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.startDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 
@@ -197,7 +196,7 @@ export class RequestCardComponent implements OnInit {
       receipt.userID = this.cardItem.userID;
       receipt.startDate = new Date(this.startDateInput);
 
-      // Submit changes to server
+      // Submit changes to database
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
           this.cardItem.activeReceipt = receiptRes.data.id;
@@ -206,7 +205,6 @@ export class RequestCardComponent implements OnInit {
             if (cardRes.message === 'success') {
               // Update receipt list
               this.receipts.unshift(receiptRes.data);
-              // Trigger view refresh
               this.receipts = this.receipts.slice();
               this.dataService.receiptList.next(this.receipts);
 
