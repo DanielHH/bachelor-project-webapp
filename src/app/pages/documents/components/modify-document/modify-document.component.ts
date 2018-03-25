@@ -106,7 +106,7 @@ export class ModifyDocumentComponent implements OnInit {
       if (document && document.id) {
         this.documentItem = document;
 
-        this.docTypeInput = this.getDocTypeName(document.documentType);
+        this.docTypeInput = this.utilitiesService.getDocumentTypeString(document.documentType);
         this.docNumberInput = document.documentNumber;
 
         this.registrationDateInput = utilitiesService.getDateString(document.registrationDate);
@@ -213,14 +213,6 @@ export class ModifyDocumentComponent implements OnInit {
    */
   getDocTypeID(docTypeName: String) {
     return _.find(this.docTypes, (docType) => docType.name === docTypeName).id;
-  }
-
-  /**
-   * Returns the name associated with docTypeID
-   * @param docTypeID ID of doc type
-   */
-  getDocTypeName(docTypeID: number) {
-    return _.find(this.docTypes, (docType) => docType.id === docTypeID).name;
   }
 
   /**

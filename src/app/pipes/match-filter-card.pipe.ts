@@ -47,10 +47,9 @@ export class MatchFilterCardPipe implements PipeTransform {
    */
   matchFilt(card: Card, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
 
-    const cardTypeString = this.utilitiesService.getCardTypeString(card.cardType);
-    const userString = this.utilitiesService.getUserString(card.userID);
-
     if (
+      (!card) ||
+      (!card.id) ||
       (card.status == 1 && !showIn) ||
       (card.status == 2 && !showOut) ||
       (card.status == 3 && !showArchived) ||
@@ -60,20 +59,19 @@ export class MatchFilterCardPipe implements PipeTransform {
     }
 
     filterInput = lowerCase(filterInput);
+
+    const cardTypeString = this.utilitiesService.getCardTypeString(card.cardType);
+    const userString = this.utilitiesService.getUserString(card.userID);
     const displayDate = this.utilitiesService.getDateString(card.expirationDate);
 
-    if (
-      (_.includes('kort', filterInput) === false) &&
-      (_.includes(lowerCase(card.cardNumber), filterInput) === false) &&
-      (_.includes(lowerCase(cardTypeString), filterInput) === false) &&
-      (_.includes(lowerCase(userString), filterInput) === false) &&
-      (_.includes(lowerCase(card.comment), filterInput) === false) &&
-      (_.includes(lowerCase(card.location), filterInput) === false) &&
-      (_.includes(lowerCase(displayDate), filterInput) === false)
-    ) {
-      return false;
-    }
-    return true;
+    return (
+      (_.includes(lowerCase(card.cardNumber), filterInput) === true) ||
+      (_.includes(lowerCase(cardTypeString), filterInput) === true) ||
+      (_.includes(lowerCase(userString), filterInput) === true) ||
+      (_.includes(lowerCase(card.comment), filterInput) === true) ||
+      (_.includes(lowerCase(card.location), filterInput) === true) ||
+      (_.includes(lowerCase(displayDate), filterInput) === true)
+    );
   }
 
 }

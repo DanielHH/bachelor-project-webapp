@@ -61,6 +61,8 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     showInactive: boolean
   ) {
     if (
+      (!receipt) ||
+      (!receipt.id) ||
       (receipt.endDate == null && !showActive) ||
       (receipt.endDate != null && !showInactive) ||
       (receipt.itemTypeID == 1 && !showCard) ||
@@ -73,20 +75,17 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     const startDate = this.utilitiesService.getDateString(receipt.startDate);
     const endDate = this.utilitiesService.getDateString(receipt.endDate);
 
-    // get actual data to be displayed
     [this.itemIDToDisplay, this.itemKindToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
       this.utilitiesService.getReceiptDisplay(receipt);
 
-    if (_.includes(lowerCase(this.itemKindToDisplay), filterInput) === false
-    && (_.includes(lowerCase(this.itemTypeToDisplay), filterInput) === false)
-    && (_.includes(lowerCase(this.itemIDToDisplay), filterInput) === false)
-    && (_.includes(lowerCase(this.itemUserNameToDisplay), filterInput) === false)
-    && (_.includes(lowerCase(startDate), filterInput) === false)
-    && (_.includes(lowerCase(endDate), filterInput) === false) ) {
-      return false;
-    }
-
-    return true;
+    return (
+      (_.includes(lowerCase(this.itemKindToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(this.itemTypeToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(this.itemIDToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(this.itemUserNameToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(startDate), filterInput) === true) ||
+      (_.includes(lowerCase(endDate), filterInput) === true)
+    );
   }
 
 }

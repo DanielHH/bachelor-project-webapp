@@ -65,7 +65,7 @@ export class UtilitiesService {
    * Returns a string representation of date
    */
   getDateString(date: Date): string {
-    return moment(date).format('YYYY-MM-DD');
+    return date ? moment(date).format('YYYY-MM-DD') : '';
   }
 
   /**
@@ -73,15 +73,23 @@ export class UtilitiesService {
    * @param cardTypeId Id of card type
    */
   getCardTypeString(cardTypeId: number) {
-    return _.find(this.cardTypeList, cardType => cardType.id === cardTypeId).name;
+    if (!this.cardTypeList.length || !cardTypeId) {
+      return '';
+    } else {
+      return _.find(this.cardTypeList, cardType => cardType.id == Number(cardTypeId)).name;
+    }
   }
 
   /**
-   * Returns the string associated with cardTypeId
-   * @param documentTypeId Id of card type
+   * Returns the string associated with documentTypeId
+   * @param documentTypeId Id of document type
    */
   getDocumentTypeString(documentTypeId: number) {
-    return _.find(this.documentTypeList, documentType => documentType.id === documentTypeId).name;
+    if (!this.documentTypeList.length || !documentTypeId) {
+      return '';
+    } else {
+      return _.find(this.documentTypeList, documentType => Number(documentType.id) == Number(documentTypeId)).name;
+    }
   }
 
   /**
@@ -89,7 +97,11 @@ export class UtilitiesService {
    * @param userId Id of user
    */
   getUserString(userId: number) {
-    return _.find(this.userList, user => user.id === userId).name;
+    if (!this.userList.length || !userId) {
+      return '';
+    } else {
+      return userId ? _.find(this.userList, user => user.id === userId).name : '';
+    }
   }
 
   /**

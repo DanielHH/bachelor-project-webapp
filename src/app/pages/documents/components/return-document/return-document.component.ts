@@ -37,11 +37,12 @@ export class ReturnDocumentComponent implements OnInit {
   locationControl = new FormControl('', Validators.required);
 
   locationInput = '';
+  commentInput = null;
 
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private returnService: ReturnService
   ) {
     this.dataService.receiptList.subscribe(receipts => {
@@ -55,9 +56,7 @@ export class ReturnDocumentComponent implements OnInit {
     this.returnService.document.subscribe((document) => {
       if (document && document.id) {
         this.documentItem = document;
-
-        // this.startDateInput = moment(utilitiesService.getLocalDate).format('YYYY-MM-DD');
-        // this.startDateDatepickerInput = this.docDateInput;
+        this.commentInput = document.comment;
 
         this._showModal = true;
 
@@ -90,6 +89,7 @@ export class ReturnDocumentComponent implements OnInit {
     if (this.isValidLocation()) {
       this.documentItem.userID = null;
       this.documentItem.location = this.locationInput;
+      this.documentItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.documentItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
       this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
 
@@ -122,6 +122,7 @@ export class ReturnDocumentComponent implements OnInit {
    */
   closeForm() {
     this.locationControl.reset();
+    this.commentInput = null;
     this.returnForm.resetForm(); // Clears form errors
 
     this.documentItem = Object.assign({}, new Document());

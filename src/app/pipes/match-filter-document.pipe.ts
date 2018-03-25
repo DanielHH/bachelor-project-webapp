@@ -53,12 +53,10 @@ export class MatchFilterDocumentPipe implements PipeTransform {
     showArchived: boolean,
     showGone: boolean
   ) {
-    filterInput = lowerCase(filterInput);
-
-    const documentTypeString = this.utilitiesService.getDocumentTypeString(document.documentType);
-    const userString = this.utilitiesService.getUserString(document.userID);
 
     if (
+      (!document) ||
+      (!document.id) ||
       (document.status == 1 && !showIn) ||
       (document.status == 2 && !showOut) ||
       (document.status == 3 && !showArchived) ||
@@ -67,18 +65,18 @@ export class MatchFilterDocumentPipe implements PipeTransform {
       return false;
     }
 
-    if (
-      _.includes('handling', filterInput) === false &&
-      (_.includes(lowerCase(documentTypeString), filterInput) === false) &&
-      (_.includes(lowerCase(document.documentNumber), filterInput) === false) &&
-      (_.includes(lowerCase(document.name), filterInput) === false) &&
-      (_.includes(lowerCase(userString), filterInput) === false) &&
-      (_.includes(lowerCase(document.location), filterInput) === false) &&
-      (_.includes(lowerCase(document.comment), filterInput) === false)
-    ) {
-      return false;
-    }
-    return true;
+    filterInput = lowerCase(filterInput);
+    const documentTypeString = this.utilitiesService.getDocumentTypeString(document.documentType);
+    const userString = this.utilitiesService.getUserString(document.userID);
+
+    return (
+      (_.includes(lowerCase(documentTypeString), filterInput) === true) ||
+      (_.includes(lowerCase(document.documentNumber), filterInput) === true) ||
+      (_.includes(lowerCase(document.name), filterInput) === true) ||
+      (_.includes(lowerCase(userString), filterInput) === true) ||
+      (_.includes(lowerCase(document.location), filterInput) === true) ||
+      (_.includes(lowerCase(document.comment), filterInput) === true)
+    );
   }
 
 }

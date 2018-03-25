@@ -1,8 +1,8 @@
 <form #requestForm="ngForm" (ngSubmit)="requestDocument()">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut kort'"
+  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut handling'"
   [closeName]="'Avbryt'" [submitName]="'Kvittera ut'">
 
-    <!-- Row card info -->
+    <!-- Row document info -->
     <div class="row">
       <div class="col-0 col-md-1"></div>
       <div class="col-0 col-md-10 wide-center">
@@ -52,7 +52,7 @@
             <div class="col"></div>
           </div>
           <!-- Row 5 Space -->
-          <div class="row my-2"></div>
+          <div class="row py-2"></div>
           <!-- Row 6 -->
           <div class="row my-1">
             <div class="col"></div>
@@ -81,7 +81,9 @@
             </div>
             <div class="col"></div>
           </div>
-          <!-- Row 8 -->
+          <!-- Row 8 Space -->
+          <div class="row py-2"></div>
+          <!-- Row 9 -->
           <div class="row my-1">
             <div class="col"></div>
             <div class="col-12 col-md-4">
@@ -89,7 +91,7 @@
             </div>
             <div class="col"></div>
           </div>
-          <!-- Row 9 -->
+          <!-- Row 10 -->
           <div class="row my-1">
             <div class="col"></div>
             <div class="col-0 col-md-9">
