@@ -73,11 +73,11 @@
           </div>
           <div class="col-1 px-2" (click)="sortTableList('documentNumber')">
             <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'"
-            [class.both-arrow]="orderDocumentNumber == ''">Serienummer </span>
+            [class.both-arrow]="orderDocumentNumber == ''">Dokument-ID </span>
           </div>
           <div class="col-2" (click)="sortTableList('name')">
             <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'"
-            [class.both-arrow]="orderName == ''">Namn </span>
+            [class.both-arrow]="orderName == ''">Benämning </span>
           </div>
           <div class="col-2" (click)="sortTableList('userID')">
             <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
@@ -85,7 +85,7 @@
           </div>
           <div class="col-2" (click)="sortTableList('location')">
             <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
-            [class.both-arrow]="orderLocation == ''">Plats </span>
+            [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
           </div>
           <div class="col-2" (click)="sortTableList('comment')">
             <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"

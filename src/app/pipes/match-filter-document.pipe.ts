@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { DataService } from '../services/data.service';
 import { User } from '../datamodels/user';
 import { DocumentType } from '../datamodels/documentType';
-import { lowerCase } from '../services/utilities.service';
+import { lowerCase, UtilitiesService } from '../services/utilities.service';
 
 @Pipe({
   name: 'matchFilterDocument'
@@ -15,10 +15,14 @@ export class MatchFilterDocumentPipe implements PipeTransform {
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
-  constructor(public dataService: DataService) {
+  constructor(
+    public dataService: DataService,
+    private utilitiesService: UtilitiesService
+  ) {
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
+
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
@@ -41,53 +45,40 @@ export class MatchFilterDocumentPipe implements PipeTransform {
    * @param showGone true if checkbox showGone checked
    * @returns True if match found
    */
-  matchFilt(document: Document, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
+  matchFilt(
+    document: Document,
+    filterInput: string,
+    showIn: boolean,
+    showOut: boolean,
+    showArchived: boolean,
+    showGone: boolean
+  ) {
     filterInput = lowerCase(filterInput);
 
-    if( (document.status == 1 && !showIn) || (document.status == 2 && !showOut) ||
-    (document.status == 3 && !showArchived) || (document.status == 4 && !showGone) ) {
+    const documentTypeString = this.utilitiesService.getDocumentTypeString(document.documentType);
+    const userString = this.utilitiesService.getUserString(document.userID);
+
+    if (
+      (document.status == 1 && !showIn) ||
+      (document.status == 2 && !showOut) ||
+      (document.status == 3 && !showArchived) ||
+      (document.status == 4 && !showGone)
+    ) {
       return false;
     }
 
-    if (_.includes(lowerCase(this.getDocumentType(document)), filterInput) === false
-    && (_.includes(lowerCase(document.documentNumber), filterInput) === false)
-    && (_.includes(lowerCase(document.name), filterInput) === false)
-    && (_.includes(lowerCase(this.getUserName(document)), filterInput) === false)
-    && (_.includes(lowerCase(document.location), filterInput) === false)
-    && (_.includes(lowerCase(document.comment), filterInput) === false) ) {
+    if (
+      _.includes('handling', filterInput) === false &&
+      (_.includes(lowerCase(documentTypeString), filterInput) === false) &&
+      (_.includes(lowerCase(document.documentNumber), filterInput) === false) &&
+      (_.includes(lowerCase(document.name), filterInput) === false) &&
+      (_.includes(lowerCase(userString), filterInput) === false) &&
+      (_.includes(lowerCase(document.location), filterInput) === false) &&
+      (_.includes(lowerCase(document.comment), filterInput) === false)
+    ) {
       return false;
     }
     return true;
-  }
-
-   /**
-   * Gets the document type for a document
-   * @param document
-   * @returns The corresponding type of document
-   */
-  getDocumentType(document: Document) {
-    if (document.documentType > 0) {
-      const documentTypeToDisplay = _.find( this.documentTypeList, documentType => documentType.id === document.documentType);
-      if (documentTypeToDisplay) {
-        return documentTypeToDisplay.name;
-      }
-    }
-    return '';
-  }
-
-  /**
-   * Gets the document holder for a document
-   * @param document
-   * @returns The Document holder of document
-   */
-  getUserName(document: Document) {
-    if (document.userID > 0) {
-      const userToDisplay = _.find( this.userList, user => user.id === document.userID);
-      if (userToDisplay) {
-        return userToDisplay.name;
-      }
-    }
-    return '';
   }
 
 }

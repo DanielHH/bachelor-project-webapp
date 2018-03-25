@@ -1,56 +1,68 @@
 <div class="card">
   <div class="card-body">
-    <!-- Input field for filter -->
+    <!-- Row text filter input and add new button -->
     <div class="row">
+
+      <!-- Input field for text filter -->
       <div class="col-4">
         <mat-form-field>
-          <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
-          maxlength="128" placeholder="Filter by">
-          <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+            <!--Input-->
+            <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
+            maxlength="128" placeholder="Filtrera på">
+            <!--Clear-->
+            <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
+            (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
         </mat-form-field>
       </div>
-      <div class="col-4"></div>
 
-      <div class="col-2">
+      <div class="col-8"></div> <!-- Space -->
+
+    </div>
+
+    <!-- Row filter per type and status -->
+    <div class="row pb-4 pl-2">
+
+      <div class="col-1 px-1">
         <div class="form-check">
-
-            <div class="form-check">
-              <input type="checkbox" class="filled-in form-check-input" id="showCardID" [(ngModel)]=showCard>
-              <label class="form-check-label" for="showCardID">Kort</label>
-            </div>
-  
-          <div class="form-check">
-              <input type="checkbox" class="filled-in form-check-input" id="showDocumentID" [(ngModel)]=showDocument>
-              <label class="form-check-label" for="showDocumentID">Handlingar</label>
-          </div>
+          <input type="checkbox" class="filled-in form-check-input px-1" id="showCardID" [(ngModel)]=showCard>
+          <label class="form-check-label" for="showCardID">Kort</label>
         </div>
-      </div> 
-      
-      <div class="col-2">
-          <div class="form-check">
-
-              <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showActiveID" [(ngModel)]=showActive>
-                <label class="form-check-label" for="showActiveID">Aktiva</label>
-              </div>
-    
-            <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showInactiveID" [(ngModel)]=showInactive>
-                <label class="form-check-label" for="showInactiveID">Inaktiva</label>
-            </div>
-          </div>
-        </div> 
-
       </div>
 
+      <div class="col-1 px-1">
+        <div class="form-check">
+          <input type="checkbox" class="filled-in form-check-input px-1" id="showDocumentID" [(ngModel)]=showDocument>
+          <label class="form-check-label" for="showDocumentID">Handlingar</label>
+        </div>
+      </div>
+
+      <div class="col-1 px-1">
+        <div class="form-check">
+          <input type="checkbox" class="filled-in form-check-input px-1" id="showActiveID" [(ngModel)]=showActive>
+          <label class="form-check-label" for="showActiveID">Aktiva</label>
+        </div>
+      </div>
+
+      <div class="col-1 px-1">
+        <div class="form-check">
+          <input type="checkbox" class="filled-in form-check-input px-1" id="showInactiveID" [(ngModel)]=showInactive>
+          <label class="form-check-label" for="showInactiveID">Inaktiva</label>
+        </div>
+      </div>
+
+      <div class="col-8"></div>
+
+  </div>
+
     <!-- Header row -->
-    <div class="row">
+    <div class="row table-header">
       <div class="col-1" (click)="sortTableList('endDate')">
         <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
         [class.both-arrow]="orderEndDate == ''">Status </span>
+      </div>
+      <div class="col" (click)="sortTableList('itemKindID')">
+        <span class="hover" [class.up-arrow]="orderItemKindID == 'asc'" [class.down-arrow]="orderItemKindID == 'desc'"
+        [class.both-arrow]="orderItemKindID == ''">Kort/handling </span>
       </div>
       <div class="col" (click)="sortTableList('itemTypeID')">
         <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'"
@@ -58,7 +70,7 @@
       </div>
       <div class="col" (click)="sortTableList('IDNumber')">
         <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'"
-        [class.both-arrow]="orderIDNumber == ''">Id-nummer </span>
+        [class.both-arrow]="orderIDNumber == ''">ID </span>
       </div>
       <div class="col" (click)="sortTableList('userID')">
         <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"

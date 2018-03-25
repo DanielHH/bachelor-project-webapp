@@ -29,10 +29,6 @@ export class UtilitiesService {
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
-  itemTypeToDisplay: string;
-  itemIdToDisplay: string;
-  itemUserNameToDisplay: string;
-
   constructor(private dataService: DataService) {
 
     this.dataService.documentTypeList.subscribe(documentTypeList => {
@@ -54,41 +50,6 @@ export class UtilitiesService {
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
-  }
-
-/**
- * Helper function to get the actual unique serial number, type and user of a receipt
- * to be displayed
- *
- * @returns an string array containing [serial number, item type, user name]
- *
- * @param receipt receipt that the displayed data should be extracted from
- */
-  getReceiptDisplay(receipt: Receipt) {
-    if (receipt.itemTypeID == 1) { // itemTypeID 1: card
-      const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
-
-      this.itemIdToDisplay = cardItem.cardNumber;
-
-      const itemType = _.find(this.cardTypeList, cardType => cardType.id === cardItem.cardType);
-      this.itemTypeToDisplay = itemType.name;
-
-    } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
-      const documentItem = _.find(this.documentList, document => document.id === receipt.documentID);
-
-      this.itemIdToDisplay = documentItem.documentNumber;
-
-      const itemType = _.find(this.documentTypeList, documentType => documentType.id === documentItem.documentType);
-      this.itemTypeToDisplay = itemType.name;
-
-    }
-
-    const itemUser = _.find(this.userList, user => user.id === receipt.userID);
-    if (itemUser) {
-      this.itemUserNameToDisplay = itemUser.name;
-    }
-
-    return [this.itemIdToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay];
   }
 
   /**
@@ -129,6 +90,38 @@ export class UtilitiesService {
    */
   getUserString(userId: number) {
     return _.find(this.userList, user => user.id === userId).name;
+  }
+
+  /**
+   * @returns a string array containing [id, kind, item type, user name] of receipt
+   *
+   * @param receipt receipt that the displayed data should be extracted from
+   */
+  getReceiptDisplay(receipt: Receipt) {
+    let itemKindToDisplay = '';
+    let itemTypeToDisplay = '';
+    let itemIdToDisplay = '';
+    let itemUserNameToDisplay = '';
+
+    if (receipt.itemTypeID == 1) { // itemTypeID 1: card
+      const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
+      itemKindToDisplay = 'Kort';
+      itemIdToDisplay = cardItem.cardNumber;
+      itemTypeToDisplay = this.getCardTypeString(cardItem.cardType);
+
+    } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
+      const documentItem = _.find(this.documentList, document => document.id === receipt.documentID);
+      itemKindToDisplay = 'Handling';
+      itemIdToDisplay = documentItem.documentNumber;
+      itemTypeToDisplay = this.getCardTypeString(documentItem.documentType);
+    }
+
+    const itemUser = _.find(this.userList, user => user.id === receipt.userID);
+    if (itemUser) {
+      itemUserNameToDisplay = itemUser.name;
+    }
+
+    return [itemIdToDisplay, itemKindToDisplay, itemTypeToDisplay, itemUserNameToDisplay];
   }
 
 }
