@@ -11,15 +11,17 @@
         </button>
     </div>
 
-    <div class="col">{{displayCardType()}}</div>
+    <div class="col">{{displayItemSubtype()}}</div>
     <div class="col">
-        <span class="detail-link" (click)="route()">{{baseItem?.getNumber()}}</span>
+        <span class="detail-link" >{{baseItem?.getNumber()}}</span>
     </div>
     <div class="col">{{displayUserName()}}</div>
     <div class="col">{{baseItem?.getLocation()}}</div>
     <div class="col">{{baseItem?.getComment()}}</div>
     <div class="col">{{displayLastVerified()}}</div>
+
     <div class="col-1">
-        <app-item-menu [item]="baseItem.item" (editItem)="edit()"></app-item-menu>
+        <app-item-menu [item]="baseItem.item"></app-item-menu>
     </div>
+
 </div>

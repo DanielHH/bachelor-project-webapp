@@ -1,9 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
+import { Document } from '../../../../datamodels/document';
 import { BaseItem } from '../../../../datamodels/baseItem';
 import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
 import { CardType } from '../../../../datamodels/cardType';
+import { DocumentType } from '../../../../datamodels/documentType';
 import { User } from '../../../../datamodels/user';
 import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
@@ -21,6 +23,7 @@ export class InventoryItemComponent implements OnInit {
   @Output() editItem = new EventEmitter<any>();
 
   cardTypeList: CardType[] = [];
+  documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
   showRequestModal = false;
@@ -35,6 +38,9 @@ export class InventoryItemComponent implements OnInit {
   ) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
+    });
+    this.dataService.documentTypeList.subscribe(documentTypeList => {
+      this.documentTypeList = documentTypeList;
     });
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
@@ -57,19 +63,34 @@ export class InventoryItemComponent implements OnInit {
   }*/
 
   /**
-   * Returns the name of the card type corresponding to the cardType
+   * Returns the name of the card or document type of the baseItem.
    */
-  displayCardType() {
-    if (this.baseItem.item instanceof Card) {
-      if (this.baseItem.getType() > 0) {
+  displayItemSubtype() {
+    if (this.baseItem.isCard()) {
+      if (this.baseItem.getSubType() > 0) {
         const cardTypeToDisplay = _.find(
           this.cardTypeList,
-          cardType => cardType.id === this.baseItem.getType()
+          cardType => cardType.id === this.baseItem.getSubType()
         );
         if (cardTypeToDisplay) {
           return cardTypeToDisplay.name;
         }
       }
+      console.log('disp card subtype base case');
+      return '';
+    } else if (this.baseItem.isDocument()) {
+      if (this.baseItem.getSubType() > 0) {
+        const documentTypeToDisplay = _.find(
+          this.documentTypeList,
+          documentType => documentType.id === this.baseItem.getSubType()
+        );
+        if (documentTypeToDisplay) {
+          return documentTypeToDisplay.name;
+        }
+      }
+      console.log('disp doc subtype base case');
+      return '';
+    } else {
       return '';
     }
   }
@@ -79,32 +100,34 @@ export class InventoryItemComponent implements OnInit {
    */
   displayUserName() {
     if (this.baseItem.getUserID()) {
-      return _.find(this.userList, user => user.id === this.baseItem.getUserID())
-        .name;
+      return _.find(
+        this.userList,
+        user => user.id === this.baseItem.getUserID()
+      ).name;
     }
     return '';
   }
 
-    /**
+  /**
    * Change route and send route data
-   */
+   *
   route() {
-    if (this.baseItem.item instanceof Card) {
+    if (this.baseItem.isCard()) {
       this.routeDataService.card.next(this.baseItem.item);
       this.router.navigate(['card-detail']);
     }
-    /*if (this.baseItem.item instanceof Document) {
+    /*if (this.baseItem.isDocument()) {
       this.routeDataService.document.next(this.baseItem.item);
       this.router.navigate(['document-detail']);
-    }*/
-  }
+    }*
+  }*/
 
   /**
    * Set item to be outputted for editing
-   */
+   *
   edit() {
     this.editItem.next(this.baseItem.item);
-  }
+  }*/
 
   /**
    * Send a messge to the backend updating when this item was last inventoried

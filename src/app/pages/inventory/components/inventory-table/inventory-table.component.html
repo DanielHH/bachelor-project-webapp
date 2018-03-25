@@ -42,20 +42,17 @@
         </div>
 
       </div>
-
-      <!-- Add new card button-->
-      <div class="col-2">
-        <button mat-raised-button (click)="openAddNewCard()" color="primary">Add New Card</button>
-      </div>
     </div>
 
     <!-- Header row -->
     <div class="row">
-      <div class="col-1" (click)="sortTableList('status')">
+
+      <div class="col-1">
         <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
         [class.both-arrow]="orderStatus == ''">Status </span>
       </div>
-      <div class="col" (click)="sortTableList('cardType')">
+
+        <div class="col" (click)="sortTableList('cardType')">
         <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'"
         [class.both-arrow]="orderCardType == ''">Type </span>
       </div>
@@ -75,18 +72,43 @@
         <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
         [class.both-arrow]="orderComment == ''">Comment </span>
       </div>
-      <div class="col">
-        <span>Inventerad</span>
+
+      <!--<div class="col-1">
+          <span class="hover">Status </span>
       </div>
+      <div class="col">
+        <span class="hover">Type </span>
+      </div>
+      <div class="col">
+        <span class="hover">Serial Number </span>
+      </div>
+      <div class="col">
+        <span class="hover">User ID </span>
+      </div>
+      <div class="col">
+        <span class="hover">Location </span>
+      </div>
+      <div class="col">
+        <span class="hover">Comment </span>
+      </div>-->
+      <div class="col">
+        <span class="hover">Inventerad</span>
+      </div>
+
       <div class="col-1"></div>
     </div>
     <hr>
 
     <!-- Add cards to the table   -->
     <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
-        <inventory-item [baseItem]="makeItem(card)" (editItem)="openEdit($event)"> </inventory-item>
+        <inventory-item [baseItem]="makeItem(card, 'card')"> </inventory-item>
+    </div>
+    <!-- Add documents to the table   -->
+    <div *ngFor="let doc of documentList | matchFilterDocument:filterInput:showIn:showOut:showArchived:showGone">
+      <inventory-item [baseItem]="makeItem(doc, 'document')"> </inventory-item>
     </div>
   </div>
 </div>
-
+<!--
 <app-modify-card [cardList]="cardList" [card]="editCard" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-card>
+-->

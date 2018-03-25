@@ -5,6 +5,8 @@ import { BaseItem } from '../../../../datamodels/baseItem';
 import * as _ from 'lodash';
 import { ModifyCardComponent } from '../../../cards/components/modify-card/modify-card.component';
 import { NgForm } from '@angular/forms';
+import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
+import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
 
 @Component({
   selector: 'inventory-table',
@@ -15,6 +17,7 @@ import { NgForm } from '@angular/forms';
 export class InventoryTableComponent implements OnInit {
 
   @Input() cardList: Card[];
+  @Input() documentList: Document[];
 
   editCard: Card = null; // Card to be edited
 
@@ -57,6 +60,8 @@ export class InventoryTableComponent implements OnInit {
    * @param property
    */
   sortTableList(property: string) {
+    // TODO: reimplement me!
+    return; /*
     let newOrder = '';
 
     switch (property) {
@@ -99,7 +104,7 @@ export class InventoryTableComponent implements OnInit {
 
     if (newOrder) {
       this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
-    }
+    }*/
 
   }
 
@@ -116,30 +121,21 @@ export class InventoryTableComponent implements OnInit {
 
   /**
    * Set card to be edited and open edit modal
-   */
+   *
   openEdit(card: any) {
     this.editCard = card;
     this.modalTitle = 'Edit card';
     this.modalType = 1;
     this.showModal = true;
-  }
+  }*/
 
-  /**
-   * Open add new card modal
-   */
-  openAddNewCard() {
-    this.editCard = Object.assign({}, new Card());
-    this.modalTitle = 'Add new card';
-    this.modalType = 0;
-    this.showModal = true;
-  }
 
 /**
  * Helper for the html file of this component.
  * Constructs a new BaseItem from the given item.
  */
-  makeItem(item: Card|Document): BaseItem {
-    return new BaseItem(item);
+  makeItem(item: Card|Document, itemType: string): BaseItem {
+    return new BaseItem(item, itemType);
   }
 
 }
