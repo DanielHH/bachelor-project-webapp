@@ -7,10 +7,21 @@ import { CardDetailComponent } from '../pages/cards/components/card-detail/card-
  * A BaseItem can be either a Card or a Document.
 */
 export class BaseItem {
+
+/**
+ * The names identifying the item type.
+ */
 private static CARD_NAME = 'card';
 private static DOCUMENT_NAME = 'document';
 
+/**
+ * The Card or Document this BaseItem represents.
+*/
 item: Card|Document;
+
+/**
+ * The type of item this BaseItem represents.
+ */
 itemType: string;
 
 constructor(item: Card|Document, itemType: string) {
@@ -21,6 +32,10 @@ constructor(item: Card|Document, itemType: string) {
   }
 }
 
+/**
+ * Return the type of Card if this BaseItem represents a Card,
+ * or the type of Document if this BaseItem represents a Document.
+*/
 getSubType(): number {
   if (this.itemType === BaseItem.CARD_NAME) {
     return (this.item as Card).cardType;
@@ -40,18 +55,30 @@ getNumber(): string {
   }
 }
 
+/**
+ * Get the ID of the user associated with this Card/Document.
+*/
 getUserID(): number {
   return this.item.userID;
 }
 
+/**
+ * Get the location this Card/Document is stored at.
+*/
 getLocation(): string {
   return this.item.location;
 }
 
+/**
+ * Get the comment associated with this Card/Document.
+*/
 getComment(): string {
   return this.item.comment;
 }
 
+/**
+ * Get the status of this Card/Document.
+*/
 getStatus(): number {
   return this.item.status;
 }
