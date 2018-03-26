@@ -1,6 +1,6 @@
 import { User } from './user';
 import { StatusType } from './statusType';
-import { DocumentType } from './DocumentType';
+import { DocumentType } from './documentType';
 
 /**
  * Document data model
