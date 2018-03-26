@@ -1,11 +1,4 @@
 <div class="row">
-  <!--<div class="col-1">
-      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="!itemActive" [class.btn-success]="itemActive"
-          mdbRippleRadius disabled>
-          <span *ngIf="itemActive">Aktiv</span>
-          <span *ngIf="!itemActive">Inaktiv</span>
-      </button>
-  </div>-->
 
   <div class="col-1 mx-1 px-2">{{this.receiptItem.endDate ? 'Inaktiv' : 'Aktiv'}}</div>
   <div class="col mx-1 px-2">{{itemKindToDisplay}}</div>
