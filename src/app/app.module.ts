@@ -60,6 +60,7 @@ import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
 import { CardhistoryComponent } from './pages/cardhistory/cardhistory.component';
 import { CardhistoryTableComponent } from './pages/cardhistory/components/cardhistory-table/cardhistory-table.component';
+import { CardhistoryItemComponent } from './pages/cardhistory/components/cardhistory-item/cardhistory-item.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { CardhistoryTableComponent } from './pages/cardhistory/components/cardhi
     MatchFilterReceiptPipe,
     ReceiptItemComponent,
     CardhistoryComponent,
-    CardhistoryTableComponent
+    CardhistoryTableComponent,
+    CardhistoryItemComponent
   ],
   imports: [
     BrowserModule,
