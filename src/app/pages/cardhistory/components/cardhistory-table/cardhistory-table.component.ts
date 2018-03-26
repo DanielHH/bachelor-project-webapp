@@ -3,6 +3,7 @@ import { Card } from '../../../../datamodels/card';
 import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
+import { RouteDataService } from '../../../../services/route-data.service';
 
 @Component({
   selector: 'app-cardhistory-table',
@@ -13,16 +14,16 @@ export class CardhistoryTableComponent implements OnInit {
 
   @Input() receiptList: Receipt[];
 
-  showModal = false;
-
   showReceipts = true;
   showChanges = false;
 
-  modalTitle = '';
+  cardDetail: Card;
 
-  modalType = 0;
-
-  constructor() { }
+  constructor(private routeDataService: RouteDataService) {
+    this.routeDataService.card.subscribe((card) => {
+      this.cardDetail = card;
+    });
+  }
 
   ngOnInit() {
     this.sortTableListStart();

@@ -4,14 +4,6 @@
     <!-- Input field for filter -->
     <div class="row">
       <div class="col-4">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
-          maxlength="128" placeholder="Filter by">
-          <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
-        </mat-form-field>
       </div>
       <div class="col-3"></div>
 
@@ -39,43 +31,23 @@
 
     <!-- Header row -->
     <div class="row">
-      <div class="col-1" (click)="sortTableList('status')">
-        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
-        [class.both-arrow]="orderStatus == ''">Status </span>
+      <div class="col-1" >
+        <span class="hover">Datum & tid </span>
       </div>
-      <div class="col" (click)="sortTableList('cardType')">
-        <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'"
-        [class.both-arrow]="orderCardType == ''">Type </span>
+      <div class="col">
+        <span class="hover">Händelse </span>
       </div>
-      <div class="col" (click)="sortTableList('cardNumber')">
-        <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'"
-        [class.both-arrow]="orderCardNumber == ''">Serial Number </span>
-      </div>
-      <div class="col" (click)="sortTableList('userID')">
-        <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
-        [class.both-arrow]="orderUserID == ''">User ID </span>
-      </div>
-      <div class="col" (click)="sortTableList('location')">
-        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
-        [class.both-arrow]="orderLocation == ''">Location </span>
-      </div>
-      <div class="col" (click)="sortTableList('comment')">
-        <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
-        [class.both-arrow]="orderComment == ''">Comment </span>
-      </div>
-      <div class="col" (click)="sortTableList('expirationDate')">
-        <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'"
-        [class.both-arrow]="orderDate == ''">Expiration date </span>
+      <div class="col">
+        <span class="hover">Utförd av </span>
       </div>
       <div class="col-1"></div>
     </div>
     <hr>
 
     <!-- Add cards to the table   -->
-    <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
-        <app-card-item [cardItem]="card" (editItem)="openEdit($event)"> </app-card-item>
+    <div *ngFor="let receipt of receiptList">
+        <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>
     </div>
   </div>
 </div>
 
-<app-modify-card [cardList]="cardList" [card]="editCard" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-card>

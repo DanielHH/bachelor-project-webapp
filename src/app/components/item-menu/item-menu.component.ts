@@ -52,7 +52,7 @@ export class ItemMenuComponent implements OnInit {
   setStatus(value: number) {
     this.item.status = value;
 
-    if(this.item.cardType) {
+    if (this.item.cardType) {
       this.httpService.httpPut<Card>('updateCard/', this.item).then(res => {
         if (res.message === 'success') {}
      });
