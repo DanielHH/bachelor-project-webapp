@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Card } from '../../datamodels/card';
+import { Receipt } from '../../datamodels/receipt';
 import { MatDialog } from '@angular/material';
 
 import { DataService } from '../../services/data.service';
@@ -15,11 +16,11 @@ import { NgForm } from '@angular/forms';
 })
 export class CardhistoryComponent implements OnInit {
 
-  cardList: Card[] = [];
+  receiptList: Receipt[] = [];
 
   constructor(public dataService: DataService) {
-    this.dataService.cardList.subscribe((cardList) => {
-      this.cardList = cardList;
+    this.dataService.receiptList.subscribe((receiptList) => {
+      this.receiptList = receiptList;
     });
 
   }

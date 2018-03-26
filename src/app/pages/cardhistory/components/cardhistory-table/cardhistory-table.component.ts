@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
+import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
 
@@ -10,7 +11,7 @@ import { NgForm } from '@angular/forms';
 })
 export class CardhistoryTableComponent implements OnInit {
 
-  @Input() cardList: Card[];
+  @Input() receiptList: Receipt[];
 
   showModal = false;
 
@@ -31,7 +32,7 @@ export class CardhistoryTableComponent implements OnInit {
    * Sorts table after modifiedDate ascending
    */
   sortTableListStart() {
-    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
+    this.receiptList = _.orderBy(this.receiptList, ['modifiedDate'], ['desc']);
   }
 
   /**
