@@ -41,15 +41,20 @@ input {
   width: 22px !important;
 }
 
-.form-check-label, .table-header {
+.form-check-label, .table-header, .mat-checkbox {
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
+  white-space: nowrap;
 }
 
 .table-header {
   font-weight: bold;
   white-space: nowrap;
+}
+
+.mat-checkbox-inner-container {
+  transform: scale(0.75) !important;
 }
 

@@ -221,8 +221,18 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-1"></div>
+      <div class="col-0 col-md-1"></div>
 
     </div>
+
+    <div class="row py-3">
+      <div class="col-0 col-md-4"></div>
+      <div class="col-12 col-md-4 wide-center">
+        <mat-checkbox id="generatePDF" name="generatePDF" color="primary"
+        [(ngModel)]="generatePDF">Generera kvittens (PDF)</mat-checkbox>
+      </div>
+      <div class="col-0 col-md-4"></div>
+    </div>
+
   </app-modal>
 </form>

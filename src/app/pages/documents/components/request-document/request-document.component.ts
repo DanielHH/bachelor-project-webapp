@@ -49,6 +49,8 @@ export class RequestDocumentComponent implements OnInit {
   startDateDatepickerInput = '';
   commentInput = '';
 
+  generatePDF = true;
+
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
     map(val => this.filterUsers(val))
@@ -87,6 +89,7 @@ export class RequestDocumentComponent implements OnInit {
         this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
         this.startDateDatepickerInput = this.startDateInput;
         this.commentInput = this.documentItem.comment;
+        this.generatePDF = true;
 
         this._showModal = true;
 
