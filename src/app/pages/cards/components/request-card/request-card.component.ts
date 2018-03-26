@@ -251,7 +251,7 @@ export class RequestCardComponent implements OnInit {
 
   displayExpirationDate() {
     if (this.cardItem) {
-      this.utilitiesService.getDateString(this.cardItem.expirationDate);
+      return this.utilitiesService.getDateString(this.cardItem.expirationDate);
     }
   }
 }
