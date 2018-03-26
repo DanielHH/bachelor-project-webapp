@@ -101,7 +101,7 @@ export class ModifyDocumentComponent implements OnInit {
     }
   }
 
-  @Input() modalTitle = "";
+  @Input() modalTitle = '';
 
   @Input() modalType: number;
 
@@ -209,7 +209,7 @@ export class ModifyDocumentComponent implements OnInit {
       this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
         if (res.message === 'success') {
           this.documentList.unshift(res.data);
-          //Trigger view refresh
+          // Trigger view refresh
           this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
 
@@ -217,7 +217,7 @@ export class ModifyDocumentComponent implements OnInit {
 
         }
       });
-    };
+    }
   }
 
   /**
@@ -234,7 +234,7 @@ export class ModifyDocumentComponent implements OnInit {
           this.resetForm();
         }
       });
-    };
+    }
   }
 
   /**
