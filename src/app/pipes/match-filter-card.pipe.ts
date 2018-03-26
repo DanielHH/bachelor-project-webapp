@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { DataService } from '../services/data.service';
 import { User } from '../datamodels/user';
 import { CardType } from '../datamodels/cardType';
-import { lowerCase } from '../services/utilities.service';
+import { lowerCase, UtilitiesService } from '../services/utilities.service';
 
 @Pipe({
   name: 'matchFilterCard'
@@ -16,10 +16,14 @@ export class MatchFilterCardPipe implements PipeTransform {
   cardTypeList: CardType[] = [];
   userList: User[] = [];
 
-  constructor(public dataService: DataService) {
+  constructor(
+    public dataService: DataService,
+    private utilitiesService: UtilitiesService
+  ) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
+
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
@@ -43,23 +47,27 @@ export class MatchFilterCardPipe implements PipeTransform {
    */
   matchFilt(card: Card, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
 
-    if( (card.status.id == 1 && !showIn) || (card.status.id == 2 && !showOut) ||
-        (card.status.id == 3 && !showArchived) || (card.status.id == 4 && !showGone) ) {
+    if (
+      (!card) ||
+      (!card.id) ||
+      (card.status.id == 1 && !showIn) ||
+      (card.status.id == 2 && !showOut) ||
+      (card.status.id == 3 && !showArchived) ||
+      (card.status.id == 4 && !showGone)
+    ) {
       return false;
     }
 
     filterInput = lowerCase(filterInput);
-    const displayDate = moment(card.expirationDate).format('YYYY-MM-DD');
 
-    if (_.includes(lowerCase(card.cardNumber), filterInput) === false
-    && (_.includes(lowerCase(card.cardType.name), filterInput) === false)
-    && (_.includes(lowerCase(card.user.name), filterInput) === false)
-    && (_.includes(lowerCase(card.comment), filterInput) === false)
-    && (_.includes(lowerCase(card.location), filterInput) === false)
-    && (_.includes(lowerCase(displayDate), filterInput) === false) ) {
-      return false;
-    }
-    return true;
+    return (
+      (_.includes(lowerCase(card.cardNumber), filterInput) === true) ||
+      (_.includes(lowerCase(card.cardType.name), filterInput) === true) ||
+      (_.includes(lowerCase(card.user.name), filterInput) === true) ||
+      (_.includes(lowerCase(card.comment), filterInput) === true) ||
+      (_.includes(lowerCase(card.location), filterInput) === true) ||
+      (_.includes(lowerCase(this.utilitiesService.getDateString(card.expirationDate)), filterInput) === true)
+    );
   }
 
 }

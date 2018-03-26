@@ -1,6 +1,6 @@
-import { CardType } from "./cardType";
-import { User } from "./user";
-import { StatusType } from "./statusType";
+import { CardType } from './cardType';
+import { User } from './user';
+import { StatusType } from './statusType';
 
 /**
  * Card data model
@@ -34,7 +34,7 @@ export class Card {
   /**
    * Comment
    */
-  comment: string;
+  comment?: string;
 
   /**
    * Expiration date of the card

@@ -110,19 +110,10 @@ export class CardTableComponent implements OnInit {
   }
 
   /**
-   * Set card to be edited and open edit modal
-   */
-  openEdit(card: any) {
-    this.modalTitle = 'Edit card';
-    this.modalType = 1;
-    this.showModal = true;
-  }
-
-  /**
    * Open add new card modal
    */
   openAddNewCard() {
-    this.modalTitle = 'Add new card';
+    this.modalTitle = 'Lägg till nytt kort';
     this.modalType = 0;
     this.showModal = true;
   }

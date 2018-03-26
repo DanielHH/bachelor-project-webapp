@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Card } from '../../../../datamodels/card';
@@ -9,6 +9,10 @@ import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { User } from '../../../../datamodels/user';
+import { RequestService } from '../../../../services/request.service';
+import { Receipt } from '../../../../datamodels/receipt';
+import * as moment from 'moment';
+import { CardType } from '../../../../datamodels/cardType';
 
 @Component({
   selector: 'app-request-card',
@@ -16,38 +20,37 @@ import { User } from '../../../../datamodels/user';
   styleUrls: ['./request-card.component.scss']
 })
 export class RequestCardComponent implements OnInit {
-
   @ViewChild('requestForm') requestForm: NgForm;
 
   cardItem: Card = null; // Card that is requested
 
-  /**
-   * Set card that is being requested.
-   */
-  @Input('card') set card(card: Card) {
-    if (card && card.id) {
-      this.cardItem = card;
-    }
-  }
-
-  @Input() showModal = false;
-
-  @Output() showModalChange = new EventEmitter<boolean>();
+  showModal = false;
 
   get _showModal() {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.closeForm();
+    if (!value) {
+      this.closeForm();
+    }
+    this.showModal = value;
   }
 
-  users = [];
+  users: User[] = [];
+  cards: Card[] = [];
+  receipts: Receipt[] = [];
 
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
+  startDateControl = new FormControl('', Validators.required);
 
   usernameInput: any;
   locationInput = '';
+  startDateInput = '';
+  startDateDatepickerInput = '';
+  commentInput = '';
+
+  generatePDF = true;
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
@@ -59,8 +62,10 @@ export class RequestCardComponent implements OnInit {
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private requestService: RequestService
   ) {
+    // User list subscriber
     this.dataService.userList.subscribe(users => {
       this.users = users;
       this.usernameControl.updateValueAndValidity({
@@ -68,10 +73,35 @@ export class RequestCardComponent implements OnInit {
         emitEvent: true
       });
     });
+
+    // Receipt list subscriber
+    this.dataService.receiptList.subscribe(receipts => {
+      this.receipts = receipts;
+    });
+
+    // Card list subscriber
+    this.dataService.cardList.subscribe(cards => {
+      this.cards = cards;
+    });
+
+    // Request card subscriber
+    this.requestService.card.subscribe(card => {
+      if (card && card.id) {
+        this.cardItem = card;
+
+        this.startDateInput = utilitiesService.getDateString(
+          utilitiesService.getLocalDate()
+        );
+        this.startDateDatepickerInput = this.startDateInput;
+        this.commentInput = this.cardItem.comment;
+        this.generatePDF = true;
+
+        this._showModal = true;
+      }
+    });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Filters list of usernames based on username input
@@ -80,9 +110,9 @@ export class RequestCardComponent implements OnInit {
   filterUsers(str: string) {
     return this.users.filter(
       user =>
-        str && typeof str === "string" &&
+        str &&
+        typeof str === 'string' &&
         user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-
     );
   }
 
@@ -92,6 +122,28 @@ export class RequestCardComponent implements OnInit {
    */
   getUserID(username: String) {
     return _.find(this.users, user => user.username === username).id;
+  }
+
+  /**
+   * Sets the start date datePicker the date entered in the input field.
+   */
+  setStartDateToDatePicker() {
+    if (
+      !this.startDateControl.hasError('required') &&
+      !this.startDateControl.hasError('startDate')
+    ) {
+      this.startDateDatepickerInput = this.startDateInput; // Set date in Datepicker
+    }
+  }
+
+  /**
+   * Sets start date from datePicker to visible input field in YYYY-MM-DD format
+   * @param data Date selected in datePicker
+   */
+  setStartDateFromDatepicker(data: any) {
+    if (data.value != null) {
+      this.startDateInput = this.utilitiesService.getDateString(data.value);
+    }
   }
 
   /**
@@ -112,28 +164,70 @@ export class RequestCardComponent implements OnInit {
   }
 
   /**
+   * Returns true if entered start date is valid, else false.
+   */
+  isValidStartDate() {
+    return (
+      !this.startDateControl.hasError('required') &&
+      !this.startDateControl.hasError('dateFormat')
+    );
+  }
+
+  /**
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
     return (
       this.isValidUsername() &&
-      this.isValidLocation()
+      this.isValidLocation() &&
+      this.isValidStartDate()
     );
   }
 
   /**
-   * Change status of a card to requested
+   * Update requested card, create receipt and submit to database.
    */
   requestCard() {
     if (this.isValidInput()) {
+      // Set card information
       this.cardItem.user = this.usernameInput;
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
-      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-        if (res.message === 'success') {
-          this.showModal = false;
-        }
-      });
+      this.cardItem.comment =
+        this.commentInput != '' ? this.commentInput : null;
+      this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
+
+      // Create new receipt
+      const receipt = new Receipt();
+      receipt.itemTypeID = 1; // TODO: ENUM, 1 means card
+      receipt.cardID = this.cardItem.id;
+      receipt.userID = this.cardItem.user.id;
+      receipt.startDate = new Date(this.startDateInput);
+
+      // Submit changes to database
+      this.httpService
+        .httpPost<Receipt>('addNewReceipt/', receipt)
+        .then(receiptRes => {
+          if (receiptRes.message === 'success') {
+            this.cardItem.activeReceipt = receiptRes.data.id;
+
+            this.httpService
+              .httpPut<Card>('updateCard/', this.cardItem)
+              .then(cardRes => {
+                if (cardRes.message === 'success') {
+                  // Update receipt list
+                  this.receipts.unshift(receiptRes.data);
+                  this.receipts = this.receipts.slice();
+                  this.dataService.receiptList.next(this.receipts);
+
+                  // Update card list
+                  this.dataService.cardList.next(this.cards);
+
+                  this.showModal = false;
+                }
+              });
+          }
+        });
     }
   }
 
@@ -144,13 +238,20 @@ export class RequestCardComponent implements OnInit {
     this.usernameControl.reset();
     this.locationControl.reset();
     this.requestForm.resetForm();
+
     this.cardItem = Object.assign({}, new Card());
+    this.requestService.card.next(this.cardItem);
+
     this.showModal = false;
-    this.showModalChange.emit(false);
   }
 
   displayUser(user?: User) {
     return user ? user.username : '';
   }
 
+  displayExpirationDate() {
+    if (this.cardItem) {
+      this.utilitiesService.getDateString(this.cardItem.expirationDate);
+    }
+  }
 }

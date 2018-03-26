@@ -38,7 +38,9 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatRadioModule,
-  MatFormFieldControl
+  MatFormFieldControl,
+  MatCardModule,
+  MatDividerModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -63,6 +65,8 @@ import { ReturnCardComponent } from './pages/cards/components/return-card/return
 import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
 import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
 import { EditService } from './services/edit.service';
+import { RequestService } from './services/request.service';
+import { ReturnService } from './services/return.service';
 
 @NgModule({
   declarations: [
@@ -124,9 +128,19 @@ import { EditService } from './services/edit.service';
     MatAutocompleteModule,
     MatIconModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCardModule,
+    MatDividerModule
   ],
-  providers: [HttpService, DataService, RouteDataService, UtilitiesService, EditService],
+  providers: [
+    HttpService,
+    DataService,
+    RouteDataService,
+    UtilitiesService,
+    EditService,
+    RequestService,
+    ReturnService
+  ],
   entryComponents: [],
   bootstrap: [AppComponent]
 })

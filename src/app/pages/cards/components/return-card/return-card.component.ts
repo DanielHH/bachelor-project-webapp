@@ -1,8 +1,12 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
+import { ReturnService } from '../../../../services/return.service';
+import { DataService } from '../../../../services/data.service';
+import { Receipt } from '../../../../datamodels/receipt';
+import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
@@ -14,35 +18,67 @@ export class ReturnCardComponent implements OnInit {
 
   @ViewChild('returnForm') returnForm: NgForm;
 
-  @Input() showModal = false;
-
-  @Output() showModalChange = new EventEmitter<boolean>();
+  showModal = false;
 
   get _showModal() {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.closeForm();
+    if (!value) {
+      this.closeForm();
+    }
+
+    this.showModal = value;
   }
+
+  cards: Card[] = [];
+  receipts: Receipt[] = [];
 
   cardItem: Card = null;
-
-  /**
-   * Set card that is being returned.
-   */
-  @Input('card') set card(card: Card) {
-    if (card && card.id) {
-      this.cardItem = card;
-    }
-  }
 
   locationControl = new FormControl('', Validators.required);
 
   locationInput = '';
+  commentInput = '';
 
-  constructor(private httpService: HttpService, private utilitiesService: UtilitiesService) {}
+  constructor(
+    private httpService: HttpService,
+    private dataService: DataService,
+    public utilitiesService: UtilitiesService,
+    private returnService: ReturnService
+  ) {
+    // Receipt list subscriber
+    this.dataService.receiptList.subscribe(receipts => {
+      this.receipts = receipts;
+    });
+
+    // Card list subscriber
+    this.dataService.cardList.subscribe(cards => {
+      this.cards = cards;
+    });
+
+    // Return card subscriber
+    this.returnService.card.subscribe((card) => {
+      if (card && card.id) {
+        this.cardItem = card;
+
+        this.commentInput = this.cardItem.comment;
+
+        this._showModal = true;
+
+      }
+    });
+  }
 
   ngOnInit() {
+  }
+
+  /**
+   * Returns receipts from id
+   * @param id Id of receipt
+   */
+  getReceipt(id: number) {
+    return _.find(this.receipts, (receipt) => receipt.id == id);
   }
 
   /**
@@ -53,16 +89,39 @@ export class ReturnCardComponent implements OnInit {
   }
 
   /**
-   * Change status of a card to returned
+   * Change status of a card to returned and update receipt
    */
   returnCard() {
     if (this.isValidLocation()) {
+      // Set card information
       this.cardItem.user = new User();
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(1); // TODO: ENUM FOR STATUS, 1 = Returned
-      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-        if (res.message === 'success') {
-          this.showModal = false;
+      this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
+      this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
+
+      // Update receipt
+      const activeReceipt = this.getReceipt(this.cardItem.activeReceipt);
+      activeReceipt.endDate = this.utilitiesService.getLocalDate();
+
+      // Submit changes to server
+      this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
+        console.log(receiptRes);
+        if (receiptRes.message === 'success') {
+          this.cardItem.activeReceipt = null;
+
+          this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(cardRes => {
+            if (cardRes.message === 'success') {
+              // Update receipt list
+              this.receipts = this.receipts.slice();
+              this.dataService.receiptList.next(this.receipts);
+
+              // Update card list
+              this.dataService.cardList.next(this.cards);
+
+              this.showModal = false;
+            }
+          });
         }
       });
     }
@@ -73,10 +132,19 @@ export class ReturnCardComponent implements OnInit {
    */
   closeForm() {
     this.locationControl.reset();
+    this.commentInput = null;
     this.returnForm.resetForm();
+
     this.cardItem = Object.assign({}, new Card());
+    this.returnService.card.next(this.cardItem);
+
     this.showModal = false;
-    this.showModalChange.emit(false);
+  }
+
+  displayExpirationDate() {
+    if (this.cardItem) {
+      this.utilitiesService.getDateString(this.cardItem.expirationDate);
+    }
   }
 
 }

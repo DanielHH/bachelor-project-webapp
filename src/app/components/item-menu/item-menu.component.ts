@@ -59,7 +59,7 @@ export class ItemMenuComponent implements OnInit {
       value = 2;
     }
 
-    this.item.status = this.utilitiesService.getStatusFromID(value);    
+    this.item.status = this.utilitiesService.getStatusFromID(value);
 
     this.editStatus.emit();
   }

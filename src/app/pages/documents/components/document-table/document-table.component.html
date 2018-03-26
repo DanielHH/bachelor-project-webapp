@@ -1,80 +1,85 @@
 <div class="card">
     <div class="card-body">
-        <!-- Input field for filter -->
+        <!-- Row text filter input and add new button -->
         <div class="row">
+
+          <!-- Input field for text filter -->
           <div class="col-4">
-              <mat-form-field>
-                  <!--Input-->
-                  <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
-                  maxlength="128" placeholder="Filtrera på">
-                  <!--Clear-->
-                  <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
-                  (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
-              </mat-form-field>
-          </div>
-          <div class="col-2"></div>
-
-          <div class="col-1">
-            <div class="form-check">
-
-                <div class="form-check">
-                  <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showIn>
-                  <label class="form-check-label" for="showInID">Inlämnade</label>
-                </div>
-
-              <div class="form-check">
-                  <input type="checkbox" class="filled-in form-check-input" id="showOutID" [(ngModel)]=showOut>
-                  <label class="form-check-label" for="showOutID">Utlämnade</label>
-              </div>
-            </div>
+            <mat-form-field>
+                <!--Input-->
+                <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput"
+                maxlength="128" placeholder="Filtrera på">
+                <!--Clear-->
+                <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
+                (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+            </mat-form-field>
           </div>
 
-          <div class="col-1 mx-3">
-            <div class="form-check">
+          <div class="col-6"></div> <!-- Space -->
 
-                <input type="checkbox" class="filled-in form-check-input" id="showArchivedID" [(ngModel)]=showArchived>
-                <label class="form-check-label" for="showArchivedID">Arkiverade</label>
-            </div>
-
-            <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showGoneID" [(ngModel)]=showGone>
-                <label class="form-check-label" for="showGoneID">Borttappade</label>
-            </div>
-
-          </div>
-          <div class="col-1"></div>
           <!-- Add new document button-->
-          <div class="col-1">
-            <button mat-raised-button (click)="openAddNewDocument()" color="primary">Lägg till ny handling</button>
+          <div class="col-2">
+            <span class="add-new-button">
+              <button mat-raised-button (click)="openAddNewDocument()" color="primary">Lägg till ny handling</button>
+            </span>
           </div>
+
         </div>
+
+        <!-- Row filter per status -->
+        <div class="row pb-4 pl-2">
+
+          <div class="col-1 px-1">
+            <mat-checkbox id="showIn" name="showIn" color="primary" class="px-1"
+            [(ngModel)]="showIn">Inlämnade</mat-checkbox>
+          </div>
+
+          <div class="col-1 px-1">
+            <mat-checkbox id="showOut" name="showOut" color="primary" class="px-1"
+            [(ngModel)]="showOut">Utlämnade</mat-checkbox>
+          </div>
+
+          <div class="col-1 px-1">
+            <mat-checkbox id="showArchived" name="showArchived" color="primary" class="px-1"
+            [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+          </div>
+
+          <div class="col-1 px-1">
+            <mat-checkbox id="showGone" name="showGone" color="primary" class="px-1"
+            [(ngModel)]="showGone">Borttappade</mat-checkbox>
+          </div>
+
+          <div class="col-8"></div>
+        </div>
+
+
         <!-- Header row -->
-        <div class="row">
+        <div class="row table-header">
           <div class="col-1" (click)="sortTableList('status')">
             <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
             [class.both-arrow]="orderStatus == ''">Status </span>
           </div>
-          <div class="col" (click)="sortTableList('documentType')">
+          <div class="col-1" (click)="sortTableList('documentType')">
             <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'"
             [class.both-arrow]="orderDocumentType == ''">Typ </span>
           </div>
-          <div class="col" (click)="sortTableList('documentNumber')">
+          <div class="col-1 px-2" (click)="sortTableList('documentNumber')">
             <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'"
-            [class.both-arrow]="orderDocumentNumber == ''">Serienummer </span>
+            [class.both-arrow]="orderDocumentNumber == ''">Dokument-ID </span>
           </div>
-          <div class="col" (click)="sortTableList('name')">
+          <div class="col-2" (click)="sortTableList('name')">
             <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'"
-            [class.both-arrow]="orderName == ''">Namn </span>
+            [class.both-arrow]="orderName == ''">Benämning </span>
           </div>
-          <div class="col" (click)="sortTableList('userID')">
+          <div class="col-2" (click)="sortTableList('userID')">
             <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
             [class.both-arrow]="orderUserID == ''">Användare </span>
           </div>
-          <div class="col" (click)="sortTableList('location')">
+          <div class="col-2" (click)="sortTableList('location')">
             <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
-            [class.both-arrow]="orderLocation == ''">Plats </span>
+            [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
           </div>
-          <div class="col" (click)="sortTableList('comment')">
+          <div class="col-2" (click)="sortTableList('comment')">
             <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
             [class.both-arrow]="orderComment == ''">Kommentar </span>
           </div>
@@ -84,9 +89,13 @@
 
         <!-- Add cards to the table -->
         <div *ngFor="let document of documentList | matchFilterDocument:filterInput:showIn:showOut:showArchived:showGone">
-            <app-document-item [documentItem]="document" (editItem)="openEdit($event)"></app-document-item>
+            <app-document-item [documentItem]="document"></app-document-item>
         </div>
     </div>
 </div>
 
 <app-modify-document [documentList]="documentList" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-document>
+
+<app-request-document></app-request-document>
+
+<app-return-document></app-return-document>

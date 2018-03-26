@@ -27,7 +27,6 @@ export class ModifyCardComponent implements OnInit {
   expirationDateInput = '';
   expirationDateDatepickerInput = '';
   commentInput = '';
-  addCardHolder: Boolean = false;
 
   // Form Controls
   cardTypeControl = new FormControl('', Validators.required);
@@ -94,13 +93,15 @@ export class ModifyCardComponent implements OnInit {
 
         this.cardTypeInput = card.cardType.name;
         this.cardNumberInput = card.cardNumber;
-        this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
+        this.expirationDateInput = utilitiesService.getDateString(card.expirationDate);
         this.expirationDateDatepickerInput = this.expirationDateInput;
         this.locationInput = card.location;
         this.commentInput = card.comment;
 
-        this._showModal = true;
         this.modalType = 1;
+        this.modalTitle = 'Ändra kort';
+
+        this._showModal = true;
       }
     });
 
@@ -187,7 +188,7 @@ export class ModifyCardComponent implements OnInit {
   setExpirationDateToDatePicker() {
     if (
       !this.expirationDateControl.hasError('required') &&
-      !this.expirationDateControl.hasError('expirationDate')
+      !this.expirationDateControl.hasError('dateFormat')
     ) {
       this.expirationDateDatepickerInput = this.expirationDateInput; // Set date in Datepicker
     }
@@ -199,7 +200,7 @@ export class ModifyCardComponent implements OnInit {
    */
   setExpirationDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.expirationDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.expirationDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 
@@ -258,7 +259,9 @@ export class ModifyCardComponent implements OnInit {
     this.expirationDatePickerControl.reset();
     this.commentInput = '';
     this.modifyForm.resetForm();
+
     this.cardItem = Object.assign({}, new Card());
+
     this.showModal = false;
     this.showModalChange.emit(false);
   }

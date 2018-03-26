@@ -33,7 +33,7 @@ export class ModifyDocumentComponent implements OnInit {
   senderInput = '';
 
   locationInput = '';
-  commentInput = '';
+  commentInput = null;
 
   // Form Controls
   docTypeControl = new FormControl('', Validators.required);
@@ -61,13 +61,6 @@ export class ModifyDocumentComponent implements OnInit {
 
   @Input() documentList: Document[];
 
-  /**
-   * Sets form to display given document.
-   */
-  @Input('document') set document(document: Document) {
-
-  }
-
   @Input() modalTitle = '';
 
   @Input() modalType: number;
@@ -90,14 +83,13 @@ export class ModifyDocumentComponent implements OnInit {
 
   @Output() showModalChange = new EventEmitter<any>();
 
-
   constructor(private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
     private editService: EditService) {
 
-    this.dataService.documentTypeList.subscribe(cardTypes => {
-      this.docTypes = cardTypes;
+    this.dataService.documentTypeList.subscribe(docTypes => {
+      this.docTypes = docTypes;
       this.docTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
@@ -107,13 +99,14 @@ export class ModifyDocumentComponent implements OnInit {
     this.editService.document.subscribe((document) => {
       if (document && document.id) {
         this.documentItem = document;
-        
+
         this.docTypeInput = document.documentType.name;
+
         this.docNumberInput = document.documentNumber;
 
-        this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
+        this.registrationDateInput = utilitiesService.getDateString(document.registrationDate);
         this.registrationDateDatepickerInput = this.registrationDateInput;
-        this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
+        this.docDateInput = utilitiesService.getDateString(document.documentDate);
         this.docDateDatepickerInput = this.docDateInput;
 
         this.nameInput = document.name;
@@ -122,8 +115,10 @@ export class ModifyDocumentComponent implements OnInit {
         this.locationInput = document.location;
         this.commentInput = document.comment;
 
-        this._showModal = true;
         this.modalType = 1;
+        this.modalTitle = 'Ändra handling';
+
+        this._showModal = true;
 
       }
     });
@@ -168,7 +163,7 @@ export class ModifyDocumentComponent implements OnInit {
   */
   addNewDocument() {
     if (this.isValidInput()) {
-      let newDoc = new Document();
+      const newDoc = new Document();
 
       this.setDocumentFromForm(newDoc);
 
@@ -176,8 +171,6 @@ export class ModifyDocumentComponent implements OnInit {
       newDoc.modifiedDate = this.utilitiesService.getLocalDate();
       newDoc.status = this.utilitiesService.getStatusFromID(1);
       newDoc.user = new User();
-
-      console.log(newDoc);
 
       this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
         if (res.message === 'success') {
@@ -211,22 +204,6 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   /**
-   * Returns the id associated with docTypeName
-   * @param docTypeName Name of doc type
-   */
-  getDocTypeID(docTypeName: String) {
-    return _.find(this.docTypes, (docType) => docType.name === docTypeName).id;
-  }
-
-  /**
-   * Returns the name associated with docTypeID
-   * @param docTypeID ID of doc type
-   */
-  getDocTypeName(docTypeID: number) {
-    return _.find(this.docTypes, (docType) => docType.id === docTypeID).name;
-  }
-
-  /**
      * Sets the registration date datePicker the date entered in the input field.
     */
   setRegistrationDateToDatePicker() {
@@ -241,7 +218,7 @@ export class ModifyDocumentComponent implements OnInit {
    */
   setRegistrationDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.registrationDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.registrationDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 
@@ -260,7 +237,7 @@ export class ModifyDocumentComponent implements OnInit {
    */
   setDocDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.docDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.docDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 
@@ -339,18 +316,20 @@ export class ModifyDocumentComponent implements OnInit {
     this.docNumberControl.reset();
 
     this.registrationDateControl.reset();
-    this.registrationDatePickerControl = new FormControl();
+    this.registrationDatePickerControl.reset();
     this.docDateControl.reset();
-    this.docDatePickerControl = new FormControl();
+    this.docDatePickerControl.reset();
 
     this.nameControl.reset();
     this.senderControl.reset();
 
     this.locationControl.reset();
-    this.commentInput = '';
+    this.commentInput = null;
 
     this.modifyForm.resetForm();
+
     this.documentItem = Object.assign({}, new Document());
+
     this.showModal = false;
     this.showModalChange.emit(false);
   }

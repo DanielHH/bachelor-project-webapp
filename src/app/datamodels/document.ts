@@ -1,6 +1,6 @@
-import { User } from "./user";
-import { StatusType } from "./statusType";
-import { DocumentType } from "./DocumentType";
+import { User } from './user';
+import { StatusType } from './statusType';
+import { DocumentType } from './DocumentType';
 
 /**
  * Document data model
@@ -65,10 +65,10 @@ export class Document {
   /**
    * Comment
    */
-  comment: string;
+  comment?: string;
 
   /**
-   * document checked in/out status
+   * Document checked in/out status
    */
   status: StatusType;
 

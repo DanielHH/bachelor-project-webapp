@@ -9,6 +9,8 @@ import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
 import { EditService } from '../../../../services/edit.service';
+import { RequestService } from '../../../../services/request.service';
+import { ReturnService } from '../../../../services/return.service';
 
 @Component({
   selector: 'app-card-item',
@@ -26,7 +28,9 @@ export class CardItemComponent implements OnInit {
     private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
-    private editService: EditService) {
+    private editService: EditService,
+    private requestService: RequestService,
+    private returnService: ReturnService) {
 
   }
 
@@ -56,18 +60,18 @@ export class CardItemComponent implements OnInit {
 
   /**
    * Show modal based on status
+   * 1 == returned, 2 == available
    */
   showModal() {
-    const returnedStatus = 1;
-    if (this.cardItem.status.id == returnedStatus) { // Don't change to ===, doesn't work
-      this.showRequestModal = true;
+    if (this.cardItem.status.id == 1) {
+      this.requestService.card.next(this.cardItem);
     } else {
-      this.showReturnModal = true;
+      this.returnService.card.next(this.cardItem);
     }
   }
 
   /**
-   * Sets the status of the card
+   * Sets the status of the card in the database
    */
   editStatus() {
     this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {

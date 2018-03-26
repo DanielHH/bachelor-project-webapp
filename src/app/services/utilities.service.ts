@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { HttpService } from './http.service';
 import { Receipt } from '../datamodels/receipt';
 import { Card } from '../datamodels/card';
 import { CardType } from '../datamodels/cardType';
@@ -8,6 +9,7 @@ import { DocumentType } from '../datamodels/documentType';
 import { User } from '../datamodels/user';
 import { DataService } from '../services/data.service';
 import { StatusType } from '../datamodels/statusType';
+import * as moment from 'moment';
 
 
 /**
@@ -22,17 +24,12 @@ export const lowerCase = (str) => _.reduce(
 
 @Injectable()
 export class UtilitiesService {
-
   cardList: Card[] = [];
   documentList: Document[] = [];
   cardTypeList: CardType[] = [];
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
   statusTypeList: StatusType[] = [];
-
-  itemTypeToDisplay: string;
-  itemIDToDisplay: string;
-  itemUserNameToDisplay: string;
 
   constructor(private dataService: DataService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -41,12 +38,19 @@ export class UtilitiesService {
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
+
+    this.dataService.cardTypeList.subscribe((cardTypeList) => {
+      this.cardTypeList = cardTypeList;
+    });
+
     this.dataService.cardList.subscribe((cardList) => {
       this.cardList = cardList;
     });
+
     this.dataService.documentList.subscribe((documentList) => {
       this.documentList = documentList;
     });
+
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
@@ -57,51 +61,55 @@ export class UtilitiesService {
   }
 
   /**
-   * Helper function to get the actual unique serial number, type and user of a receipt
-   * to be displayed
-   * 
-   * @returns an string array containing [serial number, item type, user name]
-   * 
+   * Returns a Date object representing current local time
+   */
+  getLocalDate(): Date {
+    const localDate = new Date();
+    localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
+    return localDate;
+  }
+
+  /**
+   * Returns a string representation of date
+   */
+  getDateString(date: Date): string {
+    return date ? moment(date).format('YYYY-MM-DD') : '';
+  }
+
+  /**
+   * @returns a string array containing [id, kind, item type, user name] of receipt
+   *
    * @param receipt receipt that the displayed data should be extracted from
    */
   getReceiptDisplay(receipt: Receipt) {
-
-    let item;
+    let itemKindToDisplay = '';
+    let itemTypeToDisplay = '';
+    let itemIdToDisplay = '';
+    let itemUserNameToDisplay = '';
 
     if (receipt.itemTypeID == 1) { // itemTypeID 1: card
       const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
-
-      this.itemIDToDisplay = cardItem.cardNumber;
-
-      this.itemTypeToDisplay = cardItem.cardType.name;
+      itemKindToDisplay = 'Kort';
+      itemIdToDisplay = cardItem.cardNumber;
+      itemTypeToDisplay = cardItem.cardType.name;
 
       if (cardItem.user) {
-        this.itemUserNameToDisplay = cardItem.user.name
+        itemUserNameToDisplay = cardItem.user.name;
       }
 
     } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
       const documentItem = _.find(this.documentList, document => document.id === receipt.documentID);
+      itemKindToDisplay = 'Handling';
+      itemIdToDisplay = documentItem.documentNumber;
+      itemTypeToDisplay = documentItem.documentType.name;
 
-      this.itemIDToDisplay = documentItem.documentNumber;
-
-      this.itemTypeToDisplay = documentItem.documentType.name;
-
-      const user = _.find(this.userList, user => user.id === receipt.userID)
-      if (user) {
-        this.itemUserNameToDisplay = user.name
+      if (documentItem.user) {
+        itemUserNameToDisplay = documentItem.user.name;
       }
-
     }
-    return [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay]
-  }
 
-  /**
-   * Helper function to get the local date
-   */
-  getLocalDate() {
-    const localDate = new Date();
-    localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
-    return localDate;
+
+    return [itemIdToDisplay, itemKindToDisplay, itemTypeToDisplay, itemUserNameToDisplay];
   }
 
   getStatusFromID(id: number) {

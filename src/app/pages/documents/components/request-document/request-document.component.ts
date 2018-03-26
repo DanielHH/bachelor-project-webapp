@@ -9,6 +9,9 @@ import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { User } from '../../../../datamodels/user';
+import { Receipt } from '../../../../datamodels/receipt';
+import { RequestService } from '../../../../services/request.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-request-document',
@@ -21,24 +24,36 @@ export class RequestDocumentComponent implements OnInit {
 
   @Input() documentItem: Document = null; // Document that is requested
 
-  @Input() showModal = false;
 
   @Output() modalClosed = new EventEmitter<boolean>();
+
+  showModal = false;
 
   get _showModal() {
     return this.showModal;
   }
   set _showModal(value: any) {
-    this.closeForm();
+    if (!value) {
+      this.closeForm();
+    }
+    this.showModal = value;
   }
 
   users = [];
+  documents: Document[] = [];
+  receipts: Receipt[] = [];
 
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
+  startDateControl = new FormControl('', Validators.required);
 
   usernameInput: any;
   locationInput = '';
+  startDateInput = '';
+  startDateDatepickerInput = '';
+  commentInput = '';
+
+  generatePDF = true;
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
@@ -48,14 +63,41 @@ export class RequestDocumentComponent implements OnInit {
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private requestService: RequestService
   ) {
+    // User list subscriber
     this.dataService.userList.subscribe(users => {
       this.users = users;
       this.usernameControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
       });
+    });
+
+    // Receipt list subscriber
+    this.dataService.receiptList.subscribe(receipts => {
+      this.receipts = receipts;
+    });
+
+    // Document list subscriber
+    this.dataService.documentList.subscribe(documents => {
+      this.documents = documents;
+    });
+
+    // Request document subscriber
+    this.requestService.document.subscribe((document) => {
+      if (document && document.id) {
+        this.documentItem = document;
+
+        this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
+        this.startDateDatepickerInput = this.startDateInput;
+        this.commentInput = this.documentItem.comment;
+        this.generatePDF = true;
+
+        this._showModal = true;
+
+      }
     });
   }
 
@@ -69,10 +111,32 @@ export class RequestDocumentComponent implements OnInit {
   filterUsers(str: string) {
     return this.users.filter(
       user =>
-        str && typeof str === "string" &&
+        str && typeof str === 'string' &&
         user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
 
     );
+  }
+
+  /**
+   * Sets the start date datePicker the date entered in the input field.
+   */
+  setStartDateToDatePicker() {
+    if (
+      !this.startDateControl.hasError('required') &&
+      !this.startDateControl.hasError('startDate')
+    ) {
+      this.startDateDatepickerInput = this.startDateInput; // Set date in Datepicker
+    }
+  }
+
+  /**
+   * Sets start date from datePicker to visible input field in YYYY-MM-DD format
+   * @param data Date selected in datePicker
+   */
+  setStartDateFromDatepicker(data: any) {
+    if (data.value != null) {
+      this.startDateInput = this.utilitiesService.getDateString(data.value);
+    }
   }
 
   /**
@@ -93,28 +157,61 @@ export class RequestDocumentComponent implements OnInit {
   }
 
   /**
+   * Returns true if entered start date is valid, else false.
+   */
+  isValidStartDate() {
+    return !this.startDateControl.hasError('required') &&
+      !this.startDateControl.hasError('dateFormat');
+  }
+
+  /**
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
     return (
       this.isValidUsername() &&
-      this.isValidLocation()
+      this.isValidLocation() &&
+      this.isValidStartDate()
     );
   }
 
   /**
-   * Change status of a document to requested
+   * Update requested document, create receipt and submit to database.
    */
   requestDocument() {
     if (this.isValidInput()) {
       this.documentItem.user = this.usernameInput;
       this.documentItem.location = this.locationInput;
-      this.documentItem.status = this.utilitiesService.getStatusFromID(2);; // TODO: ENUM FOR STATUS, 2 = Requested
-      console.log(this.documentItem);          
-        
-      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-        if (res.message === 'success') {
-          this.closeForm();
+      this.documentItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
+
+      // Set document information
+      this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
+
+      // Create new receipt
+      const receipt = new Receipt();
+      receipt.itemTypeID = 2; // TODO: ENUM, 2 means document
+      receipt.documentID = this.documentItem.id;
+      receipt.userID = this.documentItem.user.id;
+      receipt.startDate = this.utilitiesService.getLocalDate();
+
+      // Submit changes to database
+      this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
+        if (receiptRes.message === 'success') {
+          this.documentItem.activeReceipt = receiptRes.data.id;
+
+          this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
+            if (documentRes.message === 'success') {
+              // Update receipt list
+              this.receipts.unshift(receiptRes.data);
+              this.receipts = this.receipts.slice();
+              this.dataService.receiptList.next(this.receipts);
+
+              // Update document list
+              this.dataService.documentList.next(this.documents);
+
+              this.showModal = false;
+            }
+          });
         }
       });
     }
@@ -127,8 +224,11 @@ export class RequestDocumentComponent implements OnInit {
     this.usernameControl.reset();
     this.locationControl.reset();
     this.requestForm.resetForm();
+
+    this.documentItem = Object.assign({}, new Document());
+    this.requestService.document.next(this.documentItem);
+
     this.showModal = false;
-    this.modalClosed.emit(false);
   }
 
   displayUser(user?: User) {
