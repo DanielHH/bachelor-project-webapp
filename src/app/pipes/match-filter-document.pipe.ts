@@ -44,50 +44,20 @@ export class MatchFilterDocumentPipe implements PipeTransform {
   matchFilt(document: Document, filterInput: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean) {
     filterInput = lowerCase(filterInput);
 
-    if( (document.status == 1 && !showIn) || (document.status == 2 && !showOut) ||
-    (document.status == 3 && !showArchived) || (document.status == 4 && !showGone) ) {
+    if( (document.status.id == 1 && !showIn) || (document.status.id == 2 && !showOut) ||
+    (document.status.id == 3 && !showArchived) || (document.status.id == 4 && !showGone) ) {
       return false;
     }
 
-    if (_.includes(lowerCase(this.getDocumentType(document)), filterInput) === false
+    if (_.includes(lowerCase(document.documentType.name), filterInput) === false
     && (_.includes(lowerCase(document.documentNumber), filterInput) === false)
     && (_.includes(lowerCase(document.name), filterInput) === false)
-    && (_.includes(lowerCase(this.getUserName(document)), filterInput) === false)
+    && (_.includes(lowerCase(document.user.name), filterInput) === false)
     && (_.includes(lowerCase(document.location), filterInput) === false)
     && (_.includes(lowerCase(document.comment), filterInput) === false) ) {
       return false;
     }
     return true;
-  }
-
-   /**
-   * Gets the document type for a document
-   * @param document
-   * @returns The corresponding type of document
-   */
-  getDocumentType(document: Document) {
-    if (document.documentType > 0) {
-      const documentTypeToDisplay = _.find( this.documentTypeList, documentType => documentType.id === document.documentType);
-      if (documentTypeToDisplay) {
-        return documentTypeToDisplay.name;
-      }
-    }
-    return '';
-  }
-
-  /**
-   * Gets the document holder for a document
-   * @param document
-   * @returns The Document holder of document
-   */
-  getUserName(document: Document) {
-    if (document.userID > 0) {
-      const userToDisplay = _.find( this.userList, user => user.id === document.userID);
-      if (userToDisplay) {
-        return userToDisplay.name;
-      }
-    }
-    return '';
   }
 
 }

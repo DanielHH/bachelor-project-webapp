@@ -51,7 +51,7 @@
 
     <!-- Header row -->
     <div class="row">
-      <div class="col-1" (click)="sortTableList('status')">
+      <div class="col-1" (click)="sortTableList('status.id')">
         <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
         [class.both-arrow]="orderStatus == ''">Status </span>
       </div>
@@ -63,7 +63,7 @@
         <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'"
         [class.both-arrow]="orderCardNumber == ''">Serienummer </span>
       </div>
-      <div class="col" (click)="sortTableList('userID')">
+      <div class="col" (click)="sortTableList('user.id')">
         <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
         [class.both-arrow]="orderUserID == ''">Användare </span>
       </div>

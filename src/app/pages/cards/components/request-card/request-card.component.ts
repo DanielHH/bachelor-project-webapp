@@ -79,10 +79,10 @@ export class RequestCardComponent implements OnInit {
    */
   filterUsers(str: string) {
     return this.users.filter(
-      user => 
+      user =>
         str && typeof str === "string" &&
-          user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-      
+        user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
+
     );
   }
 
@@ -129,7 +129,6 @@ export class RequestCardComponent implements OnInit {
       this.cardItem.user = this.usernameInput;
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
-      console.log(this.cardItem);
       this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
         if (res.message === 'success') {
           this.showModal = false;

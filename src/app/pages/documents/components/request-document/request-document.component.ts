@@ -7,6 +7,8 @@ import { DataService } from '../../../../services/data.service';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
+import { UtilitiesService } from '../../../../services/utilities.service';
+import { User } from '../../../../datamodels/user';
 
 @Component({
   selector: 'app-request-document',
@@ -17,18 +19,9 @@ export class RequestDocumentComponent implements OnInit {
 
   @ViewChild('requestForm') requestForm: NgForm;
 
-  documentItem: Document = null; // Document that is requested
+  @Input() documentItem: Document = null; // Document that is requested
 
   @Input() showModal = false;
-
-  /**
-   * Set document that is being requested.
-   */
-  @Input('document') set document(document: Document) {
-    if (document && document.id) {
-      this.documentItem = document;
-    }
-  }
 
   @Output() modalClosed = new EventEmitter<boolean>();
 
@@ -44,7 +37,7 @@ export class RequestDocumentComponent implements OnInit {
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
 
-  usernameInput = '';
+  usernameInput: any;
   locationInput = '';
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
@@ -54,7 +47,8 @@ export class RequestDocumentComponent implements OnInit {
 
   constructor(
     private httpService: HttpService,
-    private dataService: DataService
+    private dataService: DataService,
+    private utilitiesService: UtilitiesService
   ) {
     this.dataService.userList.subscribe(users => {
       this.users = users;
@@ -75,17 +69,10 @@ export class RequestDocumentComponent implements OnInit {
   filterUsers(str: string) {
     return this.users.filter(
       user =>
-        str != null &&
+        str && typeof str === "string" &&
         user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
 
-  /**
-   * Returns user id of user with username
-   * @param username Username of user
-   */
-  getUserID(username: String) {
-    return _.find(this.users, user => user.username === username).id;
+    );
   }
 
   /**
@@ -120,12 +107,14 @@ export class RequestDocumentComponent implements OnInit {
    */
   requestDocument() {
     if (this.isValidInput()) {
-      this.documentItem.userID = this.getUserID(this.usernameInput);
+      this.documentItem.user = this.usernameInput;
       this.documentItem.location = this.locationInput;
-      this.documentItem.status = 2; // TODO: ENUM FOR STATUS, 2 = Requested
+      this.documentItem.status = this.utilitiesService.getStatusFromID(2);; // TODO: ENUM FOR STATUS, 2 = Requested
+      console.log(this.documentItem);          
+        
       this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
         if (res.message === 'success') {
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }
@@ -138,9 +127,12 @@ export class RequestDocumentComponent implements OnInit {
     this.usernameControl.reset();
     this.locationControl.reset();
     this.requestForm.resetForm();
-    this.documentItem = Object.assign({}, new Document());
     this.showModal = false;
     this.modalClosed.emit(false);
+  }
+
+  displayUser(user?: User) {
+    return user ? user.username : '';
   }
 
 }

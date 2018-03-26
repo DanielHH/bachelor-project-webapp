@@ -32,6 +32,7 @@ export class DocumentItemComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private editService: EditService) {
+
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
@@ -41,30 +42,10 @@ export class DocumentItemComponent implements OnInit {
   }
 
   ngOnInit() { }
-
+  
   /**
-   * Returns the name of the document type corresponding to the documentType
+   * Change route and send route data
    */
-  displayDocumentType() {
-    if (this.documentItem.documentType > 0) {
-      const documentTypeToDisplay = _.find(this.documentTypeList, documentType => documentType.id === this.documentItem.documentType);
-      if (documentTypeToDisplay) {
-        return documentTypeToDisplay.name;
-      }
-    }
-    return '';
-  }
-
-  /**
-   * Returns the name corresponding to the userID
-   */
-  displayUserName() {
-    if (this.documentItem.userID) {
-      return _.find(this.userList, user => user.id === this.documentItem.userID)
-        .name;
-    }
-    return '';
-  }
   route() {
     this.routeDataService.document.next(this.documentItem);
     this.router.navigate(['document-detail']);
@@ -82,7 +63,7 @@ export class DocumentItemComponent implements OnInit {
    */
   showModal() {
     const returnedStatus = 1;
-    if (this.documentItem.status == returnedStatus) { // Don't change to ===, doesn't work
+    if (this.documentItem.status.id == returnedStatus) { // Don't change to ===, doesn't work
       this.showRequestModal = true;
     } else {
       this.showReturnModal = true;

@@ -2,6 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angu
 import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
+import { User } from '../../../../datamodels/user';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-return-document',
@@ -23,22 +25,13 @@ export class ReturnDocumentComponent implements OnInit {
     this.closeForm();
   }
 
-  documentItem: Document = null;
-
-  /**
-   * Set document that is being returned.
-   */
-  @Input('document') set document(document: Document) {
-    if (document && document.id) {
-      this.documentItem = document;
-    }
-  }
+  @Input() documentItem: Document = null;
 
   locationControl = new FormControl('', Validators.required);
 
   locationInput = '';
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService, private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }
@@ -55,12 +48,12 @@ export class ReturnDocumentComponent implements OnInit {
    */
   returnDocument() {
     if (this.isValidLocation()) {
-      this.documentItem.userID = null;
+      this.documentItem.user = new User();
       this.documentItem.location = this.locationInput;
-      this.documentItem.status = 1; // TODO: ENUM FOR STATUS, 1 = Returned
+      this.documentItem.status = this.utilitiesService.getStatusFromID(1);  // TODO: ENUM FOR STATUS, 1 = Returned
       this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-        if (res.message === 'success') {
-          this.showModal = false;
+        if (res.message === 'success') {          
+          this.closeForm();
         }
       });
     }
@@ -72,7 +65,6 @@ export class ReturnDocumentComponent implements OnInit {
   closeForm() {
     this.locationControl.reset();
     this.returnForm.resetForm();
-    this.documentItem = Object.assign({}, new Document());
     this.showModal = false;
     this.modalClosed.emit(false);
   }

@@ -11,6 +11,7 @@ import { MatDialogRef } from '@angular/material';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 import { EditService } from '../../../../services/edit.service';
+import { User } from '../../../../datamodels/user';
 
 @Component({
   selector: 'app-modify-document',
@@ -107,7 +108,7 @@ export class ModifyDocumentComponent implements OnInit {
       if (document && document.id) {
         this.documentItem = document;
         
-        this.docTypeInput = this.getDocTypeName(document.documentType);
+        this.docTypeInput = document.documentType.name;
         this.docNumberInput = document.documentNumber;
 
         this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
@@ -147,7 +148,7 @@ export class ModifyDocumentComponent implements OnInit {
    */
   setDocumentFromForm(document: Document) {
     if (this.isValidInput()) {
-      document.documentType = this.getDocTypeID(this.docTypeInput);
+      document.documentType = this.utilitiesService.getDocumentType(0, this.docTypeInput);
       document.documentNumber = this.docNumberInput;
 
       document.documentDate = new Date(this.docDateInput);
@@ -159,7 +160,6 @@ export class ModifyDocumentComponent implements OnInit {
       document.location = this.locationInput;
       document.comment = this.commentInput;
 
-      document.modifiedDate = this.utilitiesService.getLocalDate();
     }
   }
 
@@ -168,12 +168,16 @@ export class ModifyDocumentComponent implements OnInit {
   */
   addNewDocument() {
     if (this.isValidInput()) {
-      const newDoc = new Document();
+      let newDoc = new Document();
 
       this.setDocumentFromForm(newDoc);
 
       newDoc.creationDate = this.utilitiesService.getLocalDate();
-      newDoc.status = 1;
+      newDoc.modifiedDate = this.utilitiesService.getLocalDate();
+      newDoc.status = this.utilitiesService.getStatusFromID(1);
+      newDoc.user = new User();
+
+      console.log(newDoc);
 
       this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
         if (res.message === 'success') {
@@ -200,7 +204,7 @@ export class ModifyDocumentComponent implements OnInit {
         if (res.message === 'success') {
           this.dataService.documentList.next(this.documentList);
 
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }

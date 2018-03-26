@@ -55,7 +55,7 @@ export class CardTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
@@ -70,7 +70,7 @@ export class CardTableComponent implements OnInit {
         this.orderCardNumber = newOrder;
         break;
       }
-      case 'userID': {
+      case 'user.id': {
         newOrder = this.sortTableListHelper(this.orderUserID);
         this.orderUserID = newOrder;
         break;

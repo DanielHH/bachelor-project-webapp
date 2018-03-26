@@ -66,17 +66,17 @@ export class UtilitiesService {
    */
   getReceiptDisplay(receipt: Receipt) {
 
+    let item;
+
     if (receipt.itemTypeID == 1) { // itemTypeID 1: card
       const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
 
       this.itemIDToDisplay = cardItem.cardNumber;
 
-      const itemType = _.find(this.cardTypeList, cardType => cardType.id === cardItem.cardType.id)
-      this.itemTypeToDisplay = itemType.name;
+      this.itemTypeToDisplay = cardItem.cardType.name;
 
-      const user = _.find(this.userList, user => user.id === receipt.userID)
-      if (user) {
-        this.itemUserNameToDisplay = user.name
+      if (cardItem.user) {
+        this.itemUserNameToDisplay = cardItem.user.name
       }
 
     } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
@@ -84,8 +84,7 @@ export class UtilitiesService {
 
       this.itemIDToDisplay = documentItem.documentNumber;
 
-      const itemType = _.find(this.documentTypeList, documentType => documentType.id === documentItem.documentType)
-      this.itemTypeToDisplay = itemType.name;
+      this.itemTypeToDisplay = documentItem.documentType.name;
 
       const user = _.find(this.userList, user => user.id === receipt.userID)
       if (user) {
@@ -116,6 +115,15 @@ export class UtilitiesService {
    */
   getCardType(id?: number, name?: string) {
     return _.find(this.cardTypeList, cardType => cardType.id == id || cardType.name == name);
-  }  
+  }
+
+    /**
+   * Returns the documentType associated with name or id
+   * @param id ID of document type
+   * @param name Name of document type
+   */
+  getDocumentType(id?: number, name?: string) {
+    return _.find(this.documentTypeList, documentType => documentType.id == id || documentType.name == name);
+  }
 
 }

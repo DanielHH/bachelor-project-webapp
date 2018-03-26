@@ -18,8 +18,8 @@
               <mat-icon>close</mat-icon>
             </button>
             <!--Dropdown-->
-            <mat-autocomplete #userIDs="matAutocomplete">
-              <mat-option *ngFor="let user of filteredUsers | async" [value]="user.username">
+            <mat-autocomplete #userIDs="matAutocomplete" [displayWith]="displayUser">
+              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
                 {{ user.username + '
                 < ' + user.name + '>' }}
               </mat-option>
