@@ -88,7 +88,7 @@ export class UtilitiesService {
     let itemUserNameToDisplay = '';
 
     if (receipt.itemTypeID == 1) { // itemTypeID 1: card
-      const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
+      const cardItem = _.find(this.cardList, card => card.id == receipt.cardID);
       itemKindToDisplay = 'Kort';
       itemIdToDisplay = cardItem.cardNumber;
       itemTypeToDisplay = cardItem.cardType.name;
@@ -98,7 +98,7 @@ export class UtilitiesService {
       }
 
     } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
-      const documentItem = _.find(this.documentList, document => document.id === receipt.documentID);
+      const documentItem = _.find(this.documentList, document => document.id == receipt.documentID);
       itemKindToDisplay = 'Handling';
       itemIdToDisplay = documentItem.documentNumber;
       itemTypeToDisplay = documentItem.documentType.name;
@@ -107,7 +107,6 @@ export class UtilitiesService {
         itemUserNameToDisplay = documentItem.user.name;
       }
     }
-
 
     return [itemIdToDisplay, itemKindToDisplay, itemTypeToDisplay, itemUserNameToDisplay];
   }

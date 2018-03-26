@@ -60,8 +60,9 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     showActive: boolean,
     showInactive: boolean
   ) {
+    console.log(receipt);
     if (
-      (!receipt) ||
+      (receipt == null) ||
       (!receipt.id) ||
       (receipt.endDate == null && !showActive) ||
       (receipt.endDate != null && !showInactive) ||
