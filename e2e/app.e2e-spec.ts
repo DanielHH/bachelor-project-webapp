@@ -40,7 +40,7 @@ describe('PUMApp', function() {
     expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/logs');
   });
 
-  it('should work to click edit in the dropdown-menu', function() {
+  it('should work to click edit in the dropdown-menu for cards', function() {
     cardFromMenu.click();
     element.all(by.className('btn-menu')).first().click();
     editFromDropdown.click();
@@ -54,8 +54,34 @@ describe('PUMApp', function() {
     expect(element.all(by.className('col')).getText()).toContain('Skåp 55');
   });
 
-  it('should work to click lost and reset in the dropdown-menu', function() {
+  it('should work to click lost and reset in the dropdown-menu for cards', function() {
     cardFromMenu.click();
+    element.all(by.className('btn-menu')).first().click();
+    lostFromDropdown.click();
+    browser.sleep(500);
+    expect(element(by.buttonText('Borta')).isDisplayed()).toBe(true);
+    element.all(by.className('btn-menu')).first().click();
+    resetFromDropdown.click();
+    browser.sleep(500);
+    expect(element.all(by.buttonText('Kvittera')).first().isDisplayed()).toBe(true);
+  });
+
+  it('should work to click edit in the dropdown-menu for documents', function() {
+    documentsFromMenu.click();
+    element.all(by.className('btn-menu')).first().click();
+    editFromDropdown.click();
+    browser.sleep(500);
+    expect(element(by.buttonText('Submit')).isDisplayed()).toBe(true);
+    element(by.id('locationInput')).clear();
+    element(by.id('locationInput')).sendKeys('Hurts 55');
+    browser.sleep(500);
+    element(by.buttonText('Submit')).click();
+    browser.sleep(500);
+    expect(element.all(by.className('col')).getText()).toContain('Hurts 55');
+  });
+
+  it('should work to click lost and reset in the dropdown-menu for documents', function() {
+    documentsFromMenu.click();
     element.all(by.className('btn-menu')).first().click();
     lostFromDropdown.click();
     browser.sleep(500);
