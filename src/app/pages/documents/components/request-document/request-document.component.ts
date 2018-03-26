@@ -235,4 +235,10 @@ export class RequestDocumentComponent implements OnInit {
     return user ? user.username : '';
   }
 
+  getDateString(str: Date) {
+    if (str) {
+      return this.utilitiesService.getDateString(str);
+    }
+  }
+
 }

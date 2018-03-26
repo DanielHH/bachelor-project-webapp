@@ -41,13 +41,13 @@
           <div class="row my-1">
             <div class="col"></div>
             <div class="col-12 col-md-3">
-              {{documentItem && documentItem.id? utilitiesService.getDocumentTypeString(documentItem.documentType) : ''}}
+              {{documentItem?.documentType?.name}}
             </div>
             <div class="col-12 col-md-3">
-              {{documentItem && documentItem.id ? documentItem.name : ''}}
+              {{documentItem?.name}}
             </div>
             <div class="col-12 col-md-3">
-              {{documentItem && documentItem.id ? documentItem.documentNumber : ''}}
+              {{documentItem?.documentNumber}}
             </div>
             <div class="col"></div>
           </div>
@@ -71,13 +71,13 @@
           <div class="row my-1">
             <div class="col"></div>
             <div class="col-0 col-md-3">
-              {{documentItem && documentItem.id ? documentItem.sender : ''}}
+              {{documentItem?.sender}}
             </div>
             <div class="col-0 col-md-3">
-              {{documentItem && documentItem.id ? utilitiesService.getDateString(documentItem.documentDate) : ''}}
+              {{getDateString(documentItem?.documentDate)}}
             </div>
             <div class="col-0 col-md-3">
-              {{documentItem && documentItem.id ? utilitiesService.getDateString(documentItem.registrationDate) : ''}}
+              {{getDateString(documentItem?.registrationDate)}}
             </div>
             <div class="col"></div>
           </div>

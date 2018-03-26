@@ -132,4 +132,10 @@ export class ReturnDocumentComponent implements OnInit {
     this.showModal = false;
   }
 
+  getDateString(str: Date) {
+    if (str) {
+      return this.utilitiesService.getDateString(str);
+    }
+  }
+
 }
