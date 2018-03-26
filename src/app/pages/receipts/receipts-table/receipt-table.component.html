@@ -44,41 +44,45 @@
 
       <div class="col-8"></div>
 
-  </div>
+    </div>
 
     <!-- Header row -->
     <div class="row table-header">
 
-      <div class="col-1 mx-1 px-2" (click)="sortTableList('endDate')">
+      <div class="col-narrow table-col" (click)="sortTableList('endDate')">
         <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
         [class.both-arrow]="orderEndDate == ''">Status </span>
       </div>
-      <div class="col mx-1 px-2" (click)="sortTableList('itemKindID')">
+      <div class="col-narrow table-col" (click)="sortTableList('itemKindID')">
         <span class="hover" [class.up-arrow]="orderItemKindID == 'asc'" [class.down-arrow]="orderItemKindID == 'desc'"
         [class.both-arrow]="orderItemKindID == ''">Kort/handling </span>
       </div>
-      <div class="col mx-1 px-2" (click)="sortTableList('itemTypeID')">
+      <div class="col-narrow table-col" (click)="sortTableList('itemTypeID')">
         <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'"
         [class.both-arrow]="orderItemTypeID == ''">Typ </span>
       </div>
-      <div class="col mx-1 px-2" (click)="sortTableList('IDNumber')">
+      <div class="col-wide table-col" (click)="sortTableList('IDNumber')">
         <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'"
         [class.both-arrow]="orderIDNumber == ''">ID </span>
       </div>
-      <div class="col mx-1 px-2" (click)="sortTableList('userID')">
+      <div class="col-wide table-col" (click)="sortTableList('userID')">
         <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
         [class.both-arrow]="orderUserID == ''">Användare </span>
       </div>
-      <div class="col mx-2 px-2" (click)="sortTableList('startDate')">
+      <div class="col-narrow table-col" (click)="sortTableList('startDate')">
         <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'"
         [class.both-arrow]="orderStartDate == ''">Startdatum </span>
       </div>
-      <div class="col mx-2 px-2" (click)="sortTableList('endDate')">
+      <div class="col-narrow table-col" (click)="sortTableList('endDate')">
         <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
         [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
       </div>
 
-      <div class="col-1 mx-1 px-2"></div> <!-- PDF button -->
+      <div class="pl-3 menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
+        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1">
+            <span>PDF</span>
+        </button>
+      </div>
 
     </div>
     <hr>
