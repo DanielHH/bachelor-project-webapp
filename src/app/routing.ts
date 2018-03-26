@@ -24,8 +24,12 @@ export const routes: Routes = [
 
 
   /* Resterande routes
-	{ path: '**', component: PageNotFoundComponent, data: { name: 'SidanHittadesInte', fullSizeBackgroundURL: '/assets/not-found.jpg' } }
+  { path: '**',
+    component: PageNotFoundComponent,
+    data: { name: 'SidanHittadesInte', fullSizeBackgroundURL: '/assets/not-found.jpg' } }
   */
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(routes, { useHash: false });
+export const routing: ModuleWithProviders = RouterModule.forRoot(
+  routes, { useHash: false }
+);

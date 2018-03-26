@@ -38,7 +38,9 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatRadioModule,
-  MatFormFieldControl
+  MatFormFieldControl,
+  MatCardModule,
+  MatDividerModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -61,6 +63,13 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
 import { CardhistoryComponent } from './pages/cardhistory/cardhistory.component';
 import { CardhistoryTableComponent } from './pages/cardhistory/components/cardhistory-table/cardhistory-table.component';
 import { CardhistoryItemComponent } from './pages/cardhistory/components/cardhistory-item/cardhistory-item.component';
+import { RequestCardComponent } from './pages/cards/components/request-card/request-card.component';
+import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
+import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
+import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
+import { EditService } from './services/edit.service';
+import { RequestService } from './services/request.service';
+import { ReturnService } from './services/return.service';
 
 @NgModule({
   declarations: [
@@ -101,7 +110,11 @@ import { CardhistoryItemComponent } from './pages/cardhistory/components/cardhis
     ReceiptItemComponent,
     CardhistoryComponent,
     CardhistoryTableComponent,
-    CardhistoryItemComponent
+    CardhistoryItemComponent,
+    RequestCardComponent,
+    ReturnCardComponent,
+    RequestDocumentComponent,
+    ReturnDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -121,10 +134,20 @@ import { CardhistoryItemComponent } from './pages/cardhistory/components/cardhis
     MatAutocompleteModule,
     MatIconModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCardModule,
+    MatDividerModule
   ],
-  providers: [HttpService, DataService, RouteDataService, UtilitiesService],
+  providers: [
+    HttpService,
+    DataService,
+    RouteDataService,
+    UtilitiesService,
+    EditService,
+    RequestService,
+    ReturnService
+  ],
   entryComponents: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

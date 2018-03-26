@@ -24,7 +24,7 @@ import * as _ from 'lodash';
     const isValid = !input || _.find(this.cardTypes, (cardType) => cardType.name === input);
     const message = {
       'cardType': {
-        'message': 'Invalid card type'
+        'message': 'Ogiltig typ'
       }
     };
     return isValid ? null : message;

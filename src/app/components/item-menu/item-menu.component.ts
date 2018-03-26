@@ -5,6 +5,7 @@ import { Card } from '../../datamodels/card';
 import { Document } from '../../datamodels/document';
 import { HttpService } from '../../services/http.service';
 import * as moment from 'moment';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-item-menu',
@@ -15,10 +16,14 @@ export class ItemMenuComponent implements OnInit {
 
   // Card or Document
   @Input() item: any;
+
   @Output() editItem = new EventEmitter<any>();
 
+  @Output() editStatus = new EventEmitter<any>();
+
   constructor(private routeDataService: RouteDataService, private router: Router,
-    private httpService: HttpService) { }
+    private httpService: HttpService,
+    private utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }
@@ -50,18 +55,13 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    this.item.status = value;
-
-    if (this.item.cardType) {
-      this.httpService.httpPut<Card>('updateCard/', this.item).then(res => {
-        if (res.message === 'success') {}
-     });
-
-    } else if (this.item.documentType) {
-      this.httpService.httpPut<Document>('updateDocument/', this.item).then(res => {
-        if (res.message === 'success') {}
-      });
+    if (this.item.userID && value == 1) { // If has owner and is restored
+      value = 2;
     }
+
+    this.item.status = this.utilitiesService.getStatusFromID(value);
+
+    this.editStatus.emit();
   }
 
   /**

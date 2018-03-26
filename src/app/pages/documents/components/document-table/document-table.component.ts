@@ -13,8 +13,6 @@ export class DocumentTableComponent implements OnInit {
 
   @Input() documentList: Document[];
 
-  editDocument: Document = null; // Document to be edited
-
   showModal = false;
 
   filterInput = '';
@@ -99,7 +97,6 @@ export class DocumentTableComponent implements OnInit {
 
   }
 
-
   /**
    * Sets the order to sort by
    * @param order
@@ -114,24 +111,11 @@ export class DocumentTableComponent implements OnInit {
   /**
    * Set document to be edited and open edit modal
    */
-  openEdit(document: any) {
-    this.editDocument = document;
-    this.modalTitle = 'Edit document';
-    this.modalType = 1;
-    this.showModal = true;
-  }
-
-  /**
-   * Set document to be edited and open edit modal
-   */
   openAddNewDocument() {
-    this.editDocument = Object.assign({}, new Document());
-    this.modalTitle = 'Add new document';
+    this.modalTitle = 'Lägg till ny handling';
     this.modalType = 0;
     this.showModal = true;
   }
-
-
 
 }
 
