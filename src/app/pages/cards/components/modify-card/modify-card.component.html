@@ -5,7 +5,7 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input id="cardTypeInput" name="cardTypeInput" type="text" [(ngModel)]="cardTypeInput"
+          <input id="cardTypeInput" name="cardTypeInput"    [(ngModel)]="cardTypeInput"
           maxlength="128" [style.color]="isValidCardType() ? 'black' : 'gray'"
             placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="cardTypes"
             [formControl]="cardTypeControl"
@@ -34,7 +34,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput"
-          type="text" maxlength="128" placeholder="Kort-ID"
+            maxlength="128" placeholder="Kort-ID"
             [formControl]="cardNumberControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -56,7 +56,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput"
-          type="text" maxlength="128" placeholder="Förvaringsplats"
+            maxlength="128" placeholder="Förvaringsplats"
             [formControl]="locationControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -73,7 +73,7 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="expirationDateInput" name="expirationDateInput" type="text"
+          <input matInput id="expirationDateInput" name="expirationDateInput"
           [(ngModel)]="expirationDateInput" placeholder="Utgångsdatum"
             [style.color]="isValidExpirationDate() ? 'black' : 'gray'" maxlength="10"
             (input)="setExpirationDateToDatePicker();" [formControl]="expirationDateControl" appDate required>
@@ -108,7 +108,7 @@
       <div class="col-12 wide-center">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" type="text"
+          <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput"
           maxlength="128" placeholder="Kommentar">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
