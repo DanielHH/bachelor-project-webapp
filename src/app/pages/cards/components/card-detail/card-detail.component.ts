@@ -8,7 +8,7 @@ import { HttpService } from '../../../../services/http.service';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import * as _ from 'lodash';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-card-detail',
@@ -39,9 +39,10 @@ export class CardDetailComponent implements OnInit {
     public utilitiesService: UtilitiesService
   ) {
     this.routeDataService.card.subscribe((card) => {
-      this.cardItem = card;
-      this._showModal = true;
-      this.showModal = true;
+      if (card && card.id) {
+        this.cardItem = card;
+        this._showModal = true;
+      }
     });
 
   }
@@ -66,7 +67,19 @@ export class CardDetailComponent implements OnInit {
 
   displayExpirationDate() {
     if (this.cardItem) {
-      this.utilitiesService.getDateString(this.cardItem.expirationDate);
+      return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
+    }
+  }
+
+  displayCreationDate() {
+    if (this.cardItem) {
+      return moment(this.cardItem.creationDate).format('YYYY-MM-DD');
+    }
+  }
+
+  displayModifiedDate() {
+    if (this.cardItem) {
+      return moment(this.cardItem.modifiedDate).format('YYYY-MM-DD');
     }
   }
 }

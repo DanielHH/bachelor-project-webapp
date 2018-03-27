@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" (click)="showDetModal()" mdbRippleRadius >
     <div class="col-1 px-1 table-col" *ngIf="documentItem?.status?.id == 1 || documentItem?.status?.id == 2">
         <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="documentItem?.status?.id == 2" [class.btn-success]="documentItem?.status?.id == 1"
             (click)="showModal()" mdbRippleRadius>

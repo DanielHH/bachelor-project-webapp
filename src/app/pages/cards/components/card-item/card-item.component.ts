@@ -22,7 +22,6 @@ export class CardItemComponent implements OnInit {
 
   showRequestModal = false;
   showReturnModal = false;
-  showDetailModal = false;
 
   constructor(
     private dataService: DataService,
@@ -44,8 +43,8 @@ export class CardItemComponent implements OnInit {
     return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
   }
 
-  /**
-   * Show detail modal
+    /**
+   * Shows the modal for card details
    */
   showDetModal() {
     this.routeDataService.card.next(this.cardItem);

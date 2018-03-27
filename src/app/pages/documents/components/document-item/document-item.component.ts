@@ -70,6 +70,13 @@ export class DocumentItemComponent implements OnInit {
     }
   }
 
+    /**
+   * Shows the modal for document details
+   */
+  showDetModal() {
+    this.routeDataService.document.next(this.documentItem);
+  }
+
   /**
    * Sets the status of the document in the database
    */

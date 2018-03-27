@@ -1,12 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Document } from '../../../../datamodels/document';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
-import { Document } from '../../../../datamodels/document';
-
+import { FormControl, Validators, NgForm } from '@angular/forms';
 import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
 import { RouteDataService } from '../../../../services/route-data.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-document-detail',
   templateUrl: './document-detail.component.html',
@@ -14,15 +17,75 @@ import { RouteDataService } from '../../../../services/route-data.service';
 })
 export class DocumentDetailComponent implements OnInit {
 
-  documentDetail: Document;
+  @ViewChild('detailForm') detailForm: NgForm;
 
-  constructor(private routeDataService: RouteDataService) {
+  showModal = false;
+
+  get _showModal() {
+    return this.showModal;
+  }
+  set _showModal(value: any) {
+    if (!value) {
+      this.closeForm();
+    }
+
+    this.showModal = value;
+  }
+
+  documentItem: Document = null;
+
+  constructor(
+    private routeDataService: RouteDataService,
+    public utilitiesService: UtilitiesService
+  ) {
     this.routeDataService.document.subscribe((document) => {
-      this.documentDetail = document;
+      if (document && document.id) {
+        this.documentItem = document;
+        this._showModal = true;
+      }
     });
 
   }
   ngOnInit() {
   }
 
+  showDetail() {
+    this.showModal = false;
+  }
+
+  /**
+   * Closes form.
+   */
+  closeForm() {
+    this.detailForm.resetForm();
+
+    this.documentItem = Object.assign({}, new Document());
+    this.routeDataService.document.next(this.documentItem);
+
+    this.showModal = false;
+  }
+
+  displayRegistrationDate() {
+    if (this.documentItem) {
+      return moment(this.documentItem.registrationDate).format('YYYY-MM-DD');
+    }
+  }
+
+  displayDocumentDate() {
+    if (this.documentItem) {
+      return moment(this.documentItem.documentDate).format('YYYY-MM-DD');
+    }
+  }
+
+  displayCreationDate() {
+    if (this.documentItem) {
+      return moment(this.documentItem.creationDate).format('YYYY-MM-DD');
+    }
+  }
+
+  displayModifiedDate() {
+    if (this.documentItem) {
+      return moment(this.documentItem.modifiedDate).format('YYYY-MM-DD');
+    }
+  }
 }
