@@ -5,7 +5,7 @@ deploy_prod:
   stage: deploy
   script:
     - echo "make deploy"
-    - cd pum/PUMApp
+    - cd /home/gitlab/pum/PUMApp
     - git pull
     - ng build --prod
     - rm /data/www/pumapp/*
