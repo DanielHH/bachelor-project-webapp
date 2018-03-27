@@ -12,6 +12,7 @@ import { User } from '../datamodels/user';
 import { Verification } from '../datamodels/verification';
 import { VerificationType } from '../datamodels/verificationType';
 import { StatusType } from '../datamodels/statusType';
+import { LogEvent } from '../datamodels/logEvent';
 
 @Injectable()
 export class DataService {
@@ -136,6 +137,18 @@ export class DataService {
     this._statusTypeList
   );
 
+  /**
+   * List with all log events
+   */
+  _logEventList: LogEvent[] = [];
+
+  /**
+   * A subscriber to the log event list
+   */
+  logEventList: BehaviorSubject<LogEvent[]> = new BehaviorSubject<LogEvent[]>(
+    this._logEventList
+  );
+
   constructor(public httpService: HttpService) {
     this.getAllData();
   }
@@ -156,6 +169,8 @@ export class DataService {
     this.getVerificationTypeList();
 
     this.getStatusTypeList();
+
+    this.getLogEventList();
   }
 
   getUserList() {
@@ -225,6 +240,13 @@ export class DataService {
     this.httpService.httpGet<StatusType>('getStatusTypes').then(data => {
       this._statusTypeList = data;
       this.statusTypeList.next(this._statusTypeList);
+    });
+  }
+
+  getLogEventList() {
+    this.httpService.httpGet<LogEvent>('getLogEvents').then(data => {
+      this._logEventList = data;
+      this.logEventList.next(this._logEventList);
     });
   }
 
