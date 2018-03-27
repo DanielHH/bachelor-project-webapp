@@ -49,24 +49,6 @@ export class InventoryItemComponent implements OnInit {
   ngOnInit() {}
 
   /**
-   * Change card status
-
-  setCardStatus(status: number) {
-    this.cardItem.status = status;
-    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-      if (res.message === 'success') {
-        this.showRequestModal = false;
-        this.showReturnModal = false;
-      }
-    });
-  }*/
-
-
-  displayItemType(): string {
-    return this.baseItem.isCard() ? 'Kort' : 'Handling';
-  }
-
-  /**
    * Change route and send route data
    *
   route() {
@@ -80,12 +62,6 @@ export class InventoryItemComponent implements OnInit {
     }*
   }*/
 
-  /**
-   * Set item to be outputted for editing
-   *
-  edit() {
-    this.editItem.next(this.baseItem.item);
-  }*/
 
   /**
    * Send a messge to the backend updating when this item was last inventoried
@@ -102,6 +78,7 @@ export class InventoryItemComponent implements OnInit {
    */
   displayLastVerified(): string {
     // TODO: ask the backend
+    // check that this baseitem is defined
     return 'Aldrig';
   }
 }

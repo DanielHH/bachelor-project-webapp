@@ -80,6 +80,13 @@ getComment(): string {
 }
 
 /**
+ * Get the (Swedish) name of the primary type of this item.
+*/
+getItemType(): string {
+  return this.isCard() ? 'Kort' : 'Handling';
+}
+
+/**
  * Get the status of this Card/Document.
 */
 getStatus(): StatusType {

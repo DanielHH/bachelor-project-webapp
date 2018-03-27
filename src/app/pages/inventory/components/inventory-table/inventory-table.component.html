@@ -1,5 +1,5 @@
-<div class="card">
-  <div class="card-body">
+<div class="inventory-item">
+  <div class="inventory-item-body">
     <!-- Input field for filter -->
     <div class="row">
       <div class="col-4">
@@ -78,18 +78,9 @@
       <div class="col-1"></div>
     </div>
     <hr>
-
-    <!-- Add cards to the table
-    <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
-      <inventory-item [baseItem]="makeItem(card, 'card')"> </inventory-item>
-    </div>
-    <!-- Add documents to the table
-    <div *ngFor="let doc of documentList | matchFilterDocument:filterInput:showIn:showOut:showArchived:showGone">
-      <inventory-item [baseItem]="makeItem(doc, 'document')"> </inventory-item>
-    </div>-->
     <div *ngFor="let item of baseItemList">
-        <inventory-item [baseItem]="item"> </inventory-item>
-      </div>
+        <inventory-item *ngIf="passesFilter(item)" [baseItem]="item"> </inventory-item>
+    </div>
 
   </div>
 </div>

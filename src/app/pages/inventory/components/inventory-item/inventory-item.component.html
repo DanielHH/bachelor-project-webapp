@@ -4,14 +4,14 @@
             <span>Inventera</span>
         </button>
     </div>
-    <div class="col-1" *ngIf="baseItem?.getStatus()?.id == 3 || baseItem.getStatus()?.id == 4">
+    <div class="col-1" *ngIf="baseItem?.getStatus()?.id == 3 || baseItem?.getStatus()?.id == 4">
         <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
             <span *ngIf="baseItem?.getStatus()?.id == 3">Arkiv</span>
             <span *ngIf="baseItem?.getStatus()?.id == 4">Borta</span>
         </button>
     </div>-->
 
-    <div class="col">{{displayItemType()}}</div>
+    <div class="col">{{baseItem?.getItemType()}}</div>
     <div class="col">{{baseItem?.getSubType()?.name}}</div>
     <div class="col">
         <span class="detail-link" >{{baseItem?.getNumber()}}</span>
@@ -22,7 +22,7 @@
     <div class="col">{{displayLastVerified()}}</div>
 
     <div class="col-1">
-        <app-item-menu [item]="baseItem.item"></app-item-menu>
+        <app-item-menu [item]="baseItem?.item"></app-item-menu>
     </div>
 
 </div>

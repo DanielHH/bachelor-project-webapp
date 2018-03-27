@@ -40,7 +40,10 @@ export class InventoryTableComponent implements OnInit {
   showArchived = false;
   showGone = false;
 
-  constructor() {}
+  constructor(
+    private cardPipe: MatchFilterCardPipe,
+    private docPipe: MatchFilterDocumentPipe
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -108,10 +111,13 @@ export class InventoryTableComponent implements OnInit {
       }
     }
     if (newOrder) {
-      this.baseItemList = _.orderBy(this.baseItemList, [
-        orderFunc
-        // (item: BaseItem) => item.getSubType().name
-      ], [newOrder]);
+      this.baseItemList = _.orderBy(
+        this.baseItemList,
+        [
+          orderFunc
+        ],
+        [newOrder]
+      );
     }
   }
 
@@ -128,12 +134,32 @@ export class InventoryTableComponent implements OnInit {
     }
   }
 
-  /**
-   * Helper for the html file of this component.
-   * Constructs a new BaseItem from the given item.
-   */
-  makeItem(item: Card | Document, itemType: string): BaseItem {
-    return new BaseItem(item, itemType);
-  }
 
+
+  /**
+   * Detect if the given item should be filtered or not,
+   * depending on checked boxes and input of filter field.
+   * @returns true if the item should be displayed, false otherwise
+   */
+  passesFilter(baseItem: BaseItem): boolean {
+    if (baseItem.isCard()) {
+      return this.cardPipe.matchFilt(
+        baseItem.item as Card,
+        this.filterInput,
+        this.showIn,
+        this.showOut,
+        this.showArchived,
+        this.showGone
+      );
+    } else {
+      return this.docPipe.matchFilt(
+        baseItem.item as Document,
+        this.filterInput,
+        this.showIn,
+        this.showOut,
+        this.showArchived,
+        this.showGone
+      );
+    }
+  }
 }

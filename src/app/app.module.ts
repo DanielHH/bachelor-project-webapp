@@ -145,7 +145,9 @@ import { ReturnService } from './services/return.service';
     UtilitiesService,
     EditService,
     RequestService,
-    ReturnService
+    ReturnService,
+    MatchFilterCardPipe,
+    MatchFilterDocumentPipe
   ],
   entryComponents: [],
   bootstrap: [AppComponent]
