@@ -103,39 +103,39 @@
             <div class="row py-2"></div>
             <!-- Row 12 -->
             <div class="row my-1">
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-4">
                 <b>Status:</b>
               </div>
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-4">
                 <b>Aktiva kvittenser:</b>
+              </div>
+              <div class="col-0 col-md-4">
+                <b>Användare:</b>
               </div>
             </div>
             <!-- Row 13 -->
             <div class="row my-1">
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-4">
                 {{documentItem?.status}}
               </div>
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-4">
                 {{documentItem?.activeReceipt}}
+              </div>
+              <div class="col-0 col-md-4">
+                {{documentItem?.user?.name}}
               </div>
             </div>
             <!-- Row 14 Space -->
             <div class="row py-2"></div>
             <!-- Row 15 -->
             <div class="row my-1">
-              <div class="col-0 col-md-6">
-                <b>Användare:</b>
-              </div>
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-12">
                 <b>Kommentar:</b>
               </div>
             </div>
             <!-- Row 16 -->
             <div class="row my-1">
-              <div class="col-0 col-md-6">
-                {{documentItem?.user?.name}}
-              </div>
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-12">
                 {{documentItem?.comment}}
               </div>
             </div>
