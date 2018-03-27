@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
@@ -8,6 +8,9 @@ import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
+import { EditService } from '../../../../services/edit.service';
+import { RequestService } from '../../../../services/request.service';
+import { ReturnService } from '../../../../services/return.service';
 
 @Component({
   selector: 'app-document-item',
@@ -16,24 +19,23 @@ import { HttpService } from '../../../../services/http.service';
 })
 export class DocumentItemComponent implements OnInit {
   @Input() documentItem: Document;
-  @Output() editItem = new EventEmitter<any>();
 
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
-
-  showRequestModal = false;
-
-  showReturnModal = false;
 
   constructor(
     public dataService: DataService,
     private routeDataService: RouteDataService,
     private router: Router,
-    private httpService: HttpService
-  ) {
+    private httpService: HttpService,
+    private editService: EditService,
+    private requestService: RequestService,
+    private returnService: ReturnService) {
+
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
+
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
@@ -42,41 +44,8 @@ export class DocumentItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
-   * Change card status
+   * Change route and send route data
    */
-  setDocumentStatus(status: number) {
-    this.documentItem.status = status;
-    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-      if (res.message === 'success') {
-        this.showRequestModal = false;
-        this.showReturnModal = false;
-      }
-    });
-  }
-
-  /**
-   * Returns the name of the document type corresponding to the documentType
-   */
-  displayDocumentType() {
-    if (this.documentItem.documentType > 0) {
-      const documentTypeToDisplay = _.find(this.documentTypeList, documentType => documentType.id === this.documentItem.documentType);
-      if (documentTypeToDisplay) {
-        return documentTypeToDisplay.name;
-      }
-    }
-    return '';
-  }
-
-  /**
-   * Returns the name corresponding to the userID
-   */
-  displayUserName() {
-    if (this.documentItem.userID) {
-      return _.find(this.userList, user => user.id === this.documentItem.userID)
-        .name;
-    }
-    return '';
-  }
   route() {
     this.routeDataService.document.next(this.documentItem);
     this.router.navigate(['document-detail']);
@@ -86,17 +55,27 @@ export class DocumentItemComponent implements OnInit {
    * Set document to be outputted for editing
    */
   edit() {
-    this.editItem.next(this.documentItem);
+    this.editService.document.next(this.documentItem);
   }
 
   /**
    * Show modal based on status
+   * 1 = returned, 2 = available
    */
   showModal() {
-    if (this.documentItem.status === 1) {
-      this.showRequestModal = true;
+    if (this.documentItem.status.id == 1) {
+      this.requestService.document.next(this.documentItem);
     } else {
-      this.showReturnModal = true;
+      this.returnService.document.next(this.documentItem);
     }
+  }
+
+  /**
+   * Sets the status of the document in the database
+   */
+  editStatus() {
+    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+      if (res.message === 'success') { }
+    });
   }
 }

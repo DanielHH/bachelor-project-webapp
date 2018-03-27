@@ -25,18 +25,19 @@ export class ReceiptItemComponent implements OnInit {
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
+  itemKindToDisplay: string;
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
   itemUserNameToDisplay: string;
 
   itemActive: boolean;
 
-  constructor(private utilitiesService: UtilitiesService) {
+  constructor(public utilitiesService: UtilitiesService) {
   }
 
   ngOnInit() {
     // get actual data to be displayed
-    [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
+    [this.itemIDToDisplay, this.itemKindToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
       this.utilitiesService.getReceiptDisplay(this.receiptItem);
 
     this.setActiveReceipt();
@@ -47,23 +48,6 @@ export class ReceiptItemComponent implements OnInit {
    */
   setActiveReceipt() {
     this.itemActive = (this.receiptItem.endDate == null);
-  }
-
-  /**
-   * Returns a string representation of the displayedStartDate of the card
-   */
-  displayStartDate() {
-    return moment(this.receiptItem.startDate).format('YYYY-MM-DD');
-  }
-
-   /**
-   * Returns a string representation of the displayedEndDate of the card
-   */
-  displayEndDate() {
-    if (this.receiptItem.endDate != null) {
-      return moment(this.receiptItem.endDate).format('YYYY-MM-DD');
-    }
-
   }
 
 }

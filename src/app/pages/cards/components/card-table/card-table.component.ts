@@ -13,7 +13,7 @@ export class CardTableComponent implements OnInit {
 
   @Input() cardList: Card[];
 
-  editCard: Card = null; // Card to be edited
+  cardItem = new Card(); // Dummy
 
   showModal = false;
 
@@ -57,7 +57,7 @@ export class CardTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
@@ -72,7 +72,7 @@ export class CardTableComponent implements OnInit {
         this.orderCardNumber = newOrder;
         break;
       }
-      case 'userID': {
+      case 'user.id': {
         newOrder = this.sortTableListHelper(this.orderUserID);
         this.orderUserID = newOrder;
         break;
@@ -112,21 +112,10 @@ export class CardTableComponent implements OnInit {
   }
 
   /**
-   * Set card to be edited and open edit modal
-   */
-  openEdit(card: any) {
-    this.editCard = card;
-    this.modalTitle = 'Edit card';
-    this.modalType = 1;
-    this.showModal = true;
-  }
-
-  /**
    * Open add new card modal
    */
   openAddNewCard() {
-    this.editCard = Object.assign({}, new Card());
-    this.modalTitle = 'Add new card';
+    this.modalTitle = 'Lägg till nytt kort';
     this.modalType = 0;
     this.showModal = true;
   }

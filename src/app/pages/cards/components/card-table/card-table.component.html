@@ -1,93 +1,105 @@
 <div class="card">
   <div class="card-body">
-    <!-- Input field for filter -->
+    <!-- Row text filter input and add new button -->
     <div class="row">
-      <div class="col-4">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
-          maxlength="128" placeholder="Filter by">
-          <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
-        </mat-form-field>
-      </div>
-      <div class="col-3"></div>
-      
-      <div class="col-1">
-          <div class="form-check">
 
-              <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showIn>
-                <label class="form-check-label" for="showInID">Inne</label>
-              </div>
-    
-            <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showOutID" [(ngModel)]=showOut>
-                <label class="form-check-label" for="showOutID">Ute</label>
-            </div>
-          </div>
-        </div> 
-
-      <div class="col-2">
-        <div class="form-check">
-
-            <input type="checkbox" class="filled-in form-check-input" id="showArchivedID" [(ngModel)]=showArchived>
-            <label class="form-check-label" for="showArchivedID">Arkiverade</label>
+        <!-- Input field for text filter -->
+        <div class="col-4">
+          <mat-form-field>
+              <!--Input-->
+              <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput"
+              maxlength="128" placeholder="Filtrera på">
+              <!--Clear-->
+              <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
+              (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+          </mat-form-field>
         </div>
 
-        <div class="form-check">
-            <input type="checkbox" class="filled-in form-check-input" id="showGoneID" [(ngModel)]=showGone>
-            <label class="form-check-label" for="showGoneID">Borta</label>
+        <div class="col-6"></div> <!-- Space -->
+
+        <!-- Add new document button-->
+        <div class="col-2">
+          <span class="add-new-button">
+              <button mat-raised-button (click)="openAddNewCard()" color="primary">Lägg till nytt kort</button>
+          </span>
         </div>
 
       </div>
 
-      <!-- Add new card button-->
-      <div class="col-2">
-        <button mat-raised-button (click)="openAddNewCard()" color="primary">Add New Card</button>
-      </div>
+      <!-- Row filter per status -->
+      <div class="row pb-4 pl-2">
+
+        <div class="col-1 px-1">
+          <mat-checkbox id="showIn" name="showIn" color="primary" class="px-1"
+          [(ngModel)]="showIn">Inlämnade</mat-checkbox>
+        </div>
+
+        <div class="col-1 px-1">
+          <mat-checkbox id="showOut" name="showOut" color="primary" class="px-1"
+          [(ngModel)]="showOut">Utlämnade</mat-checkbox>
+        </div>
+
+        <div class="col-1 px-1">
+          <mat-checkbox id="showArchived" name="showArchived" color="primary" class="px-1"
+          [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        </div>
+
+        <div class="col-1 px-1">
+          <mat-checkbox id="showGone" name="showGone" color="primary" class="px-1"
+          [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        </div>
+
+        <div class="col-8"></div>
+
     </div>
 
     <!-- Header row -->
-    <div class="row">
-      <div class="col-1" (click)="sortTableList('status')">
+    <div class="row table-header">
+      <div class="col-narrow table-col px-2" (click)="sortTableList('status.id')">
         <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
         [class.both-arrow]="orderStatus == ''">Status </span>
       </div>
-      <div class="col" (click)="sortTableList('cardType')">
+      <div class="col-narrow table-col" (click)="sortTableList('cardType')">
         <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'"
-        [class.both-arrow]="orderCardType == ''">Type </span>
+        [class.both-arrow]="orderCardType == ''">Typ </span>
       </div>
-      <div class="col" (click)="sortTableList('cardNumber')">
+      <div class="col-wide table-col" (click)="sortTableList('cardNumber')">
         <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'"
-        [class.both-arrow]="orderCardNumber == ''">Serial Number </span>
+        [class.both-arrow]="orderCardNumber == ''">Kort-ID </span>
       </div>
-      <div class="col" (click)="sortTableList('userID')">
+      <div class="col-wide table-col" (click)="sortTableList('user.id')">
         <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
-        [class.both-arrow]="orderUserID == ''">User ID </span>
+        [class.both-arrow]="orderUserID == ''">Användare </span>
       </div>
-      <div class="col" (click)="sortTableList('location')">
+      <div class="col-wide table-col" (click)="sortTableList('location')">
         <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
-        [class.both-arrow]="orderLocation == ''">Location </span>
+        [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
       </div>
-      <div class="col" (click)="sortTableList('comment')">
+      <div class="col-wide table-col" (click)="sortTableList('comment')">
         <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
-        [class.both-arrow]="orderComment == ''">Comment </span>
+        [class.both-arrow]="orderComment == ''">Kommentar </span>
       </div>
-      <div class="col" (click)="sortTableList('expirationDate')">
+      <div class="col-narrow table-col" (click)="sortTableList('expirationDate')">
         <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'"
-        [class.both-arrow]="orderDate == ''">Expiration date </span>
+        [class.both-arrow]="orderDate == ''">Utgångsdatum </span>
       </div>
-      <div class="col-1"></div>
+
+      <div class="pl-3 menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
+          <app-item-menu [item]="cardItem" class="hidden"></app-item-menu>
+      </div>
     </div>
     <hr>
 
-    <!-- Add cards to the table   -->
+    <!-- Add cards to the table -->
     <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
-        <app-card-item [cardItem]="card" (editItem)="openEdit($event)"> </app-card-item>
+        <app-card-item [cardItem]="card"></app-card-item>
     </div>
   </div>
 </div>
 
-<app-modify-card [cardList]="cardList" [card]="editCard" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-card>
+<app-modify-card [cardList]="cardList" [modalTitle]="modalTitle" [modalType]="modalType"
+[(showModal)]="showModal"></app-modify-card>
+
+<app-request-card></app-request-card>
+
+<app-return-card></app-return-card>

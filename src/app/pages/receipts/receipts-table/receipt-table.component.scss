@@ -1,7 +1,3 @@
-.row {
-    font-weight: bold;
-}
-
 // Adding sorting icons and hover pointer to objects
 .hover {
     cursor: pointer;
@@ -21,3 +17,16 @@
         font-size: 12px;
     }
 }
+
+.col-narrow {
+  width: 13%;
+}
+
+.col-wide {
+  width: 14%;
+}
+
+.menu-button-col {
+  z-index: -1;
+}
+

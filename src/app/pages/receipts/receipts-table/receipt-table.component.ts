@@ -14,6 +14,7 @@ export class ReceiptTableComponent implements OnInit {
   filterInput = '';
 
   orderStatus = '';
+  orderItemKindID = '';
   orderItemTypeID = '';
   orderIDNumber = '';
   orderUserID = '';
@@ -50,6 +51,11 @@ export class ReceiptTableComponent implements OnInit {
       case 'status': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
+        break;
+      }
+      case 'itemKindID': {
+        newOrder = this.sortTableListHelper(this.orderItemKindID);
+        this.orderItemKindID = newOrder;
         break;
       }
       case 'itemTypeID': {

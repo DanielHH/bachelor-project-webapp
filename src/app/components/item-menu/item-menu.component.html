@@ -10,12 +10,12 @@
     <div class="dropdown-menu">
         <a class="dropdown-item" (click)="route()">Detaljer</a>
         <a class="dropdown-item" (click)="edit()">Ändra</a>
-        <a class="dropdown-item" (click)="setStatus(3)" *ngIf="this.item.status != 3">Arkivera</a>
-        <a class="dropdown-item" (click)="setStatus(4)" *ngIf="this.item.status != 4">Borttappat</a>
+        <a class="dropdown-item" (click)="setStatus(3)" *ngIf="this.item.status != 2 && this.item.status != 3">Arkivera</a>
+        <a class="dropdown-item" (click)="setStatus(4)" *ngIf="this.item.status != 3 && this.item.status != 4">Borttappat</a>
         <a class="dropdown-item" (click)="setStatus(1)" *ngIf="this.item.status == 3 || this.item.status == 4">Återställ</a>
-        <a class="dropdown-item">{{formatDate(item.creationDate)}}</a>
-        <a class="dropdown-item">{{formatDate(item.modifiedDate)}}</a>
+        <!--<a class="dropdown-item">{{formatDate(item.creationDate)}}</a>
+        <a class="dropdown-item">{{formatDate(item.modifiedDate)}}</a>-->
         <div class="divider dropdown-divider"></div>
-        <a class="dropdown-item">Close</a>
+        <a class="dropdown-item">Stäng</a>
     </div>
 </div>

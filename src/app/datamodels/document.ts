@@ -1,3 +1,7 @@
+import { User } from './user';
+import { StatusType } from './statusType';
+import { DocumentType } from './documentType';
+
 /**
  * Document data model
 */
@@ -11,7 +15,7 @@ export class Document {
   /**
    * Document type
    */
-  documentType: number;
+  documentType: DocumentType;
 
   /**
    * Document serial number (can contain alphabetical characters)
@@ -38,7 +42,7 @@ export class Document {
    */
   registrationDate: Date;
 
- /**
+  /**
    * Creation date of document in database
    */
   creationDate: Date;
@@ -51,7 +55,7 @@ export class Document {
   /**
    * ID of current document holder
    */
-  userID: number;
+  user: User;
 
   /**
    * Current location of document
@@ -61,27 +65,16 @@ export class Document {
   /**
    * Comment
    */
-  comment: string;
+  comment?: string;
 
   /**
-   * document checked in/out status
+   * Document checked in/out status
    */
-  status: number;
+  status: StatusType;
 
-  constructor() {
-    this.id = null;
-    this.documentType = null;
-    this.documentNumber = null;
-    this.name = null;
-    this.sender = '';
-    this.documentDate = null;
-    this.registrationDate = null;
-    this.creationDate = null;
-    this.modifiedDate = null;
-    this.userID = null;
-    this.location = null;
-    this.comment = null;
-    this.status = 0;
-  }
+  /**
+   * Active receipt (if any)
+   */
+  activeReceipt?: number;
 
 }
