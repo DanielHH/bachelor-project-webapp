@@ -64,7 +64,7 @@ export class InventoryItemComponent implements OnInit {
 
 
   /**
-   * Send a messge to the backend updating when this item was last inventoried
+   * Send a message to the backend updating when this item was last inventoried
    * to be the current time.
    */
   verifyInventory(): void {

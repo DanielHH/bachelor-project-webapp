@@ -5,7 +5,7 @@
       <div class="col-4">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text" maxlength="128" placeholder="Filter by">
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text" maxlength="128" placeholder="Filtrera på">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
             <mat-icon>close</mat-icon>
@@ -48,27 +48,27 @@
     <div class="row">
 
       <div class="col-1" (click)="sortTableList('status')">
-        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status</span>
       </div>
 
       <div class="col" (click)="sortTableList('itemType')">
-          <span class="hover" [class.up-arrow]="orderItemType == 'asc'" [class.down-arrow]="orderItemType == 'desc'" [class.both-arrow]="orderItemType == ''">Type </span>
+          <span class="hover" [class.up-arrow]="orderItemType == 'asc'" [class.down-arrow]="orderItemType == 'desc'" [class.both-arrow]="orderItemType == ''">Typ</span>
       </div>
 
       <div class="col" (click)="sortTableList('subType')">
-        <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Subtype </span>
+        <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Subtyp</span>
       </div>
       <div class="col" (click)="sortTableList('number')">
-        <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">Serial Number </span>
+        <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">ID</span>
       </div>
       <div class="col" (click)="sortTableList('user')">
         <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">User</span>
       </div>
       <div class="col" (click)="sortTableList('location')">
-        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Location </span>
+        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaringsplats</span>
       </div>
       <div class="col" (click)="sortTableList('comment')">
-        <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Comment </span>
+        <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar</span>
       </div>
 
       <div class="col" (click)="sortTableList('verifyDate')">
