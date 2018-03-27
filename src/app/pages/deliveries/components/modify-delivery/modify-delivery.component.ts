@@ -22,6 +22,8 @@ export class ModifyDeliveryComponent implements OnInit {
   documentNameInput = '';
   receiverInput = '';
 
+  documentDateInput = '';
+  documentDateDatepickerInput = '';
   sentDateInput = '';
   sentDateDatepickerInput = '';
 
@@ -32,6 +34,8 @@ export class ModifyDeliveryComponent implements OnInit {
   documentNumberControl = new FormControl('', Validators.required);
   documentNameControl = new FormControl('', Validators.required);
   receiverControl = new FormControl('', Validators.required);
+  documentDateControl = new FormControl('', Validators.required);
+  documentDatePickerControl = new FormControl();
   sentDateControl = new FormControl('', Validators.required);
   sentDatePickerControl = new FormControl();
 
@@ -129,6 +133,7 @@ export class ModifyDeliveryComponent implements OnInit {
       delivery.name = this.documentNameInput;
       delivery.receiver = this.receiverInput;
 
+      delivery.documentDate = new Date(this.documentDateInput);
       delivery.sentDate = new Date(this.sentDateInput);
 
       delivery.comment = this.commentInput;
@@ -183,6 +188,25 @@ export class ModifyDeliveryComponent implements OnInit {
 
   /**
    * Sets the sent date datePicker the date entered in the input field.
+   */
+  setDocumentDateToDatePicker() {
+    if (!this.documentDateControl.hasError('required') && !this.documentDateControl.hasError('dateFormat')) {
+      this.documentDateDatepickerInput = this.documentDateInput; // Set date in Datepicker
+    }
+  }
+
+  /**
+   * Sets documentDate from datePicker to visible input field in YYYY-MM-DD format
+   * @param data Date selected in datePicker
+   */
+  setDocumentDateFromDatepicker(data: any) {
+    if (data.value != null) {
+      this.documentDateInput = this.utilitiesService.getDateString(data.value);
+    }
+  }
+
+  /**
+   * Sets the sent date datePicker the date entered in the input field.
   */
   setSentDateToDatePicker() {
     if (!this.sentDateControl.hasError('required') && !this.sentDateControl.hasError('dateFormat')) {
@@ -232,6 +256,16 @@ export class ModifyDeliveryComponent implements OnInit {
   }
 
   /**
+     * Returns true if entered document date is valid, else false.
+    */
+   isValidDocumentDate() {
+    return (
+      !this.documentDateControl.hasError('required') &&
+      !this.documentDateControl.hasError('dateFormat')
+    );
+  }
+
+  /**
      * Returns true if entered sent date is valid, else false.
     */
   isValidSentDate() {
@@ -245,6 +279,7 @@ export class ModifyDeliveryComponent implements OnInit {
     return (
       this.isValidDocumentType() &&
       this.isValidDocumentNumber() &&
+      this.isValidDocumentDate() &&
       this.isValidSentDate() &&
       this.isValidDocumentName() &&
       this.isValidReceiver()

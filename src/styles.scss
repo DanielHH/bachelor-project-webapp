@@ -58,6 +58,25 @@ input {
   transform: scale(0.75) !important;
 }
 
+.text-filter-input {
+  margin-left: 15px;
+  min-width: 480px;
+  max-width: 480px;
+}
+
+.filter-checkbox {
+  display: inline-flex;
+  justify-content: space-evenly;
+  margin-left: 5px;
+  min-width: 110px;
+  max-width: 110px;
+}
+
+.filter-checkbox-row {
+  display: inline-flex;
+  justify-content: flex-start;
+}
+
 .table-col {
   white-space: nowrap !important;
   overflow: hidden !important;
