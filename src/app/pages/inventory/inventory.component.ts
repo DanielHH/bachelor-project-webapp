@@ -17,12 +17,10 @@ export class InventoryComponent implements OnInit {
   constructor(public dataService: DataService) {
     this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
-      console.log('new card now, len:', cardList.length);
       this.refreshItemList();
     });
     this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
-      console.log('new doc now, len:', documentList.length);
       this.refreshItemList();
     });
   }

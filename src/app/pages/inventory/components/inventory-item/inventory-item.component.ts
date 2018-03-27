@@ -19,7 +19,6 @@ import { HttpService } from '../../../../services/http.service';
 })
 export class InventoryItemComponent implements OnInit {
   @Input() baseItem: BaseItem;
-  @Output() editItem = new EventEmitter<any>();
 
   cardTypeList: CardType[] = [];
   documentTypeList: DocumentType[] = [];
@@ -47,21 +46,6 @@ export class InventoryItemComponent implements OnInit {
   }
 
   ngOnInit() {}
-
-  /**
-   * Change route and send route data
-   *
-  route() {
-    if (this.baseItem.isCard()) {
-      this.routeDataService.card.next(this.baseItem.item);
-      this.router.navigate(['card-detail']);
-    }
-    /*if (this.baseItem.isDocument()) {
-      this.routeDataService.document.next(this.baseItem.item);
-      this.router.navigate(['document-detail']);
-    }*
-  }*/
-
 
   /**
    * Send a message to the backend updating when this item was last inventoried
