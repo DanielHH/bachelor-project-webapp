@@ -23,44 +23,34 @@ import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document
 export class InventoryTableComponent implements OnInit {
   @Input() baseItemList: BaseItem[];
 
-
-  editCard: Card = null; // Card to be edited
-
-  showModal = false;
-
   filterInput = '';
 
   orderStatus = '';
-  orderCardType = '';
-  orderCardNumber = '';
-  orderUserID = '';
+  orderSubType = '';
+  orderNumber = '';
+  orderUser = '';
   orderLocation = '';
   orderComment = '';
   orderDate = '';
   orderItemType = '';
+  orderVerifyDate = '';
 
   showIn = true;
   showOut = true;
   showArchived = false;
   showGone = false;
 
-  modalTitle = '';
-
-  modalType = 0;
-
   constructor() {}
 
   ngOnInit() {
     this.sortTableListStart();
-    // console.log('(tableinit)cardlen: ', this.cardList.length);
-    // console.log('doclen: ', this.documentList.length);
   }
 
   /**
    * Sorts table after modifiedDate ascending
    */
   sortTableListStart() {
-    // this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
+    this.baseItemList = _.orderBy(this.baseItemList, ['subType'], ['desc']);
   }
 
   /**
@@ -68,55 +58,60 @@ export class InventoryTableComponent implements OnInit {
    * @param property
    */
   sortTableList(property: string) {
-    // TODO: reimplement me!
     let newOrder = '';
-
+    let orderFunc = (item: BaseItem) => '';
     switch (property) {
       case 'itemType':
         newOrder = this.sortTableListHelper(this.orderItemType);
         this.orderItemType = newOrder;
-        console.log('sorting by itemtype');
+        orderFunc = (item: BaseItem) => item.itemType;
         break;
-      /*
       case 'status': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
+        orderFunc = (item: BaseItem) => item.getStatus().name;
         break;
       }
-      case 'cardType': {
-        newOrder = this.sortTableListHelper(this.orderCardType);
-        this.orderCardType = newOrder;
+      case 'subType': {
+        newOrder = this.sortTableListHelper(this.orderSubType);
+        this.orderSubType = newOrder;
+        orderFunc = (item: BaseItem) => item.getSubType().name;
         break;
       }
-      case 'cardNumber': {
-        newOrder = this.sortTableListHelper(this.orderCardNumber);
-        this.orderCardNumber = newOrder;
+      case 'number': {
+        newOrder = this.sortTableListHelper(this.orderNumber);
+        this.orderNumber = newOrder;
+        orderFunc = (item: BaseItem) => item.getNumber();
         break;
       }
-      case 'userID': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
+        orderFunc = (item: BaseItem) => item.getUser().name;
         break;
       }
       case 'location': {
         newOrder = this.sortTableListHelper(this.orderLocation);
         this.orderLocation = newOrder;
+        orderFunc = (item: BaseItem) => item.getLocation();
         break;
       }
       case 'comment': {
         newOrder = this.sortTableListHelper(this.orderComment);
         this.orderComment = newOrder;
+        orderFunc = (item: BaseItem) => item.getComment();
         break;
       }
-      case 'expirationDate': {
-        newOrder = this.sortTableListHelper(this.orderDate);
-        this.orderDate = newOrder;
+      case 'verifyDate': {
+        // TODO
         break;
-      }*/
+      }
     }
-
     if (newOrder) {
-      // this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
+      this.baseItemList = _.orderBy(this.baseItemList, [
+        orderFunc
+        // (item: BaseItem) => item.getSubType().name
+      ], [newOrder]);
     }
   }
 

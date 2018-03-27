@@ -47,7 +47,7 @@
     <!-- Header row -->
     <div class="row">
 
-      <div class="col-1">
+      <div class="col-1" (click)="sortTableList('status')">
         <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
       </div>
 
@@ -55,14 +55,14 @@
           <span class="hover" [class.up-arrow]="orderItemType == 'asc'" [class.down-arrow]="orderItemType == 'desc'" [class.both-arrow]="orderItemType == ''">Type </span>
       </div>
 
-      <div class="col" (click)="sortTableList('cardType')">
-        <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'" [class.both-arrow]="orderCardType == ''">Subtype </span>
+      <div class="col" (click)="sortTableList('subType')">
+        <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Subtype </span>
       </div>
-      <div class="col" (click)="sortTableList('cardNumber')">
-        <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'" [class.both-arrow]="orderCardNumber == ''">Serial Number </span>
+      <div class="col" (click)="sortTableList('number')">
+        <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">Serial Number </span>
       </div>
-      <div class="col" (click)="sortTableList('userID')">
-        <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">User ID </span>
+      <div class="col" (click)="sortTableList('user')">
+        <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">User</span>
       </div>
       <div class="col" (click)="sortTableList('location')">
         <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Location </span>
@@ -71,8 +71,8 @@
         <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Comment </span>
       </div>
 
-      <div class="col">
-        <span class="hover">Inventerad</span>
+      <div class="col" (click)="sortTableList('verifyDate')">
+        <span class="hover" [class.up-arrow]="orderVerifyDate == 'asc'" [class.down-arrow]="orderVerifyDate == 'desc'" [class.both-arrow]="orderVerifyDate == ''">Inventerad</span>
       </div>
 
       <div class="col-1"></div>
