@@ -10,9 +10,9 @@
     <div class="dropdown-menu">
         <a class="dropdown-item" (click)="route()">Detaljer</a>
         <a class="dropdown-item" (click)="edit()">Ändra</a>
-        <a class="dropdown-item" (click)="setStatus(3)" *ngIf="getStatusID() == 1 || getStatusID() == 2">Arkivera</a>
-        <a class="dropdown-item" (click)="setStatus(4)" *ngIf="getStatusID() == 1 || getStatusID() == 2">Borttappat</a>
-        <a class="dropdown-item" (click)="setStatus(1)" *ngIf="getStatusID() == 3 || getStatusID() == 4">Återställ</a>
+        <a class="dropdown-item" (click)="setStatus(3)" *ngIf="item?.status?.id == 1 || item?.status?.id == 2">Arkivera</a>
+        <a class="dropdown-item" (click)="setStatus(4)" *ngIf="item?.status?.id == 1 || item?.status?.id == 2">Borttappat</a>
+        <a class="dropdown-item" (click)="setStatus(1)" *ngIf="item?.status?.id == 3 || item?.status?.id == 4">Återställ</a>
         <div class="divider dropdown-divider"></div>
         <a class="dropdown-item">Stäng</a>
     </div>

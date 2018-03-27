@@ -28,12 +28,6 @@ export class ItemMenuComponent implements OnInit {
   ngOnInit() {
   }
 
-  getStatusID() {
-    if (this.item.status) {
-      return this.item.status.id;
-    }
-  }
-
   /**
    * Change route and send route data
    */
