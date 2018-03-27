@@ -91,7 +91,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
-          <mat-error *ngIf="receiverControl.hasError('required')">Ange en avsändare</mat-error>
+          <mat-error *ngIf="receiverControl.hasError('required')">Ange en mottagare</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -125,7 +125,7 @@
           <mat-datepicker-toggle matSuffix [for]="docDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="documentDateControl.hasError('required')">
-            Ange ett handlingsdatum
+            Ange ett daterat-datum
           </mat-error>
           <mat-error *ngIf="!documentDateControl.hasError('required') && documentDateControl.hasError('dateFormat')">
             Ogiltigt datumformat
@@ -160,7 +160,7 @@
           <mat-datepicker-toggle matSuffix class="size-big" [for]="sentDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="sentDateControl.hasError('required')">
-            Ange ett registreringsdatum
+            Ange ett skickat-datum
           </mat-error>
           <mat-error *ngIf="!sentDateControl.hasError('required') && sentDateControl.hasError('dateFormat')">
             Ogiltigt datumformat
