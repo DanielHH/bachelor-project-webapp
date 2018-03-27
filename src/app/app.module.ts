@@ -38,7 +38,9 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatRadioModule,
-  MatFormFieldControl
+  MatFormFieldControl,
+  MatCardModule,
+  MatDividerModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -61,6 +63,13 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { InventoryTableComponent } from './pages/inventory/components/inventory-table/inventory-table.component';
 import { InventoryItemComponent } from './pages/inventory/components/inventory-item/inventory-item.component';
+import { RequestCardComponent } from './pages/cards/components/request-card/request-card.component';
+import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
+import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
+import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
+import { EditService } from './services/edit.service';
+import { RequestService } from './services/request.service';
+import { ReturnService } from './services/return.service';
 
 @NgModule({
   declarations: [
@@ -101,7 +110,11 @@ import { InventoryItemComponent } from './pages/inventory/components/inventory-i
     ReceiptItemComponent,
     InventoryComponent,
     InventoryTableComponent,
-    InventoryItemComponent
+    InventoryItemComponent,
+    RequestCardComponent,
+    ReturnCardComponent,
+    RequestDocumentComponent,
+    ReturnDocumentComponent
   ],
   imports: [
     BrowserModule,
@@ -121,10 +134,20 @@ import { InventoryItemComponent } from './pages/inventory/components/inventory-i
     MatAutocompleteModule,
     MatIconModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCardModule,
+    MatDividerModule
   ],
-  providers: [HttpService, DataService, RouteDataService, UtilitiesService],
+  providers: [
+    HttpService,
+    DataService,
+    RouteDataService,
+    UtilitiesService,
+    EditService,
+    RequestService,
+    ReturnService
+  ],
   entryComponents: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

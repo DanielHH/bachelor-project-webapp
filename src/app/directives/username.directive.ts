@@ -22,10 +22,10 @@ import { DataService } from '../services/data.service';
   validate(c: FormControl): ValidationErrors {
     const input = String(c.value);
 
-    const isValid = !input || _.find(this.users, (user) => user.username === input);
+    const isValid = !input || (c.value && c.value.id);
     const message = {
       'username': {
-        'message': 'Invalid username'
+        'message': 'Ogiltigt användarnamn'
       }
     };
     return isValid ? null : message;

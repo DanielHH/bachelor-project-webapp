@@ -18,3 +18,73 @@ input {
 .cdk-overlay-container {
   z-index: 2000;
 }
+
+.add-new-button {
+  position: absolute !important;
+  margin-top: 23px !important;
+  right: 40px !important;
+}
+
+.wide-center {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.title-center {
+  flex: 1 1 auto !important;
+  text-align: center !important;
+}
+
+.size-medium, .mat-datepicker-toggle .mat-icon-button {
+  font-size: 22px !important;
+  height: 22px !important;
+  width: 22px !important;
+}
+
+.form-check-label, .table-header, .mat-checkbox {
+  -webkit-user-select: none !important; /* Safari */
+  -moz-user-select: none !important; /* Firefox */
+  -ms-user-select: none !important; /* IE10+/Edge */
+  user-select: none !important; /* Standard */
+  white-space: nowrap !important;
+}
+
+.table-header {
+  font-weight: bold !important;
+  white-space: nowrap !important;
+}
+
+.mat-checkbox-inner-container {
+  transform: scale(0.75) !important;
+}
+
+.table-col {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.menu-button-col {
+  position: absolute;
+  right: 25px;
+}
+
+.item-row, .table-header {
+  display: inline-flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-left: 4px;
+}
+
+.item-row {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.item-row:hover {
+  background-color: rgba(208, 214, 212, 0.479);
+}
+
+.hidden {
+  display: none !important;
+}

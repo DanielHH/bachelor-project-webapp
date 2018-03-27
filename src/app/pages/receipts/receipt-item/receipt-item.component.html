@@ -1,15 +1,16 @@
-<div class="row">
-    <div class="col-1">
-        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="!itemActive" [class.btn-success]="itemActive"
-            mdbRippleRadius disabled>
-            <span *ngIf="itemActive">Aktiv</span>
-            <span *ngIf="!itemActive">Inaktiv</span>
-        </button>
-    </div>
+<div class="row item-row">
 
-  <div class="col">{{itemTypeToDisplay}}</div>
-  <div class="col">{{itemIDToDisplay}}</div>
-  <div class="col">{{itemUserNameToDisplay}}</div>
-  <div class="col">{{displayStartDate()}}</div>
-  <div class="col">{{displayEndDate()}}</div>
+  <div class="col-narrow table-col">{{this.receiptItem.endDate ? 'Inaktiv' : 'Aktiv'}}</div>
+  <div class="col-narrow table-col">{{itemKindToDisplay}}</div>
+  <div class="col-narrow table-col">{{itemTypeToDisplay}}</div>
+  <div class="col-wide table-col">{{itemIDToDisplay}}</div>
+  <div class="col-wide table-col">{{itemUserNameToDisplay}}</div>
+  <div class="col-narrow table-col">{{this.utilitiesService.getDateString(this.receiptItem.startDate)}}</div>
+  <div class="col-narrow table-col">{{this.utilitiesService.getDateString(this.receiptItem.endDate)}}</div>
+
+  <div class="pl-3 menu-button-col">
+    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 btn-success" mdbRippleRadius>
+        <span>PDF</span>
+    </button>
+  </div>
 </div>

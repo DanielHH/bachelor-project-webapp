@@ -6,8 +6,12 @@ import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { LogsComponent } from './pages/logs/logs.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
 import { CardsComponent } from './pages/cards/cards.component';
-import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
-import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
+import {
+  CardDetailComponent
+} from './pages/cards/components/card-detail/card-detail.component';
+import {
+  DocumentDetailComponent
+} from './pages/documents/components/document-detail/document-detail.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 
 export const routes: Routes = [
@@ -19,12 +23,19 @@ export const routes: Routes = [
     { path: 'examples', component: ExamplesComponent, data: { name: 'Kodexempel' } },
     { path: 'cards', component: CardsComponent, data: { name: 'Kort' } },
     { path: 'card-detail', component: CardDetailComponent, data: {name: 'Kortdetaljer'} },
-    { path: 'document-detail', component: DocumentDetailComponent, data: {name: 'Dokumentdetaljer'} }
+    { path: 'document-detail',
+      component: DocumentDetailComponent,
+      data: {name: 'Dokumentdetaljer'}
+    }
 
 
   /* Resterande routes
-	{ path: '**', component: PageNotFoundComponent, data: { name: 'SidanHittadesInte', fullSizeBackgroundURL: '/assets/not-found.jpg' } }
+  { path: '**',
+    component: PageNotFoundComponent,
+    data: { name: 'SidanHittadesInte', fullSizeBackgroundURL: '/assets/not-found.jpg' } }
   */
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(routes, { useHash: false });
+export const routing: ModuleWithProviders = RouterModule.forRoot(
+  routes, { useHash: false }
+);

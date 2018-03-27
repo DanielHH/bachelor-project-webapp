@@ -1,53 +1,28 @@
-<div class="row">
-    <div class="col-1" *ngIf="documentItem.status == 1 || documentItem.status == 2">
-        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="documentItem.status == 2" [class.btn-success]="documentItem.status == 1"
+<div class="row item-row">
+  <div class="col-narrow table-col">
+    <div *ngIf="documentItem?.status?.id == 1 || documentItem?.status?.id == 2">
+        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="documentItem?.status?.id == 2" [class.btn-success]="documentItem?.status?.id == 1"
             (click)="showModal()" mdbRippleRadius>
-            <span *ngIf="documentItem.status == 1">Kvittera</span>
-            <span *ngIf="documentItem.status == 2">Tillbaka</span>
+            <span *ngIf="documentItem?.status?.id == 1">Kvittera ut</span>
+            <span *ngIf="documentItem?.status?.id == 2">Kvittera in</span>
         </button>
     </div>
-    <div class="col-1" *ngIf="documentItem.status == 3 || documentItem.status == 4">
+    <div *ngIf="documentItem?.status?.id == 3 || documentItem?.status?.id == 4">
         <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
-            <span *ngIf="documentItem.status == 3">Arkiv</span>
-            <span *ngIf="documentItem.status == 4">Borta</span>
+            <span *ngIf="documentItem?.status?.id == 3">Arkiverad</span>
+            <span *ngIf="documentItem?.status?.id == 4">Borttappad</span>
         </button>
     </div>
+  </div>
 
-    <div class="col">{{displayDocumentType()}}</div>
-    <div class="col">
-      <span class="detail-link" (click)="route()">{{documentItem?.documentNumber}}</span>
-    </div>
-    <div class="col">{{documentItem.name}}</div>
-    <div class="col">{{displayUserName()}}</div>
-    <div class="col">{{documentItem?.location}}</div>
-    <div class="col">{{documentItem?.comment}}</div>
-    <div class="col-1">
-        <app-item-menu [item]="documentItem" (editItem)="edit()"></app-item-menu>
-    </div>
+  <div class="col-narrow table-col">{{documentItem?.documentType?.name}}</div>
+  <div class="col-wide table-col">{{documentItem?.documentNumber}}</div>
+  <div class="col-wide table-col">{{documentItem.name}}</div>
+  <div class="col-wide table-col">{{documentItem?.user?.name}}</div>
+  <div class="col-wide table-col">{{documentItem?.location}}</div>
+  <div class="col-wide table-col mr-5">{{documentItem?.comment}}</div>
+
+  <div class="menu-button-col">
+      <app-item-menu [item]="documentItem" (editItem)="edit()" (editStatus)="editStatus()"></app-item-menu>
+  </div>
 </div>
-
-<form #requestDocumentForm="ngForm" (ngSubmit)="setDocumentStatus(2)">
-    <app-modal [(show)]="showRequestModal" [modalTitle]="'Request document'" [submitName]="'Request'">
-        Are you sure you want to request the following document?
-        <br>
-        <br>
-        <ul>
-            <li>Document type: {{displayDocumentType()}}</li>
-            <li>Document number: {{documentItem?.documentNumber}}</li>
-            <li>User ID: {{displayUserName()}}</li>
-        </ul>
-    </app-modal>
-</form>
-
-<form #returnDocumentForm="ngForm" (ngSubmit)="setDocumentStatus(1)">
-    <app-modal [(show)]="showReturnModal" [modalTitle]="'Return document'" [submitName]="'Return'">
-        Are you sure you want to return the following document?
-        <br>
-        <br>
-        <ul>
-            <li>Document type: {{displayDocumentType()}}</li>
-            <li>Document number: {{documentItem?.documentNumber}}</li>
-            <li>User ID: {{displayUserName()}}</li>
-        </ul>
-    </app-modal>
-</form>

@@ -14,7 +14,7 @@ import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} fr
       const isValid = !input || this.isValidDateString(input);
       const message = {
         'dateFormat': {
-          'message': 'Invalid date format'
+          'message': 'Ogiltigt datumformat'
         }
       };
       return isValid ? null : message;
