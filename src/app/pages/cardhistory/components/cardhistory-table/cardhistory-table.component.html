@@ -1,54 +1,63 @@
-<h4>History of card: <span>{{cardDetail.cardNumber}}</span> </h4>
+<h4>History of card:
+  <span>{{cardDetail.cardNumber}}</span>
+</h4>
 <div class="card">
   <div class="card-body">
-    <!-- Input field for filter -->
+    <!-- Row text filter input and add new button -->
     <div class="row">
+
+      <!-- Input field for text filter -->
       <div class="col-4">
-      </div>
-      <div class="col-3"></div>
-
-      <div class="col-1">
-          <div class="form-check">
-
-              <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showReceiptsID" [(ngModel)]=showReceipts>
-                <label class="form-check-label" for="showReceiptsID">Kvittenser</label>
-              </div>
-
-          </div>
-        </div>
-
-      <div class="col-2">
-        <div class="form-check">
-            <input type="checkbox" class="filled-in form-check-input" id="showChangesID" [(ngModel)]=showChanges>
-            <label class="form-check-label" for="showChangesID">Infoändringar</label>
-        </div>
-
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
       </div>
 
+      <!-- Space -->
+      <div class="col-6"></div>
 
     </div>
 
-    <!-- Header row -->
-    <div class="row">
-      <div class="col-1" >
-        <span class="hover">Datum & tid </span>
-      </div>
-      <div class="col">
-        <span class="hover">Händelse </span>
-      </div>
-      <div class="col">
-        <span class="hover">Utförd av </span>
-      </div>
-    </div>
-    <hr>
+    <!-- Row filter per status -->
+    <div class="row pb-4 pl-2">
 
-    <!-- Add receipts to the table   -->
-    <div *ngFor="let receipt of receiptList">
-      <div ng-if="receipt.cardID == cardDetail.id">
-        <app-cardhistory-item [receiptItem]="receipt"> </app-cardhistory-item>
+      <div class="col-1 px-1">
+        <mat-checkbox id="showReceipts" name="showReceipts" color="primary" class="px-1" [(ngModel)]="showReceipts">Kvittenser</mat-checkbox>
       </div>
+
+      <div class="col-1 px-1">
+        <mat-checkbox id="showChanges" name="showChanges" color="primary" class="px-1" [(ngModel)]="showChanges">Infoändringar</mat-checkbox>
+      </div>
+
+      <div class="col-8"></div>
+
+    </div>
+
+
+  <!-- Header row -->
+  <div class="row">
+    <div class="col-1">
+      <span class="hover">Datum & tid </span>
+    </div>
+    <div class="col">
+      <span class="hover">Händelse </span>
+    </div>
+    <div class="col">
+      <span class="hover">Utförd av </span>
+    </div>
+  </div>
+  <hr>
+
+  <!-- Add receipts to the table   -->
+  <div *ngFor="let receipt of receiptList">
+    <div ng-if="receipt.cardID == cardDetail.id">
+      <app-cardhistory-item [receiptItem]="receipt"> </app-cardhistory-item>
     </div>
   </div>
 </div>
-
+</div>

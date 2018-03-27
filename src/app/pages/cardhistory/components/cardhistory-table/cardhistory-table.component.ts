@@ -14,6 +14,8 @@ export class CardhistoryTableComponent implements OnInit {
 
   @Input() receiptList: Receipt[];
 
+  filterInput = '';
+
   showReceipts = true;
   showChanges = false;
 
