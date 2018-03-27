@@ -61,52 +61,9 @@ export class InventoryItemComponent implements OnInit {
     });
   }*/
 
-  /**
-   * Returns the name of the card or document type of the baseItem.
-   */
-  displayItemSubtype() {
-    if (this.baseItem.isCard()) {
-      if (this.baseItem.getSubType() > 0) {
-        const cardTypeToDisplay = _.find(
-          this.cardTypeList,
-          cardType => cardType.id === this.baseItem.getSubType()
-        );
-        if (cardTypeToDisplay) {
-          return cardTypeToDisplay.name;
-        }
-      }
-      return '';
-    } else if (this.baseItem.isDocument()) {
-      if (this.baseItem.getSubType() > 0) {
-        const documentTypeToDisplay = _.find(
-          this.documentTypeList,
-          documentType => documentType.id === this.baseItem.getSubType()
-        );
-        if (documentTypeToDisplay) {
-          return documentTypeToDisplay.name;
-        }
-      }
-      return '';
-    } else {
-      return '';
-    }
-  }
 
   displayItemType(): string {
     return this.baseItem.isCard() ? 'Kort' : 'Handling';
-  }
-
-  /**
-   * Returns the name corresponding to the userID
-   */
-  displayUserName() {
-    if (this.baseItem.getUserID()) {
-      return _.find(
-        this.userList,
-        user => user.id === this.baseItem.getUserID()
-      ).name;
-    }
-    return '';
   }
 
   /**

@@ -1,6 +1,9 @@
 import { Card } from './card';
 import { Document } from './Document';
 import { CardDetailComponent } from '../pages/cards/components/card-detail/card-detail.component';
+import { CardType } from './cardType';
+import { User } from './user';
+import { StatusType } from './statusType';
 
 
 /**
@@ -36,7 +39,7 @@ constructor(item: Card|Document, itemType: string) {
  * Return the type of Card if this BaseItem represents a Card,
  * or the type of Document if this BaseItem represents a Document.
 */
-getSubType(): number {
+getSubType(): CardType|DocumentType {
   if (this.isCard()) {
     return (this.item as Card).cardType;
   } else {
@@ -56,10 +59,10 @@ getNumber(): string {
 }
 
 /**
- * Get the ID of the user associated with this Card/Document.
+ * Get the user associated with this Card/Document.
 */
-getUserID(): number {
-  return this.item.userID;
+getUser(): User {
+  return this.item.user;
 }
 
 /**
@@ -79,7 +82,7 @@ getComment(): string {
 /**
  * Get the status of this Card/Document.
 */
-getStatus(): number {
+getStatus(): StatusType {
   return this.item.status;
 }
 
