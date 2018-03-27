@@ -45,7 +45,9 @@
 
     <!-- Add receipts to the table   -->
     <div *ngFor="let receipt of receiptList">
+      <div ng-if="receipt.cardID == cardDetail.id">
         <app-cardhistory-item [receiptItem]="receipt"> </app-cardhistory-item>
+      </div>
     </div>
   </div>
 </div>
