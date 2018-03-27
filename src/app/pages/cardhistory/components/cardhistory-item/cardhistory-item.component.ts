@@ -9,6 +9,7 @@ import { DocumentType } from '../../../../datamodels/documentType';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import * as moment from 'moment';
+import { RouteDataService } from '../../../../services/route-data.service';
 
 @Component({
   selector: 'app-cardhistory-item',
@@ -30,39 +31,27 @@ export class CardhistoryItemComponent implements OnInit {
 
   itemActive: boolean;
 
-  constructor(private utilitiesService: UtilitiesService) {
+  cardDetail: Card;
+
+  constructor(
+    private routeDataService: RouteDataService,
+    public utilitiesService: UtilitiesService) {
+    this.routeDataService.card.subscribe((card) => {
+      this.cardDetail = card;
+    });
   }
 
   ngOnInit() {
     // get actual data to be displayed
     [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
       this.utilitiesService.getReceiptDisplay(this.receiptItem);
-
-    this.setActiveReceipt();
-  }
-
-  /**
-   * Set the receipt to be active or not depending on if end date exists
-   */
-  setActiveReceipt() {
-    this.itemActive = (this.receiptItem.endDate == null);
   }
 
   /**
    * Returns a string representation of the displayedStartDate of the card
    */
   displayStartDate() {
-    return moment(this.receiptItem.startDate).format('YYYY-MM-DD');
-  }
-
-   /**
-   * Returns a string representation of the displayedEndDate of the card
-   */
-  displayEndDate() {
-    if (this.receiptItem.endDate != null) {
-      return moment(this.receiptItem.endDate).format('YYYY-MM-DD');
-    }
-
+    return moment(this.receiptItem.startDate).format('YYYY-MM-DD HH:mm:ss');
   }
 
 }
