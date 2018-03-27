@@ -20,7 +20,7 @@
       <!-- Add new document button-->
       <div class="col-2">
         <span class="add-new-button">
-          <button mat-raised-button color="primary">Lägg till ny handling</button>
+          <button mat-raised-button (click)="openAddNewDelivery()" color="primary">Lägg till ny leverans</button>
         </span>
       </div>
 
@@ -80,7 +80,7 @@
       </div>
 
       <div class="menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
-        <app-item-menu [item]="deliveryItem" class="hidden"></app-item-menu>
+        <app-item-menu [item]="dummyItem" class="hidden"></app-item-menu>
       </div>
 
     </div>
@@ -92,3 +92,6 @@
     </div>
   </div>
 </div>
+
+<app-modify-delivery [deliveryList]="deliveryList" [modalTitle]="modalTitle" [modalType]="modalType"
+[(showModal)]="showModal"></app-modify-delivery>

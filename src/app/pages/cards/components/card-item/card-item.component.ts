@@ -12,6 +12,7 @@ import { EditService } from '../../../../services/edit.service';
 import { RequestService } from '../../../../services/request.service';
 import { ReturnService } from '../../../../services/return.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-card-item',
@@ -29,9 +30,7 @@ export class CardItemComponent implements OnInit {
     private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
-    private editService: EditService,
-    private requestService: RequestService,
-    private returnService: ReturnService,
+    private modalService: ModalService,
     public utilitiesService: UtilitiesService) {
 
   }
@@ -50,7 +49,7 @@ export class CardItemComponent implements OnInit {
    * Set card to be outputted for editing
   */
   edit() {
-    this.editService.card.next(this.cardItem);
+    this.modalService.editCard.next(this.cardItem);
   }
 
   /**
@@ -59,9 +58,9 @@ export class CardItemComponent implements OnInit {
    */
   showModal() {
     if (this.cardItem.status.id == 1) {
-      this.requestService.card.next(this.cardItem);
+      this.modalService.requestCard.next(this.cardItem);
     } else {
-      this.returnService.card.next(this.cardItem);
+      this.modalService.returnCard.next(this.cardItem);
     }
   }
 

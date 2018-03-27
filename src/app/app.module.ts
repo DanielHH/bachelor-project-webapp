@@ -71,6 +71,8 @@ import { ReturnDocumentComponent } from './pages/documents/components/return-doc
 import { EditService } from './services/edit.service';
 import { RequestService } from './services/request.service';
 import { ReturnService } from './services/return.service';
+import { ModalService } from './services/modal.service';
+import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +118,8 @@ import { ReturnService } from './services/return.service';
     RequestCardComponent,
     ReturnCardComponent,
     RequestDocumentComponent,
-    ReturnDocumentComponent
+    ReturnDocumentComponent,
+    ModifyDeliveryComponent
   ],
   imports: [
     BrowserModule,
@@ -145,9 +148,9 @@ import { ReturnService } from './services/return.service';
     DataService,
     RouteDataService,
     UtilitiesService,
-    EditService,
-    RequestService,
-    ReturnService
+    ModalService,
+    // RequestService,
+    // ReturnService
   ],
   entryComponents: [],
   bootstrap: [AppComponent]

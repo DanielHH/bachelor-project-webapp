@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { User } from '../../../../datamodels/user';
 import { Receipt } from '../../../../datamodels/receipt';
-import { RequestService } from '../../../../services/request.service';
+import { ModalService } from '../../../../services/modal.service';
 import * as moment from 'moment';
 
 @Component({
@@ -64,7 +64,7 @@ export class RequestDocumentComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private requestService: RequestService
+    private modalService: ModalService
   ) {
     // User list subscriber
     this.dataService.userList.subscribe(users => {
@@ -86,7 +86,7 @@ export class RequestDocumentComponent implements OnInit {
     });
 
     // Request document subscriber
-    this.requestService.document.subscribe((document) => {
+    this.modalService.requestDocument.subscribe((document) => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -226,7 +226,7 @@ export class RequestDocumentComponent implements OnInit {
     this.requestForm.resetForm();
 
     this.documentItem = Object.assign({}, new Document());
-    this.requestService.document.next(this.documentItem);
+    this.modalService.requestDocument.next(this.documentItem);
 
     this.showModal = false;
   }
