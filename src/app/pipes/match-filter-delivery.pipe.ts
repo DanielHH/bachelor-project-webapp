@@ -2,23 +2,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { DocumentType } from '../datamodels/documentType';
 import { Delivery } from '../datamodels/delivery';
-import { lowerCase } from '../services/utilities.service';
+import { lowerCase, UtilitiesService } from '../services/utilities.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
 @Pipe({
   name: 'matchFilterDelivery'
 })
+
 export class MatchFilterDeliveryPipe implements PipeTransform {
 
-  documentTypeList: DocumentType[] = [];
-
-  constructor(public dataService: DataService) {
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
-      this.documentTypeList = documentTypeList;
-    });
-  }
-
+  constructor(public dataService: DataService,
+    private utilitiesService: UtilitiesService) { }
 
   transform(value: Delivery[], input: string, showActive: boolean, showArchived: boolean, showGone: boolean): Delivery[] {
     return _.filter(value, (delivery) => {
@@ -38,40 +33,29 @@ export class MatchFilterDeliveryPipe implements PipeTransform {
    */
   matchFilt(delivery: Delivery, filterInput: string, showActive: boolean, showArchived: boolean, showGone: boolean) {
 
-    const sentDate = moment(delivery.sentDate).format('YYYY-MM-DD');
-    filterInput = lowerCase(filterInput);
-
-    // tslint:disable-next-line:triple-equals
-    if ( (delivery.status == 1 && !showActive) || (delivery.status == 2 && !showActive) ||
-    // tslint:disable-next-line:triple-equals
-    (delivery.status == 3 && !showArchived) || (delivery.status == 4 && !showGone) ) {
+    if (
+      (!delivery) ||
+      (!delivery.id) ||
+      (delivery.status.id == 1 && !showActive) ||
+      (delivery.status.id == 2 && !showActive) ||
+      (delivery.status.id == 3 && !showArchived) ||
+      (delivery.status.id == 4 && !showGone)
+    ) {
       return false;
     }
 
-    if (_.includes(lowerCase(this.getDocumentType(delivery)), filterInput) === false
+    const sentDate = moment(delivery.sentDate).format('YYYY-MM-DD');
+    filterInput = lowerCase(filterInput);
+
+    if (_.includes(lowerCase(delivery.documentType.name), filterInput) === false
     && (_.includes(lowerCase(delivery.documentNumber), filterInput) === false)
     && (_.includes(lowerCase(delivery.name), filterInput) === false)
     && (_.includes(lowerCase(delivery.receiver), filterInput) === false)
-    && (_.includes(lowerCase(sentDate), filterInput) === false)
+    && (_.includes(lowerCase(this.utilitiesService.getDateString(delivery.sentDate)), filterInput) === false)
     && (_.includes(lowerCase(delivery.comment), filterInput) === false) ) {
       return false;
     }
     return true;
-  }
-
-   /**
-   * Gets the document type for a document
-   * @param document
-   * @returns The corresponding type of document
-   */
-  getDocumentType(delivery: Delivery) {
-    if (delivery.documentType > 0) {
-      const documentTypeToDisplay = _.find( this.documentTypeList, documentType => documentType.id === delivery.documentType);
-      if (documentTypeToDisplay) {
-        return documentTypeToDisplay.name;
-      }
-    }
-    return '';
   }
 
 }

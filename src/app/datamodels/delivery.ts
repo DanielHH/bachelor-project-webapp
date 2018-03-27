@@ -1,3 +1,6 @@
+import { DocumentType } from './documentType';
+import { StatusType } from './statusType';
+
 /**
  * Document delivery data model
 */
@@ -11,7 +14,7 @@ export class Delivery {
     /**
      * Document type
      */
-    documentType: number;
+    documentType: DocumentType;
 
     /**
      * Document serial number (can contain alphabetical characters)
@@ -51,25 +54,11 @@ export class Delivery {
     /**
      * Comment
      */
-    comment: string;
+    comment?: string;
 
     /**
      * document checked in/out status
      */
-    status: number;
-
-    constructor() {
-      this.id = null;
-      this.documentType = null;
-      this.documentNumber = null;
-      this.name = null;
-      this.documentDate = null;
-      this.sentDate = null;
-      this.creationDate = null;
-      this.modifiedDate = null;
-      this.receiver = null;
-      this.comment = null;
-      this.status = 0;
-    }
+    status: StatusType;
 
   }

@@ -15,12 +15,6 @@ import * as moment from 'moment';
 })
 export class MatchFilterReceiptPipe implements PipeTransform {
 
-  cardList: Card[] = [];
-  documentList: Document[] = [];
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
-
   itemKindToDisplay: string;
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
