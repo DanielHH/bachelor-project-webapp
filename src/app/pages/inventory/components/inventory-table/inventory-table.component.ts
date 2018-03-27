@@ -21,9 +21,8 @@ import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document
   styleUrls: ['./inventory-table.component.scss']
 })
 export class InventoryTableComponent implements OnInit {
-  @Input() cardList: Card[];
-  @Input() documentList: Document[];
-  // baseItemList: BaseItem[] = new Array<BaseItem>();
+  @Input() baseItemList: BaseItem[];
+
 
   editCard: Card = null; // Card to be edited
 
@@ -53,22 +52,15 @@ export class InventoryTableComponent implements OnInit {
 
   ngOnInit() {
     this.sortTableListStart();
-    console.log('cardlen: ', this.cardList.length);
-    console.log('doclen: ', this.documentList.length);
-    /*this.documentList.forEach(element => {
-      this.baseItemList.push(new BaseItem(element, 'document'));
-    });
-
-    this.cardList.forEach(element => {
-      this.baseItemList.push(new BaseItem(element, 'card'));
-    });*/
+    // console.log('(tableinit)cardlen: ', this.cardList.length);
+    // console.log('doclen: ', this.documentList.length);
   }
 
   /**
    * Sorts table after modifiedDate ascending
    */
   sortTableListStart() {
-    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
+    // this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
   }
 
   /**
@@ -124,7 +116,7 @@ export class InventoryTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
+      // this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
     }
   }
 
@@ -142,20 +134,11 @@ export class InventoryTableComponent implements OnInit {
   }
 
   /**
-   * Set card to be edited and open edit modal
-   *
-  openEdit(card: any) {
-    this.editCard = card;
-    this.modalTitle = 'Edit card';
-    this.modalType = 1;
-    this.showModal = true;
-  }*/
-
-  /**
    * Helper for the html file of this component.
    * Constructs a new BaseItem from the given item.
    */
   makeItem(item: Card | Document, itemType: string): BaseItem {
     return new BaseItem(item, itemType);
   }
+
 }

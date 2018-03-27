@@ -88,13 +88,16 @@ getStatus(): StatusType {
 
 /**
  * Type checking using instanceof can break as the Cards/Documents can lose
- * their types (but still keep their exact structures and are accepted by type-restricted functions)
- * as the objects are passed through pipes (?), so type checking is done this way instead.
+ * their types (but still keep their exact structures and are accepted by type-restricted functions),
+ * so type checking is done this way instead.
 */
 isCard(): boolean {
   return this.itemType === BaseItem.CARD_NAME;
 }
 
+/**
+ * see isCard() documentation
+ */
 isDocument(): boolean {
   return this.itemType === BaseItem.DOCUMENT_NAME;
 }
