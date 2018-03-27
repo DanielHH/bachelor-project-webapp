@@ -29,7 +29,7 @@ export class LogEvent {
   userID: number;
 
   /**
-   * ID of log event type (examples: Add new card, Check out card, Check in card...)
+   * ID of log event type (examples: Add new card, Requesting card, Returning card...)
    */
   logTypeID: number;
 

@@ -13,6 +13,7 @@ import { RequestService } from '../../../../services/request.service';
 import { Receipt } from '../../../../datamodels/receipt';
 import * as moment from 'moment';
 import { CardType } from '../../../../datamodels/cardType';
+import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
   selector: 'app-request-card',
@@ -39,6 +40,7 @@ export class RequestCardComponent implements OnInit {
   users: User[] = [];
   cards: Card[] = [];
   receipts: Receipt[] = [];
+  logEvents: LogEvent[] = [];
 
   usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
@@ -98,6 +100,11 @@ export class RequestCardComponent implements OnInit {
 
         this._showModal = true;
       }
+    });
+
+    // Log event list subscriber
+    this.dataService.logEventList.subscribe(logEvents => {
+      this.logEvents = logEvents;
     });
   }
 
@@ -204,26 +211,45 @@ export class RequestCardComponent implements OnInit {
       receipt.userID = this.cardItem.user.id;
       receipt.startDate = new Date(this.startDateInput);
 
+      // Create new log event
+      const logEvent = new LogEvent();
+      logEvent.itemTypeID = 1; // TODO: ENUM, 1 means card
+      logEvent.logTypeID = 1; // TODO: ENUM, 1 means 'requesting card'
+      logEvent.cardID = this.cardItem.id;
+      logEvent.logDate = this.cardItem.modifiedDate;
+
       // Submit changes to database
       this.httpService
-        .httpPost<Receipt>('addNewReceipt/', receipt)
-        .then(receiptRes => {
-          if (receiptRes.message === 'success') {
-            this.cardItem.activeReceipt = receiptRes.data.id;
+        .httpPost<LogEvent>('addNewLogEvent/', logEvent)
+        .then(logEventRes => {
+          if (logEventRes.message === 'success') {
 
             this.httpService
-              .httpPut<Card>('updateCard/', this.cardItem)
-              .then(cardRes => {
-                if (cardRes.message === 'success') {
-                  // Update receipt list
-                  this.receipts.unshift(receiptRes.data);
-                  this.receipts = this.receipts.slice();
-                  this.dataService.receiptList.next(this.receipts);
+              .httpPost<Receipt>('addNewReceipt/', receipt)
+              .then(receiptRes => {
+                if (receiptRes.message === 'success') {
+                  this.cardItem.activeReceipt = receiptRes.data.id;
 
-                  // Update card list
-                  this.dataService.cardList.next(this.cards);
+                  this.httpService
+                    .httpPut<Card>('updateCard/', this.cardItem)
+                    .then(cardRes => {
+                      if (cardRes.message === 'success') {
+                        // Update log event list
+                        this.logEvents.unshift(logEventRes.data);
+                        this.logEvents = this.logEvents.slice();
+                        this.dataService.logEventList.next(this.logEvents);
 
-                  this.showModal = false;
+                        // Update receipt list
+                        this.receipts.unshift(receiptRes.data);
+                        this.receipts = this.receipts.slice();
+                        this.dataService.receiptList.next(this.receipts);
+
+                        // Update card list
+                        this.dataService.cardList.next(this.cards);
+
+                        this.showModal = false;
+                      }
+                    });
                 }
               });
           }
