@@ -13,6 +13,8 @@ export class DeliveryTableComponent implements OnInit {
 
   editDocument: Delivery = null; // delivery document to be edited
 
+  deliveryItem = new Delivery(); // Dummy
+
   showModal = false;
 
   filterInput = '';

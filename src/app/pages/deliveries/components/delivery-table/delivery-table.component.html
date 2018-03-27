@@ -20,7 +20,7 @@
       <!-- Add new document button-->
       <div class="col-2">
         <span class="add-new-button">
-          <button mat-raised-button (click)="openAddNewDocument()" color="primary">Lägg till ny handling</button>
+          <button mat-raised-button color="primary">Lägg till ny handling</button>
         </span>
       </div>
 
@@ -30,8 +30,8 @@
     <div class="row pb-4 pl-2">
 
       <div class="col-1 px-1">
-        <mat-checkbox id="showIn" name="showIn" color="primary" class="px-1"
-        [(ngModel)]="showActive">Inlämnade</mat-checkbox>
+        <mat-checkbox id="showActive" name="showActive" color="primary" class="px-1"
+        [(ngModel)]="showActive">Aktiva</mat-checkbox>
       </div>
 
       <div class="col-1 px-1">
@@ -39,50 +39,56 @@
         [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
-      <div class="col-2 px-1">
+      <div class="col-1 px-1">
         <mat-checkbox id="showGone" name="showGone" color="primary" class="px-1"
         [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
       <div class="col-8"></div>
     </div>
-      <!-- Header row -->
-      <div class="row">
-        <div class="col-1" (click)="sortTableList('status')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
-          [class.both-arrow]="orderStatus == ''">Status </span>
-        </div>
-        <div class="col" (click)="sortTableList('documentType')">
-          <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'"
-          [class.both-arrow]="orderDocumentType == ''">Typ </span>
-        </div>
-        <div class="col" (click)="sortTableList('documentNumber')">
-          <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'"
-          [class.both-arrow]="orderDocumentNumber == ''">Nummer </span>
-        </div>
-        <div class="col" (click)="sortTableList('name')">
-          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'"
-          [class.both-arrow]="orderName == ''">Namn </span>
-        </div>
-        <div class="col" (click)="sortTableList('receiver')">
-          <span class="hover" [class.up-arrow]="orderReceiver == 'asc'" [class.down-arrow]="orderReceiver == 'desc'"
-          [class.both-arrow]="orderReceiver == ''">Mottagare </span>
-        </div>
-        <div class="col" (click)="sortTableList('sentDate')">
-          <span class="hover" [class.up-arrow]="orderReceiver == 'asc'" [class.down-arrow]="orderSentDate == 'desc'"
-          [class.both-arrow]="orderSentDate == ''">Skickat </span>
-        </div>
-        <div class="col" (click)="sortTableList('comment')">
-          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
-          [class.both-arrow]="orderComment == ''">Kommentar </span>
-        </div>
-        <div class="col-1"></div>
-      </div>
-      <hr>
 
-      <!-- Add cards to the table -->
-      <div *ngFor="let delivery of deliveryList | matchFilterDelivery:filterInput:showActive:showArchived:showGone">
-          <app-delivery-item [deliveryItem]="delivery" (editItem)="openEdit($event)"></app-delivery-item>
+
+    <!-- Header row -->
+    <div class="row table-header">
+      <div class="col-narrow table-col px-2" (click)="sortTableList('status')">
+        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+        [class.both-arrow]="orderStatus == ''">Status </span>
       </div>
+      <div class="col-narrow table-col" (click)="sortTableList('documentType')">
+        <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'"
+        [class.both-arrow]="orderDocumentType == ''">Typ </span>
+      </div>
+      <div class="col-wide table-col" (click)="sortTableList('documentNumber')">
+        <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'"
+        [class.both-arrow]="orderDocumentNumber == ''">Dokument-ID </span>
+      </div>
+      <div class="col-wide table-col" (click)="sortTableList('name')">
+        <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'"
+        [class.both-arrow]="orderName == ''">Benämning </span>
+      </div>
+      <div class="col-wide table-col" (click)="sortTableList('receiver')">
+        <span class="hover" [class.up-arrow]="orderReceiver == 'asc'" [class.down-arrow]="orderReceiver == 'desc'"
+        [class.both-arrow]="orderReceiver == ''">Mottagare </span>
+      </div>
+      <div class="col-wide table-col" (click)="sortTableList('sentDate')">
+        <span class="hover" [class.up-arrow]="orderSentDate == 'asc'" [class.down-arrow]="orderSentDate == 'desc'"
+        [class.both-arrow]="orderSentDate == ''">Skickat </span>
+      </div>
+      <div class="col-wide table-col mr-5" (click)="sortTableList('comment')">
+        <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
+        [class.both-arrow]="orderComment == ''">Kommentar </span>
+      </div>
+
+      <div class="menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
+        <app-item-menu [item]="deliveryItem" class="hidden"></app-item-menu>
+      </div>
+
+    </div>
+    <hr>
+
+    <!-- Add cards to the table -->
+    <div *ngFor="let delivery of deliveryList | matchFilterDelivery:filterInput:showActive:showArchived:showGone">
+        <app-delivery-item [deliveryItem]="delivery"></app-delivery-item>
+    </div>
   </div>
 </div>

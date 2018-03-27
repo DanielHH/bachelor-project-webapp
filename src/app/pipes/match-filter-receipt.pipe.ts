@@ -54,7 +54,7 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     showActive: boolean,
     showInactive: boolean
   ) {
-    console.log(receipt);
+
     if (
       (receipt == null) ||
       (!receipt.id) ||

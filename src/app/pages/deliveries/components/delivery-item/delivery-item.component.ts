@@ -24,7 +24,6 @@ export class DeliveryItemComponent implements OnInit {
   showReturnModal = false;
 
   constructor(
-    public dataService: DataService,
     private routeDataService: RouteDataService,
     public utilitiesService: UtilitiesService,
     private router: Router,
@@ -39,11 +38,13 @@ export class DeliveryItemComponent implements OnInit {
     this.router.navigate(['delivery-detail']);
   }
 
-    /**
-   * Returns a string representation of the sentDate of the card
-   */
-  displaySentDate() {
-    return moment(this.deliveryItem.sentDate).format('YYYY-MM-DD');
+  /**
+   * Sets the status of the delivery in the database
+  */
+  editStatus() {
+    this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
+      if (res.message === 'success') { }
+    });
   }
 
 }
