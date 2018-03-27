@@ -37,7 +37,7 @@ constructor(item: Card|Document, itemType: string) {
  * or the type of Document if this BaseItem represents a Document.
 */
 getSubType(): number {
-  if (this.itemType === BaseItem.CARD_NAME) {
+  if (this.isCard()) {
     return (this.item as Card).cardType;
   } else {
     return (this.item as Document).documentType;
@@ -48,7 +48,7 @@ getSubType(): number {
  * Get the unique serial number for this item.
 */
 getNumber(): string {
-  if (this.itemType === BaseItem.CARD_NAME) {
+  if (this.isCard()) {
     return (this.item as Card).cardNumber;
   } else {
     return (this.item as Document).documentNumber;
@@ -85,7 +85,7 @@ getStatus(): number {
 
 /**
  * Type checking using instanceof can break as the Cards/Documents can lose
- * their types (but still keep their exact structures and still be accepted by type-restricted functions)
+ * their types (but still keep their exact structures and are accepted by type-restricted functions)
  * as the objects are passed through pipes (?), so type checking is done this way instead.
 */
 isCard(): boolean {

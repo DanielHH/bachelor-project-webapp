@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild
+} from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { Document } from '../../../../datamodels/document';
 import { BaseItem } from '../../../../datamodels/baseItem';
@@ -13,11 +20,10 @@ import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document
   templateUrl: './inventory-table.component.html',
   styleUrls: ['./inventory-table.component.scss']
 })
-
 export class InventoryTableComponent implements OnInit {
-
   @Input() cardList: Card[];
   @Input() documentList: Document[];
+  // baseItemList: BaseItem[] = new Array<BaseItem>();
 
   editCard: Card = null; // Card to be edited
 
@@ -32,6 +38,7 @@ export class InventoryTableComponent implements OnInit {
   orderLocation = '';
   orderComment = '';
   orderDate = '';
+  orderItemType = '';
 
   showIn = true;
   showOut = true;
@@ -42,10 +49,19 @@ export class InventoryTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.sortTableListStart();
+    console.log('cardlen: ', this.cardList.length);
+    console.log('doclen: ', this.documentList.length);
+    /*this.documentList.forEach(element => {
+      this.baseItemList.push(new BaseItem(element, 'document'));
+    });
+
+    this.cardList.forEach(element => {
+      this.baseItemList.push(new BaseItem(element, 'card'));
+    });*/
   }
 
   /**
@@ -61,10 +77,15 @@ export class InventoryTableComponent implements OnInit {
    */
   sortTableList(property: string) {
     // TODO: reimplement me!
-    return; /*
     let newOrder = '';
 
     switch (property) {
+      case 'itemType':
+        newOrder = this.sortTableListHelper(this.orderItemType);
+        this.orderItemType = newOrder;
+        console.log('sorting by itemtype');
+        break;
+      /*
       case 'status': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
@@ -99,13 +120,12 @@ export class InventoryTableComponent implements OnInit {
         newOrder = this.sortTableListHelper(this.orderDate);
         this.orderDate = newOrder;
         break;
-      }
+      }*/
     }
 
     if (newOrder) {
       this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
-    }*/
-
+    }
   }
 
   /**
@@ -114,8 +134,10 @@ export class InventoryTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -129,14 +151,11 @@ export class InventoryTableComponent implements OnInit {
     this.showModal = true;
   }*/
 
-
-/**
- * Helper for the html file of this component.
- * Constructs a new BaseItem from the given item.
- */
-  makeItem(item: Card|Document, itemType: string): BaseItem {
+  /**
+   * Helper for the html file of this component.
+   * Constructs a new BaseItem from the given item.
+   */
+  makeItem(item: Card | Document, itemType: string): BaseItem {
     return new BaseItem(item, itemType);
   }
-
 }
-

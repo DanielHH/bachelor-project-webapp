@@ -51,8 +51,8 @@
         <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
       </div>
 
-      <div class="col">
-        <span class="hover">Type</span>
+      <div class="col" (click)="sortTableList('itemType')">
+          <span class="hover" [class.up-arrow]="orderItemType == 'asc'" [class.down-arrow]="orderItemType == 'desc'" [class.both-arrow]="orderItemType == ''">Type </span>
       </div>
 
       <div class="col" (click)="sortTableList('cardType')">
@@ -79,13 +79,17 @@
     </div>
     <hr>
 
-    <!-- Add cards to the table   -->
+    <!-- Add cards to the table
     <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
       <inventory-item [baseItem]="makeItem(card, 'card')"> </inventory-item>
     </div>
-    <!-- Add documents to the table   -->
+    <!-- Add documents to the table
     <div *ngFor="let doc of documentList | matchFilterDocument:filterInput:showIn:showOut:showArchived:showGone">
       <inventory-item [baseItem]="makeItem(doc, 'document')"> </inventory-item>
-    </div>
+    </div>-->
+    <div *ngFor="let item of baseItemList">
+        <inventory-item [baseItem]="item"> </inventory-item>
+      </div>
+
   </div>
 </div>

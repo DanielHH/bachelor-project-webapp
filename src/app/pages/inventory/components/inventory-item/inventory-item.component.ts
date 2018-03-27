@@ -75,7 +75,6 @@ export class InventoryItemComponent implements OnInit {
           return cardTypeToDisplay.name;
         }
       }
-      console.log('disp card subtype base case');
       return '';
     } else if (this.baseItem.isDocument()) {
       if (this.baseItem.getSubType() > 0) {
@@ -87,7 +86,6 @@ export class InventoryItemComponent implements OnInit {
           return documentTypeToDisplay.name;
         }
       }
-      console.log('disp doc subtype base case');
       return '';
     } else {
       return '';

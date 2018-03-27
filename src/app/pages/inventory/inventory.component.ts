@@ -9,22 +9,22 @@ import { DataService } from '../../services/data.service';
   styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
-
-
   cardList: Card[] = [];
   documentList: Document[] = [];
 
   constructor(public dataService: DataService) {
-    this.dataService.cardList.subscribe((cardList) => {
+    this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
     });
-    this.dataService.documentList.subscribe((documentList) => {
-      this.documentList = documentList;
-    });
+    this.dataService.documentList.subscribe(
+      documentList => {
+        this.documentList = documentList;
+        console.log('new doc now, len:', documentList.length);
+      },
+      err => console.log('error'),
+      () => console.log('complete')
+    );
   }
 
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
