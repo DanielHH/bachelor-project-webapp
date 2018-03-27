@@ -1,0 +1,15 @@
+.detail-link {
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.col-narrow {
+  width: 10%;
+}
+
+.col-wide {
+  width: 13%;
+}
+
