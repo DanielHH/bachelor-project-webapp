@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Delivery } from '../../datamodels/delivery';
-import _ = require('lodash');
 
 @Component({
   selector: 'app-deliveries',
