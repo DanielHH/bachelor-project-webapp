@@ -1,15 +1,14 @@
-<div class="row">
+<div class="row item-row">
 
-  <div class="col-1 mx-1 px-2">{{this.receiptItem.endDate ? 'Inaktiv' : 'Aktiv'}}</div>
-  <div class="col mx-1 px-2">{{itemKindToDisplay}}</div>
-  <div class="col mx-1 px-2">{{itemTypeToDisplay}}</div>
-  <div class="col mx-1 px-2">{{itemIDToDisplay}}</div>
-  <div class="col mx-1 px-2">{{itemUserNameToDisplay}}</div>
-  <div class="col mx-1 px-2">{{this.utilitiesService.getDateString(this.receiptItem.startDate)}}</div>
-  <div class="col mx-1 px-2">{{this.receiptItem.endDate ?
-    this.utilitiesService.getDateString(this.receiptItem.endDate) : ''}}</div>
+  <div class="col-narrow table-col">{{this.receiptItem.endDate ? 'Inaktiv' : 'Aktiv'}}</div>
+  <div class="col-narrow table-col">{{itemKindToDisplay}}</div>
+  <div class="col-narrow table-col">{{itemTypeToDisplay}}</div>
+  <div class="col-wide table-col">{{itemIDToDisplay}}</div>
+  <div class="col-wide table-col">{{itemUserNameToDisplay}}</div>
+  <div class="col-narrow table-col">{{utilitiesService.getDateString(this.receiptItem.startDate)}}</div>
+  <div class="col-narrow table-col">{{utilitiesService.getDateString(this.receiptItem.endDate)}}</div>
 
-  <div class="col-1  mx-1 px-2 wide-center">
+  <div class="pl-3 menu-button-col">
     <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 btn-success" mdbRippleRadius>
         <span>PDF</span>
     </button>

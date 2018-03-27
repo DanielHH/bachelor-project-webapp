@@ -15,12 +15,6 @@ import * as moment from 'moment';
 })
 export class MatchFilterReceiptPipe implements PipeTransform {
 
-  cardList: Card[] = [];
-  documentList: Document[] = [];
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
-
   itemKindToDisplay: string;
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
@@ -60,8 +54,9 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     showActive: boolean,
     showInactive: boolean
   ) {
+
     if (
-      (!receipt) ||
+      (receipt == null) ||
       (!receipt.id) ||
       (receipt.endDate == null && !showActive) ||
       (receipt.endDate != null && !showInactive) ||

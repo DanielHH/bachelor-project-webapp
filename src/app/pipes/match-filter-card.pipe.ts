@@ -13,21 +13,7 @@ import { lowerCase, UtilitiesService } from '../services/utilities.service';
 
 export class MatchFilterCardPipe implements PipeTransform {
 
-  cardTypeList: CardType[] = [];
-  userList: User[] = [];
-
-  constructor(
-    public dataService: DataService,
-    private utilitiesService: UtilitiesService
-  ) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
-      this.cardTypeList = cardTypeList;
-    });
-
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
-  }
+  constructor(private utilitiesService: UtilitiesService) { }
 
   transform(value: Card[], input: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean): Card[] {
     return _.filter(value, (card) => {

@@ -11,6 +11,7 @@ import { HttpService } from '../../../../services/http.service';
 import { EditService } from '../../../../services/edit.service';
 import { RequestService } from '../../../../services/request.service';
 import { ReturnService } from '../../../../services/return.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-card-item',
@@ -30,7 +31,8 @@ export class CardItemComponent implements OnInit {
     private httpService: HttpService,
     private editService: EditService,
     private requestService: RequestService,
-    private returnService: ReturnService) {
+    private returnService: ReturnService,
+    public utilitiesService: UtilitiesService) {
 
   }
 
@@ -43,12 +45,12 @@ export class CardItemComponent implements OnInit {
     return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
   }
 
-    /**
+  /**
    * Shows the modal for card details
+   * Change route and send route data
    */
   showDetModal() {
     this.routeDataService.card.next(this.cardItem);
-    // this.router.navigate(['card-detail']);
   }
 
   /**

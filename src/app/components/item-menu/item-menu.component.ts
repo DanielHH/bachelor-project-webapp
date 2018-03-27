@@ -37,7 +37,7 @@ export class ItemMenuComponent implements OnInit {
       this.router.navigate(['card-detail']);
     }
 
-    if (this.item.documentType) {
+    if (this.item.documentType && this.item.location) { // document with a location, aka not a delivery
       this.routeDataService.document.next(this.item);
       this.router.navigate(['document-detail']);
     }
@@ -62,13 +62,6 @@ export class ItemMenuComponent implements OnInit {
     this.item.status = this.utilitiesService.getStatusFromID(value);
 
     this.editStatus.emit();
-  }
-
-  /**
-   * Format date
-  */
-  formatDate(date: Date) {
-    return moment(date).format('YYYY-MM-DD H:mm:ss');
   }
 
 }

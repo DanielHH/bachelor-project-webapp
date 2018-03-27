@@ -1,6 +1,5 @@
-.row {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.col-narrow {
+  width: 11%;
 }
 
 .row:hover {
@@ -13,4 +12,8 @@
   &:hover {
     opacity: 0.5;
   }
+}
+
+.col-wide {
+  width: 13%;
 }
