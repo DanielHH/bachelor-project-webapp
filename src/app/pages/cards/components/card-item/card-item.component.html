@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" (click)="showDetModal()" mdbRippleRadius >
     <div class="col-1 px-1 table-col" *ngIf="cardItem?.status?.id == 1 || cardItem?.status?.id == 2">
         <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1"
         [class.btn-danger]="cardItem?.status?.id == 2"
@@ -15,11 +15,8 @@
             <span *ngIf="cardItem?.status?.id == 4">Borttappad</span>
         </button>
     </div>
-
     <div class="col-1 px-1 table-col">{{cardItem?.cardType?.name}}</div>
-    <div class="col-2 px-1 table-col">
-        <span class="detail-link" (click)="route()">{{cardItem?.cardNumber}}</span>
-    </div>
+    <div class="col-2 px-1 table-col">{{cardItem?.cardNumber}}</div>
     <div class="col-2 px-1 table-col">{{cardItem?.user?.name}}</div>
     <div class="col-2 px-1 table-col">{{cardItem?.location}}</div>
     <div class="col-2 px-1 table-col">{{cardItem?.comment}}</div>

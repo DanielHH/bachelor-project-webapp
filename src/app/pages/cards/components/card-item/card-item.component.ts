@@ -22,6 +22,7 @@ export class CardItemComponent implements OnInit {
 
   showRequestModal = false;
   showReturnModal = false;
+  showDetailModal = false;
 
   constructor(
     private dataService: DataService,
@@ -44,11 +45,11 @@ export class CardItemComponent implements OnInit {
   }
 
   /**
-   * Change route and send route data
+   * Show detail modal
    */
-  route() {
+  showDetModal() {
     this.routeDataService.card.next(this.cardItem);
-    this.router.navigate(['card-detail']);
+    // this.router.navigate(['card-detail']);
   }
 
   /**
