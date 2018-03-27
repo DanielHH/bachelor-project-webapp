@@ -95,6 +95,8 @@ export class ModifyDeliveryComponent implements OnInit {
         this.documentNameInput = delivery.name;
         this.receiverInput = delivery.receiver;
 
+        this.documentDateInput = utilitiesService.getDateString(delivery.documentDate);
+        this.documentDateDatepickerInput = this.documentDateInput;
         this.sentDateInput = utilitiesService.getDateString(delivery.sentDate);
         this.sentDateDatepickerInput = this.sentDateInput;
 

@@ -81,7 +81,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="senderInput" name="receiverInput" [(ngModel)]="receiverInput" maxlength="128"
-          placeholder="Avsändare" [formControl]="receiverControl" [style.color]="isValidReceiver() ? 'black' : 'gray'" required>
+          placeholder="Mottagare" [formControl]="receiverControl" [style.color]="isValidReceiver() ? 'black' : 'gray'" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidReceiver()">done</mat-icon>
@@ -138,7 +138,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="sentDateInput" name="sentDateInput"
-          [(ngModel)]="sentDateInput" placeholder="Inkommet datum"
+          [(ngModel)]="sentDateInput" placeholder="Skickat datum"
             [style.color]="isValidSentDate() ? 'black' : 'gray'" maxlength="10"
             (input)="setSentDateToDatePicker();"
             [formControl]="sentDateControl" appDate required>
