@@ -1,3 +1,13 @@
+.row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.row:hover {
+    background-color: rgba(208, 214, 212, 0.479);
+    cursor: pointer;
+}
+
 .detail-link {
   cursor: pointer;
   &:hover {
