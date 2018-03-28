@@ -64,17 +64,32 @@ input {
   max-width: 470px;
 }
 
-.filter-checkbox {
+.filter-checkbox, .narrow-filter-checkbox {
   display: inline-flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   margin-left: 5px;
+}
+
+.filter-checkbox {
   min-width: 110px;
   max-width: 110px;
+}
+
+.small-filter-checkbox {
+  min-width: 60px;
+  max-width: 60px;
+}
+
+.medium-filter-checkbox {
+  min-width: 75px;
+  max-width: 75px;
 }
 
 .filter-checkbox-row {
   display: inline-flex;
   justify-content: flex-start;
+  min-width: 470px;
+  max-width: 470px;
 }
 
 .table-col {
