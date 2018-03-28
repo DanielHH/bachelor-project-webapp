@@ -39,7 +39,7 @@ export class CardhistoryItemComponent implements OnInit {
   ngOnInit() {
     if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
       this.logEventItem.logTypeID === 1) { // show requested cards
-      this.eventToDisplay = 'Kort utkvitterades till ' + this.cardDetail.user.username;
+      this.eventToDisplay = 'Kort utkvitterades till ' + this.logEventItem.currentOwnerID;
       this.logDate = this.logEventItem.logDate.toString();
       } else if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
       this.logEventItem.logTypeID === 2) {

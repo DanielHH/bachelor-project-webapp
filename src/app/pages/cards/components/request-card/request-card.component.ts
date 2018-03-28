@@ -217,6 +217,7 @@ export class RequestCardComponent implements OnInit {
       logEvent.logTypeID = 1; // TODO: ENUM, 1 means 'requesting card'
       logEvent.cardID = this.cardItem.id;
       logEvent.logDate = this.cardItem.modifiedDate;
+      logEvent.currentOwnerID = this.cardItem.user.id;
 
       // Submit changes to database
 
