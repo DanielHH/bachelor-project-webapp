@@ -8,9 +8,7 @@ import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
-import { EditService } from '../../../../services/edit.service';
-import { RequestService } from '../../../../services/request.service';
-import { ReturnService } from '../../../../services/return.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-document-item',
@@ -28,9 +26,7 @@ export class DocumentItemComponent implements OnInit {
     private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
-    private editService: EditService,
-    private requestService: RequestService,
-    private returnService: ReturnService) {
+    private modalService: ModalService) {
 
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
@@ -55,7 +51,7 @@ export class DocumentItemComponent implements OnInit {
    * Set document to be outputted for editing
    */
   edit() {
-    this.editService.document.next(this.documentItem);
+    this.modalService.editDocument.next(this.documentItem);
   }
 
   /**
@@ -64,9 +60,9 @@ export class DocumentItemComponent implements OnInit {
    */
   showModal() {
     if (this.documentItem.status.id == 1) {
-      this.requestService.document.next(this.documentItem);
+      this.modalService.requestDocument.next(this.documentItem);
     } else {
-      this.returnService.document.next(this.documentItem);
+      this.modalService.returnDocument.next(this.documentItem);
     }
   }
 

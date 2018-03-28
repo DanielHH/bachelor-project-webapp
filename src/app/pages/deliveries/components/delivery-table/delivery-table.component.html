@@ -20,7 +20,7 @@
       <!-- Add new document button-->
       <div class="col-2">
         <span class="add-new-button">
-          <button mat-raised-button (click)="openAddNewDocument()" color="primary">Lägg till ny handling</button>
+          <button mat-raised-button (click)="openAddNewDelivery()" color="primary">Lägg till ny leverans</button>
         </span>
       </div>
 
@@ -30,16 +30,11 @@
     <div class="row pb-4 pl-2 filter-checkbox-row">
 
       <div class="col-1 px-1 filter-checkbox">
-        <mat-checkbox id="showIn" name="showIn" color="primary" class="px-1"
-        [(ngModel)]="showIn">Inlämnade</mat-checkbox>
+        <mat-checkbox id="showActive" name="showActive" color="primary" class="px-1"
+        [(ngModel)]="showActive">Aktiva</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1 filter-checkbox">
-        <mat-checkbox id="showOut" name="showOut" color="primary" class="px-1"
-        [(ngModel)]="showOut">Utlämnade</mat-checkbox>
-      </div>
-
-      <div class="col-1 px-1 filter-checkbox">
+      <div class="col-1 px-1 pr-4 filter-checkbox">
         <mat-checkbox id="showArchived" name="showArchived" color="primary" class="px-1"
         [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
@@ -71,13 +66,13 @@
         <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'"
         [class.both-arrow]="orderName == ''">Benämning </span>
       </div>
-      <div class="col-wide table-col" (click)="sortTableList('userID')">
-        <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
-        [class.both-arrow]="orderUserID == ''">Användare </span>
+      <div class="col-wide table-col" (click)="sortTableList('receiver')">
+        <span class="hover" [class.up-arrow]="orderReceiver == 'asc'" [class.down-arrow]="orderReceiver == 'desc'"
+        [class.both-arrow]="orderReceiver == ''">Mottagare </span>
       </div>
-      <div class="col-wide table-col" (click)="sortTableList('location')">
-        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
-        [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
+      <div class="col-wide table-col" (click)="sortTableList('sentDate')">
+        <span class="hover" [class.up-arrow]="orderSentDate == 'asc'" [class.down-arrow]="orderSentDate == 'desc'"
+        [class.both-arrow]="orderSentDate == ''">Skickat </span>
       </div>
       <div class="col-wide table-col mr-5" (click)="sortTableList('comment')">
         <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
@@ -85,21 +80,18 @@
       </div>
 
       <div class="menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
-        <app-item-menu [item]="documentItem" class="hidden"></app-item-menu>
+        <app-item-menu [item]="dummyItem" class="hidden"></app-item-menu>
       </div>
 
     </div>
     <hr>
 
     <!-- Add cards to the table -->
-    <div *ngFor="let document of documentList | matchFilterDocument:filterInput:showIn:showOut:showArchived:showGone">
-        <app-document-item [documentItem]="document"></app-document-item>
+    <div *ngFor="let delivery of deliveryList | matchFilterDelivery:filterInput:showActive:showArchived:showGone">
+        <app-delivery-item [deliveryItem]="delivery"></app-delivery-item>
     </div>
   </div>
 </div>
 
-<app-modify-document [documentList]="documentList" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-document>
-
-<app-request-document></app-request-document>
-
-<app-return-document></app-return-document>
+<app-modify-delivery [deliveryList]="deliveryList" [modalTitle]="modalTitle" [modalType]="modalType"
+[(showModal)]="showModal"></app-modify-delivery>

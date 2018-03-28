@@ -5,6 +5,7 @@ import { Card } from '../datamodels/card';
 import { HttpService } from './http.service';
 import { CardType } from '../datamodels/cardType';
 import { Document } from '../datamodels/document';
+import { Delivery } from '../datamodels/delivery';
 import { DocumentType } from '../datamodels/documentType';
 import { Receipt } from '../datamodels/receipt';
 import { ItemType } from '../datamodels/itemType';
@@ -62,6 +63,18 @@ export class DataService {
    */
   documentList: BehaviorSubject<Document[]> = new BehaviorSubject<Document[]>(
     this._documentList
+  );
+
+    /**
+   * List with all deliverys
+   */
+  _deliveryList: Delivery[] = [];
+
+  /**
+   * A subscriber to the document list
+   */
+  deliveryList: BehaviorSubject<Delivery[]> = new BehaviorSubject<Delivery[]>(
+    this._deliveryList
   );
 
   /**
@@ -149,6 +162,8 @@ export class DataService {
     this.getDocumentList();
     this.getDocumentTypeList();
 
+    this.getDeliveryList();
+
     this.getReceiptList();
     this.getItemTypeList();
 
@@ -183,6 +198,13 @@ export class DataService {
     this.httpService.httpGet<Document>('getDocuments').then(data => {
       this._documentList = data;
       this.documentList.next(this._documentList);
+    });
+  }
+
+  getDeliveryList() {
+    this.httpService.httpGet<Delivery>('getDeliveries').then(data => {
+      this._deliveryList = data;
+      this.deliveryList.next(this._deliveryList);
     });
   }
 

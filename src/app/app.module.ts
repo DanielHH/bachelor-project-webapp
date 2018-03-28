@@ -57,19 +57,22 @@ import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
+import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
+import { DeliveryTableComponent } from './pages/deliveries/components/delivery-table/delivery-table.component';
+import { DeliveryItemComponent } from './pages/deliveries/components/delivery-item/delivery-item.component';
 import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { InventoryTableComponent } from './pages/inventory/components/inventory-table/inventory-table.component';
 import { InventoryItemComponent } from './pages/inventory/components/inventory-item/inventory-item.component';
+import { MatchFilterDeliveryPipe } from './pipes/match-filter-delivery.pipe';
 import { RequestCardComponent } from './pages/cards/components/request-card/request-card.component';
 import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
 import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
 import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
-import { EditService } from './services/edit.service';
-import { RequestService } from './services/request.service';
-import { ReturnService } from './services/return.service';
+import { ModalService } from './services/modal.service';
+import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
 
 @NgModule({
   declarations: [
@@ -105,16 +108,21 @@ import { ReturnService } from './services/return.service';
     ModifyDocumentComponent,
     ModalComponent,
     DocumentDetailComponent,
+    DeliveriesComponent,
+    DeliveryTableComponent,
+    DeliveryItemComponent,
     ReceiptTableComponent,
     MatchFilterReceiptPipe,
     ReceiptItemComponent,
     InventoryComponent,
     InventoryTableComponent,
     InventoryItemComponent,
+    MatchFilterDeliveryPipe,
     RequestCardComponent,
     ReturnCardComponent,
     RequestDocumentComponent,
-    ReturnDocumentComponent
+    ReturnDocumentComponent,
+    ModifyDeliveryComponent
   ],
   imports: [
     BrowserModule,
@@ -143,11 +151,9 @@ import { ReturnService } from './services/return.service';
     DataService,
     RouteDataService,
     UtilitiesService,
-    EditService,
-    RequestService,
-    ReturnService,
     MatchFilterCardPipe,
-    MatchFilterDocumentPipe
+    MatchFilterDocumentPipe,
+    ModalService
   ],
   entryComponents: [],
   bootstrap: [AppComponent]

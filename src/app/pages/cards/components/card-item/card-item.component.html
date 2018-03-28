@@ -23,7 +23,7 @@
   <div class="col-wide table-col">{{cardItem?.user?.name}}</div>
   <div class="col-wide table-col">{{cardItem?.location}}</div>
   <div class="col-wide table-col">{{cardItem?.comment}}</div>
-  <div class="col-narrow table-col">{{displayExpirationDate()}}</div>
+  <div class="col-narrow table-col">{{utilitiesService.getDateString(this.cardItem?.expirationDate)}}</div>
 
   <div class="pl-3 menu-button-col">
       <app-item-menu [item]="cardItem" (editItem)="edit()" (editStatus)="editStatus()"></app-item-menu>
