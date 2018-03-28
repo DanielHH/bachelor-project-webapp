@@ -19,13 +19,6 @@ export class ReceiptItemComponent implements OnInit {
 
   @Input() receiptItem: Receipt;
 
-  cardList: Card[] = [];
-  documentList: Document[] = [];
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
-
-  itemKindToDisplay: string;
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
   itemUserNameToDisplay: string;
@@ -37,7 +30,7 @@ export class ReceiptItemComponent implements OnInit {
 
   ngOnInit() {
     // get actual data to be displayed
-    [this.itemIDToDisplay, this.itemKindToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
+    [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
       this.utilitiesService.getReceiptDisplay(this.receiptItem);
 
     this.setActiveReceipt();

@@ -15,7 +15,6 @@ import * as moment from 'moment';
 })
 export class MatchFilterReceiptPipe implements PipeTransform {
 
-  itemKindToDisplay: string;
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
   itemUserNameToDisplay: string;
@@ -70,11 +69,10 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     const startDate = this.utilitiesService.getDateString(receipt.startDate);
     const endDate = this.utilitiesService.getDateString(receipt.endDate);
 
-    [this.itemIDToDisplay, this.itemKindToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
+    [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
       this.utilitiesService.getReceiptDisplay(receipt);
 
     return (
-      (_.includes(lowerCase(this.itemKindToDisplay), filterInput) === true) ||
       (_.includes(lowerCase(this.itemTypeToDisplay), filterInput) === true) ||
       (_.includes(lowerCase(this.itemIDToDisplay), filterInput) === true) ||
       (_.includes(lowerCase(this.itemUserNameToDisplay), filterInput) === true) ||

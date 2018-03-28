@@ -53,10 +53,6 @@
         <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
         [class.both-arrow]="orderEndDate == ''">Status </span>
       </div>
-      <div class="col-narrow table-col" (click)="sortTableList('itemKindID')">
-        <span class="hover" [class.up-arrow]="orderItemKindID == 'asc'" [class.down-arrow]="orderItemKindID == 'desc'"
-        [class.both-arrow]="orderItemKindID == ''">Kort/handling </span>
-      </div>
       <div class="col-narrow table-col" (click)="sortTableList('itemTypeID')">
         <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'"
         [class.both-arrow]="orderItemTypeID == ''">Typ </span>
