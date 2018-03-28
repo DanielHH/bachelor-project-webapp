@@ -9,6 +9,7 @@ import { DocumentType } from '../../../datamodels/documentType';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../services/utilities.service';
 import * as moment from 'moment';
+import { HttpService } from '../../../services/http.service';
 
 @Component({
   selector: 'app-receipt-item',
@@ -18,6 +19,12 @@ import * as moment from 'moment';
 export class ReceiptItemComponent implements OnInit {
 
   @Input() receiptItem: Receipt;
+
+  cardList: Card[] = [];
+  documentList: Document[] = [];
+  cardTypeList: CardType[] = [];
+  documentTypeList: DocumentType[] = [];
+  userList: User[] = [];
 
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
@@ -37,6 +44,13 @@ export class ReceiptItemComponent implements OnInit {
     }
 
     this.itemActive = this.receiptItem.endDate == null;
+  }
+
+  genPDF() {
+    // Create new pdf
+    this.utilitiesService.genPDF(
+      this.utilitiesService.getReceiptPDFParams(this.receiptItem),
+      this.utilitiesService.getReceiptDisplay(this.receiptItem)[0]);
   }
 
 }

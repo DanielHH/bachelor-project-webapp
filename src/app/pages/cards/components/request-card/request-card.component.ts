@@ -225,6 +225,12 @@ export class RequestCardComponent implements OnInit {
                   this.dataService.cardList.next(this.cards);
 
                   this.showModal = false;
+
+                  if (this.generatePDF) {
+                    this.utilitiesService.genPDF(
+                      this.utilitiesService.getCardPDFParams(this.cardItem),
+                      this.cardItem.cardNumber);
+                  }
                 }
               });
           }
