@@ -1,11 +1,142 @@
-<h4>Details for document: <span>{{documentDetail.documentNumber}}</span> </h4>
-<div>Document type : <span class="bold-text">{{documentDetail.documentType.name}}</span></div>
-<div>Document id : <span class="bold-text">{{documentDetail.documentNumber}}</span></div>
-<div>Document name : <span class="bold-text">{{documentDetail.name}}</span></div>
-<div>User ID : <span class="bold-text">{{documentDetail.user.id}}</span></div>
-<div>Location : <span class="bold-text">{{documentDetail.location}}</span></div>
-<div>Comment : <span class="bold-text">{{documentDetail.comment}}</span></div>
+<form #detailForm="ngForm" (ngSubmit)="showDetail()">
+    <app-modal [(show)]="_showModal" [modalTitle]="'Detaljer'"
+    [submitName]="'Stäng'" [hideClose]="true">
 
-<p>
+      <!-- Row card info -->
+      <div class="row">
+        <div class="col-0 col-md-1"></div>
+        <div class="col-0 col-md-10 wide-center">
+          <mat-card [style.background]="'#E8EAF6'">
+            <!-- Row 1 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-3"></div>
+              <div class="col-0 col-md-6">
+                <h5><b>Detaljerad information</b></h5>
+              </div>
+              <div class="col-0 col-md-3"></div>
+            </div>
+            <!-- Row 2 Divider -->
+            <div class="row pt-1 pb-3">
+              <div class="col-0 col-md-1"></div>
+              <div class="col-0 col-md-10">
+                <mat-divider></mat-divider>
+              </div>
+              <div class="col-0 col-md-1"></div>
+            </div>
+            <!-- Row 3 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-4">
+                <b>Typ:</b>
+              </div>
+              <div class="col-0 col-md-4">
+                <b>Dokument-ID:</b>
+              </div>
+              <div class="col-0 col-md-4">
+                <b>Dokumentets namn:</b>
+              </div>
+            </div>
+            <!-- Row 4 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-4">
+                {{documentItem?.documentType?.name}}
+              </div>
+              <div class="col-0 col-md-4">
+                {{documentItem?.documentNumber}}
+              </div>
+              <div class="col-0 col-md-4">
+                {{documentItem?.name}}
+              </div>
+            </div>
+            <!-- Row 5 Space -->
+            <div class="row py-2"></div>
+            <!-- Row 6 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-4">
+                <b>Skickat av:</b>
+              </div>
+              <div class="col-0 col-md-4">
+                <b>Förvaringsplats:</b>
+              </div>
+              <div class="col-0 col-md-4">
+                <b>Dokumentets datum:</b>
+              </div>
+            </div>
+            <!-- Row 7 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-4">
+                {{documentItem?.sender}}
+              </div>
+              <div class="col-0 col-md-4">
+                {{documentItem?.location}}
+              </div>
+              <div class="col-0 col-md-4">
+                {{displayDocumentDate()}}
+              </div>
+            </div>
+            <!-- Row 8 Space -->
+            <div class="row py-2"></div>
+            <!-- Row 9 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-4">
+                <b>Registrerat datum:</b>
+              </div>
+              <div class="col-0 col-md-4">
+                <b>Skapat datum:</b>
+              </div>
+              <div class="col-0 col-md-4">
+                <b>Ändrat datum:</b>
+              </div>
+            </div>
+            <!-- Row 10 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-4">
+                {{displayRegistrationDate()}}
+              </div>
+              <div class="col-0 col-md-4">
+                {{displayCreationDate()}}
+              </div>
+              <div class="col-0 col-md-4">
+                {{displayModifiedDate()}}
+              </div>
+            </div>
+            <!-- Row 11 Space -->
+            <div class="row py-2"></div>
+            <!-- Row 12 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-6">
+                <b>Status:</b>
+              </div>
+              <div class="col-0 col-md-6">
+                <b>Användare:</b>
+              </div>
+            </div>
+            <!-- Row 13 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-6">
+                {{documentItem?.status?.name}}
+              </div>
+              <div class="col-0 col-md-6">
+                {{documentItem?.user?.name}}
+              </div>
+            </div>
+            <!-- Row 14 Space -->
+            <div class="row py-2"></div>
+            <!-- Row 15 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-12">
+                <b>Kommentar:</b>
+              </div>
+            </div>
+            <!-- Row 16 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-12">
+                {{documentItem?.comment}}
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-0 col-md-1"></div>
+      </div>
 
-<h4>History of document: <span>{{documentDetail.documentNumber}}</span> </h4>
+    </app-modal>
+  </form>

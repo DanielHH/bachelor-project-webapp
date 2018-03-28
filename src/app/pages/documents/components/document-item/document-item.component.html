@@ -1,8 +1,8 @@
-<div class="row item-row">
+<div class="row item-row" (click)="showDetModal()" >
   <div class="col-narrow table-col">
     <div *ngIf="documentItem?.status?.id == 1 || documentItem?.status?.id == 2">
         <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="documentItem?.status?.id == 2" [class.btn-success]="documentItem?.status?.id == 1"
-            (click)="showModal()" mdbRippleRadius>
+            (click)="showModal() ; $event.stopPropagation()" mdbRippleRadius>
             <span *ngIf="documentItem?.status?.id == 1">Kvittera ut</span>
             <span *ngIf="documentItem?.status?.id == 2">Kvittera in</span>
         </button>
