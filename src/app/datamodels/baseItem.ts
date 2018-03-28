@@ -1,5 +1,5 @@
 import { Card } from './card';
-import { Document } from './Document';
+import { Document } from './document';
 import { CardDetailComponent } from '../pages/cards/components/card-detail/card-detail.component';
 import { CardType } from './cardType';
 import { User } from './user';

@@ -23,6 +23,8 @@ import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document
 export class InventoryTableComponent implements OnInit {
   @Input() baseItemList: BaseItem[];
 
+  dummyItem: Card = new Card();
+
   filterInput = '';
 
   orderStatus = '';
