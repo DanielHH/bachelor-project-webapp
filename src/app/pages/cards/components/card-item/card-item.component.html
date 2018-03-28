@@ -1,4 +1,4 @@
-<div class="row item-row" (click)="showDetModal()" >
+<div class="row item-row" (click)="showDetailsModal()" >
   <div class="col-narrow table-col">
     <div *ngIf="cardItem?.status?.id == 1 || cardItem?.status?.id == 2">
         <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1"
@@ -23,9 +23,10 @@
   <div class="col-wide table-col">{{cardItem?.user?.name}}</div>
   <div class="col-wide table-col">{{cardItem?.location}}</div>
   <div class="col-wide table-col">{{cardItem?.comment}}</div>
-  <div class="col-narrow table-col">{{utilitiesService.getDateString(this.cardItem?.expirationDate)}}</div>
+  <div class="col-wide table-col">{{utilitiesService.getDateString(this.cardItem?.expirationDate)}}</div>
 
   <div class="pl-3 menu-button-col">
-      <app-item-menu [item]="cardItem" (editItem)="edit()" (editStatus)="editStatus()"></app-item-menu>
+      <app-item-menu [item]="cardItem" (editItem)="edit()" (editStatus)="editStatus()"
+      [showDetailsOption]="true" [showEditOption]="true"></app-item-menu>
   </div>
 </div>

@@ -24,7 +24,8 @@
   <div class="col-wide table-col mr-5">{{deliveryItem?.comment}}</div>
 
   <div class="menu-button-col">
-      <app-item-menu [item]="deliveryItem" (editItem)="edit()" (editStatus)="editStatus()"></app-item-menu>
+      <app-item-menu [item]="deliveryItem" (editItem)="edit()" (editStatus)="editStatus()"
+      [showEditOption]="true"></app-item-menu>
   </div>
 
 </div>

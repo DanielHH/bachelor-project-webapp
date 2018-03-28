@@ -14,9 +14,11 @@ import { UtilitiesService } from '../../services/utilities.service';
 })
 export class ItemMenuComponent implements OnInit {
 
+  @Input() item: any; // Card or Document
 
-  // Card or Document
-  @Input() item: any;
+  @Input() showDetailsOption = false;
+
+  @Input() showEditOption = false;
 
   @Output() editItem = new EventEmitter<any>();
 
@@ -56,11 +58,11 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    if (this.item.userID && value == 1) { // If has owner and is restored
-      value = 2;
+    if (this.item.user.id && value == 1) { // If has owner and is restored
+      this.item.status = this.utilitiesService.getStatusFromID(2);
+    } else {
+      this.item.status = this.utilitiesService.getStatusFromID(value);
     }
-
-    this.item.status = this.utilitiesService.getStatusFromID(value);
 
     this.editStatus.emit();
   }
