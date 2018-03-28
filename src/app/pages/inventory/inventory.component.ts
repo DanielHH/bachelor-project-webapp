@@ -17,11 +17,11 @@ export class InventoryComponent implements OnInit {
   constructor(public dataService: DataService) {
     this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
-      this.refreshItemList();
+      this.setItemList();
     });
     this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
-      this.refreshItemList();
+      this.setItemList();
     });
   }
 
@@ -30,7 +30,7 @@ export class InventoryComponent implements OnInit {
   /**
    * Set the list of BaseItems to contain the cards and documents stored in their respective lists.
    */
-  refreshItemList(): void {
+  setItemList(): void {
     this.baseItemList = [];
     this.cardList.forEach(element => {
       this.baseItemList.push(new BaseItem(element, 'card'));

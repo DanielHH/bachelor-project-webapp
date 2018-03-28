@@ -1,46 +1,51 @@
 <div class="inventory-item">
   <div class="inventory-item-body">
-    <!-- Input field for filter -->
+
+    <!-- Row text filter input and add new button -->
     <div class="row">
-      <div class="col-4">
+
+      <!-- Input field for text filter -->
+      <div class="col-4 px-1 text-filter-input">
         <mat-form-field>
-          <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text" maxlength="128" placeholder="Filtrera på">
-          <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
-            <mat-icon>close</mat-icon>
-          </button>
+            <!--Input-->
+            <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput"
+            maxlength="128" placeholder="Filtrera på">
+            <!--Clear-->
+            <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
+            (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
         </mat-form-field>
       </div>
-      <div class="col-3"></div>
-
-      <div class="col-1">
-        <div class="form-check">
-
-          <div class="form-check">
-            <input type="checkbox" class="filled-in form-check-input" id="showInID" [(ngModel)]=showIn>
-            <label class="form-check-label" for="showInID">Inne</label>
-          </div>
-
-          <div class="form-check">
-            <input type="checkbox" class="filled-in form-check-input" id="showOutID" [(ngModel)]=showOut>
-            <label class="form-check-label" for="showOutID">Ute</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-2">
-        <div class="form-check">
-          <input type="checkbox" class="filled-in form-check-input" id="showArchivedID" [(ngModel)]=showArchived>
-          <label class="form-check-label" for="showArchivedID">Arkiverade</label>
-        </div>
-
-        <div class="form-check">
-          <input type="checkbox" class="filled-in form-check-input" id="showGoneID" [(ngModel)]=showGone>
-          <label class="form-check-label" for="showGoneID">Borta</label>
-        </div>
-      </div>
+      <div class="col"></div> <!-- Space -->
     </div>
+
+      <!-- Row filter per status -->
+      <div class="row pb-4 pl-2 filter-checkbox-row">
+
+        <div class="col-1 filter-checkbox px-1">
+          <mat-checkbox id="showIn" name="showIn" color="primary" class="px-1"
+          [(ngModel)]="showIn">Inlämnade</mat-checkbox>
+        </div>
+
+        <div class="col-1 filter-checkbox px-1">
+          <mat-checkbox id="showOut" name="showOut" color="primary" class="px-1"
+          [(ngModel)]="showOut">Utlämnade</mat-checkbox>
+        </div>
+
+        <div class="col-1 filter-checkbox px-1">
+          <mat-checkbox id="showArchived" name="showArchived" color="primary" class="px-1"
+          [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        </div>
+
+        <div class="col-1 filter-checkbox px-1">
+          <mat-checkbox id="showGone" name="showGone" color="primary" class="px-1"
+          [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        </div>
+
+
+        <div class="col-8"></div>
+
+    </div>
+
 
     <!-- Header row -->
     <div class="row">
