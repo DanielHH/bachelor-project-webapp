@@ -175,7 +175,6 @@ export class UtilitiesService {
 
   genPDF(params, number) {
     // Create new pdf
-    console.log('trying to create pdf');
     this.httpService.httpPDF(params);
     delay(this.httpService, number);
 
