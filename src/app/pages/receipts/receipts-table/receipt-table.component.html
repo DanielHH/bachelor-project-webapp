@@ -83,7 +83,7 @@
     </div>
     <hr>
 
-    <!-- Add receipts to the table  -->
+    <!-- Add receipts to the table -->
     <div *ngFor="let receipt of receiptList | matchFilterReceipt:filterInput:showCard:showDocument:showActive:showInactive">
         <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>
     </div>

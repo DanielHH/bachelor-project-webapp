@@ -189,9 +189,9 @@ export class RequestDocumentComponent implements OnInit {
 
       // Create new receipt
       const receipt = new Receipt();
-      receipt.itemTypeID = 2; // TODO: ENUM, 2 means document
-      receipt.documentID = this.documentItem.id;
-      receipt.userID = this.documentItem.user.id;
+      receipt.itemType.id = 2; // TODO: ENUM, 2 means document
+      receipt.document.id = this.documentItem.id;
+      receipt.user.id = this.documentItem.user.id;
       receipt.startDate = this.utilitiesService.getLocalDate();
 
       // Submit changes to database
