@@ -57,7 +57,8 @@ export class RequestDocumentComponent implements OnInit {
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
-    map(val => this.filterUsers(val))
+    map(user =>
+      user ? this.filterUsers(user) : this.users.slice())
   );
 
   constructor(
@@ -111,9 +112,9 @@ export class RequestDocumentComponent implements OnInit {
   filterUsers(str: string) {
     return this.users.filter(
       user =>
-        str && typeof str === 'string' &&
+        str &&
+        typeof str === 'string' &&
         user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-
     );
   }
 
