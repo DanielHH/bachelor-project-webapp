@@ -52,6 +52,7 @@ export class ReceiptItemComponent implements OnInit {
   }
 
   genPDF() {
+    // Create new pdf
     this.httpService.httpPDF(this.utilitiesService.getPDFParams(this.receiptItem));
     delay(this.httpService, this.utilitiesService.getReceiptDisplay(this.receiptItem)[0]);
 
