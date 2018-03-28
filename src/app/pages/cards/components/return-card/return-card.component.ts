@@ -3,7 +3,7 @@ import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
-import { ReturnService } from '../../../../services/return.service';
+import { ModalService } from '../../../../services/modal.service';
 import { DataService } from '../../../../services/data.service';
 import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
@@ -45,7 +45,7 @@ export class ReturnCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
-    private returnService: ReturnService
+    private modalService: ModalService
   ) {
     // Receipt list subscriber
     this.dataService.receiptList.subscribe(receipts => {
@@ -58,7 +58,7 @@ export class ReturnCardComponent implements OnInit {
     });
 
     // Return card subscriber
-    this.returnService.card.subscribe((card) => {
+    this.modalService.returnCard.subscribe((card) => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -138,7 +138,7 @@ export class ReturnCardComponent implements OnInit {
     this.returnForm.resetForm();
 
     this.cardItem = Object.assign({}, new Card());
-    this.returnService.card.next(this.cardItem);
+    this.modalService.returnCard.next(this.cardItem);
 
     this.showModal = false;
   }

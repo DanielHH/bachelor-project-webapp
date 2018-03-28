@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import { MatDialogRef } from '@angular/material';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
-import { EditService } from '../../../../services/edit.service';
+import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
 
 @Component({
@@ -86,7 +86,7 @@ export class ModifyDocumentComponent implements OnInit {
   constructor(private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private editService: EditService) {
+    private modalService: ModalService) {
 
     this.dataService.documentTypeList.subscribe(docTypes => {
       this.docTypes = docTypes;
@@ -96,7 +96,7 @@ export class ModifyDocumentComponent implements OnInit {
       });
     });
 
-    this.editService.document.subscribe((document) => {
+    this.modalService.editDocument.subscribe((document) => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -195,6 +195,7 @@ export class ModifyDocumentComponent implements OnInit {
 
       this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
         if (res.message === 'success') {
+          this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
 
           this.closeForm();
