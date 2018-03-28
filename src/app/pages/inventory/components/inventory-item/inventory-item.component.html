@@ -6,12 +6,14 @@
   </div>
   <div class="col-1" *ngIf="baseItem?.getStatus()?.id == 2 || baseItem?.getStatus()?.id == 3 || baseItem?.getStatus()?.id == 4">
     <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
-      <span *ngIf="baseItem?.getStatus()?.id == 2">Ute</span>
+      <!--<span *ngIf="baseItem?.getStatus()?.id == 2">Ute</span>
       <span *ngIf="baseItem?.getStatus()?.id == 3">Arkiv</span>
-      <span *ngIf="baseItem?.getStatus()?.id == 4">Borta</span>
+      <span *ngIf="baseItem?.getStatus()?.id == 4">Borta</span>-->
+      <span>Verifiera</span>
     </button>
   </div>
 
+  <div class="col">{{baseItem?.getStatus()?.name}}</div>
   <div class="col">{{baseItem?.getItemType()}}</div>
   <div class="col">{{baseItem?.getSubType()?.name}}</div>
   <div class="col">{{baseItem?.getNumber()}}</div>

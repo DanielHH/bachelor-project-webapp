@@ -36,7 +36,7 @@ export class InventoryTableComponent implements OnInit {
   orderVerifyDate = '';
 
   showIn = true;
-  showOut = true;
+  showOut = false;
   showArchived = false;
   showGone = false;
 
@@ -50,7 +50,7 @@ export class InventoryTableComponent implements OnInit {
   }
 
   /**
-   * Sorts table after modifiedDate ascending
+   * Sorts table after subType ascending
    */
   sortTableListStart() {
     this.baseItemList = _.orderBy(this.baseItemList, ['subType'], ['desc']);

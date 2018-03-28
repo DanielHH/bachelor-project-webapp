@@ -24,10 +24,6 @@ export class InventoryItemComponent implements OnInit {
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
-  showRequestModal = false;
-
-  showReturnModal = false;
-
   constructor(
     private dataService: DataService,
     private routeDataService: RouteDataService,

@@ -31,7 +31,6 @@
 
       <div class="col-2">
         <div class="form-check">
-
           <input type="checkbox" class="filled-in form-check-input" id="showArchivedID" [(ngModel)]=showArchived>
           <label class="form-check-label" for="showArchivedID">Arkiverade</label>
         </div>
@@ -40,14 +39,15 @@
           <input type="checkbox" class="filled-in form-check-input" id="showGoneID" [(ngModel)]=showGone>
           <label class="form-check-label" for="showGoneID">Borta</label>
         </div>
-
       </div>
     </div>
 
     <!-- Header row -->
     <div class="row">
 
-      <div class="col-1" (click)="sortTableList('status')">
+      <div class="col-1"></div>
+
+      <div class="col" (click)="sortTableList('status')">
         <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status</span>
       </div>
 
@@ -65,17 +65,17 @@
         <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare</span>
       </div>
       <div class="col" (click)="sortTableList('location')">
-        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaringsplats</span>
+        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring</span>
       </div>
       <div class="col" (click)="sortTableList('comment')">
         <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar</span>
       </div>
 
       <div class="col" (click)="sortTableList('verifyDate')">
-        <span class="hover" [class.up-arrow]="orderVerifyDate == 'asc'" [class.down-arrow]="orderVerifyDate == 'desc'" [class.both-arrow]="orderVerifyDate == ''">Inventerad</span>
+        <span class="hover" [class.up-arrow]="orderVerifyDate == 'asc'" [class.down-arrow]="orderVerifyDate == 'desc'" [class.both-arrow]="orderVerifyDate == ''">Verifierad</span>
       </div>
 
-      <div class="col-1"></div>
+    <div class="col-1"></div>
     </div>
     <hr>
     <div *ngFor="let item of baseItemList">
