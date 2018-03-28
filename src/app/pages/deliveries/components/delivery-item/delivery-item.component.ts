@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { Delivery } from '../../../../datamodels/delivery';
 import * as moment from 'moment';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-delivery-item',
@@ -27,6 +28,7 @@ export class DeliveryItemComponent implements OnInit {
     private routeDataService: RouteDataService,
     public utilitiesService: UtilitiesService,
     private router: Router,
+    private modalService: ModalService,
     private httpService: HttpService
   ) { }
 
@@ -36,6 +38,13 @@ export class DeliveryItemComponent implements OnInit {
   route() {
     this.routeDataService.delivery.next(this.deliveryItem);
     this.router.navigate(['delivery-detail']);
+  }
+
+  /**
+   * Set document to be outputted for editing
+   */
+  edit() {
+    this.modalService.editDelivery.next(this.deliveryItem);
   }
 
   /**

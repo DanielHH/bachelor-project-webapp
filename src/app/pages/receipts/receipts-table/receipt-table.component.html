@@ -4,7 +4,7 @@
     <div class="row">
 
       <!-- Input field for text filter -->
-      <div class="col-4">
+      <div class="col-4 px-1 text-filter-input">
         <mat-form-field>
             <!--Input-->
             <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput"
@@ -20,24 +20,24 @@
     </div>
 
     <!-- Row filter per type and status -->
-    <div class="row pb-4 pl-2">
+    <div class="row pb-4 pl-2 filter-checkbox-row">
 
-      <div class="col-1 px-1">
+      <div class="col-1 px-1 filter-checkbox">
         <mat-checkbox id="showCard" name="showCard" color="primary" class="px-1"
         [(ngModel)]="showCard">Kort</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1">
+      <div class="col-1 px-1 filter-checkbox">
         <mat-checkbox id="showDocument" name="showDocument" color="primary" class="px-1"
         [(ngModel)]="showDocument">Handlingar</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1">
+      <div class="col-1 px-1 filter-checkbox">
         <mat-checkbox id="showActive" name="showActive" color="primary" class="px-1"
         [(ngModel)]="showActive">Aktiva</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1">
+      <div class="col-1 px-1 filter-checkbox">
         <mat-checkbox id="showInactive" name="showInactive" color="primary" class="px-1"
         [(ngModel)]="showInactive">Inaktiva</mat-checkbox>
       </div>
@@ -52,10 +52,6 @@
       <div class="col-narrow table-col" (click)="sortTableList('endDate')">
         <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
         [class.both-arrow]="orderEndDate == ''">Status </span>
-      </div>
-      <div class="col-narrow table-col" (click)="sortTableList('itemKindID')">
-        <span class="hover" [class.up-arrow]="orderItemKindID == 'asc'" [class.down-arrow]="orderItemKindID == 'desc'"
-        [class.both-arrow]="orderItemKindID == ''">Kort/handling </span>
       </div>
       <div class="col-narrow table-col" (click)="sortTableList('itemTypeID')">
         <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'"
