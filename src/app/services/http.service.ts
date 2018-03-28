@@ -72,8 +72,8 @@ export class HttpService {
       const blob = new Blob([fileBlob], {
          type: 'application/pdf' // must match the Accept type
       });
-      // const fileSaver = require('file-saver');
-      FileSaver.saveAs(blob, 'test.pdf');
+      console.log(body);
+      FileSaver.saveAs(blob, body);
    });
   }
 

@@ -53,11 +53,11 @@ export class ReceiptItemComponent implements OnInit {
 
   genPDF() {
     this.httpService.httpPDF(this.utilitiesService.getPDFParams(this.receiptItem));
-    delay(this.httpService);
+    delay(this.httpService, this.utilitiesService.getReceiptDisplay(this.receiptItem)[0]);
 
-    async function delay(httpService: HttpService) {
+    async function delay(httpService: HttpService, itemNumber) {
       await sleep(2000);
-      httpService.httpGetPDF();
+      httpService.httpGetPDF(itemNumber);
     }
 
     function sleep(ms) {
