@@ -201,7 +201,7 @@ export class RequestCardComponent implements OnInit {
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
       this.cardItem.comment =
-        this.commentInput != '' ? this.commentInput : null;
+      this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
       // Create new receipt
@@ -217,7 +217,7 @@ export class RequestCardComponent implements OnInit {
       logEvent.logTypeID = 1; // TODO: ENUM, 1 means 'requesting card'
       logEvent.cardID = this.cardItem.id;
       logEvent.logDate = this.cardItem.modifiedDate;
-      logEvent.currentOwnerID = this.cardItem.user.id;
+      logEvent.ownerID = this.cardItem.user.id;
 
       // Submit changes to database
 

@@ -33,6 +33,7 @@ export class ReturnCardComponent implements OnInit {
 
   cards: Card[] = [];
   receipts: Receipt[] = [];
+  logEvents: LogEvent[] = [];
 
   cardItem: Card = null;
 
@@ -129,6 +130,11 @@ export class ReturnCardComponent implements OnInit {
                     .httpPut<Card>('updateCard/', this.cardItem)
                     .then(cardRes => {
                       if (cardRes.message === 'success') {
+                        // Update log event list
+                        this.logEvents.unshift(logEventRes.data);
+                        this.logEvents = this.logEvents.slice();
+                        this.dataService.logEventList.next(this.logEvents);
+
                         // Update receipt list
                         this.receipts = this.receipts.slice();
                         this.dataService.receiptList.next(this.receipts);

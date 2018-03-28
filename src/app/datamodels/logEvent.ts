@@ -24,9 +24,9 @@ export class LogEvent {
   documentID?: number;
 
   /**
-   * Current owner ID of log event
+   * Owner ID of log event
    */
-  currentOwnerID?: number;
+  ownerID?: number;
 
   /**
    * User ID of user who made the event
@@ -48,7 +48,7 @@ export class LogEvent {
     this.itemTypeID = null;
     this.cardID = null;
     this.documentID = null;
-    this.currentOwnerID = null;
+    this.ownerID = null;
     this.userID = null;
     this.logTypeID = null;
     this.logDate = null;
