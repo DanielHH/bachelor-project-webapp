@@ -5,7 +5,6 @@ import { DataService } from '../../../../services/data.service';
 import { DocumentType } from '../../../../datamodels/documentType';
 import { User } from '../../../../datamodels/user';
 import * as _ from 'lodash';
-import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
@@ -23,7 +22,6 @@ export class DocumentItemComponent implements OnInit {
 
   constructor(
     public dataService: DataService,
-    private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService) {
@@ -38,14 +36,6 @@ export class DocumentItemComponent implements OnInit {
   }
 
   ngOnInit() { }
-
-  /**
-   * Change route and send route data
-   */
-  route() {
-    this.routeDataService.document.next(this.documentItem);
-    this.router.navigate(['document-detail']);
-  }
 
   /**
    * Set document to be outputted for editing
@@ -64,6 +54,13 @@ export class DocumentItemComponent implements OnInit {
     } else {
       this.modalService.returnDocument.next(this.documentItem);
     }
+  }
+
+    /**
+   * Shows the modal for document details
+   */
+  showDetModal() {
+    this.modalService.detailDocument.next(this.documentItem);
   }
 
   /**
