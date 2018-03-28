@@ -57,9 +57,13 @@ import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
+import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
+import { DeliveryTableComponent } from './pages/deliveries/components/delivery-table/delivery-table.component';
+import { DeliveryItemComponent } from './pages/deliveries/components/delivery-item/delivery-item.component';
 import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
+import { MatchFilterDeliveryPipe } from './pipes/match-filter-delivery.pipe';
 import { RequestCardComponent } from './pages/cards/components/request-card/request-card.component';
 import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
 import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
@@ -102,9 +106,13 @@ import { ReturnService } from './services/return.service';
     ModifyDocumentComponent,
     ModalComponent,
     DocumentDetailComponent,
+    DeliveriesComponent,
+    DeliveryTableComponent,
+    DeliveryItemComponent,
     ReceiptTableComponent,
     MatchFilterReceiptPipe,
     ReceiptItemComponent,
+    MatchFilterDeliveryPipe,
     RequestCardComponent,
     ReturnCardComponent,
     RequestDocumentComponent,

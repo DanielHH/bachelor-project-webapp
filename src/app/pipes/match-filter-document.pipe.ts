@@ -12,22 +12,7 @@ import { lowerCase, UtilitiesService } from '../services/utilities.service';
 })
 export class MatchFilterDocumentPipe implements PipeTransform {
 
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
-
-  constructor(
-    public dataService: DataService,
-    private utilitiesService: UtilitiesService
-  ) {
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
-      this.documentTypeList = documentTypeList;
-    });
-
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
-  }
-
+  constructor(private utilitiesService: UtilitiesService) { }
 
   transform(value: Document[], input: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean): Document[] {
     return _.filter(value, (document) => {

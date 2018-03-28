@@ -108,7 +108,6 @@ export class UtilitiesService {
       }
     }
 
-
     return [itemIdToDisplay, itemKindToDisplay, itemTypeToDisplay, itemUserNameToDisplay];
   }
 

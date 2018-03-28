@@ -6,6 +6,7 @@ import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { LogsComponent } from './pages/logs/logs.component';
 import { ExamplesComponent } from './pages/examples/examples.component';
 import { CardsComponent } from './pages/cards/cards.component';
+import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import {
   CardDetailComponent
 } from './pages/cards/components/card-detail/card-detail.component';
@@ -20,6 +21,7 @@ export const routes: Routes = [
     { path: 'logs', component: LogsComponent, data: { name: 'Loggar' } },
     { path: 'examples', component: ExamplesComponent, data: { name: 'Kodexempel' } },
     { path: 'cards', component: CardsComponent, data: { name: 'Kort' } },
+    { path: 'deliveries', component: DeliveriesComponent, data: { name: 'Leveranser' } },
     { path: 'card-detail', component: CardDetailComponent, data: {name: 'Kortdetaljer'} },
     { path: 'document-detail',
       component: DocumentDetailComponent,
