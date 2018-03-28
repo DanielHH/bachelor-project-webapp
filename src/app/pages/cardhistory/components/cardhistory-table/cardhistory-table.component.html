@@ -55,9 +55,7 @@
 
   <!-- Add receipts to the table   -->
   <div *ngFor="let logEvent of logEventList">
-    <div ng-if="logEvent.cardID == cardDetail.id">
       <app-cardhistory-item [logEventItem]="logEvent"> </app-cardhistory-item>
-    </div>
   </div>
 </div>
 </div>

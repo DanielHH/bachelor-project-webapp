@@ -40,11 +40,11 @@ export class CardhistoryItemComponent implements OnInit {
     if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
       this.logEventItem.logTypeID === 1) { // show requested cards
       this.eventToDisplay = 'Kort utkvitterades till ' + this.logEventItem.ownerID;
-      this.logDate = this.logEventItem.logDate.toString();
+      this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
       } else if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
       this.logEventItem.logTypeID === 2) { // show returned cards
         this.eventToDisplay = 'Kort inkvitterat';
-        this.logDate = this.logEventItem.logDate.toString();
+        this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
       }
   }
 }

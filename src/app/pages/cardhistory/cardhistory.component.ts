@@ -20,7 +20,6 @@ export class CardhistoryComponent implements OnInit {
   logEventList: LogEvent[] = [];
 
   constructor(public dataService: DataService) {
-
     this.dataService.logEventList.subscribe((logEventList) => {
       this.logEventList = logEventList;
     });
