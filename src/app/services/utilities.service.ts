@@ -10,6 +10,7 @@ import { User } from '../datamodels/user';
 import { DataService } from '../services/data.service';
 import { StatusType } from '../datamodels/statusType';
 import * as moment from 'moment';
+import { ItemType } from '../datamodels/itemType';
 
 
 /**
@@ -30,6 +31,7 @@ export class UtilitiesService {
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
   statusTypeList: StatusType[] = [];
+  itemTypeList: ItemType[] = [];
 
   constructor(private dataService: DataService, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -54,8 +56,13 @@ export class UtilitiesService {
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
+
     this.dataService.statusTypeList.subscribe(statusTypeList => {
       this.statusTypeList = statusTypeList;
+    });
+
+    this.dataService.itemTypeList.subscribe(itemTypeList => {
+      this.itemTypeList = itemTypeList;
     });
 
   }
@@ -78,6 +85,10 @@ export class UtilitiesService {
 
   getStatusFromID(id: number) {
     return _.find(this.statusTypeList, statusType => statusType.id == id);
+  }
+
+  getItemTypeFromID(id: number) {
+    return _.find(this.itemTypeList, itemType => itemType.id == id);
   }
 
   /**
