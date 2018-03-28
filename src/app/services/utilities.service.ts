@@ -31,7 +31,7 @@ export class UtilitiesService {
   userList: User[] = [];
   statusTypeList: StatusType[] = [];
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -130,48 +130,95 @@ export class UtilitiesService {
     return _.find(this.documentTypeList, documentType => documentType.id == id || documentType.name == name);
   }
 
-  getPDFParams(item: any) {
-    const params: any[] = [2];
+  getReceiptPDFParams(item: any) {
     if (item.itemTypeID == 1) { // itemTypeID 1: card
       const cardItem = _.find(this.cardList, card => card.id === item.cardID);
-      params[0] = 'card';
-      const fields: any[] = [7];
-      fields[0] = cardItem.cardNumber;
-      fields[1] = cardItem.cardType.name;
-      fields[2] = '';
-      fields[3] = moment(cardItem.expirationDate).format('YYYY-MM-DD');
-      fields[4] = cardItem.comment.substring(0, 30);
-      fields[5] = cardItem.location;
-      fields[6] = moment(cardItem.modifiedDate).format('YYYY-MM-DD');
-
-      if (cardItem.user) {
-        fields[2] = cardItem.user.name;
-      }
-
-      params[1] = fields;
+      return this.getCardPDFParams(cardItem);
 
     } else if (item.itemTypeID == 2) { // itemTypeID 2: document
       const documentItem = _.find(this.documentList, document => document.id === item.documentID);
-      params[0] = 'document';
-      const fields: any[] = [10];
-      fields[0] = documentItem.documentNumber;
-      fields[1] = documentItem.name;
-      fields[2] = documentItem.documentType.name;
-      fields[3] = documentItem.sender;
-      fields[4] = moment(documentItem.documentDate).format('YYYY-MM-DD');
-      fields[5] = moment(documentItem.registrationDate).format('YYYY-MM-DD');
-      fields[6] = '';
-      fields[7] = documentItem.comment.substring(0, 30);
-      fields[8] = documentItem.location;
-      fields[9] = moment(documentItem.modifiedDate).format('YYYY-MM-DD');
+      return this.getDocumentPDFParams(documentItem);
 
-      if (documentItem.user) {
-        fields[6] = documentItem.user.name;
-      }
-      params[1] = fields;
     }
 
+    return ['', ''];
+  }
+
+  getCardPDFParams(card: Card) {
+      const params: any[] = [2];
+      params[0] = 'card';
+      const fields: any[] = [7];
+      fields[0] = card.cardNumber;
+      fields[1] = card.cardType.name;
+      fields[2] = '';
+      fields[3] = moment(card.expirationDate).format('YYYY-MM-DD');
+      fields[4] = ''; // card.comment.substring(0, 30);
+      fields[5] = card.location;
+      fields[6] = moment(card.modifiedDate).format('YYYY-MM-DD');
+
+      if (card.user) {
+        fields[2] = card.user.name;
+      }
+
+      if (card.comment) {
+        if (card.comment.length >= 30) {
+          fields[4] = card.comment.substring(0, 30);
+        } else {
+          fields[4] = card.comment;
+        }
+      }
+
+      params[1] = fields;
+
+      return params;
+  }
+
+  getDocumentPDFParams(document: Document) {
+    const params: any[] = [2];
+    params[0] = 'document';
+    const fields: any[] = [10];
+    fields[0] = document.documentNumber;
+    fields[1] = document.name;
+    fields[2] = document.documentType.name;
+    fields[3] = document.sender;
+    fields[4] = moment(document.documentDate).format('YYYY-MM-DD');
+    fields[5] = moment(document.registrationDate).format('YYYY-MM-DD');
+    fields[6] = '';
+    fields[7] = ''; // document.comment.substring(0, 30);
+    fields[8] = document.location;
+    fields[9] = moment(document.modifiedDate).format('YYYY-MM-DD');
+
+    if (document.user) {
+      fields[6] = document.user.name;
+    }
+
+    if (document.comment) {
+      if (document.comment.length >= 30) {
+        fields[7] = document.comment.substring(0, 30);
+      } else {
+        fields[7] = document.comment;
+      }
+    }
+
+    params[1] = fields;
+
     return params;
+  }
+
+  genPDF(params, number) {
+    // Create new pdf
+    console.log('trying to create pdf');
+    this.httpService.httpPDF(params);
+    delay(this.httpService, number);
+
+    async function delay(httpService: HttpService, itemNumber) {
+      await sleep(2000);
+      httpService.httpGetPDF(itemNumber);
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
   }
 
 }
