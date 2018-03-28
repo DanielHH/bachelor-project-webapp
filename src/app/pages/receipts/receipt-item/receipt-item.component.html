@@ -1,9 +1,10 @@
 <div class="row item-row">
 
   <div class="col-narrow table-col">{{this.receiptItem.endDate ? 'Inaktiv' : 'Aktiv'}}  </div>
-  <div class="col-narrow table-col">{{itemTypeToDisplay}}
+  <div class="col-narrow table-col">
     <i *ngIf="this.receiptItem.itemTypeID == 1" class="material-icons">credit_card</i>
     <i *ngIf="this.receiptItem.itemTypeID == 2" class="material-icons">import_contacts</i>
+    {{itemTypeToDisplay}}
   </div>
   <div class="col-wide table-col">{{itemIDToDisplay}}</div>
   <div class="col-wide table-col">{{itemUserNameToDisplay}}</div>
