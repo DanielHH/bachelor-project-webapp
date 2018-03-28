@@ -4,6 +4,7 @@ import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
 import { RouteDataService } from '../../../../services/route-data.service';
+import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
   selector: 'app-cardhistory-table',
@@ -12,7 +13,7 @@ import { RouteDataService } from '../../../../services/route-data.service';
 })
 export class CardhistoryTableComponent implements OnInit {
 
-  @Input() receiptList: Receipt[];
+  @Input() logEventList: LogEvent[];
 
   filterInput = '';
 
@@ -28,14 +29,14 @@ export class CardhistoryTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sortTableListStart();
+   // this.sortTableListStart();
   }
 
   /**
    * Sorts table after modifiedDate ascending
    */
   sortTableListStart() {
-    this.receiptList = _.orderBy(this.receiptList, ['modifiedDate'], ['desc']);
+   // this.receiptList = _.orderBy(this.receiptList, ['modifiedDate'], ['desc']);
   }
 
   /**

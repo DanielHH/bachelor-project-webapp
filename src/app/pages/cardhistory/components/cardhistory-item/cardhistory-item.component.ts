@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import * as moment from 'moment';
 import { RouteDataService } from '../../../../services/route-data.service';
+import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
   selector: 'app-cardhistory-item',
@@ -18,7 +19,7 @@ import { RouteDataService } from '../../../../services/route-data.service';
 })
 export class CardhistoryItemComponent implements OnInit {
 
-  @Input() receiptItem: Receipt;
+  @Input() logEventItem: LogEvent;
   cardList: Card[] = [];
 
   logDate: string;
@@ -36,9 +37,14 @@ export class CardhistoryItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.receiptItem.itemTypeID == 1 && this.receiptItem.cardID == this.cardDetail.id && !this.receiptItem.endDate) {
+    if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
+      this.logEventItem.logTypeID === 1) { // show requested cards
       this.eventToDisplay = 'Kort utkvitterades till ' + this.cardDetail.user.username;
-      this.logDate = moment(this.receiptItem.startDate).format('YYYY-MM-DD HH:mm:ss');
-    }
+      this.logDate = this.logEventItem.logDate.toString();
+      } else if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
+      this.logEventItem.logTypeID === 2) {
+        this.eventToDisplay = 'Kort inkvitterat';
+        this.logDate = this.logEventItem.logDate.toString();
+      }
   }
 }

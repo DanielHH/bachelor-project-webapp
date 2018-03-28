@@ -8,6 +8,7 @@ import { HttpService } from '../../services/http.service';
 
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
+import { LogEvent } from '../../datamodels/logEvent';
 
 @Component({
   selector: 'app-cardhistory',
@@ -16,11 +17,12 @@ import { NgForm } from '@angular/forms';
 })
 export class CardhistoryComponent implements OnInit {
 
-  receiptList: Receipt[] = [];
+  logEventList: LogEvent[] = [];
 
   constructor(public dataService: DataService) {
-    this.dataService.receiptList.subscribe((receiptList) => {
-      this.receiptList = receiptList;
+
+    this.dataService.logEventList.subscribe((logEventList) => {
+      this.logEventList = logEventList;
     });
 
   }
