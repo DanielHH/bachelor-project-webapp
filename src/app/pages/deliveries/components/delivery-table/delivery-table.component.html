@@ -4,7 +4,7 @@
     <div class="row">
 
       <!-- Input field for text filter -->
-      <div class="col-4">
+      <div class="col-4 px-1 text-filter-input">
         <mat-form-field>
             <!--Input-->
             <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput"
@@ -15,31 +15,31 @@
         </mat-form-field>
       </div>
 
-      <div class="col-6"></div> <!-- Space -->
+      <div class="col"></div> <!-- Space -->
 
       <!-- Add new document button-->
       <div class="col-2">
         <span class="add-new-button">
-          <button mat-raised-button color="primary">Lägg till ny handling</button>
+          <button mat-raised-button (click)="openAddNewDelivery()" color="primary">Lägg till ny leverans</button>
         </span>
       </div>
 
     </div>
 
     <!-- Row filter per status -->
-    <div class="row pb-4 pl-2">
+    <div class="row pb-4 pl-2 filter-checkbox-row">
 
-      <div class="col-1 px-1">
+      <div class="col-1 px-1 filter-checkbox">
         <mat-checkbox id="showActive" name="showActive" color="primary" class="px-1"
         [(ngModel)]="showActive">Aktiva</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1">
+      <div class="col-1 px-1 pr-4 filter-checkbox">
         <mat-checkbox id="showArchived" name="showArchived" color="primary" class="px-1"
         [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1">
+      <div class="col-1 px-1 filter-checkbox">
         <mat-checkbox id="showGone" name="showGone" color="primary" class="px-1"
         [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
@@ -80,7 +80,7 @@
       </div>
 
       <div class="menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
-        <app-item-menu [item]="deliveryItem" class="hidden"></app-item-menu>
+        <app-item-menu [item]="dummyItem" class="hidden"></app-item-menu>
       </div>
 
     </div>
@@ -92,3 +92,6 @@
     </div>
   </div>
 </div>
+
+<app-modify-delivery [deliveryList]="deliveryList" [modalTitle]="modalTitle" [modalType]="modalType"
+[(showModal)]="showModal"></app-modify-delivery>

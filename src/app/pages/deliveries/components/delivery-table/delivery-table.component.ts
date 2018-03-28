@@ -11,9 +11,9 @@ export class DeliveryTableComponent implements OnInit {
 
   @Input() deliveryList: Delivery[];
 
-  editDocument: Delivery = null; // delivery document to be edited
+  editDelivery: Delivery = null; // delivery document to be edited
 
-  deliveryItem = new Delivery(); // Dummy
+  dummyItem = new Delivery();
 
   showModal = false;
 
@@ -35,7 +35,7 @@ export class DeliveryTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -114,9 +114,9 @@ export class DeliveryTableComponent implements OnInit {
   /**
    * Set document to be edited and open edit modal
    */
-  openEdit(document: any) {
-    this.editDocument = document;
-    this.modalTitle = 'Edit document';
+  openEdit(delivery: any) {
+    this.editDelivery = delivery;
+    this.modalTitle = 'Ändra leverans';
     this.modalType = 1;
     this.showModal = true;
   }
@@ -124,9 +124,9 @@ export class DeliveryTableComponent implements OnInit {
   /**
    * Set document to be edited and open edit modal
    */
-  openAddNewDocument() {
-    this.editDocument = Object.assign({}, new Delivery());
-    this.modalTitle = 'Add new document';
+  openAddNewDelivery() {
+    this.editDelivery = Object.assign({}, new Delivery());
+    this.modalTitle = 'Lägg till ny leverans';
     this.modalType = 0;
     this.showModal = true;
   }
