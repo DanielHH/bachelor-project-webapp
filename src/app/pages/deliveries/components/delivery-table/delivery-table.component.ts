@@ -99,7 +99,6 @@ export class DeliveryTableComponent implements OnInit {
 
   }
 
-
   /**
    * Sets the order to sort by
    * @param order
@@ -109,16 +108,6 @@ export class DeliveryTableComponent implements OnInit {
       case 'asc': return 'desc';
       default: return 'asc';
     }
-  }
-
-  /**
-   * Set document to be edited and open edit modal
-   */
-  openEdit(delivery: any) {
-    this.editDelivery = delivery;
-    this.modalTitle = 'Ändra leverans';
-    this.modalType = 1;
-    this.showModal = true;
   }
 
   /**
