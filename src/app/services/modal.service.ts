@@ -8,6 +8,30 @@ import { Delivery } from '../datamodels/delivery';
 export class ModalService {
 
   /**
+   * Card detail
+   */
+  private _detailCard = new Card();
+
+  /**
+   * A subscriber to the detail card
+   */
+  detailCard: BehaviorSubject<Card> = new BehaviorSubject<Card>(
+    this._detailCard
+  );
+
+  /**
+   * Detail document
+   */
+  private _detailDocument = new Document();
+
+   /**
+   * A subscriber to the detail document
+   */
+  detailDocument: BehaviorSubject<Document> = new BehaviorSubject<Document>(
+    this._detailDocument
+  );
+
+  /**
    * Edit card
    */
   private _editCard = new Card();

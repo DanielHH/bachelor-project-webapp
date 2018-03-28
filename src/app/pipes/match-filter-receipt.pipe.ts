@@ -15,10 +15,6 @@ import * as moment from 'moment';
 })
 export class MatchFilterReceiptPipe implements PipeTransform {
 
-  itemTypeToDisplay: string;
-  itemIDToDisplay: string;
-  itemUserNameToDisplay: string;
-
   constructor(private utilitiesService: UtilitiesService) {
   }
 
@@ -58,8 +54,8 @@ export class MatchFilterReceiptPipe implements PipeTransform {
       (!receipt.id) ||
       (receipt.endDate == null && !showActive) ||
       (receipt.endDate != null && !showInactive) ||
-      (receipt.itemTypeID == 1 && !showCard) ||
-      (receipt.itemTypeID == 2 && !showDocument)
+      (receipt.itemType.id == 1 && !showCard) ||
+      (receipt.itemType.id == 2 && !showDocument)
     ) {
       return false;
     }
@@ -68,13 +64,21 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     const startDate = this.utilitiesService.getDateString(receipt.startDate);
     const endDate = this.utilitiesService.getDateString(receipt.endDate);
 
-    [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
-      this.utilitiesService.getReceiptDisplay(receipt);
+    let itemTypeToDisplay = '';
+    let itemIDToDisplay = '';
+
+    if (receipt.card) {
+      itemTypeToDisplay = receipt.card.cardType.name;
+      itemIDToDisplay = receipt.card.cardNumber;
+    } else if (receipt.document) {
+      itemTypeToDisplay = receipt.document.documentType.name;
+      itemIDToDisplay = receipt.document.documentNumber;
+    }
 
     return (
-      (_.includes(lowerCase(this.itemTypeToDisplay), filterInput) === true) ||
-      (_.includes(lowerCase(this.itemIDToDisplay), filterInput) === true) ||
-      (_.includes(lowerCase(this.itemUserNameToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(itemTypeToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(itemIDToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(receipt.user.name), filterInput) === true) ||
       (_.includes(lowerCase(startDate), filterInput) === true) ||
       (_.includes(lowerCase(endDate), filterInput) === true)
     );

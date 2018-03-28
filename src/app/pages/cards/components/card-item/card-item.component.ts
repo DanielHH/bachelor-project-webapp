@@ -24,7 +24,6 @@ export class CardItemComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
@@ -35,11 +34,18 @@ export class CardItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
+   * Returns a string representation of the expirationDate of the card
+   */
+  displayExpirationDate() {
+    return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
+  }
+
+  /**
+   * Shows the modal for card details
    * Change route and send route data
    */
-  route() {
-    this.routeDataService.card.next(this.cardItem);
-    this.router.navigate(['card-detail']);
+  showDetModal() {
+    this.modalService.detailCard.next(this.cardItem);
   }
 
   /**

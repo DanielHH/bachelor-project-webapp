@@ -9,6 +9,7 @@ import { DocumentType } from '../../../datamodels/documentType';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../services/utilities.service';
 import * as moment from 'moment';
+import { HttpService } from '../../../services/http.service';
 
 @Component({
   selector: 'app-receipt-item',
@@ -19,28 +20,37 @@ export class ReceiptItemComponent implements OnInit {
 
   @Input() receiptItem: Receipt;
 
+  cardList: Card[] = [];
+  documentList: Document[] = [];
+  cardTypeList: CardType[] = [];
+  documentTypeList: DocumentType[] = [];
+  userList: User[] = [];
+
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
-  itemUserNameToDisplay: string;
 
   itemActive: boolean;
 
-  constructor(public utilitiesService: UtilitiesService) {
-  }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-    // get actual data to be displayed
-    [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
-      this.utilitiesService.getReceiptDisplay(this.receiptItem);
 
-    this.setActiveReceipt();
+    if (this.receiptItem.card) {
+      this.itemTypeToDisplay = this.receiptItem.card.cardType.name;
+      this.itemIDToDisplay = this.receiptItem.card.cardNumber;
+    } else if (this.receiptItem.document) {
+      this.itemTypeToDisplay = this.receiptItem.document.documentType.name;
+      this.itemIDToDisplay = this.receiptItem.document.documentNumber;
+    }
+
+    this.itemActive = this.receiptItem.endDate == null;
   }
 
-  /**
-   * Set the receipt to be active or not depending on if end date exists
-   */
-  setActiveReceipt() {
-    this.itemActive = (this.receiptItem.endDate == null);
+  genPDF() {
+    // Create new pdf
+    this.utilitiesService.genPDF(
+      this.utilitiesService.getReceiptPDFParams(this.receiptItem),
+      this.itemIDToDisplay);
   }
 
 }

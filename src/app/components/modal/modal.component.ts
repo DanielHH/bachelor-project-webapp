@@ -39,6 +39,9 @@ export class ModalComponent implements OnInit, AfterViewInit {
     }
   }
 
+  @Input() hideSubmit = false;
+  @Input() hideClose = false;
+
   constructor() {}
 
   ngOnInit() {}
