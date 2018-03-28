@@ -134,4 +134,48 @@ export class UtilitiesService {
     return _.find(this.documentTypeList, documentType => documentType.id == id || documentType.name == name);
   }
 
+  getPDFParams(item: any) {
+    const params: any[] = [2];
+    if (item.itemTypeID == 1) { // itemTypeID 1: card
+      const cardItem = _.find(this.cardList, card => card.id === item.cardID);
+      params[0] = 'card';
+      const fields: any[] = [7];
+      fields[0] = cardItem.cardNumber;
+      fields[1] = cardItem.cardType.name;
+      fields[2] = '';
+      fields[3] = moment(cardItem.expirationDate).format('YYYY-MM-DD');
+      fields[4] = cardItem.comment.substring(0, 30);
+      fields[5] = cardItem.location;
+      fields[6] = moment(cardItem.modifiedDate).format('YYYY-MM-DD');
+
+      if (cardItem.user) {
+        fields[2] = cardItem.user.name;
+      }
+
+      params[1] = fields;
+
+    } else if (item.itemTypeID == 2) { // itemTypeID 2: document
+      const documentItem = _.find(this.documentList, document => document.id === item.documentID);
+      params[0] = 'document';
+      const fields: any[] = [10];
+      fields[0] = documentItem.documentNumber;
+      fields[1] = documentItem.name;
+      fields[2] = documentItem.documentType.name;
+      fields[3] = documentItem.sender;
+      fields[4] = moment(documentItem.documentDate).format('YYYY-MM-DD');
+      fields[5] = moment(documentItem.registrationDate).format('YYYY-MM-DD');
+      fields[6] = '';
+      fields[7] = documentItem.comment.substring(0, 30);
+      fields[8] = documentItem.location;
+      fields[9] = moment(documentItem.modifiedDate).format('YYYY-MM-DD');
+
+      if (documentItem.user) {
+        fields[6] = documentItem.user.name;
+      }
+      params[1] = fields;
+    }
+
+    return params;
+  }
+
 }
