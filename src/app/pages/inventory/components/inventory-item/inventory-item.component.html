@@ -1,10 +1,10 @@
 <div class="row item-row">
-  <div class="pr-4 verify-button-col" *ngIf="baseItem?.getStatus()?.id == 1">
+  <div class="pr-4 verify-button-col" *ngIf="baseItem?.getStatus()?.id == 1 || baseItem?.getStatus()?.id == 2">
     <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-success]="true" mdbRippleRadius>
       <span>Verifiera</span>
     </button>
   </div>
-  <div class="pr-4 verify-button-col" *ngIf="baseItem?.getStatus()?.id == 2 || baseItem?.getStatus()?.id == 3 || baseItem?.getStatus()?.id == 4">
+  <div class="pr-4 verify-button-col" *ngIf="baseItem?.getStatus()?.id == 3 || baseItem?.getStatus()?.id == 4">
     <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
       <span>Verifiera</span>
     </button>
