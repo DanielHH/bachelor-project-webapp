@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
-import { RouteDataService } from '../../../../services/route-data.service';
+import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -35,10 +35,10 @@ export class DocumentDetailComponent implements OnInit {
   documentItem: Document = null;
 
   constructor(
-    private routeDataService: RouteDataService,
+    private modalService: ModalService,
     public utilitiesService: UtilitiesService
   ) {
-    this.routeDataService.document.subscribe((document) => {
+    this.modalService.detailDocument.subscribe((document) => {
       if (document && document.id) {
         this.documentItem = document;
         this._showModal = true;
@@ -60,7 +60,7 @@ export class DocumentDetailComponent implements OnInit {
     this.detailForm.resetForm();
 
     this.documentItem = Object.assign({}, new Document());
-    this.routeDataService.document.next(this.documentItem);
+    this.modalService.detailDocument.next(this.documentItem);
 
     this.showModal = false;
   }

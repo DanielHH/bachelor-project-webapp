@@ -24,7 +24,6 @@ export class CardItemComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
@@ -46,7 +45,7 @@ export class CardItemComponent implements OnInit {
    * Change route and send route data
    */
   showDetModal() {
-    this.routeDataService.card.next(this.cardItem);
+    this.modalService.detailCard.next(this.cardItem);
   }
 
   /**

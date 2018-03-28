@@ -5,7 +5,7 @@ import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Card } from '../../../../datamodels/card';
 import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
-import { RouteDataService } from '../../../../services/route-data.service';
+import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -35,10 +35,10 @@ export class CardDetailComponent implements OnInit {
   cardItem: Card = null;
 
   constructor(
-    private routeDataService: RouteDataService,
+    private modalService: ModalService,
     public utilitiesService: UtilitiesService
   ) {
-    this.routeDataService.card.subscribe((card) => {
+    this.modalService.detailCard.subscribe((card) => {
       if (card && card.id) {
         this.cardItem = card;
         this._showModal = true;
@@ -60,7 +60,7 @@ export class CardDetailComponent implements OnInit {
     this.detailForm.resetForm();
 
     this.cardItem = Object.assign({}, new Card());
-    this.routeDataService.card.next(this.cardItem);
+    this.modalService.detailCard.next(this.cardItem);
 
     this.showModal = false;
   }

@@ -15,9 +15,9 @@ tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="tru
             </div>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-outline-primary waves-light"
+              <button *ngIf="!hideClose" type="button" class="btn btn-outline-primary waves-light"
               aria-label="Close" (click)="setShow(false)" mdbRippleRadius>{{closeName}}</button>
-              <button type="submit" class="btn btn-primary waves-light" mdbRippleRadius>
+              <button *ngIf="!hideSubmit" type="submit" class="btn btn-primary waves-light" mdbRippleRadius>
                 {{submitName}}
               </button>
           </div>

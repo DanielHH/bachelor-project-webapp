@@ -1,6 +1,6 @@
 <form #detailForm="ngForm" (ngSubmit)="showDetail()">
     <app-modal [(show)]="_showModal" [modalTitle]="'Detaljer'"
-    [closeName]="'Stäng'" [submitName]="'Not a button'">
+    [submitName]="'Stäng'" [hideClose]="true">
 
       <!-- Row card info -->
       <div class="row">
