@@ -50,7 +50,7 @@ export class ReceiptItemComponent implements OnInit {
     // Create new pdf
     this.utilitiesService.genPDF(
       this.utilitiesService.getReceiptPDFParams(this.receiptItem),
-      this.utilitiesService.getReceiptDisplay(this.receiptItem)[0]);
+      this.itemIDToDisplay);
   }
 
 }

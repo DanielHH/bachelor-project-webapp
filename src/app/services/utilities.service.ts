@@ -76,8 +76,6 @@ export class UtilitiesService {
     return date ? moment(date).format('YYYY-MM-DD') : '';
   }
 
-  getReceiptDisplay(receipt: Receipt) {  }
-
   getStatusFromID(id: number) {
     return _.find(this.statusTypeList, statusType => statusType.id == id);
   }
