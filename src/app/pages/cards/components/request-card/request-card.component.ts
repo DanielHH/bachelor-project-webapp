@@ -200,10 +200,13 @@ export class RequestCardComponent implements OnInit {
 
       // Create new receipt
       const receipt = new Receipt();
-      receipt.itemType.id = 1; // TODO: ENUM, 1 means card
-      receipt.card.id = this.cardItem.id;
-      receipt.user.id = this.cardItem.user.id;
+      receipt.itemType = this.utilitiesService.getItemTypeFromID(1); // TODO: ENUM, 1 means card
+      receipt.card = this.cardItem;
+      receipt.document = null;
+      receipt.user = this.cardItem.user;
       receipt.startDate = new Date(this.startDateInput);
+      receipt.endDate = null;
+
 
       // Submit changes to database
       this.httpService
