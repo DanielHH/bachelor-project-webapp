@@ -13,11 +13,13 @@ import {
 import {
   DocumentDetailComponent
 } from './pages/documents/components/document-detail/document-detail.component';
+import { InventoryComponent } from './pages/inventory/inventory.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { name: 'Startsidan' } },
     { path: 'documents', component: DocumentsComponent, data: { name: 'Handlingar' } },
     { path: 'receipts', component: ReceiptsComponent, data: { name: 'Kvittenser' } },
+    { path: 'inventory', component: InventoryComponent, data: { name: 'Inventarie' } },
     { path: 'logs', component: LogsComponent, data: { name: 'Loggar' } },
     { path: 'examples', component: ExamplesComponent, data: { name: 'Kodexempel' } },
     { path: 'cards', component: CardsComponent, data: { name: 'Kort' } },
