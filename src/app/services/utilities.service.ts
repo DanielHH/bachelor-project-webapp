@@ -76,38 +76,6 @@ export class UtilitiesService {
     return date ? moment(date).format('YYYY-MM-DD') : '';
   }
 
-  /**
-   * @returns a string array containing [id, kind, item type, user name] of receipt
-   *
-   * @param receipt receipt that the displayed data should be extracted from
-   */
-  getReceiptDisplay(receipt: Receipt) {
-    let itemTypeToDisplay = '';
-    let itemIdToDisplay = '';
-    let itemUserNameToDisplay = '';
-
-    if (receipt.itemTypeID == 1) { // itemTypeID 1: card
-      const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
-      itemIdToDisplay = cardItem.cardNumber;
-      itemTypeToDisplay = cardItem.cardType.name;
-
-      if (cardItem.user) {
-        itemUserNameToDisplay = cardItem.user.name;
-      }
-
-    } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
-      const documentItem = _.find(this.documentList, document => document.id === receipt.documentID);
-      itemIdToDisplay = documentItem.documentNumber;
-      itemTypeToDisplay = documentItem.documentType.name;
-
-      if (documentItem.user) {
-        itemUserNameToDisplay = documentItem.user.name;
-      }
-    }
-
-    return [itemIdToDisplay, itemTypeToDisplay, itemUserNameToDisplay];
-  }
-
   getStatusFromID(id: number) {
     return _.find(this.statusTypeList, statusType => statusType.id == id);
   }

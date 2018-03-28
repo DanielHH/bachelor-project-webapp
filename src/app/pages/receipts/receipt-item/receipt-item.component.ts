@@ -28,33 +28,29 @@ export class ReceiptItemComponent implements OnInit {
 
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
-  itemUserNameToDisplay: string;
 
   itemActive: boolean;
 
-  constructor(public utilitiesService: UtilitiesService, private httpService: HttpService) {
-  }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-    // get actual data to be displayed
-    [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
-      this.utilitiesService.getReceiptDisplay(this.receiptItem);
 
-    this.setActiveReceipt();
-  }
+    if (this.receiptItem.card) {
+      this.itemTypeToDisplay = this.receiptItem.card.cardType.name;
+      this.itemIDToDisplay = this.receiptItem.card.cardNumber;
+    } else if (this.receiptItem.document) {
+      this.itemTypeToDisplay = this.receiptItem.document.documentType.name;
+      this.itemIDToDisplay = this.receiptItem.document.documentNumber;
+    }
 
-  /**
-   * Set the receipt to be active or not depending on if end date exists
-   */
-  setActiveReceipt() {
-    this.itemActive = (this.receiptItem.endDate == null);
+    this.itemActive = this.receiptItem.endDate == null;
   }
 
   genPDF() {
     // Create new pdf
     this.utilitiesService.genPDF(
       this.utilitiesService.getReceiptPDFParams(this.receiptItem),
-      this.utilitiesService.getReceiptDisplay(this.receiptItem)[0]);
+      this.itemIDToDisplay);
   }
 
 }
