@@ -1,91 +1,81 @@
 <div class="card">
-  <div class="card-body">
-    <!-- Row text filter input and add new button -->
-    <div class="row">
+    <div class="card-body">
+        <!-- Row text filter input and add new button -->
+        <div class="row">
 
-      <!-- Input field for text filter -->
-      <div class="col-4 px-1 text-filter-input">
-        <mat-form-field>
-            <!--Input-->
-            <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput"
-            maxlength="128" placeholder="Filtrera på">
-            <!--Clear-->
-            <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
-            (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
-        </mat-form-field>
-      </div>
+            <!-- Input field for text filter -->
+            <div class="col-4 px-1 text-filter-input">
+                <mat-form-field>
+                    <!--Input-->
+                    <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+                    <!--Clear-->
+                    <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+                </mat-form-field>
+            </div>
 
-      <div class="col-8"></div> <!-- Space -->
+            <div class="col-8"></div>
+            <!-- Space -->
 
-    </div>
+        </div>
 
-    <!-- Row filter per type and status -->
-    <div class="row pb-4 pl-2 filter-checkbox-row">
+        <!-- Row filter per type and status -->
+        <div class="row pb-4 pl-2 filter-checkbox-row">
 
-      <div class="col-1 px-1 filter-checkbox">
-        <mat-checkbox id="showCard" name="showCard" color="primary" class="px-1"
-        [(ngModel)]="showCard">Kort</mat-checkbox>
-      </div>
+            <div class="col-1 px-1 filter-checkbox">
+                <mat-checkbox id="showCard" name="showCard" color="primary" class="px-1" [(ngModel)]="showCard">Kort</mat-checkbox>
+            </div>
 
-      <div class="col-1 px-1 filter-checkbox">
-        <mat-checkbox id="showDocument" name="showDocument" color="primary" class="px-1"
-        [(ngModel)]="showDocument">Handlingar</mat-checkbox>
-      </div>
+            <div class="col-1 px-1 filter-checkbox">
+                <mat-checkbox id="showDocument" name="showDocument" color="primary" class="px-1" [(ngModel)]="showDocument">Handlingar</mat-checkbox>
+            </div>
 
-      <div class="col-1 px-1 filter-checkbox">
-        <mat-checkbox id="showActive" name="showActive" color="primary" class="px-1"
-        [(ngModel)]="showActive">Aktiva</mat-checkbox>
-      </div>
+            <div class="col-1 px-1 filter-checkbox">
+                <mat-checkbox id="showActive" name="showActive" color="primary" class="px-1" [(ngModel)]="showActive">Aktiva</mat-checkbox>
+            </div>
 
-      <div class="col-1 px-1 filter-checkbox">
-        <mat-checkbox id="showInactive" name="showInactive" color="primary" class="px-1"
-        [(ngModel)]="showInactive">Inaktiva</mat-checkbox>
-      </div>
+            <div class="col-1 px-1 filter-checkbox">
+                <mat-checkbox id="showInactive" name="showInactive" color="primary" class="px-1" [(ngModel)]="showInactive">Inaktiva</mat-checkbox>
+            </div>
 
-      <div class="col-8"></div>
+            <div class="col-8"></div>
 
-    </div>
+        </div>
 
-    <!-- Header row -->
-    <div class="row table-header">
+        <!-- Header row -->
+        <div class="row table-header">
 
-      <div class="col-narrow table-col" (click)="sortTableList('endDate')">
-        <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
-        [class.both-arrow]="orderEndDate == ''">Status </span>
-      </div>
-      <div class="col-narrow table-col" (click)="sortTableList('itemTypeID')">
-        <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'"
-        [class.both-arrow]="orderItemTypeID == ''">Typ </span>
-      </div>
-      <div class="col-wide table-col" (click)="sortTableList('IDNumber')">
-        <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'"
-        [class.both-arrow]="orderIDNumber == ''">ID </span>
-      </div>
-      <div class="col-wide table-col" (click)="sortTableList('userID')">
-        <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
-        [class.both-arrow]="orderUserID == ''">Användare </span>
-      </div>
-      <div class="col-narrow table-col" (click)="sortTableList('startDate')">
-        <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'"
-        [class.both-arrow]="orderStartDate == ''">Startdatum </span>
-      </div>
-      <div class="col-narrow table-col" (click)="sortTableList('endDate')">
-        <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
-        [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
-      </div>
+            <div class="col-narrow table-col" (click)="sortTableList('endDate')">
+                <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'" [class.both-arrow]="orderEndDate == ''">Status </span>
+            </div>
+            <div class="col-narrow table-col" (click)="sortTableList('itemTypeID')">
+                <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'" [class.both-arrow]="orderItemTypeID == ''">Typ </span>
+            </div>
+            <div class="col-wide table-col" (click)="sortTableList('IDNumber')">
+                <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'" [class.both-arrow]="orderIDNumber == ''">ID </span>
+            </div>
+            <div class="col-wide table-col" (click)="sortTableList('userID')">
+                <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">Användare </span>
+            </div>
+            <div class="col-narrow table-col" (click)="sortTableList('startDate')">
+                <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'" [class.both-arrow]="orderStartDate == ''">Startdatum </span>
+            </div>
+            <div class="col-narrow table-col" (click)="sortTableList('endDate')">
+                <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'" [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
+            </div>
 
-      <div class="pl-3 menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
-        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1">
+            <div class="pl-3 menu-button-col">
+                <!-- NOT SHOWN: Here to make space the same in header as in items -->
+                <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1">
             <span>PDF</span>
         </button>
-      </div>
+            </div>
 
-    </div>
-    <hr>
+        </div>
+        <hr>
 
-    <!-- Add receipts to the table  -->
-    <div *ngFor="let receipt of receiptList | matchFilterReceipt:filterInput:showCard:showDocument:showActive:showInactive">
-        <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>
+        <!-- Add receipts to the table  -->
+        <div *ngFor="let receipt of receiptList | matchFilterReceipt:filterInput:showCard:showDocument:showActive:showInactive">
+            <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>
+        </div>
     </div>
-  </div>
 </div>

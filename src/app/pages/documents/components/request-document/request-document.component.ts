@@ -210,6 +210,12 @@ export class RequestDocumentComponent implements OnInit {
               this.dataService.documentList.next(this.documents);
 
               this.showModal = false;
+
+              if (this.generatePDF) {
+                this.utilitiesService.genPDF(
+                  this.utilitiesService.getDocumentPDFParams(this.documentItem),
+                  this.documentItem.documentNumber);
+              }
             }
           });
         }
