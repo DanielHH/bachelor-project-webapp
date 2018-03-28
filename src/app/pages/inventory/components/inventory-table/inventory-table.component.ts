@@ -38,7 +38,7 @@ export class InventoryTableComponent implements OnInit {
   orderVerifyDate = '';
 
   showIn = true;
-  showOut = false;
+  showOut = true;
   showArchived = false;
   showGone = false;
 
