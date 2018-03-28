@@ -37,4 +37,15 @@ export class LogEvent {
    * Log date of the event
    */
   logDate: Date;
+
+  constructor() {
+    this.id = null;
+    this.itemTypeID = null;
+    this.cardID = null;
+    this.documentID = null;
+    this.userID = null;
+    this.logTypeID = null;
+    this.logDate = null;
+  }
+
 }

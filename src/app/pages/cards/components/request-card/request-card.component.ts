@@ -219,6 +219,7 @@ export class RequestCardComponent implements OnInit {
       logEvent.logDate = this.cardItem.modifiedDate;
 
       // Submit changes to database
+
       this.httpService
         .httpPost<LogEvent>('addNewLogEvent/', logEvent)
         .then(logEventRes => {
@@ -234,6 +235,7 @@ export class RequestCardComponent implements OnInit {
                     .httpPut<Card>('updateCard/', this.cardItem)
                     .then(cardRes => {
                       if (cardRes.message === 'success') {
+
                         // Update log event list
                         this.logEvents.unshift(logEventRes.data);
                         this.logEvents = this.logEvents.slice();
