@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { User } from '../../../../datamodels/user';
-import { RequestService } from '../../../../services/request.service';
+import { ModalService } from '../../../../services/modal.service';
 import { Receipt } from '../../../../datamodels/receipt';
 import * as moment from 'moment';
 import { CardType } from '../../../../datamodels/cardType';
@@ -54,7 +54,8 @@ export class RequestCardComponent implements OnInit {
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
-    map(val => this.filterUsers(val))
+    map(user =>
+      user ? this.filterUsers(user) : this.users.slice())
   );
 
   user: User;
@@ -63,7 +64,7 @@ export class RequestCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private requestService: RequestService
+    private modalService: ModalService
   ) {
     // User list subscriber
     this.dataService.userList.subscribe(users => {
@@ -85,7 +86,7 @@ export class RequestCardComponent implements OnInit {
     });
 
     // Request card subscriber
-    this.requestService.card.subscribe(card => {
+    this.modalService.requestCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -240,7 +241,7 @@ export class RequestCardComponent implements OnInit {
     this.requestForm.resetForm();
 
     this.cardItem = Object.assign({}, new Card());
-    this.requestService.card.next(this.cardItem);
+    this.modalService.requestCard.next(this.cardItem);
 
     this.showModal = false;
   }

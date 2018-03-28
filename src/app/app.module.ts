@@ -68,9 +68,8 @@ import { RequestCardComponent } from './pages/cards/components/request-card/requ
 import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
 import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
 import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
-import { EditService } from './services/edit.service';
-import { RequestService } from './services/request.service';
-import { ReturnService } from './services/return.service';
+import { ModalService } from './services/modal.service';
+import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +115,8 @@ import { ReturnService } from './services/return.service';
     RequestCardComponent,
     ReturnCardComponent,
     RequestDocumentComponent,
-    ReturnDocumentComponent
+    ReturnDocumentComponent,
+    ModifyDeliveryComponent
   ],
   imports: [
     BrowserModule,
@@ -145,9 +145,7 @@ import { ReturnService } from './services/return.service';
     DataService,
     RouteDataService,
     UtilitiesService,
-    EditService,
-    RequestService,
-    ReturnService
+    ModalService
   ],
   entryComponents: [],
   bootstrap: [AppComponent]

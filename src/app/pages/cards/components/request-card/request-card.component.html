@@ -175,18 +175,16 @@
       </div>
       <!-- Comment -->
       <div class="col-12 col-md-5">
-        <div class="col-12 comment-input">
-          <mat-form-field>
-            <!--Input-->
-            <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput"
-            maxlength="128" placeholder="Kommentar">
-            <!--Clear-->
-            <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
-            aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-        </div>
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput"
+          maxlength="128" placeholder="Kommentar">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
+          aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
       </div>
 
       <div class="col-12 col-md-1"></div>
