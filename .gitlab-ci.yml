@@ -7,7 +7,6 @@ deploy_prod:
     - echo "make deploy"
     - cd /home/gitlab/pum/PUMApp
     - git pull
-    - npm install
     - ng build --prod
     - rm /data/www/pumapp/*
     - cp -R dist/. /data/www/pumapp
