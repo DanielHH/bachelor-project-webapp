@@ -36,9 +36,10 @@ export class Receipt {
    * End date of the receipt
    */
   endDate: Date;
+
   /**
-   * Comment
+   * PDF url
    */
-  comment: string;
+  url: string;
 
 }

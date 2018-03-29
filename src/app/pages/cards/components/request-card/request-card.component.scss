@@ -4,3 +4,10 @@
   padding-left: 5% !important;
   padding-right: 5% !important;
 }
+
+.generating-pdf {
+  opacity: 0.2;
+  transition: opacity 0.3s ease-in;
+  -moz-transition: opacity 0.3s ease-in;
+  -webkit-transition: opacity 0.3s ease-in;
+}
