@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import * as _ from 'lodash';
+import { ModifyDocumentComponent } from '../modify-document/modify-document.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-document-table',
@@ -10,16 +12,28 @@ import * as _ from 'lodash';
 export class DocumentTableComponent implements OnInit {
 
   @Input() documentList: Document[];
-  @Output() editItem = new EventEmitter<any>();
+
+  documentItem = new Document(); // Dummy
+
+  showModal = false;
 
   filterInput = '';
 
+  orderStatus = '';
   orderDocumentType = '';
   orderDocumentNumber = '';
   orderName = '';
   orderUserID = '';
   orderLocation = '';
   orderComment = '';
+
+  showIn = true;
+  showOut = true;
+  showArchived = false;
+  showGone = false;
+  modalTitle = '';
+
+  modalType = 0;
 
   constructor() { }
 
@@ -42,6 +56,11 @@ export class DocumentTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
+      case 'status': {
+        newOrder = this.sortTableListHelper(this.orderStatus);
+        this.orderStatus = newOrder;
+        break;
+      }
       case 'documentType': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
@@ -80,7 +99,6 @@ export class DocumentTableComponent implements OnInit {
 
   }
 
-
   /**
    * Sets the order to sort by
    * @param order
@@ -93,10 +111,12 @@ export class DocumentTableComponent implements OnInit {
   }
 
   /**
-   * Set item to be outputted for editing.
+   * Set document to be edited and open edit modal
    */
-  edit(item: Document) {
-    this.editItem.next(item);
+  openAddNewDocument() {
+    this.modalTitle = 'Lägg till ny handling';
+    this.modalType = 0;
+    this.showModal = true;
   }
 
 }

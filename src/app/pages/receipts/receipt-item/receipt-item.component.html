@@ -1,0 +1,19 @@
+<div class="row item-row">
+
+  <div class="col-narrow table-col">{{this.receiptItem.endDate ? 'Inaktiv' : 'Aktiv'}}  </div>
+  <div class="col-narrow table-col">
+    <i *ngIf="this.receiptItem.itemType?.id == 1" class="material-icons">credit_card</i>
+    <i *ngIf="this.receiptItem.itemType?.id == 2" class="material-icons">import_contacts</i>
+    {{itemTypeToDisplay}}
+  </div>
+  <div class="col-wide table-col">{{itemIDToDisplay}}</div>
+  <div class="col-wide table-col">{{this.receiptItem.user?.name}}</div>
+  <div class="col-narrow table-col">{{utilitiesService.getDateString(this.receiptItem.startDate)}}</div>
+  <div class="col-narrow table-col">{{utilitiesService.getDateString(this.receiptItem.endDate)}}</div>
+
+    <div class="pl-3 menu-button-col">
+        <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 btn-success" mdbRippleRadius (click)="genPDF()">
+        <span>PDF</span>
+    </button>
+    </div>
+</div>

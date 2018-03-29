@@ -1,47 +1,107 @@
 <div class="card">
-    <div class="card-body">
-        <!-- Input field for filter -->
-        <div class="row">
-            <div class="col-4">
-                <mat-form-field>
-                    <!--Input-->
-                    <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text" maxlength="128" placeholder="Filter by">
-                    <!--Clear-->
-                    <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
-                </mat-form-field>
-            </div>
+  <div class="card-body">
+    <!-- Row text filter input and add new button -->
+    <div class="row">
+
+        <!-- Input field for text filter -->
+        <div class="col-4 px-1 text-filter-input">
+          <mat-form-field>
+              <!--Input-->
+              <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput"
+              maxlength="128" placeholder="Filtrera på">
+              <!--Clear-->
+              <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
+              (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+          </mat-form-field>
         </div>
 
-        <!-- Header row -->
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col" (click)="sortTableList('cardType')">
-                <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'" [class.both-arrow]="orderCardType == ''">Type
-                </span>
-            </div>
-            <div class="col" (click)="sortTableList('cardNumber')">
-                <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'" [class.both-arrow]="orderCardNumber == ''">Serial Number
-                </span>
-            </div>
-            <div class="col" (click)="sortTableList('userID')">
-                <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">User ID
-            </span></div>
-            <div class="col" (click)="sortTableList('location')">
-                <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Location
-            </span></div>
-            <div class="col" (click)="sortTableList('comment')">
-                <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Comment
-            </span></div>
-            <div class="col" (click)="sortTableList('expirationDate')">
-                <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'" [class.both-arrow]="orderDate == ''">Expiration date
-            </span></div>
-            <div class="col-1"></div>
-        </div>
-        <hr>
+        <div class="col"></div> <!-- Space -->
 
-        <!-- Add cards to the table   -->
-        <div *ngFor="let card of cardList | matchFilterCard:filterInput">
-            <app-card-item *ngIf="card.status == 1 || card.status == 2" [cardItem]="card" (editItem)="edit($event)"></app-card-item>
+        <!-- Add new document button-->
+        <div class="col-2">
+          <span class="add-new-button">
+              <button mat-raised-button (click)="openAddNewCard()" color="primary">Lägg till nytt kort</button>
+          </span>
         </div>
+
+      </div>
+
+      <!-- Row filter per status -->
+      <div class="row pb-4 pl-2 filter-checkbox-row">
+
+        <div class="col-1 filter-checkbox px-1">
+          <mat-checkbox id="showIn" name="showIn" color="primary" class="px-1"
+          [(ngModel)]="showIn">Inlämnade</mat-checkbox>
+        </div>
+
+        <div class="col-1 filter-checkbox px-1">
+          <mat-checkbox id="showOut" name="showOut" color="primary" class="px-1"
+          [(ngModel)]="showOut">Utlämnade</mat-checkbox>
+        </div>
+
+        <div class="col-1 filter-checkbox px-1">
+          <mat-checkbox id="showArchived" name="showArchived" color="primary" class="px-1"
+          [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        </div>
+
+        <div class="col-1 filter-checkbox px-1">
+          <mat-checkbox id="showGone" name="showGone" color="primary" class="px-1"
+          [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        </div>
+
+        <div class="col-8"></div>
+
     </div>
+
+    <!-- Header row -->
+    <div class="row table-header">
+      <div class="col-narrow table-col px-2" (click)="sortTableList('status.id')">
+        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+        [class.both-arrow]="orderStatus == ''">Status </span>
+      </div>
+      <div class="col-narrow table-col" (click)="sortTableList('cardType')">
+        <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'"
+        [class.both-arrow]="orderCardType == ''">Typ </span>
+      </div>
+      <div class="col-wide table-col" (click)="sortTableList('cardNumber')">
+        <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'"
+        [class.both-arrow]="orderCardNumber == ''">Kort-ID </span>
+      </div>
+      <div class="col-wide table-col" (click)="sortTableList('user.id')">
+        <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
+        [class.both-arrow]="orderUserID == ''">Användare </span>
+      </div>
+      <div class="col-wide table-col" (click)="sortTableList('location')">
+        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
+        [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
+      </div>
+      <div class="col-wide table-col" (click)="sortTableList('comment')">
+        <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
+        [class.both-arrow]="orderComment == ''">Kommentar </span>
+      </div>
+      <div class="col-narrow table-col" (click)="sortTableList('expirationDate')">
+        <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'"
+        [class.both-arrow]="orderDate == ''">Utgångsdatum </span>
+      </div>
+
+      <div class="pl-3 menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
+          <app-item-menu [item]="cardItem" class="hidden"></app-item-menu>
+      </div>
+    </div>
+    <hr>
+
+    <!-- Add cards to the table -->
+    <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
+        <app-card-item [cardItem]="card"></app-card-item>
+    </div>
+  </div>
 </div>
+
+<app-modify-card [cardList]="cardList" [modalTitle]="modalTitle" [modalType]="modalType"
+[(showModal)]="showModal"></app-modify-card>
+
+<app-request-card></app-request-card>
+
+<app-return-card></app-return-card>
+
+<app-card-detail></app-card-detail>

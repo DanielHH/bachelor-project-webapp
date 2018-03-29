@@ -1,0 +1,30 @@
+<div class="row item-row">
+  <div class="col-narrow table-col">
+    <div *ngIf="deliveryItem?.status?.id == 1 || deliveryItem?.status?.id == 2">
+        <button type="button" class="status-btn btn btn-rounded btn-sm m-0 px-2 py-1"
+          [class.btn-danger]="deliveryItem?.status?.id == 2"
+          [class.btn-success]="deliveryItem?.status?.id == 1" disabled mdbRippleRadius>
+            <span>Aktiv</span>
+        </button>
+    </div>
+    <div *ngIf="deliveryItem?.status?.id == 3 || deliveryItem?.status?.id == 4">
+        <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1"
+          mdbRippleRadius disabled>
+            <span *ngIf="deliveryItem?.status?.id == 3">Arkiverad</span>
+            <span *ngIf="deliveryItem?.status?.id == 4">Borttappad</span>
+        </button>
+    </div>
+  </div>
+
+  <div class="col-narrow table-col">{{deliveryItem?.documentType?.name}}</div>
+  <div class="col-wide table-col">{{deliveryItem?.documentNumber}}</div>
+  <div class="col-wide table-col">{{deliveryItem.name}}</div>
+  <div class="col-wide table-col">{{deliveryItem?.receiver}}</div>
+  <div class="col-wide table-col">{{this.utilitiesService.getDateString(deliveryItem.sentDate)}}</div>
+  <div class="col-wide table-col mr-5">{{deliveryItem?.comment}}</div>
+
+  <div class="menu-button-col">
+      <app-item-menu [item]="deliveryItem" (editItem)="edit()" (editStatus)="editStatus()"></app-item-menu>
+  </div>
+
+</div>

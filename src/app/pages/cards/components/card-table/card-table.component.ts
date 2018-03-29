@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import * as _ from 'lodash';
+import { ModifyCardComponent } from '../modify-card/modify-card.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-card-table',
@@ -10,16 +12,29 @@ import * as _ from 'lodash';
 export class CardTableComponent implements OnInit {
 
   @Input() cardList: Card[];
-  @Output() editItem = new EventEmitter<any>();
+
+  cardItem = new Card(); // Dummy
+
+  showModal = false;
 
   filterInput = '';
 
+  orderStatus = '';
   orderCardType = '';
   orderCardNumber = '';
   orderUserID = '';
   orderLocation = '';
   orderComment = '';
   orderDate = '';
+
+  showIn = true;
+  showOut = true;
+  showArchived = false;
+  showGone = false;
+
+  modalTitle = '';
+
+  modalType = 0;
 
   constructor() { }
 
@@ -42,6 +57,11 @@ export class CardTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
+      case 'status.id': {
+        newOrder = this.sortTableListHelper(this.orderStatus);
+        this.orderStatus = newOrder;
+        break;
+      }
       case 'cardType': {
         newOrder = this.sortTableListHelper(this.orderCardType);
         this.orderCardType = newOrder;
@@ -52,7 +72,7 @@ export class CardTableComponent implements OnInit {
         this.orderCardNumber = newOrder;
         break;
       }
-      case 'userID': {
+      case 'user.id': {
         newOrder = this.sortTableListHelper(this.orderUserID);
         this.orderUserID = newOrder;
         break;
@@ -80,7 +100,6 @@ export class CardTableComponent implements OnInit {
 
   }
 
-
   /**
    * Sets the order to sort by
    * @param order
@@ -93,10 +112,12 @@ export class CardTableComponent implements OnInit {
   }
 
   /**
-   * Set item to be outputted for editing.
+   * Open add new card modal
    */
-  edit(item: Card) {
-    this.editItem.next(item);
+  openAddNewCard() {
+    this.modalTitle = 'Lägg till nytt kort';
+    this.modalType = 0;
+    this.showModal = true;
   }
 
 }

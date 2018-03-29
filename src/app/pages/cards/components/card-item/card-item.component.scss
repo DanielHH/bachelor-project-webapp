@@ -1,10 +1,10 @@
-.row {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.col-narrow {
+  width: 11%;
 }
 
 .row:hover {
   background-color: rgba(208, 214, 212, 0.479);
+  cursor: pointer;
 }
 
 .detail-link {
@@ -12,4 +12,8 @@
   &:hover {
     opacity: 0.5;
   }
+}
+
+.col-wide {
+  width: 13%;
 }

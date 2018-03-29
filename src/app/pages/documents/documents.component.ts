@@ -16,20 +16,6 @@ export class DocumentsComponent implements OnInit {
 
   documentList: Document[] = [];
 
-  editDocument: Document = null; // Document to be edited
-
-  showAddNewModal = false;
-
-  showEditModal = false;
-
-  @ViewChild('addNewDocumentComponent') addNewDocumentComponent: ModifyDocumentComponent;
-
-  @ViewChild('editDocumentComponent') editDocumentComponent: ModifyDocumentComponent;
-
-  @ViewChild('addNewDocumentForm') addNewDocumentForm: NgForm;
-
-  @ViewChild('editDocumentForm') editDocumentForm: NgForm;
-
   constructor(public dataService: DataService) {
     this.dataService.documentList.subscribe( (documentList) => {
       this.documentList = documentList;
@@ -38,26 +24,6 @@ export class DocumentsComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  setEditDocument(document: any) {
-    this.editDocument = document;
-    this.showEditModal = true;
-  }
-
-  submitNewDocument() {
-    this.addNewDocumentComponent.addNewDocument().then(() => {
-      this.showAddNewModal = false;
-      this.addNewDocumentForm.resetForm();
-    });
-  }
-
-  submitEditDocument() {
-    this.editDocumentComponent.editDocument(this.editDocument).then(() => {
-      this.showEditModal = false;
-      this.editDocument = null;
-      this.editDocumentForm.resetForm();
-    });
   }
 
 }

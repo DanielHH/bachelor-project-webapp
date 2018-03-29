@@ -35,7 +35,6 @@ export class AuthService {
       /* TODO: change endpoint from 'testPost' to authentication once it has been set up server-side */
       .httpPost('testPost', { username: username, password: password })
       .then((response: Response) => {
-        console.log('login response: ', response);
         // if the response contains a token, the login is seen as successful
         /*const token = response ? response['token'] : null;
         if (token) {

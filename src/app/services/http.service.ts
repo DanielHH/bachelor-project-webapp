@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+// import { Http, RequestOptions, ResponseContentType, Headers } from '@angular/http';
+import * as FileSaver from 'file-saver';
 
 @Injectable()
 export class HttpService {
@@ -8,7 +10,7 @@ export class HttpService {
    * API url
    */
    // host = 'http://localhost:8080/';
-   host = 'http://api.nlsn.se/';
+    host = 'http://api.nlsn.se/';
 
   constructor(private http: HttpClient) { }
 
@@ -46,6 +48,47 @@ export class HttpService {
     .catch(error => {
       console.log(error);
     });
+  }
+
+  httpPDF(body?: any) {
+    return this.http.post(this.host + 'genPDF/', body).toPromise()
+    .then(response => response['url'])
+    .catch(error => {
+      console.log(error);
+      return '';
+    });
+  }
+
+  /* httpGetPDF(body?: any) {
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Accept': 'application/pdf'});
+    const options = new RequestOptions({ headers: headers });
+    options.responseType = ResponseContentType.Blob;
+    const test = this.http.get(this.host + 'genPDF/', options).subscribe( (response) => {
+      // Removed checking of valid response
+      const fileBlob = response.blob();
+      const blob = new Blob([fileBlob], {
+         type: 'application/pdf' // must match the Accept type
+      });
+      console.log(body);
+      FileSaver.saveAs(blob, body);
+   });
+  } */
+
+  httpGetPDF(body?: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/pdf'});
+    const options = {headers: headers, responseType: 'blob' as 'blob'};
+    const test = this.http.get(this.host + 'genPDF/', options).subscribe( (response) => {
+      // Removed checking of valid response
+      const blob = new Blob([response], {
+         type: 'application/pdf' // must match the Accept type
+      });
+      console.log(body);
+      FileSaver.saveAs(blob, body);
+   });
   }
 
 }

@@ -5,8 +5,16 @@ deploy_prod:
   stage: deploy
   script:
     - echo "make deploy"
-    - pm2 deploy ecosystem.config.js production
+    - cd /home/gitlab/pum/PUMApp
+    - git pull
+    - ng build --prod
+    - rm /data/www/pumapp/*
+    - cp -R dist/. /data/www/pumapp
   environment:
     name: deploying
   only:
   - dev
+  
+  
+  
+  

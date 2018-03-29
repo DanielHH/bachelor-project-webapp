@@ -9,7 +9,6 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     if (this.auth.isAuthenticated()) {
-      console.log('has token');
       return true;
     } else {
       this.router.navigate(['/login']);

@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Directive, Inject } from '@angular/core';
+import { Component, OnInit, Input, Directive, Inject, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import { startWith } from 'rxjs/operators/startWith';
@@ -10,6 +10,8 @@ import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { ModalService } from '../../../../services/modal.service';
+import { User } from '../../../../datamodels/user';
 
 @Component({
   selector: 'app-modify-card',
@@ -17,6 +19,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   styleUrls: ['./modify-card.component.scss']
 })
 export class ModifyCardComponent implements OnInit {
+
   // Form variables
   cardTypeInput = '';
   cardNumberInput = '';
@@ -24,20 +27,16 @@ export class ModifyCardComponent implements OnInit {
   expirationDateInput = '';
   expirationDateDatepickerInput = '';
   commentInput = '';
-  addCardHolder: Boolean = false;
-  usernameInput = '';
 
   // Form Controls
   cardTypeControl = new FormControl('', Validators.required);
   cardNumberControl = new FormControl('', Validators.required);
-  usernameControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
   expirationDateControl = new FormControl('', Validators.required);
   expirationDatePickerControl = new FormControl();
 
   // Database data lists
   cardTypes = [];
-  users = [];
 
   // Filtered lists
   filteredCardTypes: Observable<any[]> = this.cardTypeControl.valueChanges.pipe(
@@ -48,39 +47,38 @@ export class ModifyCardComponent implements OnInit {
     )
   );
 
-  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
-    startWith(''),
-    map(val => this.filterUsers(val))
-  );
-
   @Input() cardList: Card[];
 
-  /**
-   * Set form to display card.
-   */
-  @Input('card') set card(card: Card) {
-    if (card) {
-      this.cardTypeInput = _.find(this.cardTypes, (docType) => docType.id === card.cardType).name;
-      this.cardNumberInput = card.cardNumber;
-      this.expirationDateInput = moment(card.expirationDate).format('YYYY-MM-DD');
-      this.expirationDateDatepickerInput = this.expirationDateInput;
-      this.locationInput = card.location;
-      this.commentInput = card.comment;
-      if (card.userID != null) {
-        this.usernameInput = _.find(this.users, (user) => user.id === card.userID).username;
-        this.addCardHolder = true;
-      } else {
-        this.usernameInput = '';
-        this.addCardHolder = false;
-      }
+  cardItem: Card;
+
+  @Input() modalTitle = '';
+
+  @Input() modalType: number;
+
+  @ViewChild('modifyForm') modifyForm: NgForm;
+
+  @Input() showModal = false;
+
+  @Output() showModalChange = new EventEmitter<any>();
+
+  get _showModal() {
+    return this.showModal;
+  }
+
+  set _showModal(value: any) {
+    if (!value) {
+      this.closeForm();
     }
+    this.showModal = value;
   }
 
   constructor(
     private httpService: HttpService,
-    public dataService: DataService,
-    private utilitiesService: UtilitiesService
+    private dataService: DataService,
+    private utilitiesService: UtilitiesService,
+    private modalService: ModalService,
   ) {
+
     this.dataService.cardTypeList.subscribe(cardTypes => {
       this.cardTypes = cardTypes;
       this.cardTypeControl.updateValueAndValidity({
@@ -89,16 +87,27 @@ export class ModifyCardComponent implements OnInit {
       });
     });
 
-    this.dataService.userList.subscribe(users => {
-      this.users = users;
-      this.usernameControl.updateValueAndValidity({
-        onlySelf: false,
-        emitEvent: true
-      });
+    this.modalService.editCard.subscribe((card) => {
+      if (card && card.id) {
+        this.cardItem = card;
+
+        this.cardTypeInput = card.cardType.name;
+        this.cardNumberInput = card.cardNumber;
+        this.expirationDateInput = utilitiesService.getDateString(card.expirationDate);
+        this.expirationDateDatepickerInput = this.expirationDateInput;
+        this.locationInput = card.location;
+        this.commentInput = card.comment;
+
+        this.modalType = 1;
+        this.modalTitle = 'Ändra kort';
+
+        this._showModal = true;
+      }
     });
+
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   /**
    * Filters list of cardTypes based on cardType input
@@ -113,103 +122,64 @@ export class ModifyCardComponent implements OnInit {
   }
 
   /**
-   * Filters list of usernames based on username input
-   * @param str username input
+   * Sets fields in card according to form
+   * @param card Card to set form data to
    */
-  filterUsers(str: string) {
-    return this.users.filter(
-      user =>
-        str != null &&
-        user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
+  setCardFromForm(card: Card) {
+    if (this.isValidInput()) {
+      card.cardType = this.utilitiesService.getCardType(0, this.cardTypeInput);
+      card.cardNumber = this.cardNumberInput;
+      card.location = this.locationInput;
+      card.expirationDate = new Date(this.expirationDateInput);
+      card.comment = this.commentInput;
+
+      card.modifiedDate = this.utilitiesService.getLocalDate();
+    }
   }
 
   /**
    * Attempts to submit new card to database
    */
-  addNewCard(): Promise<any> {
-    return new Promise(resolve => {
+  addNewCard() {
+    if (this.isValidInput()) {
+      const newCard = new Card();
 
-      if (this.isValidInput()) {
-        const newCard = new Card();
+      this.setCardFromForm(newCard);
 
-        newCard.cardType = this.getCardTypeID(this.cardTypeInput);
-        newCard.cardNumber = this.cardNumberInput;
-        newCard.location = this.locationInput;
-        newCard.expirationDate = new Date(this.expirationDateInput);
-        newCard.creationDate = this.utilitiesService.getLocalDate();
-        newCard.modifiedDate = this.utilitiesService.getLocalDate();
-        newCard.comment = this.commentInput;
-        newCard.status = 1;
+      newCard.creationDate = this.utilitiesService.getLocalDate();
+      newCard.status = this.utilitiesService.getStatusFromID(1);
+      newCard.user = new User();
 
-        if (this.addCardHolder && this.isValidUsername()) {
-          newCard.userID = this.getUserID(this.usernameInput);
-        } else {
-          newCard.userID = null;
+      this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
+        if (res['message'] === 'success') {
+          this.cardList.unshift(res['data']);
+          // Trigger view refresh
+          this.cardList = this.cardList.slice();
+          this.dataService.cardList.next(this.cardList);
+
+          this.closeForm();
         }
-
-        this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
-          if (res['message'] === 'success') {
-            console.log('res[data] is, ', res['data']);
-            this.cardList.unshift(res['data'] as Card);
-            this.dataService.cardList.next(this.cardList);
-
-            this.resetForm();
-            resolve();
-          }
-        });
-      }
-    });
+      });
+    }
   }
 
   /**
    * Attempts to submit edited card to database
    */
-  editCard(card: Card): Promise<any> {
-    return new Promise(resolve => {
+  editCard() {
 
-      if (this.isValidInput()) {
-        card.cardType = this.getCardTypeID(this.cardTypeInput);
-        card.cardNumber = this.cardNumberInput;
-        card.location = this.locationInput;
-        card.expirationDate = new Date(this.expirationDateInput);
-        card.creationDate = this.utilitiesService.getLocalDate();
-        card.modifiedDate = this.utilitiesService.getLocalDate();
-        card.comment = this.commentInput;
+    if (this.isValidInput()) {
+      this.setCardFromForm(this.cardItem);
 
-        if (this.addCardHolder && this.isValidUsername()) {
-          card.userID = this.getUserID(this.usernameInput);
-        } else {
-          card.userID = null;
+      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+        if (res['message'] === 'success') {
+          this.cardList = this.cardList.slice();
+          this.dataService.cardList.next(this.cardList);
+
+          this.closeForm();
         }
-
-        this.httpService.httpPut<Card>('updateCard/', card).then(res => {
-          if (res['message'] === 'success') {
-            this.dataService.cardList.next(this.cardList);
-
-            this.resetForm();
-            resolve();
-          }
-        });
-      }
-    });
-  }
-
-  /**
-   * Returns the id associated with cardTypeName
-   * @param cardTypeName Name of card type
-   */
-  getCardTypeID(cardTypeName: String) {
-    return _.find(this.cardTypes, cardType => cardType.name === cardTypeName)
-      .id;
-  }
-
-  /**
-   * Returns user id of user with username
-   * @param username Username of user
-   */
-  getUserID(username: String) {
-    return _.find(this.users, user => user.username === username).id;
+      });
+    }
   }
 
   /**
@@ -218,7 +188,7 @@ export class ModifyCardComponent implements OnInit {
   setExpirationDateToDatePicker() {
     if (
       !this.expirationDateControl.hasError('required') &&
-      !this.expirationDateControl.hasError('expirationDate')
+      !this.expirationDateControl.hasError('dateFormat')
     ) {
       this.expirationDateDatepickerInput = this.expirationDateInput; // Set date in Datepicker
     }
@@ -230,7 +200,7 @@ export class ModifyCardComponent implements OnInit {
    */
   setExpirationDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.expirationDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.expirationDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 
@@ -252,17 +222,6 @@ export class ModifyCardComponent implements OnInit {
   }
 
   /**
-   * Returns true if entered username is valid, else false.
-   */
-  isValidUsername() {
-    return (
-      !this.addCardHolder ||
-      (!this.usernameControl.hasError('required') &&
-        !this.usernameControl.hasError('username'))
-    );
-  }
-
-  /**
    * Returns true if entered location is valid, else false.
    */
   isValidLocation() {
@@ -274,7 +233,7 @@ export class ModifyCardComponent implements OnInit {
    */
   isValidExpirationDate() {
     return !this.expirationDateControl.hasError('required') &&
-    !this.expirationDateControl.hasError('dateFormat');
+      !this.expirationDateControl.hasError('dateFormat');
   }
 
   /**
@@ -284,22 +243,26 @@ export class ModifyCardComponent implements OnInit {
     return (
       this.isValidCardType() &&
       this.isValidCardNumber() &&
-      this.isValidUsername() &&
       this.isValidLocation() &&
       this.isValidExpirationDate()
     );
   }
 
   /**
-   * Resets form by resetting form controls and clearing inputs
+   * Closes form. Also resets form by resetting form controls and clearing inputs
    */
-  resetForm() {
+  closeForm() {
     this.cardTypeControl.reset();
     this.cardNumberControl.reset();
-    this.usernameControl.reset();
     this.locationControl.reset();
     this.expirationDateControl.reset();
     this.expirationDatePickerControl.reset();
     this.commentInput = '';
+    this.modifyForm.resetForm();
+
+    this.cardItem = Object.assign({}, new Card());
+
+    this.showModal = false;
+    this.showModalChange.emit(false);
   }
 }

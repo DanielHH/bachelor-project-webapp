@@ -1,17 +1,4 @@
-<button mat-raised-button (click)="showAddNewModal = true" color="primary">Add New Document</button>
-
+<!-- Document table -->
 <div class="table-container pt-3">
-  <app-document-table [documentList]="documentList" (editItem)="setEditDocument($event)"></app-document-table>
+  <app-document-table [documentList]="documentList"></app-document-table>
 </div>
-
-<form #addNewDocumentForm="ngForm" (ngSubmit)="submitNewDocument()">
-  <app-modal [(show)]="showAddNewModal" [modalTitle]="'Add new document'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-document #addNewDocumentComponent [documentList]="documentList"></app-modify-document>
-  </app-modal>
-</form>
-
-<form #editDocumentForm="ngForm" (ngSubmit)="submitEditDocument()">
-  <app-modal [(show)]="showEditModal" [modalTitle]="'Edit document'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-document #editDocumentComponent [documentList]="documentList" [document]="editDocument"></app-modify-document>
-  </app-modal>
-</form>

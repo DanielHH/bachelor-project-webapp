@@ -11,7 +11,6 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService) {
-    console.log('token interceptor constructed');
   }
 
   /**
