@@ -77,4 +77,9 @@ export class Document {
    */
   activeReceipt?: number;
 
+  /**
+   * ID of last verification
+   */
+  lastVerificationID?: number;
+
 }
