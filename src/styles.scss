@@ -81,6 +81,8 @@ input {
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+  padding-left: 2px;
+  padding-right: 15px;
 }
 
 .menu-button-col {
@@ -106,4 +108,10 @@ input {
 
 .hidden {
   display: none !important;
+}
+
+.status-button {
+  position: relative;
+  text-align: left;
+  margin-right: 10px;
 }

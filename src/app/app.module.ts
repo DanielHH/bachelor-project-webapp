@@ -70,6 +70,9 @@ import { DeliveryItemComponent } from './pages/deliveries/components/delivery-it
 import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
+import { InventoryComponent } from './pages/inventory/inventory.component';
+import { InventoryTableComponent } from './pages/inventory/components/inventory-table/inventory-table.component';
+import { InventoryItemComponent } from './pages/inventory/components/inventory-item/inventory-item.component';
 import { MatchFilterDeliveryPipe } from './pipes/match-filter-delivery.pipe';
 import { RequestCardComponent } from './pages/cards/components/request-card/request-card.component';
 import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
@@ -119,6 +122,9 @@ import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-de
     ReceiptTableComponent,
     MatchFilterReceiptPipe,
     ReceiptItemComponent,
+    InventoryComponent,
+    InventoryTableComponent,
+    InventoryItemComponent,
     MatchFilterDeliveryPipe,
     RequestCardComponent,
     ReturnCardComponent,
@@ -164,6 +170,8 @@ import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-de
     },
     RouteDataService,
     UtilitiesService,
+    MatchFilterCardPipe,
+    MatchFilterDocumentPipe,
     ModalService
   ],
   entryComponents: [],

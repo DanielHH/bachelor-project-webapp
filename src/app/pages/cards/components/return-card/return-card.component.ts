@@ -100,7 +100,6 @@ export class ReturnCardComponent implements OnInit {
       this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
-      console.log(this.cardItem);
 
       // Update receipt
       const activeReceipt = this.getReceipt(this.cardItem.activeReceipt);
@@ -108,7 +107,6 @@ export class ReturnCardComponent implements OnInit {
 
       // Submit changes to server
       this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
-        console.log(receiptRes);
         if (receiptRes['message'] === 'success') {
           this.cardItem.activeReceipt = null;
 

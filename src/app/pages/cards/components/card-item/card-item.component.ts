@@ -34,25 +34,10 @@ export class CardItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
-   * Returns a string representation of the expirationDate of the card
+   * Show the modal for card details
    */
-  displayExpirationDate() {
-    return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
-  }
-
-  /**
-   * Shows the modal for card details
-   * Change route and send route data
-   */
-  showDetModal() {
+  showDetailsModal() {
     this.modalService.detailCard.next(this.cardItem);
-  }
-
-  /**
-   * Set card to be outputted for editing
-  */
-  edit() {
-    this.modalService.editCard.next(this.cardItem);
   }
 
   /**
@@ -65,6 +50,13 @@ export class CardItemComponent implements OnInit {
     } else {
       this.modalService.returnCard.next(this.cardItem);
     }
+  }
+
+  /**
+     * Set card to be outputted for editing
+    */
+  edit() {
+    this.modalService.editCard.next(this.cardItem);
   }
 
   /**

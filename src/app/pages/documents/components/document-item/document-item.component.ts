@@ -38,10 +38,10 @@ export class DocumentItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
-   * Set document to be outputted for editing
+   * Shows the modal for document details
    */
-  edit() {
-    this.modalService.editDocument.next(this.documentItem);
+  showDetailsModal() {
+    this.modalService.detailDocument.next(this.documentItem);
   }
 
   /**
@@ -56,11 +56,11 @@ export class DocumentItemComponent implements OnInit {
     }
   }
 
-    /**
-   * Shows the modal for document details
+  /**
+   * Set document to be outputted for editing
    */
-  showDetModal() {
-    this.modalService.detailDocument.next(this.documentItem);
+  edit() {
+    this.modalService.editDocument.next(this.documentItem);
   }
 
   /**
