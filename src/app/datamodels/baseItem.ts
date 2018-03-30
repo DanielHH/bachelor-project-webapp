@@ -107,9 +107,8 @@ getItemTypeString(): string {
  *
  */
 getLastVerifiedString(): string {
-  console.log(this.item.lastVerification);
-  if (this.item.lastVerification) {
-    return this.utilitiesService.getDateString(this.item.lastVerification);
+  if (this.item.lastVerificationDate) {
+    return this.utilitiesService.getDateString(this.item.lastVerificationDate);
   } else {
     return 'Aldrig';
   }

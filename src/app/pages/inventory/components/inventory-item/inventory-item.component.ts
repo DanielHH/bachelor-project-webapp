@@ -49,9 +49,6 @@ export class InventoryItemComponent implements OnInit {
     this.dataService.verificationList.subscribe(verificationList => {
       this.verificationList = verificationList;
     });
-    this.dataService.verificationList.subscribe(verificationList => {
-      this.verificationList = verificationList;
-    });
     this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
     });
