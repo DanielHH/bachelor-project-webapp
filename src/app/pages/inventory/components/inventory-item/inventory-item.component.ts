@@ -82,7 +82,6 @@ export class InventoryItemComponent implements OnInit {
       verification.verificationType = new VerificationType('Inventering');
       verification.itemType = this.baseItem.getItemType();
       verification.verificationDate = this.utilitiesService.getLocalDate();
-      console.log(verification);
 
       // Submit changes to database
       this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
@@ -90,8 +89,6 @@ export class InventoryItemComponent implements OnInit {
 
           itemToUpdate.lastVerificationID = Number(verificationRes.data.id);
           itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
-          console.log(itemToUpdate);
-          console.log(verificationRes.data);
 
           if (this.baseItem.isCard()) {
             this.httpService.httpPut<Card>('updateCard/', itemToUpdate).then(cardRes => {

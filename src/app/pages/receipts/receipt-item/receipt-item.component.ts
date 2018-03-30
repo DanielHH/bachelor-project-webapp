@@ -34,7 +34,6 @@ export class ReceiptItemComponent implements OnInit {
   constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-    console.log(this.receiptItem);
 
     if (this.receiptItem.card) {
       this.itemTypeToDisplay = this.receiptItem.card.cardType.name;
