@@ -101,17 +101,9 @@ export class InventoryItemComponent implements OnInit {
           itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
           itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
 
-          console.log(itemToUpdate.user);
-
           if (this.baseItem.isCard()) {
             this.httpService.httpPut<Card>('updateCard/', itemToUpdate).then(cardRes => {
               if (cardRes.message === 'success') {
-                // Update verification list
-                this.verificationList.unshift(verificationRes.data);
-                this.verificationList = this.verificationList.slice();
-                this.dataService.verificationList.next(this.verificationList);
-
-                // Update card list
                 this.dataService.cardList.next(this.cardList);
               }
             });
@@ -119,16 +111,16 @@ export class InventoryItemComponent implements OnInit {
           } else {
             this.httpService.httpPut<Document>('updateDocument/', itemToUpdate).then(documentRes => {
               if (documentRes.message === 'success') {
-                // Update verification list
-                this.verificationList.unshift(verificationRes.data);
-                this.verificationList = this.verificationList.slice();
-                this.dataService.verificationList.next(this.verificationList);
-
-                // Update document list
                 this.dataService.documentList.next(this.documentList);
               }
             });
           }
+
+          // Update verification list
+          this.verificationList.unshift(verificationRes.data);
+          this.verificationList = this.verificationList.slice();
+          this.dataService.verificationList.next(this.verificationList);
+
         }
       });
     }

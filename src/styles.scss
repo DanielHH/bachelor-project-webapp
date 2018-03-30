@@ -60,8 +60,8 @@ input {
 
 .text-filter-input {
   margin-left: 15px;
-  min-width: 470px;
-  max-width: 470px;
+  min-width: 496px;
+  max-width: 496px;
 }
 
 .filter-checkbox, .narrow-filter-checkbox {
@@ -71,13 +71,13 @@ input {
 }
 
 .filter-checkbox {
-  min-width: 110px;
-  max-width: 110px;
+  min-width: 115px;
+  max-width: 115px;
 }
 
 .small-filter-checkbox {
-  min-width: 60px;
-  max-width: 60px;
+  min-width: 65px;
+  max-width: 65px;
 }
 
 .medium-filter-checkbox {
@@ -88,8 +88,8 @@ input {
 .filter-checkbox-row {
   display: inline-flex;
   justify-content: flex-start;
-  min-width: 470px;
-  max-width: 470px;
+  min-width: 500px;
+  max-width: 500px;
 }
 
 .table-col {
