@@ -132,8 +132,10 @@ export class InventoryItemComponent implements OnInit {
    * to be in the inventory.
    */
   displayLastVerified(): string {
-    // TODO: ask the backend
-    // check that this baseitem is defined
+    if (this.baseItem && this.baseItem.lastVerification) {
+      return this.utilitiesService.getDateString(this.baseItem.lastVerification.verificationDate);
+    } else {
     return 'Aldrig';
+    }
   }
 }
