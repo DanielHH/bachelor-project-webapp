@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
 import { Verification } from '../../../../datamodels/verification';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { VerificationType } from '../../../../datamodels/verificationType';
 
 @Component({
   selector: 'inventory-item',
@@ -71,32 +72,56 @@ export class InventoryItemComponent implements OnInit {
 
       if (this.baseItem.isCard()) {
         verification.card = itemToUpdate as Card;
+        verification.document = null;
       } else {
         verification.document = itemToUpdate as Document;
+        verification.card = null;
       }
 
-      itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
-      itemToUpdate.lastVerificationID = verification.id;
-
-      verification.itemType = this.baseItem.getItemType();
       verification.user = this.baseItem.getUser();
+      if (verification.user.id === 0) {
+        verification.user = null;
+      }
+      verification.verificationType = new VerificationType('Inventering');
+      verification.itemType = this.baseItem.getItemType();
+      verification.verificationDate = this.utilitiesService.getLocalDate();
+      console.log(verification);
 
       // Submit changes to database
       this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
         if (verificationRes.message === 'success') {
 
-          this.httpService.httpPut<Document>('updateDocument/', itemToUpdate).then(itemRes => {
-            if (itemRes.message === 'success') {
+          itemToUpdate.lastVerificationID = verificationRes.data.id;
+          itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
+          console.log(itemToUpdate);
+
+          if (this.baseItem.isCard()) {
+            this.httpService.httpPut<Card>('updateCard/', itemToUpdate).then(cardRes => {
+              if (cardRes.message === 'success') {
+                // Update verification list
+                this.verificationList.unshift(verificationRes.data);
+                this.verificationList = this.verificationList.slice();
+                this.dataService.verificationList.next(this.verificationList);
+
+                // Update card list
+                this.dataService.cardList.next(this.cardList);
+              }
+            });
+
+          } else {
+
+          this.httpService.httpPut<Document>('updateDocument/', itemToUpdate).then(documentRes => {
+            if (documentRes.message === 'success') {
               // Update verification list
               this.verificationList.unshift(verificationRes.data);
               this.verificationList = this.verificationList.slice();
               this.dataService.verificationList.next(this.verificationList);
 
-              // Update card and document list
+              // Update document list
               this.dataService.documentList.next(this.documentList);
-              this.dataService.cardList.next(this.cardList);
             }
           });
+        }
         }
       });
     }

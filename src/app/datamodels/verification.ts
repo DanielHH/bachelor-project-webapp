@@ -37,10 +37,10 @@ export class Verification {
   /**
    * Current card or document holder
    */
-  user: User;
+  user?: User;
 
   /**
-   * Expiration date of the verification
+   * Date of the verification
    */
   verificationDate: Date;
 
