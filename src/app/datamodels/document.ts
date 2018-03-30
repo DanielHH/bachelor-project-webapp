@@ -1,6 +1,7 @@
 import { User } from './user';
 import { StatusType } from './statusType';
 import { DocumentType } from './documentType';
+import { Verification } from './verification';
 
 /**
  * Document data model
@@ -80,6 +81,6 @@ export class Document {
   /**
    * Last verification
    */
-  lastVerification?: number;
+  lastVerification?: Verification;
 
 }

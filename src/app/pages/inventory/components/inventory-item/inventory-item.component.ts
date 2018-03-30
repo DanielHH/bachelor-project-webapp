@@ -91,7 +91,7 @@ export class InventoryItemComponent implements OnInit {
       this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
         if (verificationRes.message === 'success') {
 
-          itemToUpdate.lastVerification = Number(verificationRes.data.id);
+          itemToUpdate.lastVerification = verificationRes.data;
           itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
           console.log(itemToUpdate);
           console.log(verificationRes.data);
@@ -124,18 +124,6 @@ export class InventoryItemComponent implements OnInit {
           }
         }
       });
-    }
-  }
-
-  /**
-   * Return a string representing when this item was last verified
-   * to be in the inventory.
-   */
-  displayLastVerified(): string {
-    if (this.baseItem && this.baseItem.lastVerification) {
-      return this.utilitiesService.getDateString(this.baseItem.lastVerification.verificationDate);
-    } else {
-    return 'Aldrig';
     }
   }
 }

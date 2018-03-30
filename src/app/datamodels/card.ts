@@ -65,6 +65,6 @@ export class Card {
   /**
    * Last verification
    */
-  lastVerification?: number;
+  lastVerification?: Verification;
 
 }

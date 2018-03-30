@@ -6,6 +6,7 @@ import { User } from './user';
 import { StatusType } from './statusType';
 import { Verification } from './verification';
 import { ItemType } from './itemType';
+import { UtilitiesService } from '../services/utilities.service';
 
 
 /**
@@ -32,9 +33,12 @@ itemType: string;
 /**
  * Last verification
  */
-lastVerification: Verification;
+lastVerification?: Verification;
 
-constructor(item: Card|Document, itemType: string) {
+constructor(
+  private utilitiesService: UtilitiesService,
+  item: Card|Document,
+  itemType: string) {
   this.item = item;
   this.itemType = itemType;
   if (itemType !== BaseItem.CARD_NAME && itemType !== BaseItem.DOCUMENT_NAME) {
@@ -102,6 +106,18 @@ getComment(): string {
 */
 getItemTypeString(): string {
   return this.isCard() ? 'Kort' : 'Handling';
+}
+
+/**
+ *
+ */
+getLastVerifiedString(): string {
+  console.log(this.item.lastVerification);
+  if (this.item.lastVerification) {
+    return this.utilitiesService.getDateString(this.item.lastVerification.verificationDate);
+  } else {
+    return 'Aldrig';
+  }
 }
 
 /**
