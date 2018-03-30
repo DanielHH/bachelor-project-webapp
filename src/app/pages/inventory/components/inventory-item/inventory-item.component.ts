@@ -91,7 +91,7 @@ export class InventoryItemComponent implements OnInit {
       this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
         if (verificationRes.message === 'success') {
 
-          itemToUpdate.lastVerification = verificationRes.data;
+          itemToUpdate.lastVerification = verificationRes.data.verificationDate;
           itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
           console.log(itemToUpdate);
           console.log(verificationRes.data);

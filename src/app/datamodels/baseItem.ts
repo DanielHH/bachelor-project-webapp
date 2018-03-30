@@ -30,11 +30,6 @@ item: Card|Document;
  */
 itemType: string;
 
-/**
- * Last verification
- */
-lastVerification?: Verification;
-
 constructor(
   private utilitiesService: UtilitiesService,
   item: Card|Document,
@@ -114,7 +109,7 @@ getItemTypeString(): string {
 getLastVerifiedString(): string {
   console.log(this.item.lastVerification);
   if (this.item.lastVerification) {
-    return this.utilitiesService.getDateString(this.item.lastVerification.verificationDate);
+    return this.utilitiesService.getDateString(this.item.lastVerification);
   } else {
     return 'Aldrig';
   }
