@@ -18,7 +18,11 @@
     </div>
   </div>
 
-  <div class="col-narrow table-col">{{documentItem?.documentType?.name}}</div>
+  <div class="col-narrow table-col">
+    <i class="material-icons">import_contacts</i>
+    {{documentItem?.documentType?.name}}
+  </div>
+  <!--<div class="col-narrow table-col">{{documentItem?.documentType?.name}}</div>-->
   <div class="col-wide table-col">{{documentItem?.documentNumber}}</div>
   <div class="col-wide table-col">{{documentItem.name}}</div>
   <div class="col-wide table-col">{{documentItem?.user?.name}}</div>

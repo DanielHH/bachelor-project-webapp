@@ -22,7 +22,7 @@ export class RequestDocumentComponent implements OnInit {
 
   @ViewChild('requestForm') requestForm: NgForm;
 
-  @Input() documentItem: Document = null; // Document that is requested
+  documentItem: Document = null; // Document that is requested
 
 
   @Output() modalClosed = new EventEmitter<boolean>();
