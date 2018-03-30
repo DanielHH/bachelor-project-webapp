@@ -63,8 +63,13 @@ export class Card {
   activeReceipt?: number;
 
   /**
+   * ID of last verification
+   */
+  lastVerificationID?: number;
+
+  /**
    * Date of last verification
    */
-  lastVerification?: Date;
+  lastVerificationDate?: Date;
 
 }
