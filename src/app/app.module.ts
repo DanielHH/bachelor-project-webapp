@@ -73,6 +73,7 @@ import { RequestDocumentComponent } from './pages/documents/components/request-d
 import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
 import { ModalService } from './services/modal.service';
 import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
+import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,8 @@ import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-de
     ReturnCardComponent,
     RequestDocumentComponent,
     ReturnDocumentComponent,
-    ModifyDeliveryComponent
+    ModifyDeliveryComponent,
+    DeliveryDetailComponent
   ],
   imports: [
     BrowserModule,

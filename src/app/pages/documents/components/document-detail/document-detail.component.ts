@@ -49,7 +49,7 @@ export class DocumentDetailComponent implements OnInit {
   ngOnInit() {
   }
 
-  showDetail() {
+  hideDetail() {
     this.showModal = false;
   }
 

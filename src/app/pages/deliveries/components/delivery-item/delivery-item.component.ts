@@ -41,6 +41,13 @@ export class DeliveryItemComponent implements OnInit {
   }
 
   /**
+   * Show the modal for delivery details
+   */
+  showDetailsModal() {
+    this.modalService.detailDelivery.next(this.deliveryItem);
+  }
+
+  /**
    * Set document to be outputted for editing
    */
   edit() {

@@ -1,4 +1,4 @@
-<form #detailForm="ngForm" (ngSubmit)="showDetail()">
+<form #detailForm="ngForm" (ngSubmit)="hideDetail()">
     <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
     [submitName]="'Stäng'" [hideClose]="true">
 
@@ -16,7 +16,7 @@
                 <b>Dokument-ID:</b>
               </div>
               <div class="col-0 col-md-4">
-                <b>Dokumentets namn:</b>
+                <b>Benämning:</b>
               </div>
             </div>
             <!-- Row -->
@@ -32,17 +32,17 @@
               </div>
             </div>
             <!-- Row Space -->
-            <div class="row py-2"></div>
+            <div class="row py-1"></div>
             <!-- Row -->
             <div class="row my-1">
               <div class="col-0 col-md-4">
-                <b>Skickat av:</b>
+                <b>Avsändare:</b>
               </div>
               <div class="col-0 col-md-4">
                 <b>Förvaringsplats:</b>
               </div>
               <div class="col-0 col-md-4">
-                <b>Dokumentets datum:</b>
+                <b>Daterad:</b>
               </div>
             </div>
             <!-- Row -->
@@ -58,17 +58,17 @@
               </div>
             </div>
             <!-- Row Space -->
-            <div class="row py-2"></div>
+            <div class="row py-1"></div>
             <!-- Row -->
             <div class="row my-1">
               <div class="col-0 col-md-4">
-                <b>Registrerat datum:</b>
+                <b>Registrerad:</b>
               </div>
               <div class="col-0 col-md-4">
-                <b>Skapat datum:</b>
+                <b>Skapad:</b>
               </div>
               <div class="col-0 col-md-4">
-                <b>Ändrat datum:</b>
+                <b>Ändrad:</b>
               </div>
             </div>
             <!-- Row -->
@@ -84,39 +84,47 @@
               </div>
             </div>
             <!-- Row Space -->
-            <div class="row py-2"></div>
+            <div class="row py-1"></div>
             <!-- Row -->
             <div class="row my-1">
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-4">
                 <b>Status:</b>
               </div>
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-4">
                 <b>Användare:</b>
+              </div>
+              <div class="col-0 col-md-4">
+                <b>Senast inventerad:</b>
               </div>
             </div>
             <!-- Row -->
             <div class="row my-1">
-              <div class="col-0 col-md-6">
+              <div class="col-0 col-md-4">
                 {{documentItem?.status?.name}}
               </div>
-              <div class="col-0 col-md-6">
-                {{documentItem?.user?.name}}
+              <div class="col-0 col-md-4">
+                {{utilitiesService.getUserString(documentItem?.user)}}
+              </div>
+              <div class="col-0 col-md-4">
+                {{utilitiesService.getDateString(documentItem?.lastVerificationDate)}}
               </div>
             </div>
             <!-- Row Space -->
-            <div class="row py-2"></div>
+            <div class="row py-1"></div>
             <!-- Row -->
-            <div class="row my-1">
+            <div *ngIf="documentItem?.comment" class="row my-1">
               <div class="col-0 col-md-12">
                 <b>Kommentar:</b>
               </div>
             </div>
             <!-- Row -->
-            <div class="row my-1">
+            <div *ngIf="documentItem?.comment" class="row my-1">
               <div class="col-0 col-md-12">
                 {{documentItem?.comment}}
               </div>
             </div>
+            <!-- Row Space -->
+            <div class="row py-1"></div>
           </mat-card>
         </div>
         <div class="col-0 col-md-1"></div>
