@@ -78,8 +78,8 @@ export class Document {
   activeReceipt?: number;
 
   /**
-   * ID of last verification
+   * Last verification
    */
-  lastVerificationID?: number;
+  lastVerification?: number;
 
 }

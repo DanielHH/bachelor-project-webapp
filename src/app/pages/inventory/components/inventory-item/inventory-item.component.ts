@@ -91,9 +91,10 @@ export class InventoryItemComponent implements OnInit {
       this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
         if (verificationRes.message === 'success') {
 
-          itemToUpdate.lastVerificationID = verificationRes.data.id;
+          itemToUpdate.lastVerification = Number(verificationRes.data.id);
           itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
           console.log(itemToUpdate);
+          console.log(verificationRes.data);
 
           if (this.baseItem.isCard()) {
             this.httpService.httpPut<Card>('updateCard/', itemToUpdate).then(cardRes => {
@@ -109,19 +110,18 @@ export class InventoryItemComponent implements OnInit {
             });
 
           } else {
+            this.httpService.httpPut<Document>('updateDocument/', itemToUpdate).then(documentRes => {
+              if (documentRes.message === 'success') {
+                // Update verification list
+                this.verificationList.unshift(verificationRes.data);
+                this.verificationList = this.verificationList.slice();
+                this.dataService.verificationList.next(this.verificationList);
 
-          this.httpService.httpPut<Document>('updateDocument/', itemToUpdate).then(documentRes => {
-            if (documentRes.message === 'success') {
-              // Update verification list
-              this.verificationList.unshift(verificationRes.data);
-              this.verificationList = this.verificationList.slice();
-              this.dataService.verificationList.next(this.verificationList);
-
-              // Update document list
-              this.dataService.documentList.next(this.documentList);
-            }
-          });
-        }
+                // Update document list
+                this.dataService.documentList.next(this.documentList);
+              }
+            });
+          }
         }
       });
     }

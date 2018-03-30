@@ -200,7 +200,7 @@ export class RequestDocumentComponent implements OnInit {
       // Submit changes to database
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
-          this.documentItem.activeReceipt = receiptRes.data.id;
+          this.documentItem.activeReceipt = Number(receiptRes.data.id);
 
           this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
             if (documentRes.message === 'success') {
