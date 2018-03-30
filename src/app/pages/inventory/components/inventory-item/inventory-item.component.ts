@@ -60,6 +60,26 @@ export class InventoryItemComponent implements OnInit {
   ngOnInit() {}
 
   /**
+   * Sets the status of the document in the database
+   */
+  editStatus() {
+    if (this.baseItem.isCard()) {
+      this.httpService.httpPut<Card>('updateCard/', this.baseItem.getItem()).then(res => {
+        if (res.message === 'success') {
+          this.dataService.cardList.next(this.cardList);
+        }
+      });
+
+    } else {
+      this.httpService.httpPut<Document>('updateDocument/', this.baseItem.getItem()).then(res => {
+        if (res.message === 'success') {
+          this.dataService.documentList.next(this.documentList);
+        }
+      });
+    }
+  }
+
+  /**
    * Send a message to the backend updating when this item was last inventoried
    * to be the current time.
    */

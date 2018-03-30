@@ -25,7 +25,7 @@
   <div class="col-narrow table-col">{{baseItem?.getLastVerifiedString()}}</div>
 
   <div class="pl-3 menu-button-col">
-    <app-item-menu [item]="baseItem?.item"></app-item-menu>
+    <app-item-menu [item]="baseItem?.item" (editStatus)="editStatus()"></app-item-menu>
   </div>
 
 </div>

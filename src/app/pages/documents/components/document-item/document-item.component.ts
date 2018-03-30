@@ -17,6 +17,7 @@ import { ModalService } from '../../../../services/modal.service';
 export class DocumentItemComponent implements OnInit {
   @Input() documentItem: Document;
 
+  documentList: Document[] = [];
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
@@ -25,6 +26,10 @@ export class DocumentItemComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService) {
+
+    this.dataService.documentList.subscribe(documentList => {
+      this.documentList = documentList;
+    });
 
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
@@ -68,7 +73,9 @@ export class DocumentItemComponent implements OnInit {
    */
   editStatus() {
     this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-      if (res.message === 'success') { }
+      if (res.message === 'success') {
+        this.dataService.documentList.next(this.documentList);
+      }
     });
   }
 }
