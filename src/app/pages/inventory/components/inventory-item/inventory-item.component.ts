@@ -52,6 +52,9 @@ export class InventoryItemComponent implements OnInit {
     this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
     });
+    this.dataService.documentList.subscribe(documentList => {
+      this.documentList = documentList;
+    });
   }
 
   ngOnInit() {}
@@ -75,10 +78,17 @@ export class InventoryItemComponent implements OnInit {
         verification.card = null;
       }
 
-      verification.user = this.baseItem.getUser();
-      if (verification.user.id === 0) {
+      if (this.baseItem.getUser() && this.baseItem.getUser().id !== 0) {
+        verification.user = this.baseItem.getUser();
+      } else {
         verification.user = null;
+        itemToUpdate.user = null;
       }
+
+      if (itemToUpdate.activeReceipt === 0) {
+        itemToUpdate.activeReceipt = null;
+      }
+
       verification.verificationType = new VerificationType('Inventering');
       verification.itemType = this.baseItem.getItemType();
       verification.verificationDate = this.utilitiesService.getLocalDate();
@@ -88,7 +98,10 @@ export class InventoryItemComponent implements OnInit {
         if (verificationRes.message === 'success') {
 
           itemToUpdate.lastVerificationID = Number(verificationRes.data.id);
+          itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
           itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
+
+          console.log(itemToUpdate.user);
 
           if (this.baseItem.isCard()) {
             this.httpService.httpPut<Card>('updateCard/', itemToUpdate).then(cardRes => {
