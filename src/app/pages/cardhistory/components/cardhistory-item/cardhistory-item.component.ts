@@ -20,13 +20,15 @@ import { LogEvent } from '../../../../datamodels/logEvent';
 export class CardhistoryItemComponent implements OnInit {
 
   @Input() logEventItem: LogEvent;
-  cardList: Card[] = [];
+  // cardList: Card[] = [];
 
   logDate: string;
   eventToDisplay: string;
   userToDisplay: string;
 
   cardDetail: Card;
+
+  owner: User;
 
   constructor(
     private routeDataService: RouteDataService,
@@ -39,7 +41,8 @@ export class CardhistoryItemComponent implements OnInit {
   ngOnInit() {
     if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
       this.logEventItem.logTypeID === 1) { // show requested cards
-      this.eventToDisplay = 'Kort utkvitterades till ' + this.logEventItem.ownerID;
+      this.owner = this.utilitiesService.getUserFromID(this.logEventItem.ownerID);
+      this.eventToDisplay = 'Kort utkvitterades till ' + this.owner.username;
       this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
       } else if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
       this.logEventItem.logTypeID === 2) { // show returned cards

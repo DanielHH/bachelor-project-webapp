@@ -90,6 +90,10 @@ export class UtilitiesService {
     return user && user.id ? user.name : 'Saknas';
   }
 
+  getUserFromID(id: number) {
+    return _.find(this.userList, user => user.id == id);
+  }
+
   getStatusFromID(id: number) {
     return _.find(this.statusTypeList, statusType => statusType.id == id);
   }
