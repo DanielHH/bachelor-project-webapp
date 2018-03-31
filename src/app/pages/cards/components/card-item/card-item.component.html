@@ -18,7 +18,10 @@
     </div>
   </div>
 
-  <div class="col-narrow table-col">{{cardItem?.cardType?.name}}</div>
+  <div class="col-narrow table-col">
+    <i class="material-icons">credit_card</i>
+    {{cardItem?.cardType?.name}}
+  </div>
   <div class="col-wide table-col">{{cardItem?.cardNumber}}</div>
   <div class="col-wide table-col">{{cardItem?.user?.name}}</div>
   <div class="col-wide table-col">{{cardItem?.location}}</div>

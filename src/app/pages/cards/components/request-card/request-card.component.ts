@@ -213,7 +213,7 @@ export class RequestCardComponent implements OnInit {
         .httpPost<Receipt>('addNewReceipt/', receipt)
         .then(receiptRes => {
           if (receiptRes.message === 'success') {
-            this.cardItem.activeReceipt = receiptRes.data.id;
+            this.cardItem.activeReceipt = Number(receiptRes.data.id);
 
             this.httpService
               .httpPut<Card>('updateCard/', this.cardItem)

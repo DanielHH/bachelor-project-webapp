@@ -57,7 +57,7 @@ export class Delivery {
     comment?: string;
 
     /**
-     * document checked in/out status
+     * Document checked in/out status
      */
     status: StatusType;
 

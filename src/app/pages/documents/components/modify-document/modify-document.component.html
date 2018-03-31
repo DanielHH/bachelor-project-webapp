@@ -105,7 +105,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="registrationDateInput" name="registrationDateInput"
-          [(ngModel)]="registrationDateInput" placeholder="Inkommet datum"
+          [(ngModel)]="registrationDateInput" placeholder="Inkommen datum"
             [style.color]="isValidRegistrationDate() ? 'black' : 'gray'" maxlength="10"
             (input)="setRegistrationDateToDatePicker();"
             [formControl]="registrationDateControl" appDate required>
@@ -140,7 +140,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="docDateInput" name="docDateInput" [(ngModel)]="docDateInput"
-          placeholder="Daterat datum"
+          placeholder="Daterad datum"
             [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10" (input)="setDocDateToDatePicker();"
             [formControl]="docDateControl"
             appDate required>

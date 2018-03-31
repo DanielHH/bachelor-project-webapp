@@ -1,6 +1,8 @@
 <div class="row item-row">
   <div class="pr-4 verify-button-col" *ngIf="baseItem?.getStatus()?.id == 1 || baseItem?.getStatus()?.id == 2">
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-success]="true" mdbRippleRadius>
+    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1"
+    (click)="verifyInventory()"
+    [class.btn-success]="true" mdbRippleRadius>
       <span>Verifiera</span>
     </button>
   </div>
@@ -12,18 +14,18 @@
 
   <div class="col-narrow table-col">{{baseItem?.getStatus()?.name}}</div>
   <div class="col-narrow table-col">
-    <i *ngIf="this.baseItem?.getItemType() == 'Kort'" class="material-icons">credit_card</i>
-    <i *ngIf="this.baseItem?.getItemType() == 'Handling'" class="material-icons">import_contacts</i>
+    <i *ngIf="this.baseItem?.getItemTypeString() == 'Kort'" class="material-icons">credit_card</i>
+    <i *ngIf="this.baseItem?.getItemTypeString() == 'Handling'" class="material-icons">import_contacts</i>
     {{baseItem?.getSubType()?.name}}
   </div>
   <div class="col-narrow table-col">{{baseItem?.getNumber()}}</div>
   <div class="col-wide table-col">{{baseItem?.getUser()?.name}}</div>
   <div class="col-wide table-col">{{baseItem?.getLocation()}}</div>
   <div class="col-wide table-col">{{baseItem?.getComment()}}</div>
-  <div class="col-narrow table-col">{{displayLastVerified()}}</div>
+  <div class="col-narrow table-col">{{baseItem?.getLastVerifiedString()}}</div>
 
   <div class="pl-3 menu-button-col">
-    <app-item-menu [item]="baseItem?.item"></app-item-menu>
+    <app-item-menu [item]="baseItem?.item" (editStatus)="editStatus()"></app-item-menu>
   </div>
 
 </div>

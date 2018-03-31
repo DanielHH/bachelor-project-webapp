@@ -60,21 +60,36 @@ input {
 
 .text-filter-input {
   margin-left: 15px;
-  min-width: 470px;
-  max-width: 470px;
+  min-width: 496px;
+  max-width: 496px;
+}
+
+.filter-checkbox, .narrow-filter-checkbox {
+  display: inline-flex;
+  justify-content: flex-start;
+  margin-left: 5px;
 }
 
 .filter-checkbox {
-  display: inline-flex;
-  justify-content: space-evenly;
-  margin-left: 5px;
-  min-width: 110px;
-  max-width: 110px;
+  min-width: 115px;
+  max-width: 115px;
+}
+
+.small-filter-checkbox {
+  min-width: 65px;
+  max-width: 65px;
+}
+
+.medium-filter-checkbox {
+  min-width: 75px;
+  max-width: 75px;
 }
 
 .filter-checkbox-row {
   display: inline-flex;
   justify-content: flex-start;
+  min-width: 500px;
+  max-width: 500px;
 }
 
 .table-col {
@@ -104,6 +119,7 @@ input {
 
 .item-row:hover {
   background-color: rgba(208, 214, 212, 0.479);
+  cursor: pointer;
 }
 
 .hidden {
