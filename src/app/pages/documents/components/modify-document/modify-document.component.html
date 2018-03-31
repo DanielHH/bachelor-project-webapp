@@ -1,8 +1,10 @@
 <form #modifyForm="ngForm" (ngSubmit)="modalType ? editDocument() : addNewDocument()">
   <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [closeName]="'Avbryt'" [submitName]="'Spara'">
 
-    <!-- Row docType & docNumber -->
+    <!-- Row document type & document number -->
     <div class="row">
+
+      <!-- Document type -->
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
@@ -51,13 +53,59 @@
       </div>
     </div>
 
+    <!-- Document name & sender -->
+    <div class="row">
+
+      <!-- Document name -->
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput"
+          [(formControl)]="nameControl" maxlength="128"
+            placeholder="Benämning" [style.color]="isValidDocName() ? 'black' : 'gray'" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocName()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear"
+          (click)="nameInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="nameControl.hasError('required')">Ange en benämning</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Sender -->
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="senderInput" name="senderInput" [(ngModel)]="senderInput" maxlength="128"
+          placeholder="Avsändare" [formControl]="senderControl" [style.color]="isValidSender() ? 'black' : 'gray'" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidSender()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="senderInput" matSuffix mat-icon-button aria-label="Clear"
+          (click)="senderInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="senderControl.hasError('required')">Ange en avsändare</mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
     <!-- Row 3 registrationDate & docDate -->
     <div class="row">
+
+      <!-- Registration date -->
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
           <input matInput id="registrationDateInput" name="registrationDateInput"
-          [(ngModel)]="registrationDateInput" placeholder="Inkommet datum"
+          [(ngModel)]="registrationDateInput" placeholder="Inkommen datum"
             [style.color]="isValidRegistrationDate() ? 'black' : 'gray'" maxlength="10"
             (input)="setRegistrationDateToDatePicker();"
             [formControl]="registrationDateControl" appDate required>
@@ -86,11 +134,13 @@
           </mat-error>
         </mat-form-field>
       </div>
+
+      <!-- Document date -->
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
           <input matInput id="docDateInput" name="docDateInput" [(ngModel)]="docDateInput"
-          placeholder="Daterat datum"
+          placeholder="Daterad datum"
             [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10" (input)="setDocDateToDatePicker();"
             [formControl]="docDateControl"
             appDate required>
@@ -120,47 +170,10 @@
       </div>
     </div>
 
-    <!-- Document name & sender -->
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput"
-          [(formControl)]="nameControl" maxlength="128"
-            placeholder="Benämning" [style.color]="isValidDocName() ? 'black' : 'gray'" required>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidDocName()">done</mat-icon>
-          </button>
-          <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear"
-          (click)="nameInput = ''" tabindex="-1">
-            <mat-icon>close</mat-icon>
-          </button>
-          <!--Error-->
-          <mat-error *ngIf="nameControl.hasError('required')">Ange en benämning</mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-12 col-md-6">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="senderInput" name="senderInput" [(ngModel)]="senderInput" maxlength="128"
-          placeholder="Avsändare" [formControl]="senderControl" [style.color]="isValidSender() ? 'black' : 'gray'" required>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidSender()">done</mat-icon>
-          </button>
-          <button mat-button class="size-medium" *ngIf="senderInput" matSuffix mat-icon-button aria-label="Clear"
-          (click)="senderInput = ''" tabindex="-1">
-            <mat-icon>close</mat-icon>
-          </button>
-          <!--Error-->
-          <mat-error *ngIf="senderControl.hasError('required')">Ange en avsändare</mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
     <!-- Location & comment -->
     <div class="row">
+
+      <!-- Location -->
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
@@ -178,6 +191,8 @@
           <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
         </mat-form-field>
       </div>
+
+      <!-- Comment -->
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
@@ -190,6 +205,7 @@
           </button>
         </mat-form-field>
       </div>
+
     </div>
   </app-modal>
 </form>

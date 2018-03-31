@@ -7,7 +7,7 @@ import { Receipt } from '../../../../datamodels/receipt';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
-import { ReturnService } from '../../../../services/return.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-return-document',
@@ -43,7 +43,7 @@ export class ReturnDocumentComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
-    private returnService: ReturnService
+    private modalService: ModalService
   ) {
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
@@ -53,7 +53,7 @@ export class ReturnDocumentComponent implements OnInit {
       this.documents = documents;
     });
 
-    this.returnService.document.subscribe((document) => {
+    this.modalService.returnDocument.subscribe((document) => {
       if (document && document.id) {
         this.documentItem = document;
         this.commentInput = document.comment;
@@ -72,7 +72,7 @@ export class ReturnDocumentComponent implements OnInit {
    * @param id Id of receipt
    */
   getReceipt(id: number) {
-    return _.find(this.receipts, (receipt) => receipt.id === id);
+    return _.find(this.receipts, (receipt) => receipt.id == id);
   }
 
   /**
@@ -127,7 +127,7 @@ export class ReturnDocumentComponent implements OnInit {
     this.returnForm.resetForm(); // Clears form errors
 
     this.documentItem = Object.assign({}, new Document());
-    this.returnService.document.next(this.documentItem);
+    this.modalService.returnDocument.next(this.documentItem);
 
     this.showModal = false;
   }

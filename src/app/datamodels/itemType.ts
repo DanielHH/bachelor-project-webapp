@@ -13,4 +13,16 @@ export class ItemType {
    */
   name: string;
 
+  constructor(name: string) {
+    if (name.toLowerCase() == 'kort') {
+      this.name = 'Kort';
+      this.id = 1;
+    } else if (name.toLowerCase() == 'handling') {
+      this.name = 'Handling';
+      this.id = 2;
+    } else {
+      console.error('Invalid itemType name: ' + name + '!');
+    }
+  }
+
 }

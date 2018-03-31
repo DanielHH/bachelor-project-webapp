@@ -14,8 +14,11 @@ import { UtilitiesService } from '../../services/utilities.service';
 })
 export class ItemMenuComponent implements OnInit {
 
-  // Card or Document
-  @Input() item: any;
+  @Input() item: any; // Card or Document
+
+  @Input() showDetailsOption = false;
+
+  @Input() showEditOption = false;
 
   @Output() editItem = new EventEmitter<any>();
 
@@ -37,7 +40,7 @@ export class ItemMenuComponent implements OnInit {
       this.router.navigate(['cardhistory']); // Daniel: Fixa att den navigerar till cardhistory
     }
 
-    if (this.item.documentType) {
+    if (this.item.documentType && this.item.location) { // document with a location, aka not a delivery
       this.routeDataService.document.next(this.item);
       this.router.navigate(['document-detail']);
     }
@@ -55,20 +58,13 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    if (this.item.userID && value == 1) { // If has owner and is restored
-      value = 2;
+    if (this.item.user && this.item.user.id && value == 1) { // If has owner and is restored
+      this.item.status = this.utilitiesService.getStatusFromID(2);
+    } else {
+      this.item.status = this.utilitiesService.getStatusFromID(value);
     }
 
-    this.item.status = this.utilitiesService.getStatusFromID(value);
-
     this.editStatus.emit();
-  }
-
-  /**
-   * Format date
-  */
-  formatDate(date: Date) {
-    return moment(date).format('YYYY-MM-DD H:mm:ss');
   }
 
 }

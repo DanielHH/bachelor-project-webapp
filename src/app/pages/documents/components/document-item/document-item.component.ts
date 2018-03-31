@@ -5,12 +5,9 @@ import { DataService } from '../../../../services/data.service';
 import { DocumentType } from '../../../../datamodels/documentType';
 import { User } from '../../../../datamodels/user';
 import * as _ from 'lodash';
-import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
-import { EditService } from '../../../../services/edit.service';
-import { RequestService } from '../../../../services/request.service';
-import { ReturnService } from '../../../../services/return.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-document-item',
@@ -20,17 +17,19 @@ import { ReturnService } from '../../../../services/return.service';
 export class DocumentItemComponent implements OnInit {
   @Input() documentItem: Document;
 
+  documentList: Document[] = [];
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
   constructor(
     public dataService: DataService,
-    private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
-    private editService: EditService,
-    private requestService: RequestService,
-    private returnService: ReturnService) {
+    private modalService: ModalService) {
+
+    this.dataService.documentList.subscribe(documentList => {
+      this.documentList = documentList;
+    });
 
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
@@ -44,18 +43,10 @@ export class DocumentItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
-   * Change route and send route data
+   * Shows the modal for document details
    */
-  route() {
-    this.routeDataService.document.next(this.documentItem);
-    this.router.navigate(['document-detail']);
-  }
-
-  /**
-   * Set document to be outputted for editing
-   */
-  edit() {
-    this.editService.document.next(this.documentItem);
+  showDetailsModal() {
+    this.modalService.detailDocument.next(this.documentItem);
   }
 
   /**
@@ -64,10 +55,17 @@ export class DocumentItemComponent implements OnInit {
    */
   showModal() {
     if (this.documentItem.status.id == 1) {
-      this.requestService.document.next(this.documentItem);
+      this.modalService.requestDocument.next(this.documentItem);
     } else {
-      this.returnService.document.next(this.documentItem);
+      this.modalService.returnDocument.next(this.documentItem);
     }
+  }
+
+  /**
+   * Set document to be outputted for editing
+   */
+  edit() {
+    this.modalService.editDocument.next(this.documentItem);
   }
 
   /**
@@ -75,7 +73,9 @@ export class DocumentItemComponent implements OnInit {
    */
   editStatus() {
     this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-      if (res.message === 'success') { }
+      if (res.message === 'success') {
+        this.dataService.documentList.next(this.documentList);
+      }
     });
   }
 }

@@ -13,6 +13,8 @@ export class CardTableComponent implements OnInit {
 
   @Input() cardList: Card[];
 
+  cardItem = new Card(); // Dummy
+
   showModal = false;
 
   filterInput = '';
@@ -41,14 +43,14 @@ export class CardTableComponent implements OnInit {
   }
 
   /**
-   * Sorts table after modifiedDate ascending
+   * Sorts table after location descending
    */
   sortTableListStart() {
-    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
+    this.cardList = _.orderBy(this.cardList, ['location'], ['desc']);
   }
 
   /**
-   * Sorts the table depending on the property of the Card
+   * Sorts the table depending on the properties of the items
    * @param property
    */
   sortTableList(property: string) {

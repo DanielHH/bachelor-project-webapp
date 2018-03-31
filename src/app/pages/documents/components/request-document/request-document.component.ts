@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { User } from '../../../../datamodels/user';
 import { Receipt } from '../../../../datamodels/receipt';
-import { RequestService } from '../../../../services/request.service';
+import { ModalService } from '../../../../services/modal.service';
 import * as moment from 'moment';
 
 @Component({
@@ -22,7 +22,7 @@ export class RequestDocumentComponent implements OnInit {
 
   @ViewChild('requestForm') requestForm: NgForm;
 
-  @Input() documentItem: Document = null; // Document that is requested
+  documentItem: Document = null; // Document that is requested
 
 
   @Output() modalClosed = new EventEmitter<boolean>();
@@ -57,14 +57,15 @@ export class RequestDocumentComponent implements OnInit {
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
-    map(val => this.filterUsers(val))
+    map(user =>
+      user ? this.filterUsers(user) : this.users.slice())
   );
 
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private requestService: RequestService
+    private modalService: ModalService
   ) {
     // User list subscriber
     this.dataService.userList.subscribe(users => {
@@ -86,7 +87,7 @@ export class RequestDocumentComponent implements OnInit {
     });
 
     // Request document subscriber
-    this.requestService.document.subscribe((document) => {
+    this.modalService.requestDocument.subscribe((document) => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -111,9 +112,9 @@ export class RequestDocumentComponent implements OnInit {
   filterUsers(str: string) {
     return this.users.filter(
       user =>
-        str && typeof str === 'string' &&
+        str &&
+        typeof str === 'string' &&
         user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-
     );
   }
 
@@ -189,15 +190,17 @@ export class RequestDocumentComponent implements OnInit {
 
       // Create new receipt
       const receipt = new Receipt();
-      receipt.itemTypeID = 2; // TODO: ENUM, 2 means document
-      receipt.documentID = this.documentItem.id;
-      receipt.userID = this.documentItem.user.id;
+      receipt.itemType = this.utilitiesService.getItemTypeFromID(2); // TODO: ENUM, 2 means document
+      receipt.document = this.documentItem;
+      receipt.card = null;
+      receipt.user = this.documentItem.user;
       receipt.startDate = this.utilitiesService.getLocalDate();
+      receipt.endDate = null;
 
       // Submit changes to database
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
-          this.documentItem.activeReceipt = receiptRes.data.id;
+          this.documentItem.activeReceipt = Number(receiptRes.data.id);
 
           this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
             if (documentRes.message === 'success') {
@@ -210,6 +213,12 @@ export class RequestDocumentComponent implements OnInit {
               this.dataService.documentList.next(this.documents);
 
               this.showModal = false;
+
+              if (this.generatePDF) {
+                this.utilitiesService.genPDF(
+                  this.utilitiesService.getDocumentPDFParams(this.documentItem),
+                  this.documentItem.documentNumber);
+              }
             }
           });
         }
@@ -226,7 +235,7 @@ export class RequestDocumentComponent implements OnInit {
     this.requestForm.resetForm();
 
     this.documentItem = Object.assign({}, new Document());
-    this.requestService.document.next(this.documentItem);
+    this.modalService.requestDocument.next(this.documentItem);
 
     this.showModal = false;
   }

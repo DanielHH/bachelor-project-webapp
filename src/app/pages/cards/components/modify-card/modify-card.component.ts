@@ -10,7 +10,7 @@ import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import { EditService } from '../../../../services/edit.service';
+import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
 
 @Component({
@@ -76,7 +76,7 @@ export class ModifyCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private editService: EditService,
+    private modalService: ModalService,
   ) {
 
     this.dataService.cardTypeList.subscribe(cardTypes => {
@@ -87,7 +87,7 @@ export class ModifyCardComponent implements OnInit {
       });
     });
 
-    this.editService.card.subscribe((card) => {
+    this.modalService.editCard.subscribe((card) => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -173,7 +173,7 @@ export class ModifyCardComponent implements OnInit {
 
       this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
         if (res.message === 'success') {
-
+          this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
 
           this.closeForm();

@@ -1,17 +1,17 @@
-import { Component, OnInit, Input, Output, ViewChild } from "@angular/core";
-import { Card } from "../../../../datamodels/card";
-import { HttpService } from "../../../../services/http.service";
-import { FormControl, Validators, NgForm } from "@angular/forms";
-import { User } from "../../../../datamodels/user";
-import { ReturnService } from "../../../../services/return.service";
-import { DataService } from "../../../../services/data.service";
-import { Receipt } from "../../../../datamodels/receipt";
-import * as _ from "lodash";
-import { UtilitiesService } from "../../../../services/utilities.service";
-import { LogEvent } from "../../../../datamodels/logEvent";
+import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
+import { Card } from '../../../../datamodels/card';
+import { HttpService } from '../../../../services/http.service';
+import { FormControl, Validators, NgForm } from '@angular/forms';
+import { User } from '../../../../datamodels/user';
+import { ModalService } from '../../../../services/modal.service';
+import { DataService } from '../../../../services/data.service';
+import { Receipt } from '../../../../datamodels/receipt';
+import * as _ from 'lodash';
+import { UtilitiesService } from '../../../../services/utilities.service';
+import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
-  selector: "app-return-card",
+  selector: 'app-return-card',
   templateUrl: './return-card.component.html',
   styleUrls: ['./return-card.component.scss']
 })
@@ -46,7 +46,7 @@ export class ReturnCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
-    private returnService: ReturnService
+    private modalService: ModalService
   ) {
     // Receipt list subscriber
     this.dataService.receiptList.subscribe(receipts => {
@@ -59,7 +59,7 @@ export class ReturnCardComponent implements OnInit {
     });
 
     // Return card subscriber
-    this.returnService.card.subscribe(card => {
+    this.modalService.returnCard.subscribe((card) => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -100,7 +100,6 @@ export class ReturnCardComponent implements OnInit {
         this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
-      console.log(this.cardItem);
 
       // Update receipt
       const activeReceipt = this.getReceipt(this.cardItem.activeReceipt);
@@ -161,7 +160,7 @@ export class ReturnCardComponent implements OnInit {
     this.returnForm.resetForm();
 
     this.cardItem = Object.assign({}, new Card());
-    this.returnService.card.next(this.cardItem);
+    this.modalService.returnCard.next(this.cardItem);
 
     this.showModal = false;
   }
