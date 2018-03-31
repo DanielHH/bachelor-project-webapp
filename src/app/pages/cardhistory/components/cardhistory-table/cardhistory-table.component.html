@@ -13,8 +13,7 @@
           <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
-            <mat-icon>close</mat-icon>
-          </button>
+            <mat-icon>close</mat-icon></button>
         </mat-form-field>
       </div>
 
@@ -47,13 +46,13 @@
     <div class="col">
       <span class="hover">Händelse </span>
     </div>
-    <div class="col">
+     <div class="col">
       <span class="hover">Utförd av </span>
     </div>
   </div>
   <hr>
 
-  <!-- Add receipts to the table   -->
+  <!-- Add logevents to the table   -->
   <div *ngFor="let logEvent of logEventList">
       <app-cardhistory-item [logEventItem]="logEvent"> </app-cardhistory-item>
   </div>
