@@ -204,7 +204,7 @@ export class RequestCardComponent implements OnInit {
       receipt.card = this.cardItem;
       receipt.document = null;
       receipt.user = this.cardItem.user;
-      receipt.startDate = new Date(this.startDateInput);
+      receipt.startDate = this.utilitiesService.getLocalDate();
       receipt.endDate = null;
 
 

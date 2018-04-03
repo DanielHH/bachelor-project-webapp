@@ -46,7 +46,7 @@ export class CardTableComponent implements OnInit {
    * Sorts table after location descending
    */
   sortTableListStart() {
-    this.cardList = _.orderBy(this.cardList, ['location'], ['desc']);
+    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
   }
 
   /**
