@@ -216,7 +216,7 @@ export class RequestCardComponent implements OnInit {
       receipt.card = this.cardItem;
       receipt.document = null;
       receipt.user = this.cardItem.user;
-      receipt.startDate = new Date(this.startDateInput);
+      receipt.startDate = this.utilitiesService.getLocalDate();
       receipt.endDate = null;
 
       this.loading = true;
@@ -225,7 +225,8 @@ export class RequestCardComponent implements OnInit {
         .httpPost<Receipt>('addNewReceipt/', receipt)
         .then(receiptRes => {
           if (receiptRes.message === 'success') {
-            this.cardItem.activeReceipt = receiptRes.data.id;
+            this.cardItem.activeReceipt = Number(receiptRes.data.id);
+            
             if (this.generatePDF) {
 
               this.httpService.httpPost<any>('genPDF', ['card', this.cardItem]).then(pdfRes => {

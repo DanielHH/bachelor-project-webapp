@@ -31,12 +31,12 @@
 
       <div class="col-1 px-1 filter-checkbox">
         <mat-checkbox id="showIn" name="showIn" color="primary" class="px-1"
-        [(ngModel)]="showIn">Inlämnade</mat-checkbox>
+        [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
       </div>
 
       <div class="col-1 px-1 filter-checkbox">
         <mat-checkbox id="showOut" name="showOut" color="primary" class="px-1"
-        [(ngModel)]="showOut">Utlämnade</mat-checkbox>
+        [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
       </div>
 
       <div class="col-1 px-1 filter-checkbox">
@@ -85,7 +85,7 @@
       </div>
 
       <div class="menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
-        <app-item-menu [item]="documentItem" class="hidden"></app-item-menu>
+        <app-item-menu [item]="documentItem"></app-item-menu>
       </div>
 
     </div>

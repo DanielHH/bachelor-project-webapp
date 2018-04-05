@@ -19,6 +19,8 @@ import { ModalService } from '../../../../services/modal.service';
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
 
+  cardList: Card[] = [];
+
   showRequestModal = false;
   showReturnModal = false;
 
@@ -28,31 +30,18 @@ export class CardItemComponent implements OnInit {
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService) {
-
+      this.dataService.cardList.subscribe(cardList => {
+        this.cardList = cardList;
+      });
   }
 
   ngOnInit() { }
 
   /**
-   * Returns a string representation of the expirationDate of the card
+   * Show the modal for card details
    */
-  displayExpirationDate() {
-    return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
-  }
-
-  /**
-   * Shows the modal for card details
-   * Change route and send route data
-   */
-  showDetModal() {
+  showDetailsModal() {
     this.modalService.detailCard.next(this.cardItem);
-  }
-
-  /**
-   * Set card to be outputted for editing
-  */
-  edit() {
-    this.modalService.editCard.next(this.cardItem);
   }
 
   /**
@@ -68,11 +57,20 @@ export class CardItemComponent implements OnInit {
   }
 
   /**
+     * Set card to be outputted for editing
+    */
+  edit() {
+    this.modalService.editCard.next(this.cardItem);
+  }
+
+  /**
    * Sets the status of the card in the database
    */
   editStatus() {
     this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-      if (res.message === 'success') { }
+      if (res.message === 'success') {
+        this.dataService.cardList.next(this.cardList);
+      }
     });
   }
 }

@@ -1,10 +1,10 @@
-<div class="row item-row">
+<div class="row item-row" (click)="showDetailsModal()">
   <div class="col-narrow table-col">
     <div *ngIf="deliveryItem?.status?.id == 1 || deliveryItem?.status?.id == 2">
         <button type="button" class="status-btn btn btn-rounded btn-sm m-0 px-2 py-1"
           [class.btn-danger]="deliveryItem?.status?.id == 2"
           [class.btn-success]="deliveryItem?.status?.id == 1" disabled mdbRippleRadius>
-            <span>Aktiv</span>
+            <span>Levererad</span>
         </button>
     </div>
     <div *ngIf="deliveryItem?.status?.id == 3 || deliveryItem?.status?.id == 4">
@@ -16,7 +16,10 @@
     </div>
   </div>
 
-  <div class="col-narrow table-col">{{deliveryItem?.documentType?.name}}</div>
+  <div class="col-narrow table-col">
+    <i class="material-icons">import_contacts</i>
+    {{deliveryItem?.documentType?.name}}
+  </div>
   <div class="col-wide table-col">{{deliveryItem?.documentNumber}}</div>
   <div class="col-wide table-col">{{deliveryItem.name}}</div>
   <div class="col-wide table-col">{{deliveryItem?.receiver}}</div>
@@ -24,7 +27,8 @@
   <div class="col-wide table-col mr-5">{{deliveryItem?.comment}}</div>
 
   <div class="menu-button-col">
-      <app-item-menu [item]="deliveryItem" (editItem)="edit()" (editStatus)="editStatus()"></app-item-menu>
+      <app-item-menu [item]="deliveryItem" (editItem)="edit()" (editStatus)="editStatus()"
+      [showEditOption]="true"></app-item-menu>
   </div>
 
 </div>

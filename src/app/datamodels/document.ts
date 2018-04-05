@@ -1,6 +1,7 @@
 import { User } from './user';
 import { StatusType } from './statusType';
 import { DocumentType } from './documentType';
+import { Verification } from './verification';
 
 /**
  * Document data model
@@ -76,5 +77,15 @@ export class Document {
    * Active receipt (if any)
    */
   activeReceipt?: number;
+
+  /**
+   * ID of last verification
+   */
+  lastVerificationID?: number;
+
+  /**
+   * Date of last verification
+   */
+  lastVerificationDate?: Date;
 
 }

@@ -31,12 +31,12 @@
 
         <div class="col-1 filter-checkbox px-1">
           <mat-checkbox id="showIn" name="showIn" color="primary" class="px-1"
-          [(ngModel)]="showIn">Inlämnade</mat-checkbox>
+          [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
         </div>
 
         <div class="col-1 filter-checkbox px-1">
           <mat-checkbox id="showOut" name="showOut" color="primary" class="px-1"
-          [(ngModel)]="showOut">Utlämnade</mat-checkbox>
+          [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
         </div>
 
         <div class="col-1 filter-checkbox px-1">
@@ -79,7 +79,7 @@
         <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
         [class.both-arrow]="orderComment == ''">Kommentar </span>
       </div>
-      <div class="col-narrow table-col" (click)="sortTableList('expirationDate')">
+      <div class="col-wide table-col" (click)="sortTableList('expirationDate')">
         <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'"
         [class.both-arrow]="orderDate == ''">Utgångsdatum </span>
       </div>

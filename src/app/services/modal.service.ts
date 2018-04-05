@@ -32,6 +32,18 @@ export class ModalService {
   );
 
   /**
+   * Detail delivery
+   */
+  private _detailDelivery = new Delivery();
+
+   /**
+   * A subscriber to the detail delivery
+   */
+  detailDelivery: BehaviorSubject<Delivery> = new BehaviorSubject<Delivery>(
+    this._detailDelivery
+  );
+
+  /**
    * Edit card
    */
   private _editCard = new Card();

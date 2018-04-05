@@ -25,79 +25,67 @@
           </div>
           <!-- Row 3 -->
           <div class="row my-1">
-            <div class="col"></div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <b>Typ:</b>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <b>Benämning:</b>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <b>Dokument-ID:</b>
             </div>
-            <div class="col"></div>
           </div>
           <!-- Row 4 -->
           <div class="row my-1">
-            <div class="col"></div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               {{documentItem?.documentType?.name}}
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               {{documentItem?.name}}
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               {{documentItem?.documentNumber}}
             </div>
-            <div class="col"></div>
           </div>
           <!-- Row 5 Space -->
           <div class="row py-2"></div>
           <!-- Row 6 -->
           <div class="row my-1">
-            <div class="col"></div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <b>Avsändare:</b>
             </div>
-            <div class="col-12 col-md-3">
-              <b>Daterad datum:</b>
+            <div class="col-12 col-md-4">
+              <b>Daterad:</b>
             </div>
-            <div class="col-12 col-md-3">
-              <b>Inkommet datum:</b>
+            <div class="col-12 col-md-4">
+              <b>Inkommen:</b>
             </div>
-            <div class="col"></div>
           </div>
           <!-- Row 7 -->
           <div class="row my-1">
-            <div class="col"></div>
-            <div class="col-0 col-md-3">
+            <div class="col-0 col-md-4">
               {{documentItem?.sender}}
             </div>
-            <div class="col-0 col-md-3">
+            <div class="col-0 col-md-4">
               {{getDateString(documentItem?.documentDate)}}
             </div>
-            <div class="col-0 col-md-3">
+            <div class="col-0 col-md-4">
               {{getDateString(documentItem?.registrationDate)}}
             </div>
-            <div class="col"></div>
           </div>
           <!-- Row 8 Space -->
           <div class="row py-2"></div>
           <!-- Row 9 -->
           <div class="row my-1">
-            <div class="col"></div>
-            <div class="col-12 col-md-4">
-              <b>Nuvarande förvaringsplats:</b>
+            <div class="col-12">
+              <b>Förvaringsplats:</b>
             </div>
-            <div class="col"></div>
           </div>
           <!-- Row 10 -->
           <div class="row my-1">
-            <div class="col"></div>
-            <div class="col-0 col-md-9">
+            <div class="col-12">
               {{documentItem && documentItem.id ? documentItem.location : ''}}
             </div>
-            <div class="col"></div>
           </div>
 
         </mat-card>

@@ -4,6 +4,9 @@ import { CardDetailComponent } from '../pages/cards/components/card-detail/card-
 import { CardType } from './cardType';
 import { User } from './user';
 import { StatusType } from './statusType';
+import { Verification } from './verification';
+import { ItemType } from './itemType';
+import { UtilitiesService } from '../services/utilities.service';
 
 
 /**
@@ -27,11 +30,25 @@ item: Card|Document;
  */
 itemType: string;
 
-constructor(item: Card|Document, itemType: string) {
+constructor(
+  private utilitiesService: UtilitiesService,
+  item: Card|Document,
+  itemType: string) {
   this.item = item;
   this.itemType = itemType;
   if (itemType !== BaseItem.CARD_NAME && itemType !== BaseItem.DOCUMENT_NAME) {
     console.error('invalid baseitem type');
+  }
+}
+
+/**
+ * Get the card or document that this item represents
+*/
+getItem(): any {
+  if (this.isCard()) {
+    return (this.item as Card);
+  } else {
+    return (this.item as Document);
   }
 }
 
@@ -48,7 +65,7 @@ getSubType(): CardType|DocumentType {
 }
 
 /**
- * Get the unique serial number for this item.
+ * Get the card or document number for this item.
 */
 getNumber(): string {
   if (this.isCard()) {
@@ -82,8 +99,26 @@ getComment(): string {
 /**
  * Get the (Swedish) name of the primary type of this item.
 */
-getItemType(): string {
+getItemTypeString(): string {
   return this.isCard() ? 'Kort' : 'Handling';
+}
+
+/**
+ *
+ */
+getLastVerifiedString(): string {
+  if (this.item.lastVerificationDate) {
+    return this.utilitiesService.getDateString(this.item.lastVerificationDate);
+  } else {
+    return 'Aldrig';
+  }
+}
+
+/**
+ * Get id of the type of this item.
+*/
+getItemType(): ItemType {
+  return this.isCard() ? new ItemType('Kort') : new ItemType('Handling');
 }
 
 /**

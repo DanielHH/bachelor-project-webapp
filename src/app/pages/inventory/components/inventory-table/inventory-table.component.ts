@@ -108,7 +108,9 @@ export class InventoryTableComponent implements OnInit {
         break;
       }
       case 'verifyDate': {
-        // TODO
+        newOrder = this.sortTableListHelper(this.orderVerifyDate);
+        this.orderVerifyDate = newOrder;
+        orderFunc = (item: BaseItem) => item.getLastVerifiedString();
         break;
       }
     }

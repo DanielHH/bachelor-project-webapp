@@ -1,21 +1,22 @@
+import { Document } from '../../../../datamodels/document';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Card } from '../../../../datamodels/card';
 import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { Delivery } from '../../../../datamodels/delivery';
 
 @Component({
-  selector: 'app-card-detail',
-  templateUrl: './card-detail.component.html',
-  styleUrls: ['./card-detail.component.scss']
+  selector: 'app-delivery-detail',
+  templateUrl: './delivery-detail.component.html',
+  styleUrls: ['./delivery-detail.component.scss']
 })
-export class CardDetailComponent implements OnInit {
+export class DeliveryDetailComponent implements OnInit {
 
   @ViewChild('detailForm') detailForm: NgForm;
 
@@ -32,22 +33,22 @@ export class CardDetailComponent implements OnInit {
     this.showModal = value;
   }
 
-  cardItem: Card = null;
+  deliveryItem: Delivery = null;
 
   constructor(
     private modalService: ModalService,
     public utilitiesService: UtilitiesService
   ) {
-    this.modalService.detailCard.subscribe((card) => {
-      if (card && card.id) {
-        this.cardItem = card;
+    this.modalService.detailDelivery.subscribe((delivery) => {
+      if (delivery && delivery.id) {
+        this.deliveryItem = delivery;
         this._showModal = true;
       }
     });
 
   }
-
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   hideDetail() {
     this.showModal = false;
@@ -59,27 +60,33 @@ export class CardDetailComponent implements OnInit {
   closeForm() {
     this.detailForm.resetForm();
 
-    this.cardItem = Object.assign({}, new Card());
-    this.modalService.detailCard.next(this.cardItem);
+    this.deliveryItem = Object.assign({}, new Delivery());
+    this.modalService.detailDelivery.next(this.deliveryItem);
 
     this.showModal = false;
   }
 
-  displayExpirationDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
+  displayDocumentDate() {
+    if (this.deliveryItem) {
+      return moment(this.deliveryItem.documentDate).format('YYYY-MM-DD');
+    }
+  }
+
+  displaySentDate() {
+    if (this.deliveryItem) {
+      return moment(this.deliveryItem.sentDate).format('YYYY-MM-DD');
     }
   }
 
   displayCreationDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.creationDate).format('YYYY-MM-DD');
+    if (this.deliveryItem) {
+      return moment(this.deliveryItem.creationDate).format('YYYY-MM-DD');
     }
   }
 
   displayModifiedDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.modifiedDate).format('YYYY-MM-DD');
+    if (this.deliveryItem) {
+      return moment(this.deliveryItem.modifiedDate).format('YYYY-MM-DD');
     }
   }
 }

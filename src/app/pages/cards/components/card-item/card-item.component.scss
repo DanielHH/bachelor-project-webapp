@@ -2,18 +2,11 @@
   width: 11%;
 }
 
-.row:hover {
-  background-color: rgba(208, 214, 212, 0.479);
-  cursor: pointer;
-}
-
-.detail-link {
-  cursor: pointer;
-  &:hover {
-    opacity: 0.5;
-  }
-}
-
 .col-wide {
   width: 13%;
+}
+
+.material-icons {
+  font-size: 15px !important;
+  margin-right: 8px !important;
 }

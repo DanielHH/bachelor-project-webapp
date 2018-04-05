@@ -1,6 +1,7 @@
 import { CardType } from './cardType';
 import { User } from './user';
 import { StatusType } from './statusType';
+import { Verification } from './verification';
 
 /**
  * Card data model
@@ -60,5 +61,15 @@ export class Card {
    * Active receipt (if any)
    */
   activeReceipt?: number;
+
+  /**
+   * ID of last verification
+   */
+  lastVerificationID?: number;
+
+  /**
+   * Date of last verification
+   */
+  lastVerificationDate?: Date;
 
 }

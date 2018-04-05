@@ -72,7 +72,7 @@ export class ReturnDocumentComponent implements OnInit {
    * @param id Id of receipt
    */
   getReceipt(id: number) {
-    return _.find(this.receipts, (receipt) => receipt.id === id);
+    return _.find(this.receipts, (receipt) => receipt.id == id);
   }
 
   /**

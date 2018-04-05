@@ -27,19 +27,19 @@
     </div>
 
     <!-- Row filter per status -->
-    <div class="row pb-4 pl-2 filter-checkbox-row">
+    <div class="row pb-4 filter-checkbox-row">
 
-      <div class="col-1 px-1 filter-checkbox">
+      <div class="col-1 mr-2 filter-checkbox">
         <mat-checkbox id="showActive" name="showActive" color="primary" class="px-1"
-        [(ngModel)]="showActive">Aktiva</mat-checkbox>
+        [(ngModel)]="showActive">Levererade</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1 pr-4 filter-checkbox">
+      <div class="col-1 mr-2 filter-checkbox">
         <mat-checkbox id="showArchived" name="showArchived" color="primary" class="px-1"
         [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1 filter-checkbox">
+      <div class="col-1 pr-2 filter-checkbox">
         <mat-checkbox id="showGone" name="showGone" color="primary" class="px-1"
         [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
@@ -80,7 +80,7 @@
       </div>
 
       <div class="menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
-        <app-item-menu [item]="dummyItem" class="hidden"></app-item-menu>
+        <app-item-menu [item]="dummyItem"></app-item-menu>
       </div>
 
     </div>
@@ -95,3 +95,5 @@
 
 <app-modify-delivery [deliveryList]="deliveryList" [modalTitle]="modalTitle" [modalType]="modalType"
 [(showModal)]="showModal"></app-modify-delivery>
+
+<app-delivery-detail></app-delivery-detail>
