@@ -4,6 +4,12 @@
   height: 96vh;
   padding: 1.25rem;
 
+  .filter-checkbox-row {
+    display: inline-flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
   .table-container {
     height: 91%;
     margin-bottom: -30px;
@@ -17,6 +23,20 @@
       overflow-x: hidden;
       width: 100%;
       height: inherit;
+      .table-item {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        width: 100%;
+        .table-menu-fix {
+          height: 24px;
+        }
+      }
+
+      .table-item:hover {
+        background-color: rgba(208, 214, 212, 0.479);
+        cursor: pointer;
+      }
+
     }
   }
 }

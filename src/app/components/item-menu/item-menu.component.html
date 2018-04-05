@@ -1,39 +1,35 @@
 <!--Dropdown-->
 <div class="dropdown" dropdown #dropdown="bs-dropdown">
 
-    <!--Trigger-->
-    <button dropdownToggle class="btn-menu" (click)="$event.stopPropagation()">
-  <i class="material-icons">more_vert</i>
-</button>
+  <!--Trigger-->
+  <button dropdownToggle class="btn-menu" (click)="$event.stopPropagation()">
+    <i class="material-icons">more_vert</i>
+  </button>
 
-    <!--Menu-->
-    <div class="dropdown-menu" (click)="$event.stopPropagation(); dropdown.toggle()">
-        <a class="dropdown-item" (click)="route()"
-        *ngIf="showDetailsOption">
-          Detaljer
-        </a>
+  <!--Menu-->
+  <div class="dropdown-menu" (click)="$event.stopPropagation(); dropdown.toggle()">
+    <a class="dropdown-item" (click)="route()" *ngIf="showDetailsOption">
+      Detaljer
+    </a>
 
-        <a class="dropdown-item" (click)="edit()" *ngIf="showEditOption">
-          Ändra
-        </a>
+    <a class="dropdown-item" (click)="edit()" *ngIf="showEditOption">
+      Ändra
+    </a>
 
-        <a class="dropdown-item" (click)="setStatus(3)"
-        *ngIf="item?.status?.id == 1 || item?.status?.id == 2 || item?.status?.id == 4">
-          Arkivera
-        </a>
+    <a class="dropdown-item" (click)="setStatus(3)" *ngIf="item?.status?.id == 1 || item?.status?.id == 2 || item?.status?.id == 4">
+      Arkivera
+    </a>
 
-        <a class="dropdown-item" (click)="setStatus(4)"
-        *ngIf="item?.status?.id == 1 || item?.status?.id == 2">
-          Borttappat
-        </a>
+    <a class="dropdown-item" (click)="setStatus(4)" *ngIf="item?.status?.id == 1 || item?.status?.id == 2">
+      Borttappat
+    </a>
 
-        <a class="dropdown-item" (click)="setStatus(1)"
-        *ngIf="item?.status?.id == 3 || item?.status?.id == 4">
-          Återställ
-        </a>
+    <a class="dropdown-item" (click)="setStatus(1)" *ngIf="item?.status?.id == 3 || item?.status?.id == 4">
+      Återställ
+    </a>
 
-        <div class="divider dropdown-divider"></div>
+    <div class="divider dropdown-divider"></div>
 
-        <a class="dropdown-item">Stäng</a>
-    </div>
+    <a class="dropdown-item">Stäng</a>
+  </div>
 </div>
