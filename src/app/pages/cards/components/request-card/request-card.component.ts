@@ -220,19 +220,24 @@ export class RequestCardComponent implements OnInit {
       receipt.endDate = null;
 
       this.loading = true;
+      this.hideSubmit = true;
+      this.closeText = 'Stäng';
+
       // Submit changes to database
       this.httpService
         .httpPost<Receipt>('addNewReceipt/', receipt)
         .then(receiptRes => {
           if (receiptRes.message === 'success') {
-            this.cardItem.activeReceipt = Number(receiptRes.data.id);
+            const newReceipt = receiptRes.data;
+
+            this.cardItem.activeReceipt = Number(newReceipt.id);
             
             if (this.generatePDF) {
 
-              this.httpService.httpPost<any>('genPDF', ['card', this.cardItem]).then(pdfRes => {
+              this.httpService.httpPost<any>('genPDF', ['card', this.cardItem, newReceipt]).then(pdfRes => {
                 
                 if(pdfRes.message === 'success') {
-                  receipt.url = pdfRes.url;
+                  newReceipt.url = pdfRes.url;
                 }
 
                 this.httpService
@@ -240,7 +245,7 @@ export class RequestCardComponent implements OnInit {
                   .then(cardRes => {
                     if (cardRes.message === 'success') {
                       // Update receipt list
-                      this.receipts.unshift(receiptRes.data);
+                      this.receipts.unshift(newReceipt);
                       this.receipts = this.receipts.slice();
                       this.dataService.receiptList.next(this.receipts);
 
@@ -249,7 +254,7 @@ export class RequestCardComponent implements OnInit {
 
                       this.loading = false;
                       this.pdfView = true;
-                      this.pdfURL = receipt.url;
+                      this.pdfURL = newReceipt.url;
                       this.hideSubmit = true;
                       this.closeText = 'Stäng';
 
