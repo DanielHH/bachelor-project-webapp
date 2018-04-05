@@ -2,6 +2,9 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import '../node_modules/material-design-icons/iconfont/material-icons.css';
 
+@import 'styles/scrollbar';
+@import 'styles/table';
+
 .mat-form-field-label-wrapper {
   overflow: visible !important;
 }
@@ -49,11 +52,6 @@ input {
   white-space: nowrap !important;
 }
 
-.table-header {
-  font-weight: bold !important;
-  white-space: nowrap !important;
-}
-
 .mat-checkbox-inner-container {
   transform: scale(0.75) !important;
 }
@@ -83,43 +81,6 @@ input {
 .medium-filter-checkbox {
   min-width: 75px;
   max-width: 75px;
-}
-
-.filter-checkbox-row {
-  display: inline-flex;
-  justify-content: flex-start;
-  min-width: 500px;
-  max-width: 500px;
-}
-
-.table-col {
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  padding-left: 2px;
-  padding-right: 15px;
-}
-
-.menu-button-col {
-  position: absolute;
-  right: 25px;
-}
-
-.item-row, .table-header {
-  display: inline-flex;
-  justify-content: space-around;
-  width: 100%;
-  margin-left: 4px;
-}
-
-.item-row {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.item-row:hover {
-  background-color: rgba(208, 214, 212, 0.479);
-  cursor: pointer;
 }
 
 .hidden {
