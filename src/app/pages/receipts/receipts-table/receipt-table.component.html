@@ -64,7 +64,7 @@
         </div>
       </div>
       <hr>
-      <div class="receipt-items">
+      <div class="receipt-items scrollbar-table">
         <!-- Add receipts to the table -->
         <div *ngFor="let receipt of receiptList | matchFilterReceipt:filterInput:showCard:showDocument:showActive:showInactive">
           <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>

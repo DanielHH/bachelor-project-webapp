@@ -2,6 +2,8 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import '../node_modules/material-design-icons/iconfont/material-icons.css';
 
+@import 'styles/scrollbar';
+
 .mat-form-field-label-wrapper {
   overflow: visible !important;
 }
