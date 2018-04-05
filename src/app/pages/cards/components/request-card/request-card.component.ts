@@ -278,6 +278,12 @@ export class RequestCardComponent implements OnInit {
     this.cardItem = Object.assign({}, new Card());
     this.modalService.requestCard.next(this.cardItem);
 
+    this.loading = false;
+    this.hideSubmit = false;  
+    this.closeText = "Avbryt";  
+    this.pdfView = false;  
+    this.pdfURL = '';
+
     this.showModal = false;
   }
 

@@ -260,6 +260,12 @@ export class RequestDocumentComponent implements OnInit {
     this.documentItem = Object.assign({}, new Document());
     this.modalService.requestDocument.next(this.documentItem);
 
+    this.loading = false;
+    this.hideSubmit = false;  
+    this.closeText = "Avbryt";  
+    this.pdfView = false;  
+    this.pdfURL = '';
+    
     this.showModal = false;
   }
 
