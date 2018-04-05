@@ -52,7 +52,7 @@
     <!-- Header row -->
     <div class="table-container">
       <div class="row table-header">
-        <div class="col" (click)="sortTableList('status')">
+        <div class="col-1" (click)="sortTableList('status')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
         <div class="col" (click)="sortTableList('documentType')">

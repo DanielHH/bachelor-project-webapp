@@ -1,5 +1,5 @@
 <div class="row table-item" (click)="showDetailsModal()">
-  <div class="col">
+  <div class="col-1">
     <div *ngIf="cardItem?.status?.id == 1 || cardItem?.status?.id == 2">
       <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="cardItem?.status?.id == 2" [class.btn-success]="cardItem?.status?.id == 1"
         (click)="showModal(); $event.stopPropagation()" mdbRippleRadius>
