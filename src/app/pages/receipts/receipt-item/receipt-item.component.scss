@@ -1,9 +1,5 @@
-.col-narrow {
-    width: 13%;
-}
-
-.col-wide {
-    width: 14%;
+.row {
+    width: 100% !important;
 }
 
 .material-icons {
@@ -14,3 +10,13 @@
 .status-btn {
   min-width: 60px;
 }
+
+.receipt-item-row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .receipt-item-row:hover {
+    background-color: rgba(208, 214, 212, 0.479);
+    cursor: pointer;
+  }
