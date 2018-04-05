@@ -1,205 +1,202 @@
 <form #requestForm="ngForm" (ngSubmit)="requestCard()">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut kort'"
-  [closeName]="'Avbryt'" [submitName]="'Kvittera ut'">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut kort'" [closeName]="closeText" [submitName]="'Kvittera ut'" [hideSubmit]="hideSubmit">
+    <div [class.generating-pdf]="loading || pdfView">
 
-    <!-- Row card info -->
-    <div class="row">
-      <div class="col-0 col-md-1"></div>
-      <div class="col-0 col-md-10 wide-center">
-        <mat-card [style.background]="'#E8EAF6'">
-          <!-- Row 1 -->
-          <div class="row my-1">
-            <div class="col-0 col-md-3"></div>
-            <div class="col-0 col-md-6">
-              <h5><b>Detaljerad information</b></h5>
+      <!-- Row card info -->
+      <div class="row">
+        <div class="col-0 col-md-1"></div>
+        <div class="col-0 col-md-10 wide-center">
+          <mat-card [style.background]="'#E8EAF6'">
+            <!-- Row 1 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-3"></div>
+              <div class="col-0 col-md-6">
+                <h5>
+                  <b>Detaljerad information</b>
+                </h5>
+              </div>
+              <div class="col-0 col-md-3"></div>
             </div>
-            <div class="col-0 col-md-3"></div>
-          </div>
-          <!-- Row 2 Divider -->
-          <div class="row pt-1 pb-3">
-            <div class="col-0 col-md-1"></div>
-            <div class="col-0 col-md-10">
-              <mat-divider></mat-divider>
+            <!-- Row 2 Divider -->
+            <div class="row pt-1 pb-3">
+              <div class="col-0 col-md-1"></div>
+              <div class="col-0 col-md-10">
+                <mat-divider></mat-divider>
+              </div>
+              <div class="col-0 col-md-1"></div>
             </div>
-            <div class="col-0 col-md-1"></div>
-          </div>
-          <!-- Row 3 -->
-          <div class="row my-1">
-            <div class="col-0 col-md-1"></div>
-            <div class="col-0 col-md-5">
-              <b>Typ:</b>
+            <!-- Row 3 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-1"></div>
+              <div class="col-0 col-md-5">
+                <b>Typ:</b>
+              </div>
+              <div class="col-0 col-md-5">
+                <b>Kort-ID:</b>
+              </div>
+              <div class="col-0 col-md-1"></div>
             </div>
-            <div class="col-0 col-md-5">
-              <b>Kort-ID:</b>
+            <!-- Row 4 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-1"></div>
+              <div class="col-0 col-md-5">
+                {{cardItem?.cardType?.name}}
+              </div>
+              <div class="col-0 col-md-5">
+                {{cardItem?.cardNumber}}
+              </div>
+              <div class="col-0 col-md-1"></div>
             </div>
-            <div class="col-0 col-md-1"></div>
-          </div>
-          <!-- Row 4 -->
-          <div class="row my-1">
-            <div class="col-0 col-md-1"></div>
-            <div class="col-0 col-md-5">
-              {{cardItem?.cardType?.name}}
+            <!-- Row 5 Space -->
+            <div class="row py-2"></div>
+            <!-- Row 6 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-1"></div>
+              <div class="col-0 col-md-5">
+                <b>Utgångsdatum:</b>
+              </div>
+              <div class="col-0 col-md-5">
+                <b>Förvaringsplats:</b>
+              </div>
+              <div class="col-0 col-md-1"></div>
             </div>
-            <div class="col-0 col-md-5">
-              {{cardItem?.cardNumber}}
+            <!-- Row 7 -->
+            <div class="row my-1">
+              <div class="col-0 col-md-1"></div>
+              <div class="col-0 col-md-5">
+                {{displayExpirationDate()}}
+              </div>
+              <div class="col-0 col-md-5">
+                {{cardItem?.location}}
+              </div>
+              <div class="col-0 col-md-1"></div>
             </div>
-            <div class="col-0 col-md-1"></div>
-          </div>
-          <!-- Row 5 Space -->
-          <div class="row py-2"></div>
-          <!-- Row 6 -->
-          <div class="row my-1">
-            <div class="col-0 col-md-1"></div>
-            <div class="col-0 col-md-5">
-              <b>Utgångsdatum:</b>
-            </div>
-            <div class="col-0 col-md-5">
-              <b>Förvaringsplats:</b>
-            </div>
-            <div class="col-0 col-md-1"></div>
-          </div>
-          <!-- Row 7 -->
-          <div class="row my-1">
-            <div class="col-0 col-md-1"></div>
-            <div class="col-0 col-md-5">
-              {{displayExpirationDate()}}
-            </div>
-            <div class="col-0 col-md-5">
-              {{cardItem?.location}}
-            </div>
-            <div class="col-0 col-md-1"></div>
-          </div>
 
-        </mat-card>
+          </mat-card>
+        </div>
+        <div class="col-0 col-md-1"></div>
       </div>
-      <div class="col-0 col-md-1"></div>
-    </div>
 
-    <!-- Row Space -->
-    <div class="row my-2"></div>
+      <!-- Row Space -->
+      <div class="row my-2"></div>
 
-    <!-- Row username and new location -->
-    <div class="row">
-      <div class="col-0 col-md-1"></div>
-      <div class="col-12 col-md-5 wide-center">
-        <span class="third-center">
+      <!-- Row username and new location -->
+      <div class="row">
+        <div class="col-0 col-md-1"></div>
+        <div class="col-12 col-md-5 wide-center">
+          <span class="third-center">
+            <mat-form-field>
+              <!--Input-->
+              <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" [style.color]="isValidUsername() ? 'black' : 'gray'"
+                placeholder="Användarnamn" aria-label="Number" matInput [matAutocomplete]="userIDs" [formControl]="usernameControl"
+                spellcheck="false" maxlength="128" appUsername required>
+              <!--Check and clear-->
+              <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+                <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
+              </button>
+              <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button aria-label="Clear" (click)="usernameInput = ''"
+                tabindex="-1">
+                <mat-icon>close</mat-icon>
+              </button>
+              <!--Dropdown-->
+              <mat-autocomplete #userIDs="matAutocomplete" [displayWith]="displayUser">
+                <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+                  {{ user.username + '
+                  < ' + user.name + '>' }}
+                </mat-option>
+              </mat-autocomplete>
+              <!--Error-->
+              <mat-error *ngIf="usernameControl.hasError('required')">
+                Ange ett användarnamn
+              </mat-error>
+              <mat-error *ngIf="!usernameControl.hasError('required') &&
+            usernameControl.hasError('username')">
+                Ogiltigt användarnamn
+              </mat-error>
+            </mat-form-field>
+          </span>
+        </div>
+        <div class="col-12 col-md-5 wide-center">
           <mat-form-field>
             <!--Input-->
-            <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput"
-              [style.color]="isValidUsername() ? 'black' : 'gray'"
-              placeholder="Användarnamn" aria-label="Number" matInput
-              [matAutocomplete]="userIDs" [formControl]="usernameControl"
-              spellcheck="false" maxlength="128" appUsername required>
+            <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Ny förvaringsplats"
+              [formControl]="locationControl" required>
             <!--Check and clear-->
             <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-              <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
+              <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
             </button>
-            <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button
-            aria-label="Clear" (click)="usernameInput = ''" tabindex="-1">
+            <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''"
+              tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
-            <!--Dropdown-->
-            <mat-autocomplete #userIDs="matAutocomplete" [displayWith]="displayUser" >
-              <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
-                {{ user.username + '
-                < ' + user.name + '>' }}
-              </mat-option>
-            </mat-autocomplete>
             <!--Error-->
-            <mat-error *ngIf="usernameControl.hasError('required')">
-              Ange ett användarnamn
+            <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-0 col-md-1"></div>
+      </div>
+
+      <div class="row py-1"></div>
+      <!-- Row Space -->
+
+      <!-- Row Start Date and comment -->
+      <div class="row">
+        <div class="col-0 col-md-1"></div>
+        <!-- Start date -->
+        <div class="col-12 col-md-5 wide-center">
+          <mat-form-field>
+            <!--Input-->
+            <input matInput id="startDateInput" name="startDateInput" [(ngModel)]="startDateInput" placeholder="Startdatum" [style.color]="isValidStartDate() ? 'black' : 'gray'"
+              maxlength="10" (input)="setStartDateToDatePicker();" [formControl]="startDateControl" appDate required>
+            <!--Check and clear-->
+            <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+              <mat-icon [style.color]="'green'" *ngIf="isValidStartDate()">done</mat-icon>
+            </button>
+            <button mat-button class="size-medium" *ngIf="startDateInput" matSuffix mat-icon-button aria-label="Clear" (click)="startDateInput = ''"
+              tabindex="-1">
+              <mat-icon>close</mat-icon>
+            </button>
+            <!--DatePicker-->
+            <mat-datepicker #picker></mat-datepicker>
+            <!--Hidden input connected to the date picker-->
+            <input id="startDateDatepickerInput" name="startDateDatepickerInput" [(ngModel)]="startDateDatepickerInput" [matDatepicker]="picker"
+              (dateInput)="setStartDateFromDatepicker($event);" type="hidden">
+            <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
+            <!--Errors-->
+            <mat-error *ngIf="startDateControl.hasError('required')">
+              Ange ett startdatum
             </mat-error>
-            <mat-error *ngIf="!usernameControl.hasError('required') &&
-            usernameControl.hasError('username')">
-              Ogiltigt användarnamn
+            <mat-error *ngIf="!startDateControl.hasError('required') && startDateControl.hasError('dateFormat')">
+              Ogiltigt datumformat
             </mat-error>
           </mat-form-field>
-        </span>
+        </div>
+        <!-- Comment -->
+        <div class="col-12 col-md-5">
+          <mat-form-field>
+            <!--Input-->
+            <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput" maxlength="128" placeholder="Kommentar">
+            <!--Clear-->
+            <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear" (click)="commentInput = ''"
+              tabindex="-1">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <div class="col-12 col-md-1"></div>
+
       </div>
-      <div class="col-12 col-md-5 wide-center">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="locationInput" name="locationInput" [(ngModel)]="locationInput"
-            maxlength="128" placeholder="Ny förvaringsplats"
-            [formControl]="locationControl" required>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
-          </button>
-          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="locationInput = ''" tabindex="-1">
-            <mat-icon>close</mat-icon>
-          </button>
-          <!--Error-->
-          <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
-        </mat-form-field>
+
+      <div class="row py-3">
+        <div class="col-0 col-md-4"></div>
+        <div class="col-12 col-md-4 wide-center">
+          <mat-checkbox id="generatePDF" name="generatePDF" color="primary" [(ngModel)]="generatePDF">Generera kvittens (PDF)</mat-checkbox>
+        </div>
+        <div class="col-0 col-md-4"></div>
       </div>
-      <div class="col-0 col-md-1"></div>
     </div>
 
-    <div class="row py-1"></div> <!-- Row Space -->
-
-    <!-- Row Start Date and comment -->
-    <div class="row">
-      <div class="col-0 col-md-1"></div>
-      <!-- Start date -->
-      <div class="col-12 col-md-5 wide-center">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="startDateInput" name="startDateInput"
-          [(ngModel)]="startDateInput" placeholder="Startdatum"
-          [style.color]="isValidStartDate() ? 'black' : 'gray'" maxlength="10"
-          (input)="setStartDateToDatePicker();" [formControl]="startDateControl" appDate required>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidStartDate()">done</mat-icon>
-          </button>
-          <button mat-button class="size-medium" *ngIf="startDateInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="startDateInput = ''" tabindex="-1">
-            <mat-icon>close</mat-icon>
-          </button>
-          <!--DatePicker-->
-          <mat-datepicker #picker></mat-datepicker>
-          <!--Hidden input connected to the date picker-->
-          <input id="startDateDatepickerInput" name="startDateDatepickerInput" [(ngModel)]="startDateDatepickerInput"
-            [matDatepicker]="picker" (dateInput)="setStartDateFromDatepicker($event);" type="hidden">
-          <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
-          <!--Errors-->
-          <mat-error *ngIf="startDateControl.hasError('required')">
-            Ange ett startdatum
-          </mat-error>
-          <mat-error *ngIf="!startDateControl.hasError('required') && startDateControl.hasError('dateFormat')">
-            Ogiltigt datumformat
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <!-- Comment -->
-      <div class="col-12 col-md-5">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="commentInput" name="commentInput" [(ngModel)]="commentInput"
-          maxlength="128" placeholder="Kommentar">
-          <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
-      </div>
-
-      <div class="col-12 col-md-1"></div>
-
-    </div>
-
-    <div class="row py-3">
-      <div class="col-0 col-md-4"></div>
-      <div class="col-12 col-md-4 wide-center">
-        <mat-checkbox id="generatePDF" name="generatePDF" color="primary"
-        [(ngModel)]="generatePDF">Generera kvittens (PDF)</mat-checkbox>
-      </div>
-      <div class="col-0 col-md-4"></div>
-    </div>
-
+    <app-pdf-generation [pdfView]="pdfView" [loading]="loading" [pdfURL]="pdfURL"></app-pdf-generation>
   </app-modal>
 </form>
-

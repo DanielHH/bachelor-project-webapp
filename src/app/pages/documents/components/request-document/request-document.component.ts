@@ -61,6 +61,16 @@ export class RequestDocumentComponent implements OnInit {
       user ? this.filterUsers(user) : this.users.slice())
   );
 
+  loading = false;
+
+  hideSubmit = false;
+
+  closeText = "Avbryt";
+
+  pdfView = false;
+
+  pdfURL = '';
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -197,30 +207,43 @@ export class RequestDocumentComponent implements OnInit {
       receipt.startDate = this.utilitiesService.getLocalDate();
       receipt.endDate = null;
 
+      this.loading = true;
+      this.hideSubmit = true;
+      this.closeText = 'Stäng';
+
       // Submit changes to database
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
-          this.documentItem.activeReceipt = Number(receiptRes.data.id);
+          const newReceipt = receiptRes.data;
+          
+          this.documentItem.activeReceipt = Number(newReceipt.id);          
+          
+          if (this.generatePDF) {
 
-          this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
-            if (documentRes.message === 'success') {
-              // Update receipt list
-              this.receipts.unshift(receiptRes.data);
-              this.receipts = this.receipts.slice();
-              this.dataService.receiptList.next(this.receipts);
+            this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
 
-              // Update document list
-              this.dataService.documentList.next(this.documents);
-
-              this.showModal = false;
-
-              if (this.generatePDF) {
-                this.utilitiesService.genPDF(
-                  this.utilitiesService.getDocumentPDFParams(this.documentItem),
-                  this.documentItem.documentNumber);
+              if (pdfRes.message === 'success') {
+                newReceipt.url = pdfRes.url;
               }
-            }
-          });
+
+              this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
+                if (documentRes.message === 'success') {
+                  // Update receipt list
+                  this.receipts.unshift(newReceipt);
+                  this.receipts = this.receipts.slice();
+                  this.dataService.receiptList.next(this.receipts);
+
+                  // Update document list
+                  this.dataService.documentList.next(this.documents);
+
+                  this.loading = false;
+                  this.pdfView = true;
+                  this.pdfURL = newReceipt.url;
+
+                }
+              });
+            });
+          }
         }
       });
     }

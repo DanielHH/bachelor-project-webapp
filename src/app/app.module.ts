@@ -40,7 +40,8 @@ import {
   MatRadioModule,
   MatFormFieldControl,
   MatCardModule,
-  MatDividerModule
+  MatDividerModule,
+  MatProgressBarModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -73,6 +74,7 @@ import { RequestDocumentComponent } from './pages/documents/components/request-d
 import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
 import { ModalService } from './services/modal.service';
 import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
+import { PdfGenerationComponent } from './components/pdf-generation/pdf-generation.component';
 import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
 
 @NgModule({
@@ -124,6 +126,7 @@ import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-
     RequestDocumentComponent,
     ReturnDocumentComponent,
     ModifyDeliveryComponent,
+    PdfGenerationComponent,
     DeliveryDetailComponent
   ],
   imports: [
@@ -146,7 +149,8 @@ import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-
     MatToolbarModule,
     MatRadioModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatProgressBarModule
   ],
   providers: [
     HttpService,
