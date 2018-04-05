@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="receipt-table">
+  <div class="custom-table">
     <!-- Row text filter input and add new button -->
     <div class="row">
 
@@ -42,8 +42,8 @@
       <div class="col-8"></div>
 
     </div>
-    <div class="receipt-container">
-      <div class="row receipt-header">
+    <div class="table-container">
+      <div class="row table-header">
         <div class="col-1" (click)="sortTableList('endDate')">
           <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'" [class.both-arrow]="orderEndDate == ''">Status </span>
         </div>
@@ -64,7 +64,7 @@
         </div>
       </div>
       <hr>
-      <div class="receipt-items scrollbar-table">
+      <div class="table-items scrollbar-table">
         <!-- Add receipts to the table -->
         <div *ngFor="let receipt of receiptList | matchFilterReceipt:filterInput:showCard:showDocument:showActive:showInactive">
           <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>

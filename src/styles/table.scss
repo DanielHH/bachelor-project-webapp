@@ -1,0 +1,22 @@
+.custom-table {
+  display: flex;
+  flex-direction: column;
+  height: 96vh;
+  padding: 1.25rem;
+
+  .table-container {
+    height: 91%;
+    margin-bottom: -30px;
+    .table-header {
+      font-weight: bold !important;
+      white-space: nowrap !important;
+      width: 100%;
+    }
+    .table-items {
+      overflow-y: overlay;
+      overflow-x: hidden;
+      width: 100%;
+      height: inherit;
+    }
+  }
+}
