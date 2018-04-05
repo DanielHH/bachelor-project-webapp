@@ -27,6 +27,22 @@
         padding-top: 10px;
         padding-bottom: 10px;
         width: 100%;
+        .col {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .col:last-child {
+          .column-text {
+            max-width: 65% !important;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: bottom;
+          }
+        }
         .table-menu-fix {
           height: 24px;
         }
