@@ -27,10 +27,12 @@
         padding-top: 10px;
         padding-bottom: 10px;
         width: 100%;
+        position: relative;
         .col {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+          position: initial;
         }
 
         .col:last-child {
