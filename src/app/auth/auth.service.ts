@@ -72,6 +72,8 @@ export class AuthService {
    * Log the user out by removing its auth-token.
    */
   public logout(): void {
+    this._user = new User();
+    this.user.next(this._user);
     localStorage.removeItem('token');
     // TODO: send message to backend? (revoke token?)
   }
