@@ -5,10 +5,19 @@ import { HttpService } from '../services/http.service';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { User } from '../datamodels/user';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AuthService {
   constructor(private httpService: HttpService) {}
+
+  _user: User;
+
+  /**
+   * A subscriber to the user list
+   */
+  user: BehaviorSubject<User> = new BehaviorSubject<User>(this._user);
 
   public getToken(): string {
     return localStorage.getItem('token');
@@ -31,12 +40,13 @@ export class AuthService {
    * @param password The password of the user.
    */
   public login(username: string, password: string): Promise<boolean> {
-    return this.httpService
-      /* TODO: change endpoint from 'testPost' to authentication once it has been set up server-side */
-      .httpPost('testPost', { username: username, password: password })
-      .then((response: Response) => {
-        // if the response contains a token, the login is seen as successful
-        /*const token = response ? response['token'] : null;
+    return (
+      this.httpService
+        /* TODO: change endpoint from 'testPost' to authentication once it has been set up server-side */
+        .httpPost('login', { username: username, password: password })
+        .then((res) => {
+          // if the response contains a token, the login is seen as successful
+          /*const token = response ? response['token'] : null;
         if (token) {
           // store jwt token in local storage to keep user logged in between page refreshes
           // TODO: verify token?
@@ -48,10 +58,15 @@ export class AuthService {
           return false;
         }*/
 
-        // TODO: replace placeholder lines below with the block above (once server can respond)
-        localStorage.setItem('token', 'faked-jwt');
-        return true;
-      });
+          // TODO: replace placeholder lines below with the block above (once server can respond)
+          // this._user = res.data;
+          this._user = new User();
+          this._user.id = 1;
+          this.user.next(this._user);
+          localStorage.setItem('token', 'faked-jwt');
+          return true;
+        })
+    );
   }
   /**
    * Log the user out by removing its auth-token.
