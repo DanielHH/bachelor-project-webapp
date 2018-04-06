@@ -11,8 +11,7 @@ export class SideMenuComponent implements OnInit {
   constructor( private auth: AuthService) { }
 
   // TODO: move function?
-  logout(): void {
-    console.log('logout func');
+  logout() {
     this.auth.logout();
   }
 

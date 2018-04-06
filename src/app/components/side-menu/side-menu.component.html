@@ -1,4 +1,4 @@
-  <div class="menu-container">
+<div class="menu-container">
   <nav class="fixed-container navbar navbar-dark primary-color-dark">
     <div class="nav-title">
       <span class="navbar-brand border-light">SecTrack</span>
@@ -21,13 +21,15 @@
       </li>
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/logs">Loggar</a>
-      <!-- </li>
+        <!-- </li>
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/examples">Kodexempel</a>
       </li>-->
-      <li>
-        <a href="login" class="btn btn-primary" (click)="logout()">Log out</a>
-      </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="logout()" routerLink="/login">
+            <i class="fa fa-sign-out" aria-hidden="true"></i> Logga ut
+          </a>
+        </li>
 
     </ul>
   </nav>
