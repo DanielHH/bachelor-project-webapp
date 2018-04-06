@@ -59,7 +59,7 @@ export class DeliveryItemComponent implements OnInit {
   */
   editStatus() {
     this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
-      if (res['message'] === 'success') { }
+      if (res.message === 'success') { }
     });
   }
 

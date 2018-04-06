@@ -107,11 +107,11 @@ export class ReturnCardComponent implements OnInit {
 
       // Submit changes to server
       this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
-        if (receiptRes['message'] === 'success') {
+        if (receiptRes.message === 'success') {
           this.cardItem.activeReceipt = null;
 
           this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(cardRes => {
-            if (cardRes['message'] === 'success') {
+            if (cardRes.message === 'success') {
               // Update receipt list
               this.receipts = this.receipts.slice();
               this.dataService.receiptList.next(this.receipts);

@@ -173,8 +173,8 @@ export class ModifyDocumentComponent implements OnInit {
       newDoc.user = new User();
 
       this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
-        if (res['message'] === 'success') {
-          this.documentList.unshift(res['data']);
+        if (res.message === 'success') {
+          this.documentList.unshift(res.data);
           // Trigger view refresh
           this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
@@ -194,7 +194,7 @@ export class ModifyDocumentComponent implements OnInit {
       this.setDocumentFromForm(this.documentItem);
 
       this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-        if (res['message'] === 'success') {
+        if (res.message === 'success') {
           this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
 

@@ -175,77 +175,77 @@ export class DataService {
 
   getUserList() {
     this.httpService.httpGet<User>('getUsers').then(data => {
-      this._userList = data as User[];
+      this._userList = data;
       this.userList.next(this._userList);
     });
   }
 
   getCardList() {
     this.httpService.httpGet<Card>('getCards').then(data => {
-      this._cardList = data as Card[];
+      this._cardList = data;
       this.cardList.next(this._cardList);
     });
   }
 
   getCardTypeList() {
     this.httpService.httpGet<CardType>('getCardTypes').then(data => {
-      this._cardTypeList = data as CardType[];
+      this._cardTypeList = data;
       this.cardTypeList.next(this._cardTypeList);
     });
   }
 
   getDocumentList() {
     this.httpService.httpGet<Document>('getDocuments').then(data => {
-      this._documentList = data as Document[];
+      this._documentList = data;
       this.documentList.next(this._documentList);
     });
   }
 
   getDeliveryList() {
     this.httpService.httpGet<Delivery>('getDeliveries').then(data => {
-      this._deliveryList = data as Delivery[];
+      this._deliveryList = data;
       this.deliveryList.next(this._deliveryList);
     });
   }
 
   getDocumentTypeList() {
     this.httpService.httpGet<DocumentType>('getDocumentTypes').then(data => {
-      this._documentTypeList = data as DocumentType[];
+      this._documentTypeList = data;
       this.documentTypeList.next(this._documentTypeList);
     });
   }
 
   getReceiptList() {
     this.httpService.httpGet<Receipt>('getReceipts').then(data => {
-      this._receiptList = data as Receipt[];
+      this._receiptList = data;
       this.receiptList.next(this._receiptList);
     });
   }
 
   getItemTypeList() {
     this.httpService.httpGet<ItemType>('getItemTypes').then(data => {
-      this._itemTypeList = data as ItemType[];
+      this._itemTypeList = data;
       this.itemTypeList.next(this._itemTypeList);
     });
   }
 
   getVerificationList() {
     this.httpService.httpGet<Verification>('getVerifications').then(data => {
-      this._verificationList = data as Verification[];
+      this._verificationList = data;
       this.verificationList.next(this._verificationList);
     });
   }
 
   getVerificationTypeList() {
     this.httpService.httpGet<VerificationType>('getVerificationTypes').then(data => {
-      this._verificationTypeList = data as VerificationType[];
+      this._verificationTypeList = data;
       this.verificationTypeList.next(this._verificationTypeList);
     });
   }
 
   getStatusTypeList() {
     this.httpService.httpGet<StatusType>('getStatusTypes').then(data => {
-      this._statusTypeList = data as StatusType[];
+      this._statusTypeList = data;
       this.statusTypeList.next(this._statusTypeList);
     });
   }

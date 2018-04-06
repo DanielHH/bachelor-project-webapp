@@ -151,8 +151,8 @@ export class ModifyCardComponent implements OnInit {
       newCard.user = new User();
 
       this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
-        if (res['message'] === 'success') {
-          this.cardList.unshift(res['data']);
+        if (res.message === 'success') {
+          this.cardList.unshift(res.data);
           // Trigger view refresh
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
@@ -172,7 +172,7 @@ export class ModifyCardComponent implements OnInit {
       this.setCardFromForm(this.cardItem);
 
       this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-        if (res['message'] === 'success') {
+        if (res.message === 'success') {
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
 

@@ -97,11 +97,11 @@ export class ReturnDocumentComponent implements OnInit {
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
       this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
-        if (receiptRes['message'] === 'success') {
+        if (receiptRes.message === 'success') {
           this.documentItem.activeReceipt = null;
 
           this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
-            if (documentRes['message'] === 'success') {
+            if (documentRes.message === 'success') {
               // Update receipt list
               this.receipts = this.receipts.slice();
               this.dataService.receiptList.next(this.receipts);

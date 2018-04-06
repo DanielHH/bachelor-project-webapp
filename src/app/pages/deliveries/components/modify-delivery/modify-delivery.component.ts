@@ -157,8 +157,8 @@ export class ModifyDeliveryComponent implements OnInit {
       newDelivery.status = this.utilitiesService.getStatusFromID(1);
 
       this.httpService.httpPost<Document>('addNewDelivery/', newDelivery).then(res => {
-        if (res['message'] === 'success') {
-          this.deliveryList.unshift(res['data']);
+        if (res.message === 'success') {
+          this.deliveryList.unshift(res.data);
           // Trigger view refresh
           this.deliveryList = this.deliveryList.slice();
           this.dataService.deliveryList.next(this.deliveryList);
@@ -178,7 +178,7 @@ export class ModifyDeliveryComponent implements OnInit {
       this.setDeliveryFromForm(this.deliveryItem);
 
       this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
-        if (res['message'] === 'success') {
+        if (res.message === 'success') {
           this.deliveryList = this.deliveryList.slice();
           this.dataService.deliveryList.next(this.deliveryList);
 
