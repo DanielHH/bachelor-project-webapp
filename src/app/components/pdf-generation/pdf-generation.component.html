@@ -1,0 +1,25 @@
+<div class="pdf-content fade-in" [class.pdf-view]="pdfView">
+
+  <div *ngIf="loading" class="generating-container">
+    <span class="generating-text">Genererar PDF...</span>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+
+  <div class="pdf-wrapper" [class.show-fade]="pdfView">
+    <div class="pdf-container">
+
+      <i class="fa fa-file-pdf-o"></i>
+      <div class="pdf-name pt-1">{{getNameFromPath()}}</div>
+      <div class="pdf-buttons">
+        <button class="btn btn-rounded btn-md btn-secondary" type="button" (click)="downloadPDF()">
+          Ladda ned
+        </button>
+
+        <button class="btn btn-rounded btn-md btn-primary" type="button" (click)="openPDF()">
+          Öppna i ny flik
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

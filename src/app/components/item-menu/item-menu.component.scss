@@ -3,9 +3,15 @@
     background-color: transparent !important;
     color: black !important;
     border-color: transparent !important;
+    margin-top: -2px;
+    padding: 0;
      :hover {
         cursor: pointer;
     }
+}
+
+.dropdown {
+  position: initial;
 }
 
 // Setting the dropdown to occur on the left side instead

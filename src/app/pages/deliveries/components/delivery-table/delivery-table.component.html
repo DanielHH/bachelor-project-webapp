@@ -1,21 +1,22 @@
 <div class="card">
-  <div class="card-body">
+  <div class="custom-table">
     <!-- Row text filter input and add new button -->
     <div class="row">
 
       <!-- Input field for text filter -->
-      <div class="col-4 px-1 text-filter-input">
+      <div class="col-4 px-0 text-filter-input">
         <mat-form-field>
-            <!--Input-->
-            <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput"
-            maxlength="128" placeholder="Filtrera på">
-            <!--Clear-->
-            <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear"
-            (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+          <!--Input-->
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
         </mat-form-field>
       </div>
 
-      <div class="col"></div> <!-- Space -->
+      <div class="col"></div>
+      <!-- Space -->
 
       <!-- Add new document button-->
       <div class="col-2">
@@ -27,71 +28,58 @@
     </div>
 
     <!-- Row filter per status -->
-    <div class="row pb-4 pl-2 filter-checkbox-row">
+    <div class="pb-1 filter-checkbox-row">
 
-      <div class="col-1 px-1 filter-checkbox">
-        <mat-checkbox id="showActive" name="showActive" color="primary" class="px-1"
-        [(ngModel)]="showActive">Aktiva</mat-checkbox>
-      </div>
-
-      <div class="col-1 px-1 pr-4 filter-checkbox">
-        <mat-checkbox id="showArchived" name="showArchived" color="primary" class="px-1"
-        [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+      <div class="mr-2">
+        <mat-checkbox id="showActive" name="showActive" color="primary" class="pr-1" [(ngModel)]="showActive">Levererade</mat-checkbox>
       </div>
 
-      <div class="col-1 px-1 filter-checkbox">
-        <mat-checkbox id="showGone" name="showGone" color="primary" class="px-1"
-        [(ngModel)]="showGone">Borttappade</mat-checkbox>
+      <div class="mr-2">
+        <mat-checkbox id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
-      <div class="col-8"></div>
-    </div>
-
-
-    <!-- Header row -->
-    <div class="row table-header">
-      <div class="col-narrow table-col px-2" (click)="sortTableList('status')">
-        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
-        [class.both-arrow]="orderStatus == ''">Status </span>
-      </div>
-      <div class="col-narrow table-col" (click)="sortTableList('documentType')">
-        <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'"
-        [class.both-arrow]="orderDocumentType == ''">Typ </span>
-      </div>
-      <div class="col-wide table-col" (click)="sortTableList('documentNumber')">
-        <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'"
-        [class.both-arrow]="orderDocumentNumber == ''">Dokument-ID </span>
-      </div>
-      <div class="col-wide table-col" (click)="sortTableList('name')">
-        <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'"
-        [class.both-arrow]="orderName == ''">Benämning </span>
-      </div>
-      <div class="col-wide table-col" (click)="sortTableList('receiver')">
-        <span class="hover" [class.up-arrow]="orderReceiver == 'asc'" [class.down-arrow]="orderReceiver == 'desc'"
-        [class.both-arrow]="orderReceiver == ''">Mottagare </span>
-      </div>
-      <div class="col-wide table-col" (click)="sortTableList('sentDate')">
-        <span class="hover" [class.up-arrow]="orderSentDate == 'asc'" [class.down-arrow]="orderSentDate == 'desc'"
-        [class.both-arrow]="orderSentDate == ''">Skickat </span>
-      </div>
-      <div class="col-wide table-col mr-5" (click)="sortTableList('comment')">
-        <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
-        [class.both-arrow]="orderComment == ''">Kommentar </span>
-      </div>
-
-      <div class="menu-button-col"> <!-- NOT SHOWN: Here to make space the same in header as in items -->
-        <app-item-menu [item]="dummyItem"></app-item-menu>
+      <div class="mr-2">
+        <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
     </div>
-    <hr>
 
-    <!-- Add cards to the table -->
-    <div *ngFor="let delivery of deliveryList | matchFilterDelivery:filterInput:showActive:showArchived:showGone">
-        <app-delivery-item [deliveryItem]="delivery"></app-delivery-item>
+    <div class="table-container">
+      <!-- Header row -->
+      <div class="row table-header">
+        <div class="col-1" (click)="sortTableList('status')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        </div>
+        <div class="col" (click)="sortTableList('documentType')">
+          <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'" [class.both-arrow]="orderDocumentType == ''">Typ </span>
+        </div>
+        <div class="col" (click)="sortTableList('documentNumber')">
+          <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'" [class.both-arrow]="orderDocumentNumber == ''">Dokument-ID </span>
+        </div>
+        <div class="col" (click)="sortTableList('name')">
+          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Benämning </span>
+        </div>
+        <div class="col" (click)="sortTableList('receiver')">
+          <span class="hover" [class.up-arrow]="orderReceiver == 'asc'" [class.down-arrow]="orderReceiver == 'desc'" [class.both-arrow]="orderReceiver == ''">Mottagare </span>
+        </div>
+        <div class="col" (click)="sortTableList('sentDate')">
+          <span class="hover" [class.up-arrow]="orderSentDate == 'asc'" [class.down-arrow]="orderSentDate == 'desc'" [class.both-arrow]="orderSentDate == ''">Skickat </span>
+        </div>
+        <div class="col" (click)="sortTableList('comment')">
+          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
+        </div>
+      </div>
+      <hr>
+      <div class="table-items scrollbar-table">
+        <!-- Add cards to the table -->
+        <div *ngFor="let delivery of deliveryList | matchFilterDelivery:filterInput:showActive:showArchived:showGone">
+          <app-delivery-item [deliveryItem]="delivery"></app-delivery-item>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<app-modify-delivery [deliveryList]="deliveryList" [modalTitle]="modalTitle" [modalType]="modalType"
-[(showModal)]="showModal"></app-modify-delivery>
+<app-modify-delivery [deliveryList]="deliveryList" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-delivery>
+
+<app-delivery-detail></app-delivery-detail>

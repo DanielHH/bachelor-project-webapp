@@ -13,6 +13,7 @@ import { ModalService } from '../../../../services/modal.service';
 import { Receipt } from '../../../../datamodels/receipt';
 import * as moment from 'moment';
 import { CardType } from '../../../../datamodels/cardType';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-card',
@@ -64,7 +65,8 @@ export class RequestCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private router: Router
   ) {
     // User list subscriber
     this.dataService.userList.subscribe(users => {
@@ -102,7 +104,17 @@ export class RequestCardComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  loading = false;
+
+  hideSubmit = false;
+
+  closeText = 'Avbryt';
+
+  pdfView = false;
+
+  pdfURL = '';
+
+  ngOnInit() { }
 
   /**
    * Filters list of usernames based on username input
@@ -204,38 +216,52 @@ export class RequestCardComponent implements OnInit {
       receipt.card = this.cardItem;
       receipt.document = null;
       receipt.user = this.cardItem.user;
-      receipt.startDate = new Date(this.startDateInput);
+      receipt.startDate = this.utilitiesService.getLocalDate();
       receipt.endDate = null;
 
+      this.loading = true;
+      this.hideSubmit = true;
+      this.closeText = 'Stäng';
 
       // Submit changes to database
       this.httpService
         .httpPost<Receipt>('addNewReceipt/', receipt)
         .then(receiptRes => {
-          if (receiptRes['message'] === 'success') {
-            this.cardItem.activeReceipt = receiptRes['data'].id;
+          if (receiptRes.message === 'success') {
+            const newReceipt = receiptRes.data;
 
-            this.httpService
-              .httpPut<Card>('updateCard/', this.cardItem)
-              .then(cardRes => {
-                if (cardRes['message'] === 'success') {
-                  // Update receipt list
-                  this.receipts.unshift(receiptRes['data']);
-                  this.receipts = this.receipts.slice();
-                  this.dataService.receiptList.next(this.receipts);
+            this.cardItem.activeReceipt = Number(newReceipt.id);
 
-                  // Update card list
-                  this.dataService.cardList.next(this.cards);
+            if (this.generatePDF) {
 
-                  this.showModal = false;
+              this.httpService.httpPost<any>('genPDF', ['card', this.cardItem, newReceipt]).then(pdfRes => {
 
-                  if (this.generatePDF) {
-                    this.utilitiesService.genPDF(
-                      this.utilitiesService.getCardPDFParams(this.cardItem),
-                      this.cardItem.cardNumber);
-                  }
+                if (pdfRes.message === 'success') {
+                  newReceipt.url = pdfRes.url;
                 }
+
+                this.httpService
+                  .httpPut<Card>('updateCard/', this.cardItem)
+                  .then(cardRes => {
+                    if (cardRes.message === 'success') {
+                      // Update receipt list
+                      this.receipts.unshift(newReceipt);
+                      this.receipts = this.receipts.slice();
+                      this.dataService.receiptList.next(this.receipts);
+
+                      // Update card list
+                      this.dataService.cardList.next(this.cards);
+
+                      this.loading = false;
+                      this.pdfView = true;
+                      this.pdfURL = newReceipt.url;
+                      this.hideSubmit = true;
+                      this.closeText = 'Stäng';
+
+                    }
+                  });
               });
+            }
           }
         });
     }
@@ -251,6 +277,12 @@ export class RequestCardComponent implements OnInit {
 
     this.cardItem = Object.assign({}, new Card());
     this.modalService.requestCard.next(this.cardItem);
+
+    this.loading = false;
+    this.hideSubmit = false;
+    this.closeText = 'Avbryt';
+    this.pdfView = false;
+    this.pdfURL = '';
 
     this.showModal = false;
   }

@@ -13,22 +13,22 @@
               <b>Typ:</b>
             </div>
             <div class="col-0 col-md-4">
-              <b>Kort-ID:</b>
+              <b>Dokument-ID:</b>
             </div>
             <div class="col-0 col-md-4">
-              <b>Förvaringsplats:</b>
+              <b>Benämning:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
             <div class="col-0 col-md-4">
-              {{cardItem?.cardType?.name}}
+              {{deliveryItem?.documentType?.name}}
             </div>
             <div class="col-0 col-md-4">
-              {{cardItem?.cardNumber}}
+              {{deliveryItem?.documentNumber}}
             </div>
             <div class="col-0 col-md-4">
-              {{cardItem?.location}}
+              {{deliveryItem?.name}}
             </div>
           </div>
           <!-- Row Space -->
@@ -36,13 +36,39 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-0 col-md-4">
-              <b>Skapat:</b>
+              <b>Mottagare:</b>
             </div>
             <div class="col-0 col-md-4">
-              <b>Utgångsdatum:</b>
+              <b>Daterad:</b>
             </div>
             <div class="col-0 col-md-4">
-              <b>Ändrat:</b>
+              <b>Skickad:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              {{deliveryItem?.receiver}}
+            </div>
+            <div class="col-0 col-md-4">
+              {{displayDocumentDate()}}
+            </div>
+            <div class="col-0 col-md-4">
+              {{displaySentDate()}}
+            </div>
+          </div>
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              <b>Skapad:</b>
+            </div>
+            <div class="col-0 col-md-4">
+              <b>Ändrad:</b>
+            </div>
+            <div class="col-0 col-md-4">
+              <b>Kommentar:</b>
             </div>
           </div>
           <!-- Row -->
@@ -51,54 +77,12 @@
               {{displayCreationDate()}}
             </div>
             <div class="col-0 col-md-4">
-              {{displayExpirationDate()}}
-            </div>
-            <div class="col-0 col-md-4">
               {{displayModifiedDate()}}
             </div>
-          </div>
-          <!-- Row Space -->
-          <div class="row py-1"></div>
-          <!-- Row -->
-          <div class="row my-1">
             <div class="col-0 col-md-4">
-              <b>Status:</b>
-            </div>
-            <div class="col-0 col-md-4">
-                <b>Användare:</b>
-            </div>
-            <div class="col-0 col-md-4">
-              <b>Senast inventerat:</b>
+              {{deliveryItem?.comment}}
             </div>
           </div>
-          <!-- Row -->
-          <div class="row my-1">
-            <div class="col-0 col-md-4">
-              {{cardItem?.status?.name}}
-            </div>
-            <div class="col-0 col-md-4">
-                {{utilitiesService.getUserString(cardItem?.user)}}
-            </div>
-            <div class="col-0 col-md-4">
-              {{utilitiesService.getDateString(cardItem?.lastVerificationDate)}}
-            </div>
-          </div>
-          <!-- Row Space -->
-          <div class="row py-1"></div>
-          <!-- Row -->
-          <div *ngIf="cardItem?.comment" class="row my-1">
-            <div class="col-0 col-md-12">
-              <b>Kommentar:</b>
-            </div>
-          </div>
-          <!-- Row -->
-          <div *ngIf="cardItem?.comment" class="row my-1">
-            <div class="col-0 col-md-12">
-              {{cardItem?.comment}}
-            </div>
-          </div>
-          <!-- Row Space -->
-          <div class="row py-1"></div>
         </mat-card>
       </div>
       <div class="col-0 col-md-1"></div>

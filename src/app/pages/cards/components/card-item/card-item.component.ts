@@ -19,6 +19,8 @@ import { ModalService } from '../../../../services/modal.service';
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
 
+  cardList: Card[] = [];
+
   showRequestModal = false;
   showReturnModal = false;
 
@@ -28,7 +30,9 @@ export class CardItemComponent implements OnInit {
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService) {
-
+      this.dataService.cardList.subscribe(cardList => {
+        this.cardList = cardList;
+      });
   }
 
   ngOnInit() { }
@@ -64,7 +68,9 @@ export class CardItemComponent implements OnInit {
    */
   editStatus() {
     this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-      if (res['message'] === 'success') { }
+      if (res.message === 'success') {
+        this.dataService.cardList.next(this.cardList);
+      }
     });
   }
 }

@@ -22,7 +22,7 @@ export class RequestDocumentComponent implements OnInit {
 
   @ViewChild('requestForm') requestForm: NgForm;
 
-  @Input() documentItem: Document = null; // Document that is requested
+  documentItem: Document = null; // Document that is requested
 
 
   @Output() modalClosed = new EventEmitter<boolean>();
@@ -60,6 +60,16 @@ export class RequestDocumentComponent implements OnInit {
     map(user =>
       user ? this.filterUsers(user) : this.users.slice())
   );
+
+  loading = false;
+
+  hideSubmit = false;
+
+  closeText = 'Avbryt';
+
+  pdfView = false;
+
+  pdfURL = '';
 
   constructor(
     private httpService: HttpService,
@@ -197,30 +207,43 @@ export class RequestDocumentComponent implements OnInit {
       receipt.startDate = this.utilitiesService.getLocalDate();
       receipt.endDate = null;
 
+      this.loading = true;
+      this.hideSubmit = true;
+      this.closeText = 'Stäng';
+
       // Submit changes to database
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
-        if (receiptRes['message'] === 'success') {
-          this.documentItem.activeReceipt = receiptRes['data'].id;
+        if (receiptRes.message === 'success') {
+          const newReceipt = receiptRes.data;
 
-          this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
-            if (documentRes['message'] === 'success') {
-              // Update receipt list
-              this.receipts.unshift(receiptRes['data']);
-              this.receipts = this.receipts.slice();
-              this.dataService.receiptList.next(this.receipts);
+          this.documentItem.activeReceipt = Number(newReceipt.id);
 
-              // Update document list
-              this.dataService.documentList.next(this.documents);
+          if (this.generatePDF) {
 
-              this.showModal = false;
+            this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
 
-              if (this.generatePDF) {
-                this.utilitiesService.genPDF(
-                  this.utilitiesService.getDocumentPDFParams(this.documentItem),
-                  this.documentItem.documentNumber);
+              if (pdfRes.message === 'success') {
+                newReceipt.url = pdfRes.url;
               }
-            }
-          });
+
+              this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
+                if (documentRes.message === 'success') {
+                  // Update receipt list
+                  this.receipts.unshift(newReceipt);
+                  this.receipts = this.receipts.slice();
+                  this.dataService.receiptList.next(this.receipts);
+
+                  // Update document list
+                  this.dataService.documentList.next(this.documents);
+
+                  this.loading = false;
+                  this.pdfView = true;
+                  this.pdfURL = newReceipt.url;
+
+                }
+              });
+            });
+          }
         }
       });
     }
@@ -236,6 +259,12 @@ export class RequestDocumentComponent implements OnInit {
 
     this.documentItem = Object.assign({}, new Document());
     this.modalService.requestDocument.next(this.documentItem);
+
+    this.loading = false;
+    this.hideSubmit = false;
+    this.closeText = 'Avbryt';
+    this.pdfView = false;
+    this.pdfURL = '';
 
     this.showModal = false;
   }

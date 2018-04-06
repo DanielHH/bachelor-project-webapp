@@ -46,11 +46,10 @@ export class ReceiptItemComponent implements OnInit {
     this.itemActive = this.receiptItem.endDate == null;
   }
 
-  genPDF() {
-    // Create new pdf
-    this.utilitiesService.genPDF(
-      this.utilitiesService.getReceiptPDFParams(this.receiptItem),
-      this.itemIDToDisplay);
+  openPDF() {
+    if (this.receiptItem.url) {
+      window.open(this.receiptItem.url, '_blank');
+    }
   }
 
 }

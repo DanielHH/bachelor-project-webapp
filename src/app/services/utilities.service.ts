@@ -80,7 +80,14 @@ export class UtilitiesService {
    * Returns a string representation of date
    */
   getDateString(date: Date): string {
-    return date ? moment(date).format('YYYY-MM-DD') : '';
+    return date ? moment(date).format('YYYY-MM-DD') : 'Saknas';
+  }
+
+  /**
+   * Returns a string representation of user
+   */
+  getUserString(user: User): string {
+    return user && user.id ? user.name : 'Saknas';
   }
 
   getStatusFromID(id: number) {
@@ -107,96 +114,6 @@ export class UtilitiesService {
    */
   getDocumentType(id?: number, name?: string) {
     return _.find(this.documentTypeList, documentType => documentType.id == id || documentType.name == name);
-  }
-
-  getReceiptPDFParams(item: any) {
-    if (item.itemTypeID == 1) { // itemTypeID 1: card
-      const cardItem = _.find(this.cardList, card => card.id === item.cardID);
-      return this.getCardPDFParams(cardItem);
-
-    } else if (item.itemTypeID == 2) { // itemTypeID 2: document
-      const documentItem = _.find(this.documentList, document => document.id === item.documentID);
-      return this.getDocumentPDFParams(documentItem);
-
-    }
-
-    return ['', ''];
-  }
-
-  getCardPDFParams(card: Card) {
-      const params: any[] = [2];
-      params[0] = 'card';
-      const fields: any[] = [7];
-      fields[0] = card.cardNumber;
-      fields[1] = card.cardType.name;
-      fields[2] = '';
-      fields[3] = moment(card.expirationDate).format('YYYY-MM-DD');
-      fields[4] = ''; // card.comment.substring(0, 30);
-      fields[5] = card.location;
-      fields[6] = moment(card.modifiedDate).format('YYYY-MM-DD');
-
-      if (card.user) {
-        fields[2] = card.user.name;
-      }
-
-      if (card.comment) {
-        if (card.comment.length >= 30) {
-          fields[4] = card.comment.substring(0, 30);
-        } else {
-          fields[4] = card.comment;
-        }
-      }
-
-      params[1] = fields;
-
-      return params;
-  }
-
-  getDocumentPDFParams(document: Document) {
-    const params: any[] = [2];
-    params[0] = 'document';
-    const fields: any[] = [10];
-    fields[0] = document.documentNumber;
-    fields[1] = document.name;
-    fields[2] = document.documentType.name;
-    fields[3] = document.sender;
-    fields[4] = moment(document.documentDate).format('YYYY-MM-DD');
-    fields[5] = moment(document.registrationDate).format('YYYY-MM-DD');
-    fields[6] = '';
-    fields[7] = ''; // document.comment.substring(0, 30);
-    fields[8] = document.location;
-    fields[9] = moment(document.modifiedDate).format('YYYY-MM-DD');
-
-    if (document.user) {
-      fields[6] = document.user.name;
-    }
-
-    if (document.comment) {
-      if (document.comment.length >= 30) {
-        fields[7] = document.comment.substring(0, 30);
-      } else {
-        fields[7] = document.comment;
-      }
-    }
-
-    params[1] = fields;
-
-    return params;
-  }
-
-  genPDF(params, number) {
-    // Create new pdf
-    this.httpService.httpPDF(params);
-    delay(this.httpService, number);
-
-    async function delay(httpService: HttpService, itemNumber) {
-      await sleep(2000);
-      httpService.httpGetPDF(itemNumber);
-    }
-
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
   }
 
 }

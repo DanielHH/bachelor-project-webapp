@@ -3,6 +3,7 @@ import { Card } from '../../datamodels/card';
 import { Document } from '../../datamodels/document';
 import { DataService } from '../../services/data.service';
 import { BaseItem } from '../../datamodels/baseItem';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-inventory',
@@ -14,7 +15,10 @@ export class InventoryComponent implements OnInit {
   documentList: Document[] = [];
   baseItemList: BaseItem[] = new Array<BaseItem>();
 
-  constructor(public dataService: DataService) {
+  constructor(
+    public dataService: DataService,
+    private utilitiesService: UtilitiesService
+  ) {
     this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
       this.setItemList();
@@ -33,10 +37,10 @@ export class InventoryComponent implements OnInit {
   setItemList(): void {
     this.baseItemList = [];
     this.cardList.forEach(element => {
-      this.baseItemList.push(new BaseItem(element, 'card'));
+      this.baseItemList.push(new BaseItem(this.utilitiesService, element, 'card'));
     });
     this.documentList.forEach(element => {
-      this.baseItemList.push(new BaseItem(element, 'document'));
+      this.baseItemList.push(new BaseItem(this.utilitiesService, element, 'document'));
     });
   }
 }

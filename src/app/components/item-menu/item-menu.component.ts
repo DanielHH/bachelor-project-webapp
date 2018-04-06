@@ -58,7 +58,7 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    if (this.item.user.id && value == 1) { // If has owner and is restored
+    if (this.item.user && this.item.user.id && value == 1) { // If has owner and is restored
       this.item.status = this.utilitiesService.getStatusFromID(2);
     } else {
       this.item.status = this.utilitiesService.getStatusFromID(value);
