@@ -1,0 +1,44 @@
+<div *ngIf="!user?.id" class="login-container">
+  <div class="login-wrapper">
+    <img class="img-logo" src="assets/logo.svg" alt="SecTrack">
+
+    <form (ngSubmit)="login(loginForm)" #loginForm="ngForm">
+      <!-- Username input -->
+      <mat-form-field>
+        <!--Input-->
+        <input type="text" matInput name="usernameInput" [(ngModel)]="username" maxlength="128" placeholder="Användarnamn" [formControl]="usernameControl"
+          required>
+        <!--Check and clear-->
+        <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+          <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
+        </button>
+        <button mat-button class="size-medium" *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username = ''"
+          tabindex="-1">
+          <mat-icon>close</mat-icon>
+        </button>
+        <!--Error-->
+        <mat-error *ngIf="usernameControl.hasError('required')">Ange ett användarnamn</mat-error>
+      </mat-form-field>
+
+      <!-- Password input -->
+      <mat-form-field>
+        <!--Input-->
+        <input type="password" matInput name="passwordInput" [(ngModel)]="password" maxlength="128" placeholder="Lösenord" [formControl]="passwordControl"
+         required>
+        <!--Check and clear-->
+        <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+          <mat-icon [style.color]="'green'" *ngIf="isValidPassword()">done</mat-icon>
+        </button>
+        <button mat-button class="size-medium" *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password = ''"
+          tabindex="-1">
+          <mat-icon>close</mat-icon>
+        </button>
+        <!--Error-->
+        <mat-error *ngIf="passwordControl.hasError('required')">Ange ett lösenord</mat-error>
+      </mat-form-field>
+
+      <button type="submit" class="btn btn-primary btn-login">Logga in</button>
+
+    </form>
+  </div>
+</div>

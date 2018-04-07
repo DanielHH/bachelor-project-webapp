@@ -11,7 +11,6 @@ import { InventoryComponent } from './pages/inventory/inventory.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
 import { AuthGuard } from './auth/auth.guard';
-import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, data: { name: 'Startsidan' } },
@@ -66,11 +65,6 @@ export const routes: Routes = [
     path: 'document-detail',
     component: DocumentDetailComponent,
     data: { name: 'Dokumentdetaljer' }
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: { name: 'Inloggning' }
   }
 
   /* Resterande routes
