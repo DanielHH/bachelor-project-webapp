@@ -3,7 +3,7 @@
     <img *ngIf="!error" class="img-logo" src="assets/logo.svg" alt="SecTrack">
     <img *ngIf="error" class="img-logo" src="assets/error-logo.svg" alt="SecTrack">
 
-    <form (ngSubmit)="login(loginForm)" #loginForm="ngForm">
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" (keydown.enter)="login(loginForm)">
       <!-- Username input -->
       <mat-form-field>
         <!--Input-->
