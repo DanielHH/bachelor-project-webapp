@@ -41,7 +41,8 @@ import {
   MatFormFieldControl,
   MatCardModule,
   MatDividerModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -159,7 +160,8 @@ import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-
     HttpClientModule,
     MatCardModule,
     MatDividerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     HttpService,

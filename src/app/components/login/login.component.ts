@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
   username = '';
   password = '';
 
+  loadingTime = 1000;
+
   usernameControl = new FormControl('', Validators.required);
   passwordControl = new FormControl('', Validators.required);
 
@@ -38,10 +40,15 @@ export class LoginComponent implements OnInit {
     this.error = '';
     if (this.isValidInput()) {
       this.loading = true;
+
+      const startTime = new Date().getTime();
       this.authService.login(this.username, this.password).then(res => {
-        if (!res) {
-          this.error = 'Fel användarnamn eller lösenord';
-        }
+        setTimeout(() => {
+          if (!res) {
+            this.error = 'Fel användarnamn eller lösenord';
+          }
+          this.loading = false;
+        }, this.loadingTime - (new Date().getTime() - startTime));
       });
     }
   }
