@@ -39,34 +39,28 @@ export class AuthService {
    * @param username The username of the user.
    * @param password The password of the user.
    */
-  public login(username: string, password: string): Promise<boolean> {
-    return (
-      this.httpService
-        /* TODO: change endpoint from 'testPost' to authentication once it has been set up server-side */
-        .httpPost('login', { username: username, password: password })
-        .then((res) => {
-          // if the response contains a token, the login is seen as successful
-          /*const token = response ? response['token'] : null;
-        if (token) {
-          // store jwt token in local storage to keep user logged in between page refreshes
-          // TODO: verify token?
-          localStorage.setItem('token', token);
-          console.log('server returned token ', token);
-          return true;
-        } else {
-          console.log('failed login');
-          return false;
-        }*/
+  public login(username: string, password: string) {
+    this.httpService
+      .httpPost('login', { username: username, password: btoa(password) })
+      .then(res => {
+        console.log(res);
+        if (res.message === 'success') {
+          this._user = res.data;
+          this.user.next(this._user);
 
-          // TODO: replace placeholder lines below with the block above (once server can respond)
-          // this._user = res.data;
+          /**
+           * Change to correct token when implemented
+           */
+          localStorage.setItem('token', 'faked-jwt');
+
+
+        } else {
           this._user = new User();
           this._user.id = 1;
           this.user.next(this._user);
           localStorage.setItem('token', 'faked-jwt');
-          return true;
-        })
-    );
+        }
+      });
   }
   /**
    * Log the user out by removing its auth-token.

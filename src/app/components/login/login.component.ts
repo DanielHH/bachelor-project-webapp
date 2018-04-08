@@ -11,7 +11,6 @@ import { FormControl, Validators, NgForm } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  model: any = {};
   loading = false;
   error = '';
   user: User;
@@ -35,16 +34,7 @@ export class LoginComponent implements OnInit {
   login(val: any) {
     if (this.isValidInput()) {
       this.loading = true;
-      this.authService
-        .login(this.model.username, this.model.password)
-        .then(result => {
-          if (result === true) {
-            this.router.navigate(['/']);
-          } else {
-            this.error = 'Username or password is incorrect';
-            this.loading = false;
-          }
-        });
+      this.authService.login(this.username, this.password);
     }
   }
 
