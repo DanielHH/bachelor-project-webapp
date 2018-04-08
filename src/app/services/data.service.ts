@@ -133,6 +133,8 @@ export class DataService {
     this.authService.user.subscribe(user => {
       if (user && user.id) {
         this.getAllData();
+      } else {
+        this.resetAllData();
       }
     });
   }
@@ -155,6 +157,26 @@ export class DataService {
     this.getVerificationTypeList();
 
     this.getStatusTypeList();
+  }
+
+  resetAllData() {
+    this._userList = null;
+    this.userList.next(this._userList);
+
+    this._cardList = null;
+    this.cardList.next(this._cardList);
+
+    this._documentList = null;
+    this.documentList.next(this._documentList);
+
+    this._deliveryList = null;
+    this.deliveryList.next(this._deliveryList);
+
+    this._receiptList = null;
+    this.receiptList.next(this._receiptList);
+
+    this._verificationList = null;
+    this.verificationList.next(this._verificationList);
   }
 
   getUserList() {

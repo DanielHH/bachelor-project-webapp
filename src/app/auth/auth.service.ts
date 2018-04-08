@@ -19,7 +19,7 @@ export class AuthService {
    */
   user: BehaviorSubject<User> = new BehaviorSubject<User>(this._user);
 
-  public getToken(): string {
+  getToken(): string {
     return localStorage.getItem('token');
   }
 
@@ -27,7 +27,7 @@ export class AuthService {
    * Check if the current user is authenticated by looking for a non-expired
    * JSON Web Token.
    */
-  public isAuthenticated(): boolean {
+  isAuthenticated(): boolean {
     const token = this.getToken();
     // TODO: test if tokenNotExpired behaves as expected, replace placeholder code
     return token === 'faked-jwt'; // && tokenNotExpired(token);
@@ -39,11 +39,9 @@ export class AuthService {
    * @param username The username of the user.
    * @param password The password of the user.
    */
-  public login(username: string, password: string) {
-    this.httpService
-      .httpPost('login', { username: username, password: btoa(password) })
-      .then(res => {
-        console.log(res);
+  login(username: string, password: string) {
+    return new Promise((resolve, reject) => {
+      this.httpService.httpPost('login', { username: username, password: btoa(password) }).then(res => {
         if (res.message === 'success') {
           this._user = res.data;
           this.user.next(this._user);
@@ -52,20 +50,17 @@ export class AuthService {
            * Change to correct token when implemented
            */
           localStorage.setItem('token', 'faked-jwt');
-
-
+          resolve(true);
         } else {
-          this._user = new User();
-          this._user.id = 1;
-          this.user.next(this._user);
-          localStorage.setItem('token', 'faked-jwt');
+          resolve(false);
         }
       });
+    });
   }
   /**
    * Log the user out by removing its auth-token.
    */
-  public logout(): void {
+  logout(): void {
     this._user = new User();
     this.user.next(this._user);
     localStorage.removeItem('token');

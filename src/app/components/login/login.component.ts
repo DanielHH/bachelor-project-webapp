@@ -31,10 +31,18 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {}
 
-  login(val: any) {
+  /**
+   * Attempts to log a user in
+   */
+  login() {
+    this.error = '';
     if (this.isValidInput()) {
       this.loading = true;
-      this.authService.login(this.username, this.password);
+      this.authService.login(this.username, this.password).then(res => {
+        if (!res) {
+          this.error = 'Fel användarnamn eller lösenord';
+        }
+      });
     }
   }
 
@@ -52,6 +60,9 @@ export class LoginComponent implements OnInit {
     return !this.passwordControl.hasError('required');
   }
 
+  /**
+   * Return true if all validation functions are true
+   */
   isValidInput() {
     return this.isValidUsername() && this.isValidPassword();
   }
