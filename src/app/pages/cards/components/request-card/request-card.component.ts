@@ -55,7 +55,7 @@ export class RequestCardComponent implements OnInit {
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
-    map(user => (user ? this.filterUsers(user) : this.users.slice()))
+    map(user => (user ? this.filterUsers(user) : this.users ? this.users.slice() : []))
   );
 
   user: User;
