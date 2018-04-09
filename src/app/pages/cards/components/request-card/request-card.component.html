@@ -197,6 +197,6 @@
       </div>
     </div>
 
-    <app-pdf-generation [pdfView]="pdfView" [loading]="loading" [pdfURL]="pdfURL"></app-pdf-generation>
+    <app-pdf-generation *ngIf="loading || pdfView" [pdfView]="pdfView" [loading]="loading" [pdfURL]="pdfURL"></app-pdf-generation>
   </app-modal>
 </form>
