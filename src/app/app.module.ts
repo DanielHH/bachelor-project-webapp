@@ -41,7 +41,8 @@ import {
   MatFormFieldControl,
   MatCardModule,
   MatDividerModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -53,6 +54,13 @@ import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthService } from './auth/auth.service';
+import { AuthGuard } from './auth/auth.guard';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { TokenInterceptor } from './auth/token.interceptor';
+
+
 import { ModifyDocumentComponent } from './pages/documents/components/modify-document/modify-document.component';
 import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
@@ -108,6 +116,7 @@ import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-
     DocumentTableComponent,
     MatchFilterDocumentPipe,
     ItemMenuComponent,
+    LoginComponent,
     ModifyDocumentComponent,
     ModalComponent,
     DocumentDetailComponent,
@@ -148,13 +157,25 @@ import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-
     MatIconModule,
     MatToolbarModule,
     MatRadioModule,
+    HttpClientModule,
     MatCardModule,
     MatDividerModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     HttpService,
     DataService,
+    AuthService,
+    AuthGuard,
+    HttpClient,
+    RouteDataService,
+    UtilitiesService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     RouteDataService,
     UtilitiesService,
     MatchFilterCardPipe,

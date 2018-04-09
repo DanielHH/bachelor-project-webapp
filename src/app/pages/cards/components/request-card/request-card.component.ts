@@ -108,7 +108,7 @@ export class RequestCardComponent implements OnInit {
 
   hideSubmit = false;
 
-  closeText = "Avbryt";
+  closeText = 'Avbryt';
 
   pdfView = false;
 
@@ -231,12 +231,12 @@ export class RequestCardComponent implements OnInit {
             const newReceipt = receiptRes.data;
 
             this.cardItem.activeReceipt = Number(newReceipt.id);
-            
+
             if (this.generatePDF) {
 
               this.httpService.httpPost<any>('genPDF', ['card', this.cardItem, newReceipt]).then(pdfRes => {
-                
-                if(pdfRes.message === 'success') {
+
+                if (pdfRes.message === 'success') {
                   newReceipt.url = pdfRes.url;
                 }
 
@@ -279,9 +279,9 @@ export class RequestCardComponent implements OnInit {
     this.modalService.requestCard.next(this.cardItem);
 
     this.loading = false;
-    this.hideSubmit = false;  
-    this.closeText = "Avbryt";  
-    this.pdfView = false;  
+    this.hideSubmit = false;
+    this.closeText = 'Avbryt';
+    this.pdfView = false;
     this.pdfURL = '';
 
     this.showModal = false;

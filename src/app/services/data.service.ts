@@ -13,10 +13,10 @@ import { User } from '../datamodels/user';
 import { Verification } from '../datamodels/verification';
 import { VerificationType } from '../datamodels/verificationType';
 import { StatusType } from '../datamodels/statusType';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class DataService {
-
   /**
    * List with all users
    */
@@ -25,9 +25,7 @@ export class DataService {
   /**
    * A subscriber to the user list
    */
-  userList: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(
-    this._userList
-  );
+  userList: BehaviorSubject<User[]> = new BehaviorSubject<User[]>(this._userList);
 
   /**
    * List with all cards
@@ -37,9 +35,7 @@ export class DataService {
   /**
    * A subscriber to the card list
    */
-  cardList: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>(
-    this._cardList
-  );
+  cardList: BehaviorSubject<Card[]> = new BehaviorSubject<Card[]>(this._cardList);
 
   /**
    * List with all cards
@@ -49,9 +45,7 @@ export class DataService {
   /**
    * A subscriber to the card list
    */
-  cardTypeList: BehaviorSubject<CardType[]> = new BehaviorSubject<CardType[]>(
-    this._cardTypeList
-  );
+  cardTypeList: BehaviorSubject<CardType[]> = new BehaviorSubject<CardType[]>(this._cardTypeList);
 
   /**
    * List with all documents
@@ -61,11 +55,9 @@ export class DataService {
   /**
    * A subscriber to the document list
    */
-  documentList: BehaviorSubject<Document[]> = new BehaviorSubject<Document[]>(
-    this._documentList
-  );
+  documentList: BehaviorSubject<Document[]> = new BehaviorSubject<Document[]>(this._documentList);
 
-    /**
+  /**
    * List with all deliverys
    */
   _deliveryList: Delivery[] = [];
@@ -73,9 +65,7 @@ export class DataService {
   /**
    * A subscriber to the document list
    */
-  deliveryList: BehaviorSubject<Delivery[]> = new BehaviorSubject<Delivery[]>(
-    this._deliveryList
-  );
+  deliveryList: BehaviorSubject<Delivery[]> = new BehaviorSubject<Delivery[]>(this._deliveryList);
 
   /**
    * List with all document types
@@ -85,9 +75,7 @@ export class DataService {
   /**
    * A subscriber to the document type list
    */
-  documentTypeList: BehaviorSubject<DocumentType[]> = new BehaviorSubject<DocumentType[]>(
-    this._documentTypeList
-  );
+  documentTypeList: BehaviorSubject<DocumentType[]> = new BehaviorSubject<DocumentType[]>(this._documentTypeList);
 
   /**
    * List with all receipts
@@ -97,9 +85,7 @@ export class DataService {
   /**
    * A subscriber to the receipt list
    */
-  receiptList: BehaviorSubject<Receipt[]> = new BehaviorSubject<Receipt[]>(
-    this._receiptList
-  );
+  receiptList: BehaviorSubject<Receipt[]> = new BehaviorSubject<Receipt[]>(this._receiptList);
 
   /**
    * List with all item types
@@ -109,9 +95,7 @@ export class DataService {
   /**
    * A subscriber to the item type list
    */
-  itemTypeList: BehaviorSubject<ItemType[]> = new BehaviorSubject<ItemType[]>(
-    this._itemTypeList
-  );
+  itemTypeList: BehaviorSubject<ItemType[]> = new BehaviorSubject<ItemType[]>(this._itemTypeList);
 
   /**
    * List with all verifications
@@ -121,9 +105,7 @@ export class DataService {
   /**
    * A subscriber to the verification list
    */
-  verificationList: BehaviorSubject<Verification[]> = new BehaviorSubject<Verification[]>(
-    this._verificationList
-  );
+  verificationList: BehaviorSubject<Verification[]> = new BehaviorSubject<Verification[]>(this._verificationList);
 
   /**
    * List with all verification types
@@ -145,12 +127,16 @@ export class DataService {
   /**
    * A subscriber to the status type list
    */
-  statusTypeList: BehaviorSubject<StatusType[]> = new BehaviorSubject<StatusType[]>(
-    this._statusTypeList
-  );
+  statusTypeList: BehaviorSubject<StatusType[]> = new BehaviorSubject<StatusType[]>(this._statusTypeList);
 
-  constructor(public httpService: HttpService) {
-    this.getAllData();
+  constructor(private httpService: HttpService, private authService: AuthService) {
+    this.authService.user.subscribe(user => {
+      if (user && user.id) {
+        this.getAllData();
+      } else {
+        this.resetAllData();
+      }
+    });
   }
 
   getAllData() {
@@ -171,6 +157,26 @@ export class DataService {
     this.getVerificationTypeList();
 
     this.getStatusTypeList();
+  }
+
+  resetAllData() {
+    this._userList = null;
+    this.userList.next(this._userList);
+
+    this._cardList = null;
+    this.cardList.next(this._cardList);
+
+    this._documentList = null;
+    this.documentList.next(this._documentList);
+
+    this._deliveryList = null;
+    this.deliveryList.next(this._deliveryList);
+
+    this._receiptList = null;
+    this.receiptList.next(this._receiptList);
+
+    this._verificationList = null;
+    this.verificationList.next(this._verificationList);
   }
 
   getUserList() {
@@ -249,5 +255,4 @@ export class DataService {
       this.statusTypeList.next(this._statusTypeList);
     });
   }
-
 }

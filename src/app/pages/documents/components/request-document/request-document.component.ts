@@ -65,7 +65,7 @@ export class RequestDocumentComponent implements OnInit {
 
   hideSubmit = false;
 
-  closeText = "Avbryt";
+  closeText = 'Avbryt';
 
   pdfView = false;
 
@@ -215,9 +215,9 @@ export class RequestDocumentComponent implements OnInit {
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
           const newReceipt = receiptRes.data;
-          
-          this.documentItem.activeReceipt = Number(newReceipt.id);          
-          
+
+          this.documentItem.activeReceipt = Number(newReceipt.id);
+
           if (this.generatePDF) {
 
             this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
@@ -261,11 +261,11 @@ export class RequestDocumentComponent implements OnInit {
     this.modalService.requestDocument.next(this.documentItem);
 
     this.loading = false;
-    this.hideSubmit = false;  
-    this.closeText = "Avbryt";  
-    this.pdfView = false;  
+    this.hideSubmit = false;
+    this.closeText = 'Avbryt';
+    this.pdfView = false;
     this.pdfURL = '';
-    
+
     this.showModal = false;
   }
 
