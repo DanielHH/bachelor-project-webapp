@@ -85,6 +85,8 @@ import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-de
 import { PdfGenerationComponent } from './components/pdf-generation/pdf-generation.component';
 import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
 import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
+import { LogTableComponent } from './pages/logs/components/log-table/log-table.component';
+import { LogItemComponent } from './pages/logs/components/log-item/log-item.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +140,9 @@ import { SelfVerificationComponent } from './pages/self-verification/self-verifi
     ModifyDeliveryComponent,
     PdfGenerationComponent,
     DeliveryDetailComponent,
-    SelfVerificationComponent
+    SelfVerificationComponent,
+    LogTableComponent,
+    LogItemComponent
   ],
   imports: [
     BrowserModule,
