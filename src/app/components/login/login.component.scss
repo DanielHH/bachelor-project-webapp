@@ -24,17 +24,43 @@
       left: calc(50% - 50px);
     }
     .img-logo {
+      $logo-width: 200px;
       position: absolute;
       top: calc(-50px - #{$logo-width});
       left: calc(50% - (#{$logo-width} / 2));
       width: $logo-width;
     }
-
     .btn-login {
       min-width: 400px !important;
       margin: 14px 0px 0px 0px !important;
     }
-
   }
 }
 
+@media (max-height: 900px) {
+  .login-container {
+    .login-wrapper {
+      .img-logo {
+        $logo-width: 175px;
+        position: absolute;
+        top: calc(-50px - #{$logo-width});
+        left: calc(50% - (#{$logo-width} / 2));
+        width: $logo-width;
+      }
+    }
+  }
+}
+
+@media (max-height: 768px) {
+  .login-container {
+    .login-wrapper {
+      .img-logo {
+        $logo-width: 150px;
+        position: absolute;
+        top: calc(-50px - #{$logo-width});
+        left: calc(50% - (#{$logo-width} / 2));
+        width: $logo-width;
+      }
+    }
+  }
+}
