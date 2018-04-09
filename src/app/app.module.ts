@@ -84,6 +84,7 @@ import { ModalService } from './services/modal.service';
 import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
 import { PdfGenerationComponent } from './components/pdf-generation/pdf-generation.component';
 import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
+import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-
     ReturnDocumentComponent,
     ModifyDeliveryComponent,
     PdfGenerationComponent,
-    DeliveryDetailComponent
+    DeliveryDetailComponent,
+    SelfVerificationComponent
   ],
   imports: [
     BrowserModule,
