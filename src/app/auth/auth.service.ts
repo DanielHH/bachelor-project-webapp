@@ -30,7 +30,7 @@ export class AuthService {
   isAuthenticated(): boolean {
     const token = this.getToken();
     // TODO: test if tokenNotExpired behaves as expected, replace placeholder code
-    return token === 'faked-jwt'; // && tokenNotExpired(token);
+    return token === 'faked-jwt' && this.user.value && this.user.value.id != null; // && tokenNotExpired(token);
   }
 
   /**

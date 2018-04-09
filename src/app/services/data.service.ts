@@ -132,7 +132,11 @@ export class DataService {
   constructor(private httpService: HttpService, private authService: AuthService) {
     this.authService.user.subscribe(user => {
       if (user && user.id) {
-        this.getAllData();
+        if (user.userType.id == 1) {
+          this.getAllData();
+        } else if (user.userType.id == 2) {
+          this.getUserData(user.id);
+        }
       } else {
         this.resetAllData();
       }
@@ -179,6 +183,10 @@ export class DataService {
     this.verificationList.next(this._verificationList);
   }
 
+  getUserData(id: number) {
+    this.getReceiptList(id);
+  }
+
   getUserList() {
     this.httpService.httpGet<User>('getUsers').then(data => {
       this._userList = data;
@@ -221,8 +229,12 @@ export class DataService {
     });
   }
 
-  getReceiptList() {
-    this.httpService.httpGet<Receipt>('getReceipts').then(data => {
+  getReceiptList(id?: number) {
+    let url = 'getReceipts';
+    if (id) {
+      url += '?userID=' + id;
+    }
+    this.httpService.httpGet<Receipt>(url).then(data => {
       this._receiptList = data;
       this.receiptList.next(this._receiptList);
     });

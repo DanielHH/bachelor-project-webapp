@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
 
-import { Router, CanActivate } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from './auth.service';
+import * as _ from 'lodash';
+import { User } from '../datamodels/user';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
 
-  canActivate() {
-    if (this.auth.isAuthenticated()) {
+  user: User;
+
+  constructor(private authService: AuthService, private router: Router) {
+    this.authService.user.subscribe(user => (this.user = user));
+  }
+
+  canActivate(route: ActivatedRouteSnapshot) {
+    const validUserTypes = route.data['validUserTypes'];
+    if (this.authService.isAuthenticated() && _.includes(validUserTypes, this.user.userType.id)) {
       return true;
     } else {
       this.router.navigate(['/']);
