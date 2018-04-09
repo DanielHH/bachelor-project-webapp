@@ -25,7 +25,7 @@
     }
     .img-logo {
       position: absolute;
-      top: -250px;
+      top: calc(-50px - #{$logo-width});
       left: calc(50% - (#{$logo-width} / 2));
       width: $logo-width;
     }

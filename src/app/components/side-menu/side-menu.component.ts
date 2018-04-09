@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
+import { User } from '../../datamodels/user';
 
 @Component({
   selector: 'app-side-menu',
@@ -7,15 +8,18 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./side-menu.component.scss']
 })
 export class SideMenuComponent implements OnInit {
+  user: User;
 
-  constructor( private auth: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.authService.user.subscribe(user => (this.user = user));
+  }
 
-  // TODO: move function?
+  /**
+   * User logout
+   */
   logout() {
-    this.auth.logout();
+    this.authService.logout();
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -2,3 +2,11 @@
 $primary-color: #4285f4;
 $primary-color-dark: #0d47a1;
 $logo-width: 200px;
+
+@media (max-height: 900px) {
+  $logo-width: 150px !global;
+}
+
+@media (max-height: 768px) {
+  $logo-width: 125px !global;
+}
