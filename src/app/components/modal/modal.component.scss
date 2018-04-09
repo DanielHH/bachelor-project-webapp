@@ -11,6 +11,11 @@
       border: none !important;
       border-radius: 0 !important;
     }
+    .modal-body {
+      .content-container {
+        position: relative;
+      }
+    }
 
     .modal-footer {
       justify-content: center !important;

@@ -1,0 +1,59 @@
+.pdf-content {
+  align-self: flex-end;
+  width: 100%;
+
+  .generating-container {
+    .generating-text {
+      font-weight: 450 !important;
+    }
+  }
+
+  .pdf-wrapper {
+    position: absolute;
+    min-width: 400px;
+    min-height: 200px;
+    top: calc(50% - 100px);
+    left: calc(50% - 200px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center !important;
+
+    opacity: 0;
+    visibility: hidden;
+    &.show-fade {
+      visibility: visible;
+      opacity: 1 !important;
+      transition: opacity 0.3s ease-in;
+      -moz-transition: opacity 0.3s ease-in;
+      -webkit-transition: opacity 0.3s ease-in;
+    }
+    .pdf-container {
+      i {
+        font-size: 4em;
+        color: #cc0000; //danger-color-dark
+      }
+
+      .pdf-name {
+        font-weight: bold !important;
+      }
+
+      .pdf-buttons {
+        button {
+          min-width: 140px;
+        }
+      }
+    }
+  }
+}
+
+:host {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

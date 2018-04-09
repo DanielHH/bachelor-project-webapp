@@ -19,11 +19,9 @@ import * as moment from 'moment';
   styleUrls: ['./request-document.component.scss']
 })
 export class RequestDocumentComponent implements OnInit {
-
   @ViewChild('requestForm') requestForm: NgForm;
 
   documentItem: Document = null; // Document that is requested
-
 
   @Output() modalClosed = new EventEmitter<boolean>();
 
@@ -57,9 +55,18 @@ export class RequestDocumentComponent implements OnInit {
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
-    map(user =>
-      user ? this.filterUsers(user) : this.users.slice())
+    map(user => (user ? this.filterUsers(user) : this.users ? this.users.slice() : []))
   );
+
+  loading = false;
+
+  hideSubmit = false;
+
+  closeText = 'Avbryt';
+
+  pdfView = false;
+
+  pdfURL = '';
 
   constructor(
     private httpService: HttpService,
@@ -87,7 +94,7 @@ export class RequestDocumentComponent implements OnInit {
     });
 
     // Request document subscriber
-    this.modalService.requestDocument.subscribe((document) => {
+    this.modalService.requestDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -97,13 +104,11 @@ export class RequestDocumentComponent implements OnInit {
         this.generatePDF = true;
 
         this._showModal = true;
-
       }
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Filters list of usernames based on username input
@@ -111,10 +116,7 @@ export class RequestDocumentComponent implements OnInit {
    */
   filterUsers(str: string) {
     return this.users.filter(
-      user =>
-        str &&
-        typeof str === 'string' &&
-        user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
+      user => str && typeof str === 'string' && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
     );
   }
 
@@ -122,10 +124,7 @@ export class RequestDocumentComponent implements OnInit {
    * Sets the start date datePicker the date entered in the input field.
    */
   setStartDateToDatePicker() {
-    if (
-      !this.startDateControl.hasError('required') &&
-      !this.startDateControl.hasError('startDate')
-    ) {
+    if (!this.startDateControl.hasError('required') && !this.startDateControl.hasError('startDate')) {
       this.startDateDatepickerInput = this.startDateInput; // Set date in Datepicker
     }
   }
@@ -144,10 +143,7 @@ export class RequestDocumentComponent implements OnInit {
    * Returns true if entered username is valid, else false.
    */
   isValidUsername() {
-    return (
-      !this.usernameControl.hasError('required') &&
-      !this.usernameControl.hasError('username')
-    );
+    return !this.usernameControl.hasError('required') && !this.usernameControl.hasError('username');
   }
 
   /**
@@ -161,19 +157,14 @@ export class RequestDocumentComponent implements OnInit {
    * Returns true if entered start date is valid, else false.
    */
   isValidStartDate() {
-    return !this.startDateControl.hasError('required') &&
-      !this.startDateControl.hasError('dateFormat');
+    return !this.startDateControl.hasError('required') && !this.startDateControl.hasError('dateFormat');
   }
 
   /**
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
-    return (
-      this.isValidUsername() &&
-      this.isValidLocation() &&
-      this.isValidStartDate()
-    );
+    return this.isValidUsername() && this.isValidLocation() && this.isValidStartDate();
   }
 
   /**
@@ -200,24 +191,38 @@ export class RequestDocumentComponent implements OnInit {
       // Submit changes to database
       this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
         if (receiptRes.message === 'success') {
-          this.documentItem.activeReceipt = Number(receiptRes.data.id);
+          const newReceipt = receiptRes.data;
+
+          this.documentItem.activeReceipt = Number(newReceipt.id);
 
           this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
             if (documentRes.message === 'success') {
+              if (this.generatePDF) {
+                this.loading = true;
+                this.hideSubmit = true;
+                this.closeText = 'Stäng';
+
+                this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
+                  if (pdfRes.message === 'success') {
+                    newReceipt.url = pdfRes.url;
+                    newReceipt.url = pdfRes.url;
+                    this.loading = false;
+                    this.pdfView = true;
+                    this.pdfURL = newReceipt.url;
+                    this.hideSubmit = true;
+                    this.closeText = 'Avbryt';
+                  }
+                });
+              }
               // Update receipt list
-              this.receipts.unshift(receiptRes.data);
+              this.receipts.unshift(newReceipt);
               this.receipts = this.receipts.slice();
               this.dataService.receiptList.next(this.receipts);
 
               // Update document list
               this.dataService.documentList.next(this.documents);
-
-              this.showModal = false;
-
-              if (this.generatePDF) {
-                this.utilitiesService.genPDF(
-                  this.utilitiesService.getDocumentPDFParams(this.documentItem),
-                  this.documentItem.documentNumber);
+              if (!this.generatePDF) {
+                this.closeForm();
               }
             }
           });
@@ -237,6 +242,12 @@ export class RequestDocumentComponent implements OnInit {
     this.documentItem = Object.assign({}, new Document());
     this.modalService.requestDocument.next(this.documentItem);
 
+    this.loading = false;
+    this.hideSubmit = false;
+    this.closeText = 'Avbryt';
+    this.pdfView = false;
+    this.pdfURL = '';
+
     this.showModal = false;
   }
 
@@ -249,5 +260,4 @@ export class RequestDocumentComponent implements OnInit {
       return this.utilitiesService.getDateString(str);
     }
   }
-
 }

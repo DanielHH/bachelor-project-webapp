@@ -20,8 +20,9 @@ export class GetComponent implements OnInit {
 
   getValueFromHttp() {
     this.httpService.httpGet<Test>('').then(data => {
-      this.testData = data;
+      this.testData = data as Test;
     });
   }
 
 }
+

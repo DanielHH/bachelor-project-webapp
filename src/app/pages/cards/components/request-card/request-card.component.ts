@@ -14,6 +14,7 @@ import { Receipt } from '../../../../datamodels/receipt';
 import * as moment from 'moment';
 import { CardType } from '../../../../datamodels/cardType';
 import { LogEvent } from '../../../../datamodels/logEvent';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-card',
@@ -56,8 +57,10 @@ export class RequestCardComponent implements OnInit {
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
-    map(user =>
-      user ? this.filterUsers(user) : this.users.slice())
+    map(
+      user =>
+        user ? this.filterUsers(user) : this.users ? this.users.slice() : []
+    )
   );
 
   user: User;
@@ -66,7 +69,8 @@ export class RequestCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private router: Router
   ) {
     // User list subscriber
     this.dataService.userList.subscribe(users => {
@@ -108,6 +112,16 @@ export class RequestCardComponent implements OnInit {
       this.logEvents = logEvents;
     });
   }
+
+  loading = false;
+
+  hideSubmit = false;
+
+  closeText = 'Avbryt';
+
+  pdfView = false;
+
+  pdfURL = '';
 
   ngOnInit() {}
 
@@ -202,7 +216,7 @@ export class RequestCardComponent implements OnInit {
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
       this.cardItem.comment =
-      this.commentInput != '' ? this.commentInput : null;
+        this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
       // Create new receipt
@@ -211,9 +225,8 @@ export class RequestCardComponent implements OnInit {
       receipt.card = this.cardItem;
       receipt.document = null;
       receipt.user = this.cardItem.user;
-      receipt.startDate = new Date(this.startDateInput);
+      receipt.startDate = this.utilitiesService.getLocalDate();
       receipt.endDate = null;
-
 
       // Create new log event
       const logEvent = new LogEvent();
@@ -229,17 +242,40 @@ export class RequestCardComponent implements OnInit {
         .httpPost<LogEvent>('addNewLogEvent/', logEvent)
         .then(logEventRes => {
           if (logEventRes.message === 'success') {
-
             this.httpService
               .httpPost<Receipt>('addNewReceipt/', receipt)
               .then(receiptRes => {
                 if (receiptRes.message === 'success') {
-                  this.cardItem.activeReceipt = Number(receiptRes.data.id);
+                  const newReceipt = receiptRes.data;
+
+                  this.cardItem.activeReceipt = Number(newReceipt.id);
 
                   this.httpService
                     .httpPut<Card>('updateCard/', this.cardItem)
                     .then(cardRes => {
                       if (cardRes.message === 'success') {
+                        if (this.generatePDF) {
+                          this.loading = true;
+                          this.hideSubmit = true;
+                          this.closeText = 'Stäng';
+
+                          this.httpService
+                            .httpPost<any>('genPDF', [
+                              'card',
+                              this.cardItem,
+                              newReceipt
+                            ])
+                            .then(pdfRes => {
+                              if (pdfRes.message === 'success') {
+                                newReceipt.url = pdfRes.url;
+                                this.loading = false;
+                                this.pdfView = true;
+                                this.pdfURL = newReceipt.url;
+                                this.hideSubmit = true;
+                                this.closeText = 'Avbryt';
+                              }
+                            });
+                        }
 
                         // Update log event list
                         this.logEvents.unshift(logEventRes.data);
@@ -247,19 +283,14 @@ export class RequestCardComponent implements OnInit {
                         this.dataService.logEventList.next(this.logEvents);
 
                         // Update receipt list
-                        this.receipts.unshift(receiptRes.data);
+                        this.receipts.unshift(newReceipt);
                         this.receipts = this.receipts.slice();
                         this.dataService.receiptList.next(this.receipts);
 
                         // Update card list
                         this.dataService.cardList.next(this.cards);
-
-                        this.showModal = false;
-
-                        if (this.generatePDF) {
-                          this.utilitiesService.genPDF(
-                            this.utilitiesService.getCardPDFParams(this.cardItem),
-                            this.cardItem.cardNumber);
+                        if (!this.generatePDF) {
+                          this.closeForm();
                         }
                       }
                     });
@@ -280,6 +311,12 @@ export class RequestCardComponent implements OnInit {
 
     this.cardItem = Object.assign({}, new Card());
     this.modalService.requestCard.next(this.cardItem);
+
+    this.loading = false;
+    this.hideSubmit = false;
+    this.closeText = 'Avbryt';
+    this.pdfView = false;
+    this.pdfURL = '';
 
     this.showModal = false;
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, RequestOptions, ResponseContentType, Headers } from '@angular/http';
 import * as FileSaver from 'file-saver';
+import * as _ from 'lodash';
 
 @Injectable()
 export class HttpService {
@@ -8,8 +9,8 @@ export class HttpService {
   /**
    * API url
    */
-    // host = 'http://localhost:8080/';
-    host = 'http://api.nlsn.se/';
+  // host = 'http://localhost:8080/';
+  host = 'http://api.nlsn.se/';
 
   constructor(private http: Http) { }
 
@@ -60,19 +61,16 @@ export class HttpService {
     });
   }
 
-  httpGetPDF(body?: any) {
-    const headers = new Headers({
-      'Content-Type': 'application/json',
-      'Accept': 'application/pdf'});
-    const options = new RequestOptions({ headers: headers });
-    options.responseType = ResponseContentType.Blob;
-    const test = this.http.get(this.host + 'genPDF/', options).subscribe( (response) => {
-      // Removed checking of valid response
-      const fileBlob = response.blob();
-      const blob = new Blob([fileBlob], {
+  httpGetPDF(url: string) {
+
+    this.http.get(url, { responseType: ResponseContentType.Blob}).toPromise()
+    .then(response => {
+
+      const blob = new Blob([response.blob()], {
          type: 'application/pdf' // must match the Accept type
       });
-      FileSaver.saveAs(blob, body);
+
+      FileSaver.saveAs(blob, _.last(_.split(url, '/')));
    });
   }
 
