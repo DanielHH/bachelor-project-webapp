@@ -15,20 +15,17 @@ import * as moment from 'moment';
 })
 export class MatchFilterReceiptPipe implements PipeTransform {
 
-  cardList: Card[] = [];
-  documentList: Document[] = [];
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
-
-  itemTypeToDisplay: string;
-  itemIDToDisplay: string;
-  itemUserNameToDisplay: string;
-
-  constructor(private utilitiesService: UtilitiesService) { 
+  constructor(private utilitiesService: UtilitiesService) {
   }
 
-  transform(value: Receipt[], input: string, showCard: boolean, showDocument: boolean, showActive: boolean, showInactive: boolean): Receipt[] {
+  transform(
+    value: Receipt[],
+    input: string,
+    showCard: boolean,
+    showDocument: boolean,
+    showActive: boolean,
+    showInactive: boolean
+  ): Receipt[] {
     return _.filter(value, (receipt) => {
       return this.matchFilt(receipt, input, showCard, showDocument, showActive, showInactive);
   });
@@ -44,29 +41,47 @@ export class MatchFilterReceiptPipe implements PipeTransform {
    * @param showInactive true if checkbox showInactive checked
    * @returns True if match found
    */
-  matchFilt(receipt: Receipt, filterInput: string, showCard: boolean, showDocument: boolean, showActive: boolean, showInactive: boolean) {
-    if( (receipt.endDate == null && !showActive) || (receipt.endDate != null && !showInactive) || 
-        (receipt.itemTypeID == 1 && !showCard) || (receipt.itemTypeID == 2 && !showDocument) ){
+  matchFilt(
+    receipt: Receipt,
+    filterInput: string,
+    showCard: boolean,
+    showDocument: boolean,
+    showActive: boolean,
+    showInactive: boolean
+  ) {
+    if (
+      (receipt == null) ||
+      (!receipt.id) ||
+      (receipt.endDate == null && !showActive) ||
+      (receipt.endDate != null && !showInactive) ||
+      (receipt.itemType.id == 1 && !showCard) ||
+      (receipt.itemType.id == 2 && !showDocument)
+    ) {
       return false;
     }
 
     filterInput = lowerCase(filterInput);
-    const startDate = moment(receipt.startDate).format('YYYY-MM-DD');
-    const endDate = moment(receipt.endDate).format('YYYY-MM-DD');
+    const startDate = this.utilitiesService.getDateString(receipt.startDate);
+    const endDate = this.utilitiesService.getDateString(receipt.endDate);
 
-    // get actual data to be displayed
-    [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
-      this.utilitiesService.getReceiptDisplay(receipt);
+    let itemTypeToDisplay = '';
+    let itemIDToDisplay = '';
 
-    if (_.includes(lowerCase(this.itemTypeToDisplay), filterInput) === false
-    && (_.includes(lowerCase(this.itemIDToDisplay), filterInput) === false)
-    && (_.includes(lowerCase(this.itemUserNameToDisplay), filterInput) === false)
-    && (_.includes(lowerCase(startDate), filterInput) === false)
-    && (_.includes(lowerCase(endDate), filterInput) === false) ) {
-      return false;
+    if (receipt.card) {
+      itemTypeToDisplay = receipt.card.cardType.name;
+      itemIDToDisplay = receipt.card.cardNumber;
+    } else if (receipt.document) {
+      itemTypeToDisplay = receipt.document.documentType.name;
+      itemIDToDisplay = receipt.document.documentNumber;
     }
-    
-    return true;
+
+    return (
+      (_.includes(lowerCase(itemTypeToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(itemIDToDisplay), filterInput) === true) ||
+      (_.includes(lowerCase(receipt.user.name), filterInput) === true) ||
+      (_.includes(lowerCase(startDate), filterInput) === true) ||
+      (_.includes(lowerCase(endDate), filterInput) === true)
+    );
   }
 
 }

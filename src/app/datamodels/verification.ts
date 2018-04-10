@@ -1,3 +1,8 @@
+import { ItemType } from './itemType';
+import { Card } from './card';
+import { Document } from './document';
+import { User } from './user';
+import { VerificationType } from './verificationType';
 
 /**
  * Verification data model
@@ -12,31 +17,30 @@ export class Verification {
   /**
    * Verification type
    */
-  verificationType: number;
+  verificationType: VerificationType;
 
   /**
-   * ID of verification item type
+   * Verification item type
    */
-  itemTypeID: number;
+  itemType: ItemType;
 
   /**
-   * Card ID of verification
+   * Card of verification
    */
-  cardID?: number;
+  card?: Card;
 
   /**
-   * Document ID of verification item type
+   * Document of verification
    */
-  documentID?: number;
+  document?: Document;
 
   /**
-   * ID of current verification holder
+   * Current card or document holder
    */
-  userID: number;
-
+  user?: User;
 
   /**
-   * Expiration date of the verification
+   * Date of the verification
    */
   verificationDate: Date;
 

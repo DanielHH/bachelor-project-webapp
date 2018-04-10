@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
 import { DocumentType } from '../../../../datamodels/documentType';
 import { User } from '../../../../datamodels/user';
 import * as _ from 'lodash';
-import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-document-item',
@@ -16,24 +16,25 @@ import { HttpService } from '../../../../services/http.service';
 })
 export class DocumentItemComponent implements OnInit {
   @Input() documentItem: Document;
-  @Output() editItem = new EventEmitter<any>();
 
+  documentList: Document[] = [];
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
 
-  showRequestModal = false;
-
-  showReturnModal = false;
-
   constructor(
     public dataService: DataService,
-    private routeDataService: RouteDataService,
     private router: Router,
-    private httpService: HttpService
-  ) {
+    private httpService: HttpService,
+    private modalService: ModalService) {
+
+    this.dataService.documentList.subscribe(documentList => {
+      this.documentList = documentList;
+    });
+
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
+
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
@@ -42,61 +43,39 @@ export class DocumentItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
-   * Change card status
+   * Shows the modal for document details
    */
-  setDocumentStatus(status: number) {
-    this.documentItem.status = status;
-    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-      if (res.message === 'success') {
-        this.showRequestModal = false;
-        this.showReturnModal = false;
-      }
-    });
+  showDetailsModal() {
+    this.modalService.detailDocument.next(this.documentItem);
   }
 
   /**
-   * Returns the name of the document type corresponding to the documentType
+   * Show modal based on status
+   * 1 = returned, 2 = available
    */
-  displayDocumentType() {
-    if (this.documentItem.documentType > 0) {
-      const documentTypeToDisplay = _.find(this.documentTypeList, documentType => documentType.id === this.documentItem.documentType);
-      if (documentTypeToDisplay) {
-        return documentTypeToDisplay.name;
-      }
+  showModal() {
+    if (this.documentItem.status.id == 1) {
+      this.modalService.requestDocument.next(this.documentItem);
+    } else {
+      this.modalService.returnDocument.next(this.documentItem);
     }
-    return '';
-  }
-
-  /**
-   * Returns the name corresponding to the userID
-   */
-  displayUserName() {
-    if (this.documentItem.userID) {
-      return _.find(this.userList, user => user.id === this.documentItem.userID)
-        .name;
-    }
-    return '';
-  }
-  route() {
-    this.routeDataService.document.next(this.documentItem);
-    this.router.navigate(['document-detail']);
   }
 
   /**
    * Set document to be outputted for editing
    */
   edit() {
-    this.editItem.next(this.documentItem);
+    this.modalService.editDocument.next(this.documentItem);
   }
 
   /**
-   * Show modal based on status
+   * Sets the status of the document in the database
    */
-  showModal() {
-    if (this.documentItem.status === 1) {
-      this.showRequestModal = true;
-    } else {
-      this.showReturnModal = true;
-    }
+  editStatus() {
+    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+      if (res.message === 'success') {
+        this.dataService.documentList.next(this.documentList);
+      }
+    });
   }
 }

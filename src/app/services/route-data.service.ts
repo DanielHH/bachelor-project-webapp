@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Card } from '../datamodels/card';
 import { Document } from '../datamodels/document';
+import { Delivery } from '../datamodels/delivery';
 
 @Injectable()
 export class RouteDataService {
@@ -28,6 +29,18 @@ export class RouteDataService {
    */
   document: BehaviorSubject<Document> = new BehaviorSubject<Document>(
     this._document
+  );
+
+   /**
+   * Route data document
+   */
+  private _delivery = new Delivery();
+
+   /**
+   * A subscriber to the route data document
+   */
+  delivery: BehaviorSubject<Delivery> = new BehaviorSubject<Delivery>(
+    this._delivery
   );
 
   constructor() { }

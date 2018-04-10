@@ -1,3 +1,7 @@
+import { ItemType } from './itemType';
+import { Card } from './card';
+import { User } from './user';
+import { Document } from './document';
 
 /**
  * Receipt data model
@@ -8,51 +12,34 @@ export class Receipt {
    * Database ID of the receipt
    */
   id: number;
-
   /**
    * ID of receipt item type
    */
-  itemTypeID: number;
-
+  itemType: ItemType;
   /**
    * Card ID of receipt
    */
-  cardID?: number;
-
+  card?: Card;
   /**
    * Document ID of receipt item type
    */
-  documentID?: number;
-
+  document?: Document;
   /**
    * ID of current receipt holder
    */
-  userID: number;
-
+  user: User;
   /**
    * Start date of the receipt
    */
   startDate: Date;
-
   /**
    * End date of the receipt
    */
   endDate: Date;
 
   /**
-   * Comment
+   * PDF url
    */
-  comment: string;
-
-  constructor() {
-    this.id = null;
-    this.itemTypeID = null;
-    this.cardID = null;
-    this.documentID = null;
-    this.userID = null;
-    this.startDate = null;
-    this.endDate = null;
-    this.comment = null;
-  }
+  url: string;
 
 }

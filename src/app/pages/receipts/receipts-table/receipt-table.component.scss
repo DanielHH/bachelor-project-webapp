@@ -1,23 +1,46 @@
-.row {
-    font-weight: bold;
+.receipt-table {
+  display: flex;
+  flex-direction: column;
+  height: 96vh;
+  padding: 1.25rem;
+
+  .receipt-container {
+    height: 91%;
+    margin-bottom: -30px;
+    .receipt-header {
+      font-weight: bold !important;
+      white-space: nowrap !important;
+      width: 100%;
+    }
+    .receipt-items {
+      overflow-y: overlay;
+      overflow-x: hidden;
+      width: 100%;
+      height: inherit;
+    }
+  }
 }
 
 // Adding sorting icons and hover pointer to objects
 .hover {
-    cursor: pointer;
-    &.up-arrow::after {
-        content: "\f0de";
-        font-family: FontAwesome;
-        font-size: 12px;
-    }
-    &.down-arrow::after {
-        content: "\f0dd";
-        font-family: FontAwesome;
-        font-size: 12px;
-    }
-    &.both-arrow::after {
-        content: "\f0dc";
-        font-family: FontAwesome;
-        font-size: 12px;
-    }
+  cursor: pointer;
+  &.up-arrow::after {
+    content: "\f0de";
+    font-family: FontAwesome;
+    font-size: 12px;
+  }
+  &.down-arrow::after {
+    content: "\f0dd";
+    font-family: FontAwesome;
+    font-size: 12px;
+  }
+  &.both-arrow::after {
+    content: "\f0dc";
+    font-family: FontAwesome;
+    font-size: 12px;
+  }
+}
+
+hr {
+  width: 100%;
 }

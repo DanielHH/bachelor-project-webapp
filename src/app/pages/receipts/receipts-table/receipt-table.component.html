@@ -1,83 +1,71 @@
 <div class="card">
-  <div class="card-body">
-    <!-- Input field for filter -->
+  <div class="custom-table">
+    <!-- Row text filter input and add new button -->
     <div class="row">
-      <div class="col-4">
+
+      <!-- Input field for text filter -->
+      <div class="col-4 px-0 text-filter-input">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
-          maxlength="128" placeholder="Filter by">
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
           <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
         </mat-form-field>
       </div>
-      <div class="col-4"></div>
 
-      <div class="col-2">
-        <div class="form-check">
-
-            <div class="form-check">
-              <input type="checkbox" class="filled-in form-check-input" id="showCardID" [(ngModel)]=showCard>
-              <label class="form-check-label" for="showCardID">Kort</label>
-            </div>
-  
-          <div class="form-check">
-              <input type="checkbox" class="filled-in form-check-input" id="showDocumentID" [(ngModel)]=showDocument>
-              <label class="form-check-label" for="showDocumentID">Handlingar</label>
-          </div>
-        </div>
-      </div> 
-      
-      <div class="col-2">
-          <div class="form-check">
-
-              <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showActiveID" [(ngModel)]=showActive>
-                <label class="form-check-label" for="showActiveID">Aktiva</label>
-              </div>
-    
-            <div class="form-check">
-                <input type="checkbox" class="filled-in form-check-input" id="showInactiveID" [(ngModel)]=showInactive>
-                <label class="form-check-label" for="showInactiveID">Inaktiva</label>
-            </div>
-          </div>
-        </div> 
-
-      </div>
-
-    <!-- Header row -->
-    <div class="row">
-      <div class="col-1" (click)="sortTableList('endDate')">
-        <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
-        [class.both-arrow]="orderEndDate == ''">Status </span>
-      </div>
-      <div class="col" (click)="sortTableList('itemTypeID')">
-        <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'"
-        [class.both-arrow]="orderItemTypeID == ''">Typ </span>
-      </div>
-      <div class="col" (click)="sortTableList('IDNumber')">
-        <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'"
-        [class.both-arrow]="orderIDNumber == ''">Id-nummer </span>
-      </div>
-      <div class="col" (click)="sortTableList('userID')">
-        <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
-        [class.both-arrow]="orderUserID == ''">Användare </span>
-      </div>
-      <div class="col" (click)="sortTableList('startDate')">
-        <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'"
-        [class.both-arrow]="orderStartDate == ''">Startdatum </span>
-      </div>
-      <div class="col" (click)="sortTableList('endDate')">
-        <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
-        [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
-      </div>
     </div>
-    <hr>
 
-    <!-- Add receipts to the table  -->
-    <div *ngFor="let receipt of receiptList | matchFilterReceipt:filterInput:showCard:showDocument:showActive:showInactive">
-        <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>
+    <!-- Row filter per type and status -->
+    <div class="pb-1 filter-checkbox-row">
+
+      <div class="mr-2">
+        <mat-checkbox id="showCard" name="showCard" color="primary" class="pr-1" [(ngModel)]="showCard">Kort</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showDocument" name="showDocument" color="primary" class="pr-1" [(ngModel)]="showDocument">Handlingar</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showActive" name="showActive" color="primary" class="pr-1" [(ngModel)]="showActive">Aktiva</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showInactive" name="showInactive" color="primary" class="pr-1" [(ngModel)]="showInactive">Inaktiva</mat-checkbox>
+      </div>
+
+    </div>
+    <div class="table-container">
+      <div class="row table-header">
+        <div class="col-1" (click)="sortTableList('endDate')">
+          <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'" [class.both-arrow]="orderEndDate == ''">Status </span>
+        </div>
+        <div class="col" (click)="sortTableList('itemTypeID')">
+          <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'" [class.both-arrow]="orderItemTypeID == ''">Typ </span>
+        </div>
+        <div class="col" (click)="sortTableList('IDNumber')">
+          <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'" [class.both-arrow]="orderIDNumber == ''">ID </span>
+        </div>
+        <div class="col" (click)="sortTableList('userID')">
+          <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">Användare </span>
+        </div>
+        <div class="col" (click)="sortTableList('startDate')">
+          <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'" [class.both-arrow]="orderStartDate == ''">Startdatum </span>
+        </div>
+        <div class="col" (click)="sortTableList('endDate')">
+          <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'" [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
+        </div>
+      </div>
+      <hr>
+      <div class="table-items scrollbar-table">
+        <!-- Add receipts to the table -->
+        <div *ngFor="let receipt of receiptList | matchFilterReceipt:filterInput:showCard:showDocument:showActive:showInactive">
+          <app-receipt-item [receiptItem]="receipt"> </app-receipt-item>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

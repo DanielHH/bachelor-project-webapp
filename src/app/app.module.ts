@@ -38,7 +38,11 @@ import {
   MatIconModule,
   MatToolbarModule,
   MatRadioModule,
-  MatFormFieldControl
+  MatFormFieldControl,
+  MatCardModule,
+  MatDividerModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
@@ -50,14 +54,37 @@ import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthService } from './auth/auth.service';
+import { AuthGuard } from './auth/auth.guard';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { TokenInterceptor } from './auth/token.interceptor';
+
+
 import { ModifyDocumentComponent } from './pages/documents/components/modify-document/modify-document.component';
 import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
+import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
+import { DeliveryTableComponent } from './pages/deliveries/components/delivery-table/delivery-table.component';
+import { DeliveryItemComponent } from './pages/deliveries/components/delivery-item/delivery-item.component';
 import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
 import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
+import { InventoryComponent } from './pages/inventory/inventory.component';
+import { InventoryTableComponent } from './pages/inventory/components/inventory-table/inventory-table.component';
+import { InventoryItemComponent } from './pages/inventory/components/inventory-item/inventory-item.component';
+import { MatchFilterDeliveryPipe } from './pipes/match-filter-delivery.pipe';
+import { RequestCardComponent } from './pages/cards/components/request-card/request-card.component';
+import { ReturnCardComponent } from './pages/cards/components/return-card/return-card.component';
+import { RequestDocumentComponent } from './pages/documents/components/request-document/request-document.component';
+import { ReturnDocumentComponent } from './pages/documents/components/return-document/return-document.component';
+import { ModalService } from './services/modal.service';
+import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
+import { PdfGenerationComponent } from './components/pdf-generation/pdf-generation.component';
+import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
+import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
 
 @NgModule({
   declarations: [
@@ -90,12 +117,28 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
     DocumentTableComponent,
     MatchFilterDocumentPipe,
     ItemMenuComponent,
+    LoginComponent,
     ModifyDocumentComponent,
     ModalComponent,
     DocumentDetailComponent,
+    DeliveriesComponent,
+    DeliveryTableComponent,
+    DeliveryItemComponent,
     ReceiptTableComponent,
     MatchFilterReceiptPipe,
-    ReceiptItemComponent
+    ReceiptItemComponent,
+    InventoryComponent,
+    InventoryTableComponent,
+    InventoryItemComponent,
+    MatchFilterDeliveryPipe,
+    RequestCardComponent,
+    ReturnCardComponent,
+    RequestDocumentComponent,
+    ReturnDocumentComponent,
+    ModifyDeliveryComponent,
+    PdfGenerationComponent,
+    DeliveryDetailComponent,
+    SelfVerificationComponent
   ],
   imports: [
     BrowserModule,
@@ -115,10 +158,33 @@ import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item
     MatAutocompleteModule,
     MatIconModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    HttpClientModule,
+    MatCardModule,
+    MatDividerModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
-  providers: [HttpService, DataService, RouteDataService, UtilitiesService],
+  providers: [
+    HttpService,
+    DataService,
+    AuthService,
+    AuthGuard,
+    HttpClient,
+    RouteDataService,
+    UtilitiesService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
+    RouteDataService,
+    UtilitiesService,
+    MatchFilterCardPipe,
+    MatchFilterDocumentPipe,
+    ModalService
+  ],
   entryComponents: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,10 +1,5 @@
-.row:hover {
-  background-color: rgba(208, 214, 212, 0.479)
-}
-
 .row {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 5px;
 }
 
 .bold-text {
@@ -12,7 +7,7 @@
 }
 
 // Hiding button around an object
-button.btn-wheel {
+.btn-wheel {
   background-color: transparent !important;
   color: black !important;
   border-color: transparent !important;
@@ -21,3 +16,11 @@ button.btn-wheel {
 .btn-wheel:hover {
   cursor: pointer;
 }
+
+.mat-form-field {
+  padding-top: 3% !important;
+  padding-bottom: 3% !important;
+  padding-left: 5% !important;
+  padding-right: 5% !important;
+}
+

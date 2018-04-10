@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
+import { HttpService } from './http.service';
 import { Receipt } from '../datamodels/receipt';
 import { Card } from '../datamodels/card';
 import { CardType } from '../datamodels/cardType';
@@ -7,6 +8,9 @@ import { Document } from '../datamodels/document';
 import { DocumentType } from '../datamodels/documentType';
 import { User } from '../datamodels/user';
 import { DataService } from '../services/data.service';
+import { StatusType } from '../datamodels/statusType';
+import * as moment from 'moment';
+import { ItemType } from '../datamodels/itemType';
 
 
 /**
@@ -21,83 +25,95 @@ export const lowerCase = (str) => _.reduce(
 
 @Injectable()
 export class UtilitiesService {
-
   cardList: Card[] = [];
   documentList: Document[] = [];
   cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
+  documentTypeList: DocumentType[] = [];
   userList: User[] = [];
+  statusTypeList: StatusType[] = [];
+  itemTypeList: ItemType[] = [];
 
-  itemTypeToDisplay: string;
-  itemIDToDisplay: string;
-  itemUserNameToDisplay: string;
-
-  constructor(private dataService: DataService) { 
+  constructor(private dataService: DataService, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
     this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
+
+    this.dataService.cardTypeList.subscribe((cardTypeList) => {
+      this.cardTypeList = cardTypeList;
+    });
+
     this.dataService.cardList.subscribe((cardList) => {
       this.cardList = cardList;
     });
+
     this.dataService.documentList.subscribe((documentList) => {
       this.documentList = documentList;
     });
+
     this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
-    
-  }
-  
-/**
- * Helper function to get the actual unique serial number, type and user of a receipt
- * to be displayed
- * 
- * @returns an string array containing [serial number, item type, user name]
- * 
- * @param receipt receipt that the displayed data should be extracted from
- */
-  getReceiptDisplay(receipt: Receipt) {
-    
-    if(receipt.itemTypeID == 1) { // itemTypeID 1: card
-      const cardItem = _.find(this.cardList, card => card.id === receipt.cardID);
 
-      this.itemIDToDisplay = cardItem.cardNumber;
+    this.dataService.statusTypeList.subscribe(statusTypeList => {
+      this.statusTypeList = statusTypeList;
+    });
 
-      const itemType = _.find(this.cardTypeList, cardType => cardType.id === cardItem.cardType)
-      this.itemTypeToDisplay = itemType.name;
+    this.dataService.itemTypeList.subscribe(itemTypeList => {
+      this.itemTypeList = itemTypeList;
+    });
 
-      const user = _.find(this.userList, user => user.id === receipt.userID)
-      if(user) {
-        this.itemUserNameToDisplay = user.name
-      }
-
-    } else if (receipt.itemTypeID == 2) { // itemTypeID 2: document
-      const documentItem = _.find(this.documentList, document => document.id === receipt.documentID);
-
-      this.itemIDToDisplay = documentItem.documentNumber;
-
-      const itemType = _.find(this.documentTypeList, documentType => documentType.id === documentItem.documentType)
-      this.itemTypeToDisplay = itemType.name;
-
-      const user = _.find(this.userList, user => user.id === receipt.userID)
-      if(user) {
-        this.itemUserNameToDisplay = user.name
-      }
-
-    }
-    return [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay]
   }
 
   /**
-   * Helper function to get the local date
+   * Returns a Date object representing current local time
    */
-  getLocalDate() {
+  getLocalDate(): Date {
     const localDate = new Date();
     localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
     return localDate;
+  }
+
+  /**
+   * Returns a string representation of date
+   */
+  getDateString(date: Date): string {
+    return date ? moment(date).format('YYYY-MM-DD') : 'Saknas';
+  }
+
+  /**
+   * Returns a string representation of user
+   */
+  getUserString(user: User): string {
+    return user && user.id ? user.name : 'Saknas';
+  }
+
+  getStatusFromID(id: number) {
+    return _.find(this.statusTypeList, statusType => statusType.id == id);
+  }
+
+  getItemTypeFromID(id: number) {
+    return _.find(this.itemTypeList, itemType => itemType.id == id);
+  }
+
+  /**
+   * Returns the cardType associated with name or id
+   * @param id ID of card type
+   * @param name Name of card type
+   */
+  getCardType(id?: number, name?: string) {
+    return _.find(this.cardTypeList, cardType => cardType.id == id || cardType.name == name);
+  }
+
+    /**
+   * Returns the documentType associated with name or id
+   * @param id ID of document type
+   * @param name Name of document type
+   */
+  getDocumentType(id?: number, name?: string) {
+    return _.find(this.documentTypeList, documentType => documentType.id == id || documentType.name == name);
   }
 
 }

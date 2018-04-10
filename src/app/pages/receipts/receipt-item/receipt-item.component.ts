@@ -9,6 +9,7 @@ import { DocumentType } from '../../../datamodels/documentType';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../services/utilities.service';
 import * as moment from 'moment';
+import { HttpService } from '../../../services/http.service';
 
 @Component({
   selector: 'app-receipt-item',
@@ -27,43 +28,28 @@ export class ReceiptItemComponent implements OnInit {
 
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
-  itemUserNameToDisplay: string;
 
   itemActive: boolean;
 
-  constructor(private utilitiesService: UtilitiesService) { 
-  }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
-    // get actual data to be displayed
-    [this.itemIDToDisplay, this.itemTypeToDisplay, this.itemUserNameToDisplay] =
-      this.utilitiesService.getReceiptDisplay(this.receiptItem);
 
-    this.setActiveReceipt();
-  }
-
-  /**
-   * Set the receipt to be active or not depending on if end date exists
-   */
-  setActiveReceipt() {
-    this.itemActive = (this.receiptItem.endDate == null);
-  }
-
-  /**
-   * Returns a string representation of the displayedStartDate of the card
-   */
-  displayStartDate() {
-    return moment(this.receiptItem.startDate).format('YYYY-MM-DD');
-  }
-
-   /**
-   * Returns a string representation of the displayedEndDate of the card
-   */
-  displayEndDate() {
-    if (this.receiptItem.endDate != null) {
-      return moment(this.receiptItem.endDate).format('YYYY-MM-DD');
+    if (this.receiptItem.card) {
+      this.itemTypeToDisplay = this.receiptItem.card.cardType.name;
+      this.itemIDToDisplay = this.receiptItem.card.cardNumber;
+    } else if (this.receiptItem.document) {
+      this.itemTypeToDisplay = this.receiptItem.document.documentType.name;
+      this.itemIDToDisplay = this.receiptItem.document.documentNumber;
     }
 
+    this.itemActive = this.receiptItem.endDate == null;
+  }
+
+  openPDF() {
+    if (this.receiptItem.url) {
+      window.open(this.receiptItem.url, '_blank');
+    }
   }
 
 }

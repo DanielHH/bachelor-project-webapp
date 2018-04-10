@@ -1,0 +1,186 @@
+<form #modifyForm="ngForm" (ngSubmit)="modalType ? editDelivery() : addNewDelivery()">
+  <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [closeName]="'Avbryt'" [submitName]="'Spara'">
+
+    <!-- Row document type & document number -->
+    <div class="row">
+
+      <!-- Document type -->
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input id="documentTypeInput" name="documentTypeInput" [(ngModel)]="documentTypeInput"
+          maxlength="128" [style.color]="isValidDocumentType() ? 'black' : 'gray'"
+            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="documentTypes"
+            [formControl]="documentTypeControl"
+            maxlength="10" appDocumentType required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocumentType()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="documentTypeInput" matSuffix mat-icon-button
+          aria-label="Clear" (click)="documentTypeInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Dropdown-->
+          <mat-autocomplete #documentTypes="matAutocomplete">
+            <mat-option *ngFor="let documentType of filteredDocumentTypes | async" [value]="documentType.name">
+              {{ documentType.name }}
+            </mat-option>
+          </mat-autocomplete>
+          <!--Error-->
+          <mat-error *ngIf="documentTypeControl.hasError('required')">Ange en typ</mat-error>
+          <mat-error *ngIf="!documentTypeControl.hasError('required') && documentTypeControl.hasError('docType')">
+            Ogiltig typ</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="documentNumberInput" name="documentNumberInput" [(ngModel)]="documentNumberInput"
+          maxlength="128" placeholder="Dokument-ID"
+            [formControl]="documentNumberControl" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocumentNumber()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="documentNumberInput" matSuffix mat-icon-button
+          aria-label="Clear" (click)="documentNumberInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="documentNumberControl.hasError('required')">Ange ett dokument-ID</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Row document name & sender -->
+    <div class="row">
+
+      <!-- Document name -->
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="nameInput" name="nameInput" [(ngModel)]="documentNameInput"
+          [(formControl)]="documentNameControl" maxlength="128"
+            placeholder="Benämning" [style.color]="isValidDocumentName() ? 'black' : 'gray'" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocumentName()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="documentNameInput" matSuffix mat-icon-button aria-label="Clear"
+          (click)="nameInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="documentNameControl.hasError('required')">Ange en benämning</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Receiver -->
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="senderInput" name="receiverInput" [(ngModel)]="receiverInput" maxlength="128"
+          placeholder="Mottagare" [formControl]="receiverControl" [style.color]="isValidReceiver() ? 'black' : 'gray'" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidReceiver()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="receiverInput" matSuffix mat-icon-button aria-label="Clear"
+          (click)="senderInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="receiverControl.hasError('required')">Ange en mottagare</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Row 3 Document date & sent date-->
+    <div class="row">
+
+      <!-- Document date -->
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="docDateInput" name="docDateInput" [(ngModel)]="documentDateInput"
+          placeholder="Daterat datum"
+            [style.color]="isValidDocumentDate() ? 'black' : 'gray'" maxlength="10" (input)="setDocumentDateToDatePicker();"
+            [formControl]="documentDateControl"
+            appDate required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidDocumentDate()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="documentDateInput" matSuffix mat-icon-button aria-label="Clear"
+          (click)="docDateInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--DatePicker-->
+          <mat-datepicker #docDatepicker></mat-datepicker>
+          <!--Hidden input connected to the date picker-->
+          <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="documentDateDatepickerInput"
+          [matDatepicker]="docDatepicker"
+          (dateInput)="setDocumentDateFromDatepicker($event);" type="hidden">
+          <mat-datepicker-toggle matSuffix [for]="docDatepicker"></mat-datepicker-toggle>
+          <!--Errors-->
+          <mat-error *ngIf="documentDateControl.hasError('required')">
+            Ange ett daterat-datum
+          </mat-error>
+          <mat-error *ngIf="!documentDateControl.hasError('required') && documentDateControl.hasError('dateFormat')">
+            Ogiltigt datumformat
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Sent date -->
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="sentDateInput" name="sentDateInput"
+          [(ngModel)]="sentDateInput" placeholder="Skickat datum"
+            [style.color]="isValidSentDate() ? 'black' : 'gray'" maxlength="10"
+            (input)="setSentDateToDatePicker();"
+            [formControl]="sentDateControl" appDate required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidSentDate()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="sentDateInput" matSuffix
+          mat-icon-button aria-label="Clear" (click)="sentDateInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--DatePicker-->
+          <mat-datepicker #sentDatepicker></mat-datepicker>
+          <!--Hidden input connected to the date picker-->
+          <input id="sentDateDatepickerInput" name="sentDateDatepickerInput"
+          [(ngModel)]="sentDateDatepickerInput"
+            [matDatepicker]="sentDatepicker" (dateInput)="setSentDateFromDatepicker($event);"
+            type="hidden">
+          <mat-datepicker-toggle matSuffix class="size-big" [for]="sentDatepicker"></mat-datepicker-toggle>
+          <!--Errors-->
+          <mat-error *ngIf="sentDateControl.hasError('required')">
+            Ange ett skickat-datum
+          </mat-error>
+          <mat-error *ngIf="!sentDateControl.hasError('required') && sentDateControl.hasError('dateFormat')">
+            Ogiltigt datumformat
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Row Comment -->
+    <div class="col-12">
+      <mat-form-field>
+        <!--Input-->
+        <input matInput name="commentInput" [(ngModel)]="commentInput"
+        maxlength="128" placeholder="Kommentar">
+        <!--Clear-->
+        <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
+        aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </app-modal>
+</form>

@@ -1,3 +1,5 @@
+import { UserType } from './userType';
+
 /**
  * User data model
  */
@@ -11,7 +13,7 @@ export class User {
   /**
    * User type
    */
-  userType: number;
+  userType: UserType;
 
   /**
    * Username

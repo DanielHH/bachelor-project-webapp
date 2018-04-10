@@ -1,16 +1,8 @@
-.row {
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-  
-  .row:hover {
-    background-color: rgba(208, 214, 212, 0.479);
-  }
-  
-  .detail-link {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.5;
-    }
-  }
-  
+.material-icons {
+  font-size: 15px !important;
+  margin-right: 8px !important;
+}
+
+.status-btn {
+  min-width: 60px;
+}
