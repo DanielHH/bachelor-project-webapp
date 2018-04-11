@@ -24,6 +24,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
 import { CardType } from '../../../../datamodels/cardType';
+import { BaseType } from '../../../../datamodels/baseType';
 
 @Component({
   selector: 'app-modify-type',
@@ -41,18 +42,10 @@ export class ModifyTypeComponent implements OnInit {
   typeControl = new FormControl('', Validators.required);
 
   // Database data lists
-  cardTypes = [];
-  documentTypes = [];
+  cardTypeList = [];
+  documentTypeList = [];
 
-  // Filtered lists
-  filteredCardTypes: Observable<any[]> = this.cardTypeControl.valueChanges.pipe(
-    startWith(''),
-    map(cardType => (cardType ? this.filterCardTypes(cardType) : this.cardTypes.slice()))
-  );
-
-  @Input() cardList: Card[];
-
-  cardItem: Card;
+  typeItem: BaseType;
 
   @Input() modalTitle = '';
 
@@ -81,17 +74,17 @@ export class ModifyTypeComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.cardTypeList.subscribe(cardTypes => {
-      this.cardTypes = cardTypes;
-      this.cardTypeControl.updateValueAndValidity({
-        onlySelf: false,
-        emitEvent: true
-      });
+    this.dataService.cardTypeList.subscribe(cardTypeList => {
+      this.cardTypeList = cardTypeList;
     });
 
-    this.modalService.editCard.subscribe(card => {
-      if (card && card.id) {
-        this.cardItem = card;
+    this.dataService.documentTypeList.subscribe(documentTypeList => {
+      this.documentTypeList = documentTypeList;
+    });
+
+    this.modalService.editType.subscribe(type => {
+      if (type && type.getType().id) {
+        this.typeItem = type;
 
         this.cardTypeInput = card.cardType.name;
         this.cardNumberInput = card.cardNumber;
@@ -156,12 +149,12 @@ export class ModifyTypeComponent implements OnInit {
       newCard.status = this.utilitiesService.getStatusFromID(1);
       newCard.user = new User();
 
-      this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
+      this.httpService.httpPost<CardType>('addNewCardType/', newType).then(res => {
         if (res.message === 'success') {
-          this.cardList.unshift(res.data);
+          this.cardTypeList.unshift(res.data);
           // Trigger view refresh
-          this.cardList = this.cardList.slice();
-          this.dataService.cardList.next(this.cardList);
+          this.cardTypeList = this.cardTypeList.slice();
+          this.dataService.cardList.next(this.cardTypeList);
 
           this.closeForm();
         }
