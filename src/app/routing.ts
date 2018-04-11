@@ -65,14 +65,16 @@ export const routes: Routes = [
   {
     path: 'document-detail',
     component: DocumentDetailComponent,
-    data: { name: 'Dokumentdetaljer', validUserTypes: [1] }
+    data: { name: 'Dokumentdetaljer', validUserTypes: [1] },
+    canActivate: [AuthGuard]
   },
   {
     path: 'self-verification',
     component: SelfVerificationComponent,
-    data: { name: 'Egenkontroll', validUserTypes: [2] }
+    data: { name: 'Egenkontroll', validUserTypes: [2] },
+    canActivate: [AuthGuard]
   },
-  { path: '**', component: HomeComponent, data: { name: 'Startsidan' } }
+  { path: '**', component: HomeComponent, data: { name: 'Startsidan' }, canActivate: [AuthGuard] }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {
