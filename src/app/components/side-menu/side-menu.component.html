@@ -4,7 +4,7 @@
       <span class="navbar-brand border-light">SecTrack</span>
     </div>
     <ul class="navbar-nav">
-      <li class="nav-item" routerLinkActive="active">
+      <li *ngIf="user.userType.id == 2" class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/self-verification">Egenkontroll</a>
       </li>
       <li *ngIf="user.userType.id == 1" class="nav-item" routerLinkActive="active">

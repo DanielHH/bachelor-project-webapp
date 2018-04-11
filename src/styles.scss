@@ -38,13 +38,16 @@ input {
   text-align: center !important;
 }
 
-.size-medium, .mat-datepicker-toggle .mat-icon-button {
+.size-medium,
+.mat-datepicker-toggle .mat-icon-button {
   font-size: 22px !important;
   height: 22px !important;
   width: 22px !important;
 }
 
-.form-check-label, .table-header, .mat-checkbox {
+.form-check-label,
+.table-header,
+.mat-checkbox {
   -webkit-user-select: none !important; /* Safari */
   -moz-user-select: none !important; /* Firefox */
   -ms-user-select: none !important; /* IE10+/Edge */
@@ -62,7 +65,8 @@ input {
   max-width: 496px;
 }
 
-.filter-checkbox, .narrow-filter-checkbox {
+.filter-checkbox,
+.narrow-filter-checkbox {
   display: inline-flex;
   justify-content: flex-start;
   margin-left: 5px;
@@ -107,4 +111,15 @@ input {
 
 input[type] {
   height: unset !important;
+}
+
+.mat-input-suffix {
+  align-self: flex-start !important;
+  margin-top: $font-size;
+}
+
+.modal-content {
+  .mat-form-field {
+    padding: 8px 16px !important;
+  }
 }
