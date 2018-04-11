@@ -230,14 +230,13 @@ export class RequestCardComponent implements OnInit {
 
       // Create new log event
       const logEvent = new LogEvent();
-      logEvent.itemTypeID = 1; // TODO: ENUM, 1 means card
-      logEvent.logTypeID = 1; // TODO: ENUM, 1 means 'requesting card'
-      logEvent.cardID = this.cardItem.id;
-      logEvent.logDate = this.cardItem.modifiedDate;
-      logEvent.ownerID = this.cardItem.user.id;
+      logEvent.itemType = this.utilitiesService.getItemTypeFromID(1); // TODO: ENUM, 1 means card
+      logEvent.logType = this.utilitiesService.getLogTypeFromID(5); // TODO: ENUM, 5 means 'utkvittering'
+      logEvent.card = this.cardItem;
+      logEvent.logDate = this.utilitiesService.getLocalDate();
+      logEvent.logText = this.cardItem.user.name;
 
       // Submit changes to database
-
       this.httpService
         .httpPost<LogEvent>('addNewLogEvent/', logEvent)
         .then(logEventRes => {

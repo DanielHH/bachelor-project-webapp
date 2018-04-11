@@ -14,6 +14,7 @@ import { Verification } from '../datamodels/verification';
 import { VerificationType } from '../datamodels/verificationType';
 import { StatusType } from '../datamodels/statusType';
 import { LogEvent } from '../datamodels/logEvent';
+import { LogType } from '../datamodels/logType';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
@@ -98,6 +99,16 @@ export class DataService {
    */
   itemTypeList: BehaviorSubject<ItemType[]> = new BehaviorSubject<ItemType[]>(this._itemTypeList);
 
+      /**
+   * List with all log types
+   */
+  _logTypeList: LogType[] = [];
+
+    /**
+   * A subscriber to the log type list
+   */
+  logTypeList: BehaviorSubject<LogType[]> = new BehaviorSubject<LogType[]>(this._logTypeList);
+
   /**
    * List with all verifications
    */
@@ -178,6 +189,7 @@ export class DataService {
     this.getStatusTypeList();
 
     this.getLogEventList();
+    this.getLogTypeList();
   }
 
   resetAllData() {
@@ -195,6 +207,9 @@ export class DataService {
 
     this._receiptList = null;
     this.receiptList.next(this._receiptList);
+
+    this._logEventList = null;
+    this.logEventList.next(this._logEventList);
 
     this._verificationList = null;
     this.verificationList.next(this._verificationList);
@@ -289,6 +304,13 @@ export class DataService {
     this.httpService.httpGet<LogEvent>('getLogEvents').then(data => {
       this._logEventList = data;
       this.logEventList.next(this._logEventList);
+    });
+  }
+
+  getLogTypeList() {
+    this.httpService.httpGet<LogType>('getLogTypes').then(data => {
+      this._logTypeList = data;
+      this.logTypeList.next(this._logTypeList);
     });
   }
 

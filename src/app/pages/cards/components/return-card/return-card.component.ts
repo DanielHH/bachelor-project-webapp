@@ -107,9 +107,9 @@ export class ReturnCardComponent implements OnInit {
 
       // Create new log event
       const logEvent = new LogEvent();
-      logEvent.itemTypeID = 1; // TODO: ENUM, 1 means card
-      logEvent.logTypeID = 2; // TODO: ENUM, 2 means 'returning card'
-      logEvent.cardID = this.cardItem.id;
+      logEvent.itemType = this.utilitiesService.getItemTypeFromID(1); // TODO: ENUM, 1 means card
+      logEvent.logType = this.utilitiesService.getLogTypeFromID(4); // TODO: ENUM, 4 means 'inkvittering'
+      logEvent.card = this.cardItem;
       logEvent.logDate = this.cardItem.modifiedDate;
 
       // Submit changes to server

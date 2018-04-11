@@ -39,13 +39,12 @@ export class CardhistoryItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
-      this.logEventItem.logTypeID === 1) { // show requested cards
-      this.owner = this.utilitiesService.getUserFromID(this.logEventItem.ownerID);
+    if (this.logEventItem.itemType.id === 1 && this.logEventItem.card.id === this.cardDetail.id &&
+      this.logEventItem.logType.id === 1) { // show requested cards
       this.eventToDisplay = 'Kort utkvitterades till ' + this.owner.username;
       this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
-      } else if (this.logEventItem.itemTypeID === 1 && this.logEventItem.cardID === this.cardDetail.id &&
-      this.logEventItem.logTypeID === 2) { // show returned cards
+      } else if (this.logEventItem.itemType.id === 1 && this.logEventItem.card.id === this.cardDetail.id &&
+      this.logEventItem.logType.id === 2) { // show returned cards
         this.eventToDisplay = 'Kort inkvitterat';
         this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
       }
