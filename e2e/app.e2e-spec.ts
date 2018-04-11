@@ -49,9 +49,9 @@ describe('Sprint1', function() {
     browser.sleep(500);
     element(by.name('cardTypeInput')).sendKeys('DBK');
     element(by.name('cardNumberInput')).sendKeys('TEST_NUMBER');
-    element(by.name('locationInput')).sendKeys('TEST_LOCATION');
+    element(by.name('cardLocationInput')).sendKeys('TEST_LOCATION');
     element(by.name('expirationDateInput')).sendKeys('2000-01-01');
-    element(by.name('commentInput')).sendKeys('TEST_COMMENT');
+    element(by.name('cardCommentInput')).sendKeys('TEST_COMMENT');
     element.all(by.buttonText('Spara')).click();
     browser.sleep(500);
 
@@ -74,8 +74,8 @@ describe('Sprint1', function() {
     element(by.name('senderInput')).sendKeys('TEST_SENDER');
     element(by.name('registrationDateInput')).sendKeys('2000-01-01');
     element(by.name('docDateInput')).sendKeys('2001-01-01');
-    element(by.name('locationInput')).sendKeys('TEST_LOCATION');
-    element(by.name('commentInput')).sendKeys('TEST_COMMENT');
+    element(by.name('docLocationInput')).sendKeys('TEST_LOCATION');
+    element(by.name('docCommentInput')).sendKeys('TEST_COMMENT');
     element.all(by.buttonText('Spara')).click();
     browser.sleep(500);
 
@@ -95,8 +95,8 @@ describe('Sprint1', function() {
     element.all(by.className('btn-menu')).first().click();
     editFromDropdown.click();
     browser.sleep(500);
-    element(by.name('locationInput')).clear();
-    element(by.name('locationInput')).sendKeys('TEST_LOCATION_EDITED');
+    element(by.name('docLocationInput')).clear();
+    element(by.name('docLocationInput')).sendKeys('TEST_LOCATION_EDITED');
     element(by.buttonText('Spara')).click();
     browser.sleep(500);
 
@@ -113,8 +113,8 @@ describe('Sprint1', function() {
       element.all(by.className('btn-menu')).first().click();
       editFromDropdown.click();
       browser.sleep(500);
-      element(by.name('commentInput')).clear();
-      element(by.name('commentInput')).sendKeys('TEST_COMMENT_EDITED');
+      element(by.name('cardCommentInput')).clear();
+      element(by.name('cardCommentInput')).sendKeys('TEST_COMMENT_EDITED');
       element(by.buttonText('Spara')).click();
       browser.sleep(500);
 
@@ -134,9 +134,9 @@ describe('Sprint1', function() {
         element.all(by.buttonText('Lägg till nytt kort')).click();
         element(by.name('cardTypeInput')).sendKeys('DBK');
         element(by.name('cardNumberInput')).sendKeys('TEST_NUMBER_' + i);
-        element(by.name('locationInput')).sendKeys('TEST_LOCATION_' + i);
+        element(by.name('cardLocationInput')).sendKeys('TEST_LOCATION_' + i);
         element(by.name('expirationDateInput')).sendKeys('2000-01-01');
-        element(by.name('commentInput')).sendKeys('TEST_COMMENT_' + i);
+        element(by.name('cardCommentInput')).sendKeys('TEST_COMMENT_' + i);
         element.all(by.buttonText('Spara')).click();
 
         // Den senaste tillagda läggs längst upp i tabellen, så kontroll görs visuellt istället för kod
@@ -165,8 +165,8 @@ describe('Sprint1', function() {
         element(by.name('senderInput')).sendKeys('TEST_SENDER_' + i);
         element(by.name('registrationDateInput')).sendKeys('2000-01-01');
         element(by.name('docDateInput')).sendKeys('2001-01-01');
-        element(by.name('locationInput')).sendKeys('TEST_LOCATION_' + i);
-        element(by.name('commentInput')).sendKeys('TEST_COMMENT_' + i);
+        element(by.name('docLocationInput')).sendKeys('TEST_LOCATION_' + i);
+        element(by.name('docCommentInput')).sendKeys('TEST_COMMENT_' + i);
         element.all(by.buttonText('Spara')).click();
         browser.sleep(500);
 
