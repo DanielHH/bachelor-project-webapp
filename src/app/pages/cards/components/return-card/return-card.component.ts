@@ -62,9 +62,13 @@ export class ReturnCardComponent implements OnInit {
       if (card && card.id) {
         this.cardItem = card;
 
-        this.commentInput = this.cardItem.comment;
-
         this._showModal = true;
+
+        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
+        // is 0 until after 200ms~ becuase of modal?
+        setTimeout(() => {
+          this.commentInput = card.comment;
+        }, 250);
 
       }
     });
@@ -132,7 +136,7 @@ export class ReturnCardComponent implements OnInit {
    */
   closeForm() {
     this.locationControl.reset();
-    this.commentInput = null;
+    this.commentInput = '';
     this.returnForm.resetForm();
 
     this.cardItem = Object.assign({}, new Card());

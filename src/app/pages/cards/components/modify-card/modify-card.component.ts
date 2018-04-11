@@ -1,4 +1,15 @@
-import { Component, OnInit, Input, Directive, Inject, ViewChild, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Directive,
+  Inject,
+  ViewChild,
+  Output,
+  EventEmitter,
+  ElementRef,
+  NgZone
+} from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
@@ -19,7 +30,6 @@ import { User } from '../../../../datamodels/user';
   styleUrls: ['./modify-card.component.scss']
 })
 export class ModifyCardComponent implements OnInit {
-
   // Form variables
   cardTypeInput = '';
   cardNumberInput = '';
@@ -32,6 +42,7 @@ export class ModifyCardComponent implements OnInit {
   cardTypeControl = new FormControl('', Validators.required);
   cardNumberControl = new FormControl('', Validators.required);
   locationControl = new FormControl('', Validators.required);
+  commentControl = new FormControl();
   expirationDateControl = new FormControl('', Validators.required);
   expirationDatePickerControl = new FormControl();
 
@@ -41,10 +52,7 @@ export class ModifyCardComponent implements OnInit {
   // Filtered lists
   filteredCardTypes: Observable<any[]> = this.cardTypeControl.valueChanges.pipe(
     startWith(''),
-    map(
-      cardType =>
-        cardType ? this.filterCardTypes(cardType) : this.cardTypes.slice()
-    )
+    map(cardType => (cardType ? this.filterCardTypes(cardType) : this.cardTypes.slice()))
   );
 
   @Input() cardList: Card[];
@@ -76,9 +84,8 @@ export class ModifyCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService,
+    private modalService: ModalService
   ) {
-
     this.dataService.cardTypeList.subscribe(cardTypes => {
       this.cardTypes = cardTypes;
       this.cardTypeControl.updateValueAndValidity({
@@ -87,7 +94,7 @@ export class ModifyCardComponent implements OnInit {
       });
     });
 
-    this.modalService.editCard.subscribe((card) => {
+    this.modalService.editCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -96,18 +103,22 @@ export class ModifyCardComponent implements OnInit {
         this.expirationDateInput = utilitiesService.getDateString(card.expirationDate);
         this.expirationDateDatepickerInput = this.expirationDateInput;
         this.locationInput = card.location;
-        this.commentInput = card.comment;
 
         this.modalType = 1;
         this.modalTitle = 'Ändra kort';
 
         this._showModal = true;
+
+        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
+        // is 0 until after 200ms~ becuase of modal?
+        setTimeout(() => {
+          this.commentInput = card.comment;
+        }, 250);
       }
     });
-
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   /**
    * Filters list of cardTypes based on cardType input
@@ -115,9 +126,7 @@ export class ModifyCardComponent implements OnInit {
    */
   filterCardTypes(str: string) {
     return this.cardTypes.filter(
-      cardType =>
-        str != null &&
-        cardType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
+      cardType => str != null && cardType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
     );
   }
 
@@ -167,7 +176,6 @@ export class ModifyCardComponent implements OnInit {
    * Attempts to submit edited card to database
    */
   editCard() {
-
     if (this.isValidInput()) {
       this.setCardFromForm(this.cardItem);
 
@@ -186,10 +194,7 @@ export class ModifyCardComponent implements OnInit {
    * Sets the datePicker the date entered in the input field.
    */
   setExpirationDateToDatePicker() {
-    if (
-      !this.expirationDateControl.hasError('required') &&
-      !this.expirationDateControl.hasError('dateFormat')
-    ) {
+    if (!this.expirationDateControl.hasError('required') && !this.expirationDateControl.hasError('dateFormat')) {
       this.expirationDateDatepickerInput = this.expirationDateInput; // Set date in Datepicker
     }
   }
@@ -208,10 +213,7 @@ export class ModifyCardComponent implements OnInit {
    * Returns true if entered card type is valid, else false.
    */
   isValidCardType() {
-    return (
-      !this.cardTypeControl.hasError('required') &&
-      !this.cardTypeControl.hasError('cardType')
-    );
+    return !this.cardTypeControl.hasError('required') && !this.cardTypeControl.hasError('cardType');
   }
 
   /**
@@ -232,20 +234,14 @@ export class ModifyCardComponent implements OnInit {
    * Returns true if entered expiration date is valid, else false.
    */
   isValidExpirationDate() {
-    return !this.expirationDateControl.hasError('required') &&
-      !this.expirationDateControl.hasError('dateFormat');
+    return !this.expirationDateControl.hasError('required') && !this.expirationDateControl.hasError('dateFormat');
   }
 
   /**
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
-    return (
-      this.isValidCardType() &&
-      this.isValidCardNumber() &&
-      this.isValidLocation() &&
-      this.isValidExpirationDate()
-    );
+    return this.isValidCardType() && this.isValidCardNumber() && this.isValidLocation() && this.isValidExpirationDate();
   }
 
   /**
