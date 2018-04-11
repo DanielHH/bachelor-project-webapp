@@ -13,4 +13,9 @@ export class DocumentType {
    */
   name: string;
 
+  /**
+   * Status of the document type
+   */
+  status: TypeStatus;
+
 }

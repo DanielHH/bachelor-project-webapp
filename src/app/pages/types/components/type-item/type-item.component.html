@@ -1,0 +1,32 @@
+<div class="row table-item" (click)="showDetailsModal()">
+  <div class="col-1">
+    <div *ngIf="cardItem?.status?.id == 1 || cardItem?.status?.id == 2">
+      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="cardItem?.status?.id == 2" [class.btn-success]="cardItem?.status?.id == 1"
+        (click)="showModal(); $event.stopPropagation()" mdbRippleRadius>
+        <span *ngIf="cardItem?.status?.id == 1">Kvittera ut</span>
+        <span *ngIf="cardItem?.status?.id == 2">Kvittera in</span>
+      </button>
+    </div>
+    <div *ngIf="cardItem?.status?.id == 3 || cardItem?.status?.id == 4">
+      <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <span *ngIf="cardItem?.status?.id == 3">Arkiverad</span>
+        <span *ngIf="cardItem?.status?.id == 4">Borttappad</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="col">
+    <i class="material-icons">credit_card</i>
+    {{cardItem?.cardType?.name}}
+  </div>
+  <div class="col">{{cardItem?.cardNumber}}</div>
+  <div class="col">{{cardItem?.user?.name}}</div>
+  <div class="col">{{cardItem?.location}}</div>
+  <div class="col">{{cardItem?.comment}}</div>
+  <div class="col">
+    <div class="column-text">{{utilitiesService.getDateString(this.cardItem?.expirationDate)}}</div>
+    <div class="pull-right table-menu-fix">
+      <app-item-menu [item]="cardItem" (editItem)="edit()" (editStatus)="editStatus()" [showDetailsOption]="true" [showEditOption]="true"></app-item-menu>
+    </div>
+  </div>
+</div>

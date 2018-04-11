@@ -85,6 +85,14 @@ import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-de
 import { PdfGenerationComponent } from './components/pdf-generation/pdf-generation.component';
 import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
 import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
+import { UsersComponent } from './pages/users/users.component';
+import { TypesComponent } from './pages/types/types.component';
+import { ModifyTypeComponent } from './pages/types/components/modify-type/modify-type.component';
+import { TypeTableComponent } from './pages/types/components/type-table/type-table.component';
+import { TypeItemComponent } from './pages/types/components/type-item/type-item.component';
+import { UserItemComponent } from './pages/users/user-item/user-item.component';
+import { UserTableComponent } from './pages/users/user-table/user-table.component';
+import { ModifyUserComponent } from './pages/users/modify-user/modify-user.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +146,15 @@ import { SelfVerificationComponent } from './pages/self-verification/self-verifi
     ModifyDeliveryComponent,
     PdfGenerationComponent,
     DeliveryDetailComponent,
-    SelfVerificationComponent
+    SelfVerificationComponent,
+    UsersComponent,
+    TypesComponent,
+    ModifyTypeComponent,
+    TypeTableComponent,
+    TypeItemComponent,
+    UserItemComponent,
+    UserTableComponent,
+    ModifyUserComponent
   ],
   imports: [
     BrowserModule,

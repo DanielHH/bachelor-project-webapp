@@ -13,4 +13,9 @@ export class CardType {
    */
   name: string;
 
+  /**
+   * Status of the card type
+   */
+  status: TypeStatus;
+
 }
