@@ -46,7 +46,11 @@ export class BaseType {
    * Get id of this type.
   */
   getType(): any {
-    return this.type;
+    if (this.isCardType()) {
+      return this.type as CardType;
+    } else {
+      return this.type as DocumentType;
+    }
   }
 
   /**

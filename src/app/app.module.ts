@@ -51,6 +51,7 @@ import { DateValidatorDirective } from './directives/date.directive';
 import { DataService } from './services/data.service';
 import { RouteDataService } from './services/route-data.service';
 import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
+import { MatchFilterTypePipe } from './pipes/match-filter-type.pipe';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
@@ -120,6 +121,7 @@ import { ModifyUserComponent } from './pages/users/modify-user/modify-user.compo
     DocumentTypeValidatorDirective,
     DateValidatorDirective,
     MatchFilterCardPipe,
+    MatchFilterTypePipe,
     CardDetailComponent,
     DocumentItemComponent,
     DocumentTableComponent,
@@ -197,6 +199,7 @@ import { ModifyUserComponent } from './pages/users/modify-user/modify-user.compo
     RouteDataService,
     UtilitiesService,
     MatchFilterCardPipe,
+    MatchFilterTypePipe,
     MatchFilterDocumentPipe,
     ModalService
   ],

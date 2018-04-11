@@ -6,6 +6,7 @@ import { ModifyTypeComponent } from '../modify-type/modify-type.component';
 import { NgForm } from '@angular/forms';
 import { CardType } from '../../../../datamodels/cardType';
 import { DocumentType } from '../../../../datamodels/documentType';
+import { BaseType } from '../../../../datamodels/baseType';
 
 @Component({
   selector: 'app-type-table',
@@ -14,21 +15,17 @@ import { DocumentType } from '../../../../datamodels/documentType';
 })
 export class TypeTableComponent implements OnInit {
 
-  @Input() cardTypeList: CardType[];
-  @Input() documentTypeList: DocumentType[];
+  @Input() typeList: BaseType[];
 
-  cardTypeItem = new CardType(); // Dummy
+  typeItem = new CardType(); // Dummy
 
   showModal = false;
 
   filterInput = '';
 
+  orderName = '';
   orderStatus = '';
-  orderCardType = '';
-  orderCardNumber = '';
-  orderUserID = '';
-  orderLocation = '';
-  orderComment = '';
+  orderType = '';
   orderDate = '';
 
   showCardTypes = true;
@@ -50,7 +47,7 @@ export class TypeTableComponent implements OnInit {
    * Sorts table after location descending
    */
   sortTableListStart() {
-    this.cardTypeList = _.orderBy(this.cardTypeList, ['modifiedDate'], ['desc']);
+    // this.typeList = _.orderBy(this.typeList, ['modifiedDate'], ['desc']);
   }
 
   /**

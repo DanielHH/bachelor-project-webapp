@@ -23,6 +23,7 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
+import { CardType } from '../../../../datamodels/cardType';
 
 @Component({
   selector: 'app-modify-type',
@@ -32,23 +33,16 @@ import { User } from '../../../../datamodels/user';
 export class ModifyTypeComponent implements OnInit {
 
   // Form variables
-  cardTypeInput = '';
-  cardNumberInput = '';
-  locationInput = '';
-  expirationDateInput = '';
-  expirationDateDatepickerInput = '';
-  commentInput = '';
+  typeNameInput = '';
+  typeInput = '';
 
   // Form Controls
-  cardTypeControl = new FormControl('', Validators.required);
-  cardNumberControl = new FormControl('', Validators.required);
-  locationControl = new FormControl('', Validators.required);
-  commentControl = new FormControl();
-  expirationDateControl = new FormControl('', Validators.required);
-  expirationDatePickerControl = new FormControl();
+  typeNameControl = new FormControl('', Validators.required);
+  typeControl = new FormControl('', Validators.required);
 
   // Database data lists
   cardTypes = [];
+  documentTypes = [];
 
   // Filtered lists
   filteredCardTypes: Observable<any[]> = this.cardTypeControl.valueChanges.pipe(
@@ -135,13 +129,10 @@ export class ModifyTypeComponent implements OnInit {
    * Sets fields in card according to form
    * @param card Card to set form data to
    */
-  setCardFromForm(card: Card) {
+  setTypeFromForm(type: any) {
     if (this.isValidInput()) {
-      card.cardType = this.utilitiesService.getCardType(0, this.cardTypeInput);
-      card.cardNumber = this.cardNumberInput;
-      card.location = this.locationInput;
-      card.expirationDate = new Date(this.expirationDateInput);
-      card.comment = this.commentInput;
+      type.name = typeNameInput;
+      type.status = 1; // TODO: SET TO ACTIVE STATUS NUMBER
 
       card.modifiedDate = this.utilitiesService.getLocalDate();
     }
@@ -150,11 +141,16 @@ export class ModifyTypeComponent implements OnInit {
   /**
    * Attempts to submit new card to database
    */
-  addNewCard() {
+  addNewtype() {
     if (this.isValidInput()) {
-      const newCard = new Card();
+      let newType;
+      if (this.typeItem.isCardType()) {
+        newType = new CardType();
+      } else {
+        newType = new DocumentType();
+      }
 
-      this.setCardFromForm(newCard);
+      this.setTypeFromForm(newType);
 
       newCard.creationDate = this.utilitiesService.getLocalDate();
       newCard.status = this.utilitiesService.getStatusFromID(1);
@@ -176,73 +172,52 @@ export class ModifyTypeComponent implements OnInit {
   /**
    * Attempts to submit edited card to database
    */
-  editCard() {
+  editType() {
     if (this.isValidInput()) {
-      this.setCardFromForm(this.cardItem);
+      this.setTypeFromForm(this.typeItem);
 
-      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-        if (res.message === 'success') {
-          this.cardList = this.cardList.slice();
-          this.dataService.cardList.next(this.cardList);
+      if (this.typeItem.isCardType()) {
+        this.httpService.httpPut<CardType>('updateCardType/', this.typeItem).then(res => {
+          if (res.message === 'success') {
+            this.cardTypeList = this.cardTypeList.slice();
+            this.dataService.cardTypeList.next(this.cardTypeList);
 
-          this.closeForm();
-        }
-      });
+            this.closeForm();
+          }
+        });
+      } else {
+        this.httpService.httpPut<DocumentType>('updateDocumenType/', this.typeItem).then(res => {
+          if (res.message === 'success') {
+            this.documentTypeList = this.documentTypeList.slice();
+            this.dataService.documentTypeList.next(this.documentTypeList);
+
+            this.closeForm();
+          }
+        });
+      }
     }
   }
 
   /**
-   * Sets the datePicker the date entered in the input field.
+   * Returns true if entered type is valid, else false.
    */
-  setExpirationDateToDatePicker() {
-    if (!this.expirationDateControl.hasError('required') && !this.expirationDateControl.hasError('dateFormat')) {
-      this.expirationDateDatepickerInput = this.expirationDateInput; // Set date in Datepicker
-    }
+  isValidType() {
+    return !this.typeControl.hasError('required') &&
+    !(this.typeControl.hasError('cardType') && this.typeControl.hasError('documentType'));
   }
 
   /**
-   * Sets expirationDate from datePicker to visible input field in YYYY-MM-DD format
-   * @param data Date selected in datePicker
+   * Returns true if entered type is valid, else false.
    */
-  setExpirationDateFromDatepicker(data: any) {
-    if (data.value != null) {
-      this.expirationDateInput = this.utilitiesService.getDateString(data.value);
-    }
-  }
-
-  /**
-   * Returns true if entered card type is valid, else false.
-   */
-  isValidCardType() {
-    return !this.cardTypeControl.hasError('required') && !this.cardTypeControl.hasError('cardType');
-  }
-
-  /**
-   * Returns true if entered card number is valid, else false.
-   */
-  isValidCardNumber() {
-    return !this.cardNumberControl.hasError('required');
-  }
-
-  /**
-   * Returns true if entered location is valid, else false.
-   */
-  isValidLocation() {
-    return !this.locationControl.hasError('required');
-  }
-
-  /**
-   * Returns true if entered expiration date is valid, else false.
-   */
-  isValidExpirationDate() {
-    return !this.expirationDateControl.hasError('required') && !this.expirationDateControl.hasError('dateFormat');
+  isValidTypeName() {
+    return !this.typeNameControl.hasError('required');
   }
 
   /**
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
-    return this.isValidCardType() && this.isValidCardNumber() && this.isValidLocation() && this.isValidExpirationDate();
+    return this.isValidType() && this.isValidTypeName();
   }
 
   /**
