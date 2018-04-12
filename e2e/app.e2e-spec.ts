@@ -1,7 +1,7 @@
 import { AppPage } from './app.po';
 import { browser, by, element, ExpectedConditions, Button } from 'protractor';
 
-describe('Sprint1', function() {
+describe('Sprint2', function() {
 
   const documentsFromMenu = element(by.linkText('Handlingar'));
   const cardsFromMenu = element(by.linkText('Kort'));
@@ -42,7 +42,7 @@ describe('Sprint1', function() {
     expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
   });
 
-  // 5 - PASS
+  // 5 - PASS (not for firefox)
   it('should work to add a new card to database', function() {
     cardsFromMenu.click();
     element.all(by.buttonText('Lägg till nytt kort')).click();
@@ -63,7 +63,7 @@ describe('Sprint1', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain(s);
   });
 
-  // 6 - PASS
+  // 6 - PASS (not for firefox)
   it('should work to add a new document to database', function() {
     documentsFromMenu.click();
     element.all(by.buttonText('Lägg till ny handling')).click();
@@ -89,7 +89,7 @@ describe('Sprint1', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain(s2);
   });
 
-  // 7 - PASS
+  // 7 - PASS (not for firefox)
   it('should work to edit information of a document', function() {
     documentsFromMenu.click();
     element.all(by.className('btn-menu')).first().click();
@@ -107,7 +107,7 @@ describe('Sprint1', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain(s1);
   });
 
-    // 8 - PASS
+    // 8 - PASS (not for firefox)
     it('should work to edit information of a card', function() {
       cardsFromMenu.click();
       element.all(by.className('btn-menu')).first().click();
@@ -125,7 +125,7 @@ describe('Sprint1', function() {
       expect(element.all(by.tagName('pre')).first().getText()).toContain(s1);
     });
 
-    // 9 - PASS
+    // 9 - PASS (not for firefox)
     it('should give card added confirmation under average 5 seconds', function() {
       cardsFromMenu.click();
       const amount = 5;
@@ -151,7 +151,7 @@ describe('Sprint1', function() {
       }
     });
 
-    // 10 - PASS
+    // 10 - PASS (not for firefox)
     it('should give document added confirmation under average 5 seconds', function() {
       documentsFromMenu.click();
       const amount = 5;
