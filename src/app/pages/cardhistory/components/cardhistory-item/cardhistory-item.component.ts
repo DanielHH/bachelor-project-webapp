@@ -23,6 +23,7 @@ export class CardhistoryItemComponent implements OnInit {
   // cardList: Card[] = [];
 
   logDate: string;
+  logType: string;
   eventToDisplay: string;
   userToDisplay: string;
 
@@ -40,13 +41,15 @@ export class CardhistoryItemComponent implements OnInit {
 
   ngOnInit() {
     if (this.logEventItem.itemType.id === 1 && this.logEventItem.card.id === this.cardDetail.id &&
-      this.logEventItem.logType.id === 1) { // show requested cards
-      this.eventToDisplay = 'Kort utkvitterades till ' + this.owner.username;
+      this.logEventItem.logType.id === 5) { // show requested cards
       this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
+      this.logType = this.logEventItem.logType.name;
+      this.eventToDisplay = this.logEventItem.logText;
       } else if (this.logEventItem.itemType.id === 1 && this.logEventItem.card.id === this.cardDetail.id &&
-      this.logEventItem.logType.id === 2) { // show returned cards
-        this.eventToDisplay = 'Kort inkvitterat';
+      this.logEventItem.logType.id === 4) { // show returned cards
         this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
+        this.logType = this.logEventItem.logType.name;
+        this.eventToDisplay = this.logEventItem.logText;
       }
   }
 }
