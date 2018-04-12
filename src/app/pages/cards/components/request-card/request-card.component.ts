@@ -233,6 +233,7 @@ export class RequestCardComponent implements OnInit {
                   this.pdfURL = newReceipt.url;
                   this.hideSubmit = true;
                   this.closeText = 'Avbryt';
+                  this.updateLists(res.data.logEvent, newReceipt);
                 }
               });
             } else {
