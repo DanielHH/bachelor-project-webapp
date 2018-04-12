@@ -93,10 +93,14 @@ export class RequestCardComponent implements OnInit {
 
         this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
         this.startDateDatepickerInput = this.startDateInput;
-        this.commentInput = this.cardItem.comment;
         this.generatePDF = true;
 
         this._showModal = true;
+        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
+        // is 0 until after 200ms~ becuase of modal?
+        setTimeout(() => {
+          this.commentInput = card.comment;
+        }, 250);
       }
     });
   }

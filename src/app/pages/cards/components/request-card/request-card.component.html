@@ -116,34 +116,7 @@
             </mat-form-field>
           </span>
         </div>
-        <div class="col-12 col-md-5 wide-center">
-          <mat-form-field>
-            <!--Input-->
-            <input matInput name="locationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Ny förvaringsplats"
-              [formControl]="locationControl" required>
-            <!--Check and clear-->
-            <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-              <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
-            </button>
-            <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''"
-              tabindex="-1">
-              <mat-icon>close</mat-icon>
-            </button>
-            <!--Error-->
-            <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-0 col-md-1"></div>
-      </div>
-
-      <div class="row py-1"></div>
-      <!-- Row Space -->
-
-      <!-- Row Start Date and comment -->
-      <div class="row">
-        <div class="col-0 col-md-1"></div>
-        <!-- Start date -->
-        <div class="col-12 col-md-5 wide-center">
+        <div class="col-10 col-md-5 wide-center">
           <mat-form-field>
             <!--Input-->
             <input matInput id="startDateInput" name="startDateInput" [(ngModel)]="startDateInput" placeholder="Startdatum" [style.color]="isValidStartDate() ? 'black' : 'gray'"
@@ -171,11 +144,42 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <!-- Comment -->
-        <div class="col-12 col-md-5">
+        <div class="col-0 col-md-1"></div>
+      </div>
+
+      <!-- Row location -->
+      <div class="row">
+        <div class="col-0 col-md-1"></div>
+        <!-- Start date -->
+        <div class="col-10">
           <mat-form-field>
             <!--Input-->
-            <input matInput name="commentInput" [(ngModel)]="commentInput" maxlength="128" placeholder="Kommentar">
+            <input matInput name="locationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Ny förvaringsplats" [formControl]="locationControl"
+              required>
+            <!--Check and clear-->
+            <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+              <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
+            </button>
+            <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''"
+              tabindex="-1">
+              <mat-icon>close</mat-icon>
+            </button>
+            <!--Error-->
+            <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-0 col-md-1"></div>
+      </div>
+
+      <!-- Row comment -->
+      <div class="row">
+        <div class="col-0 col-md-1"></div>
+        <!-- Comment -->
+        <div class="col-10">
+          <mat-form-field>
+            <!--Input-->
+            <textarea matInput name="commentInput" [(ngModel)]="commentInput" maxlength="256" placeholder="Kommentar" matTextareaAutosize
+              matAutosizeMaxRows="5"></textarea>
             <!--Clear-->
             <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear" (click)="commentInput = ''"
               tabindex="-1">
@@ -183,10 +187,9 @@
             </button>
           </mat-form-field>
         </div>
-
-        <div class="col-12 col-md-1"></div>
-
+        <div class="col-0 col-md-1"></div>
       </div>
+
 
       <div class="row py-3">
         <div class="col-0 col-md-4"></div>
