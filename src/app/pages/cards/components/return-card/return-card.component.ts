@@ -37,6 +37,8 @@ export class ReturnCardComponent implements OnInit {
 
   cardItem: Card = null;
 
+  latestUser: User = null;
+
   locationControl = new FormControl('', Validators.required);
 
   locationInput = '';
@@ -92,6 +94,8 @@ export class ReturnCardComponent implements OnInit {
    */
   returnCard() {
     if (this.isValidLocation()) {
+      // Save latestUser for LogEvent
+      this.latestUser = this.cardItem.user;
       // Set card information
       this.cardItem.user = new User();
       this.cardItem.location = this.locationInput;
@@ -111,6 +115,7 @@ export class ReturnCardComponent implements OnInit {
       logEvent.logType = this.utilitiesService.getLogTypeFromID(4); // TODO: ENUM, 4 means 'inkvittering'
       logEvent.card = this.cardItem;
       logEvent.logDate = this.cardItem.modifiedDate;
+      logEvent.logText = this.latestUser.name;
 
       // Submit changes to server
       this.httpService
