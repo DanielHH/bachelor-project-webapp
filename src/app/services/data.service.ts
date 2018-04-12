@@ -13,6 +13,8 @@ import { User } from '../datamodels/user';
 import { Verification } from '../datamodels/verification';
 import { VerificationType } from '../datamodels/verificationType';
 import { StatusType } from '../datamodels/statusType';
+import { LogEvent } from '../datamodels/logEvent';
+import { LogType } from '../datamodels/logType';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
@@ -97,6 +99,16 @@ export class DataService {
    */
   itemTypeList: BehaviorSubject<ItemType[]> = new BehaviorSubject<ItemType[]>(this._itemTypeList);
 
+      /**
+   * List with all log types
+   */
+  _logTypeList: LogType[] = [];
+
+    /**
+   * A subscriber to the log type list
+   */
+  logTypeList: BehaviorSubject<LogType[]> = new BehaviorSubject<LogType[]>(this._logTypeList);
+
   /**
    * List with all verifications
    */
@@ -127,7 +139,21 @@ export class DataService {
   /**
    * A subscriber to the status type list
    */
-  statusTypeList: BehaviorSubject<StatusType[]> = new BehaviorSubject<StatusType[]>(this._statusTypeList);
+  statusTypeList: BehaviorSubject<StatusType[]> = new BehaviorSubject<StatusType[]>(
+    this._statusTypeList
+  );
+
+  /**
+   * List with all log events
+   */
+  _logEventList: LogEvent[] = [];
+
+  /**
+   * A subscriber to the log event list
+   */
+  logEventList: BehaviorSubject<LogEvent[]> = new BehaviorSubject<LogEvent[]>(
+    this._logEventList
+  );
 
   constructor(private httpService: HttpService, private authService: AuthService) {
     this.authService.user.subscribe(user => {
@@ -161,6 +187,9 @@ export class DataService {
     this.getVerificationTypeList();
 
     this.getStatusTypeList();
+
+    this.getLogEventList();
+    this.getLogTypeList();
   }
 
   resetAllData() {
@@ -178,6 +207,9 @@ export class DataService {
 
     this._receiptList = null;
     this.receiptList.next(this._receiptList);
+
+    this._logEventList = null;
+    this.logEventList.next(this._logEventList);
 
     this._verificationList = null;
     this.verificationList.next(this._verificationList);
@@ -267,4 +299,19 @@ export class DataService {
       this.statusTypeList.next(this._statusTypeList);
     });
   }
+
+  getLogEventList() {
+    this.httpService.httpGet<LogEvent>('getLogEvents').then(data => {
+      this._logEventList = data;
+      this.logEventList.next(this._logEventList);
+    });
+  }
+
+  getLogTypeList() {
+    this.httpService.httpGet<LogType>('getLogTypes').then(data => {
+      this._logTypeList = data;
+      this.logTypeList.next(this._logTypeList);
+    });
+  }
+
 }
