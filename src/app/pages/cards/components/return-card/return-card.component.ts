@@ -61,7 +61,7 @@ export class ReturnCardComponent implements OnInit {
     });
 
     // Return card subscriber
-    this.modalService.returnCard.subscribe((card) => {
+    this.modalService.returnCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -104,7 +104,6 @@ export class ReturnCardComponent implements OnInit {
         this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
-
       // Update receipt
       const activeReceipt = this.getReceipt(this.cardItem.activeReceipt);
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
@@ -119,27 +118,31 @@ export class ReturnCardComponent implements OnInit {
 
       // Submit changes to server
 
-            this.httpService
-              .httpPut<Receipt>('updateReceipt/', { receipt: activeReceipt, logEvent: logEvent, card: this.cardItem})
-              .then(res => {
-                console.log(res);
-                if (res.message === 'success') {
-                  this.cardItem.activeReceipt = null;
-                        // Update log event list
-                        this.logEvents.unshift(res.data.logEvent);
-                        this.logEvents = this.logEvents.slice();
-                        this.dataService.logEventList.next(this.logEvents);
+      this.httpService
+        .httpPut<Receipt>('updateReceipt/', {
+          receipt: activeReceipt,
+          logEvent: logEvent,
+          card: this.cardItem
+        })
+        .then(res => {
+          console.log(res);
+          if (res.message === 'success') {
+            this.cardItem.activeReceipt = null;
+            // Update log event list
+            this.logEvents.unshift(res.data.logEvent);
+            this.logEvents = this.logEvents.slice();
+            this.dataService.logEventList.next(this.logEvents);
 
-                        // Update receipt list
-                        this.receipts = this.receipts.slice();
-                        this.dataService.receiptList.next(this.receipts);
+            // Update receipt list
+            this.receipts = this.receipts.slice();
+            this.dataService.receiptList.next(this.receipts);
 
-                        // Update card list
-                        this.dataService.cardList.next(this.cards);
+            // Update card list
+            this.dataService.cardList.next(this.cards);
 
-                        this.showModal = false;
-                      }
-                    });
+            this.showModal = false;
+          }
+        });
     }
   }
 
