@@ -1,7 +1,7 @@
 import { HttpModule } from '@angular/http';
 import { HttpService } from './services/http.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { routing } from './routing';
@@ -204,6 +204,7 @@ import { ModifyUserComponent } from './pages/users/modify-user/modify-user.compo
     ModalService
   ],
   entryComponents: [],
+  schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
