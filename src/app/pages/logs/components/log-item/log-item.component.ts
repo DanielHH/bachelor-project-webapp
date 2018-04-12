@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
   selector: 'app-log-item',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./log-item.component.scss']
 })
 export class LogItemComponent implements OnInit {
+
+  @Input() logItem: LogEvent;
 
   constructor() { }
 

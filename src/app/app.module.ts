@@ -87,6 +87,7 @@ import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-
 import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
 import { LogTableComponent } from './pages/logs/components/log-table/log-table.component';
 import { LogItemComponent } from './pages/logs/components/log-item/log-item.component';
+import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
 
 @NgModule({
   declarations: [
@@ -142,7 +143,8 @@ import { LogItemComponent } from './pages/logs/components/log-item/log-item.comp
     DeliveryDetailComponent,
     SelfVerificationComponent,
     LogTableComponent,
-    LogItemComponent
+    LogItemComponent,
+    MatchFilterLogPipe
   ],
   imports: [
     BrowserModule,
