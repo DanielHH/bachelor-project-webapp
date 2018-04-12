@@ -57,10 +57,7 @@ export class RequestCardComponent implements OnInit {
 
   filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
     startWith(''),
-    map(
-      user =>
-        user ? this.filterUsers(user) : this.users ? this.users.slice() : []
-    )
+    map(user => (user ? this.filterUsers(user) : this.users ? this.users.slice() : []))
   );
 
   user: User;
@@ -96,9 +93,7 @@ export class RequestCardComponent implements OnInit {
       if (card && card.id) {
         this.cardItem = card;
 
-        this.startDateInput = utilitiesService.getDateString(
-          utilitiesService.getLocalDate()
-        );
+        this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
         this.startDateDatepickerInput = this.startDateInput;
         this.commentInput = this.cardItem.comment;
         this.generatePDF = true;
@@ -131,10 +126,7 @@ export class RequestCardComponent implements OnInit {
    */
   filterUsers(str: string) {
     return this.users.filter(
-      user =>
-        str &&
-        typeof str === 'string' &&
-        user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
+      user => str && typeof str === 'string' && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
     );
   }
 
@@ -150,10 +142,7 @@ export class RequestCardComponent implements OnInit {
    * Sets the start date datePicker the date entered in the input field.
    */
   setStartDateToDatePicker() {
-    if (
-      !this.startDateControl.hasError('required') &&
-      !this.startDateControl.hasError('startDate')
-    ) {
+    if (!this.startDateControl.hasError('required') && !this.startDateControl.hasError('startDate')) {
       this.startDateDatepickerInput = this.startDateInput; // Set date in Datepicker
     }
   }
@@ -172,10 +161,7 @@ export class RequestCardComponent implements OnInit {
    * Returns true if entered username is valid, else false.
    */
   isValidUsername() {
-    return (
-      !this.usernameControl.hasError('required') &&
-      !this.usernameControl.hasError('username')
-    );
+    return !this.usernameControl.hasError('required') && !this.usernameControl.hasError('username');
   }
 
   /**
@@ -189,21 +175,14 @@ export class RequestCardComponent implements OnInit {
    * Returns true if entered start date is valid, else false.
    */
   isValidStartDate() {
-    return (
-      !this.startDateControl.hasError('required') &&
-      !this.startDateControl.hasError('dateFormat')
-    );
+    return !this.startDateControl.hasError('required') && !this.startDateControl.hasError('dateFormat');
   }
 
   /**
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
-    return (
-      this.isValidUsername() &&
-      this.isValidLocation() &&
-      this.isValidStartDate()
-    );
+    return this.isValidUsername() && this.isValidLocation() && this.isValidStartDate();
   }
 
   /**
@@ -215,8 +194,7 @@ export class RequestCardComponent implements OnInit {
       this.cardItem.user = this.usernameInput;
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
-      this.cardItem.comment =
-        this.commentInput != '' ? this.commentInput : null;
+      this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
       // Create new receipt
@@ -236,65 +214,31 @@ export class RequestCardComponent implements OnInit {
       logEvent.logDate = this.utilitiesService.getLocalDate();
       logEvent.logText = this.cardItem.user.name;
 
-      // Submit changes to database
       this.httpService
-        .httpPost<LogEvent>('addNewLogEvent/', logEvent)
-        .then(logEventRes => {
-          if (logEventRes.message === 'success') {
-            this.httpService
-              .httpPost<Receipt>('addNewReceipt/', receipt)
-              .then(receiptRes => {
-                if (receiptRes.message === 'success') {
-                  const newReceipt = receiptRes.data;
+        .httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.cardItem })
+        .then(res => {
+          if (res.message === 'success') {
+            const newReceipt = res.data.receipt;
 
-                  this.cardItem.activeReceipt = Number(newReceipt.id);
+            if (this.generatePDF) {
+              this.loading = true;
+              this.hideSubmit = true;
+              this.closeText = 'Stäng';
 
-                  this.httpService
-                    .httpPut<Card>('updateCard/', this.cardItem)
-                    .then(cardRes => {
-                      if (cardRes.message === 'success') {
-                        if (this.generatePDF) {
-                          this.loading = true;
-                          this.hideSubmit = true;
-                          this.closeText = 'Stäng';
-
-                          this.httpService
-                            .httpPost<any>('genPDF', [
-                              'card',
-                              this.cardItem,
-                              newReceipt
-                            ])
-                            .then(pdfRes => {
-                              if (pdfRes.message === 'success') {
-                                newReceipt.url = pdfRes.url;
-                                this.loading = false;
-                                this.pdfView = true;
-                                this.pdfURL = newReceipt.url;
-                                this.hideSubmit = true;
-                                this.closeText = 'Avbryt';
-                              }
-                            });
-                        }
-
-                        // Update log event list
-                        this.logEvents.unshift(logEventRes.data);
-                        this.logEvents = this.logEvents.slice();
-                        this.dataService.logEventList.next(this.logEvents);
-
-                        // Update receipt list
-                        this.receipts.unshift(newReceipt);
-                        this.receipts = this.receipts.slice();
-                        this.dataService.receiptList.next(this.receipts);
-
-                        // Update card list
-                        this.dataService.cardList.next(this.cards);
-                        if (!this.generatePDF) {
-                          this.closeForm();
-                        }
-                      }
-                    });
+              this.httpService.httpPost<any>('genPDF', ['card', this.cardItem, newReceipt]).then(pdfRes => {
+                if (pdfRes.message === 'success') {
+                  newReceipt.url = pdfRes.url;
+                  this.loading = false;
+                  this.pdfView = true;
+                  this.pdfURL = newReceipt.url;
+                  this.hideSubmit = true;
+                  this.closeText = 'Avbryt';
                 }
               });
+            } else {
+              this.updateLists(res.data.logEvent, newReceipt);
+              this.closeForm();
+            }
           }
         });
     }
@@ -328,5 +272,20 @@ export class RequestCardComponent implements OnInit {
     if (this.cardItem) {
       return this.utilitiesService.getDateString(this.cardItem.expirationDate);
     }
+  }
+
+  updateLists(logEvent: any, receipt: any) {
+    // Update log event list
+    this.logEvents.unshift(logEvent);
+    this.logEvents = this.logEvents.slice();
+    this.dataService.logEventList.next(this.logEvents);
+
+    // Update receipt list
+    this.receipts.unshift(receipt);
+    this.receipts = this.receipts.slice();
+    this.dataService.receiptList.next(this.receipts);
+
+    // Update card list
+    this.dataService.cardList.next(this.cards);
   }
 }
