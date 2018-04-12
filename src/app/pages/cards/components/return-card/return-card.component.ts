@@ -118,24 +118,15 @@ export class ReturnCardComponent implements OnInit {
       logEvent.logText = this.latestUser.name;
 
       // Submit changes to server
-      this.httpService
-        .httpPost<LogEvent>('addNewLogEvent/', logEvent)
-        .then(logEventRes => {
-          if (logEventRes.message === 'success') {
 
             this.httpService
-              .httpPut<Receipt>('updateReceipt/', activeReceipt)
-              .then(receiptRes => {
-                console.log(receiptRes);
-                if (receiptRes.message === 'success') {
+              .httpPut<Receipt>('updateReceipt/', { receipt: activeReceipt, logEvent: logEvent, card: this.cardItem})
+              .then(res => {
+                console.log(res);
+                if (res.message === 'success') {
                   this.cardItem.activeReceipt = null;
-
-                  this.httpService
-                    .httpPut<Card>('updateCard/', this.cardItem)
-                    .then(cardRes => {
-                      if (cardRes.message === 'success') {
                         // Update log event list
-                        this.logEvents.unshift(logEventRes.data);
+                        this.logEvents.unshift(res.data.logEvent);
                         this.logEvents = this.logEvents.slice();
                         this.dataService.logEventList.next(this.logEvents);
 
@@ -149,10 +140,6 @@ export class ReturnCardComponent implements OnInit {
                         this.showModal = false;
                       }
                     });
-                }
-              });
-          }
-        });
     }
   }
 
