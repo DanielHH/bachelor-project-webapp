@@ -35,7 +35,7 @@ export class ModifyTypeComponent implements OnInit {
 
   // Form variables
   typeNameInput = '';
-  typeInput = '';
+  isCardType = true;
 
   // Form Controls
   typeNameControl = new FormControl('', Validators.required);
@@ -86,22 +86,13 @@ export class ModifyTypeComponent implements OnInit {
       if (type && type.getType().id) {
         this.typeItem = type;
 
-        this.cardTypeInput = card.cardType.name;
-        this.cardNumberInput = card.cardNumber;
-        this.expirationDateInput = utilitiesService.getDateString(card.expirationDate);
-        this.expirationDateDatepickerInput = this.expirationDateInput;
-        this.locationInput = card.location;
+        this.typeNameInput = type.getType().name;
+        this.isCardType = type.isCardType();
 
         this.modalType = 1;
-        this.modalTitle = 'Ändra kort';
+        this.modalTitle = 'Ändra typ';
 
         this._showModal = true;
-
-        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
-        // is 0 until after 200ms~ becuase of modal?
-        setTimeout(() => {
-          this.commentInput = card.comment;
-        }, 250);
       }
     });
   }
@@ -109,25 +100,13 @@ export class ModifyTypeComponent implements OnInit {
   ngOnInit() {}
 
   /**
-   * Filters list of cardTypes based on cardType input
-   * @param str cardType input
-   */
-  filterCardTypes(str: string) {
-    return this.cardTypes.filter(
-      cardType => str != null && cardType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
-
-  /**
    * Sets fields in card according to form
    * @param card Card to set form data to
    */
   setTypeFromForm(type: any) {
     if (this.isValidInput()) {
-      type.name = typeNameInput;
-      type.status = 1; // TODO: SET TO ACTIVE STATUS NUMBER
-
-      card.modifiedDate = this.utilitiesService.getLocalDate();
+      type.name = this.typeNameInput;
+      type.modifiedDate = this.utilitiesService.getLocalDate();
     }
   }
 
@@ -145,20 +124,32 @@ export class ModifyTypeComponent implements OnInit {
 
       this.setTypeFromForm(newType);
 
-      newCard.creationDate = this.utilitiesService.getLocalDate();
-      newCard.status = this.utilitiesService.getStatusFromID(1);
-      newCard.user = new User();
+      newType.creationDate = this.utilitiesService.getLocalDate();
+      newType.status = this.utilitiesService.getStatusFromID(1); // Status = active
 
-      this.httpService.httpPost<CardType>('addNewCardType/', newType).then(res => {
-        if (res.message === 'success') {
-          this.cardTypeList.unshift(res.data);
-          // Trigger view refresh
-          this.cardTypeList = this.cardTypeList.slice();
-          this.dataService.cardList.next(this.cardTypeList);
+      if (this.typeItem.isCardType()) {
+        this.httpService.httpPost<CardType>('addNewCardType/', newType).then(res => {
+          if (res.message === 'success') {
+            this.cardTypeList.unshift(res.data);
+            // Trigger view refresh
+            this.cardTypeList = this.cardTypeList.slice();
+            this.dataService.cardList.next(this.cardTypeList);
 
-          this.closeForm();
-        }
-      });
+            this.closeForm();
+          }
+        });
+      } else {
+        this.httpService.httpPost<DocumentType>('addNewDocumentType/', newType).then(res => {
+          if (res.message === 'success') {
+            this.documentTypeList.unshift(res.data);
+            // Trigger view refresh
+            this.documentTypeList = this.documentTypeList.slice();
+            this.dataService.documentList.next(this.documentTypeList);
+
+            this.closeForm();
+          }
+        });
+      }
     }
   }
 
@@ -192,15 +183,7 @@ export class ModifyTypeComponent implements OnInit {
   }
 
   /**
-   * Returns true if entered type is valid, else false.
-   */
-  isValidType() {
-    return !this.typeControl.hasError('required') &&
-    !(this.typeControl.hasError('cardType') && this.typeControl.hasError('documentType'));
-  }
-
-  /**
-   * Returns true if entered type is valid, else false.
+   * Returns true if entered type name is valid, else false.
    */
   isValidTypeName() {
     return !this.typeNameControl.hasError('required');
@@ -210,22 +193,18 @@ export class ModifyTypeComponent implements OnInit {
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
-    return this.isValidType() && this.isValidTypeName();
+    return this.isValidTypeName();
   }
 
   /**
    * Closes form. Also resets form by resetting form controls and clearing inputs
    */
   closeForm() {
-    this.cardTypeControl.reset();
-    this.cardNumberControl.reset();
-    this.locationControl.reset();
-    this.expirationDateControl.reset();
-    this.expirationDatePickerControl.reset();
-    this.commentInput = '';
+    this.typeNameControl.reset();
+    this.typeControl.reset();
     this.modifyForm.resetForm();
 
-    this.cardItem = Object.assign({}, new Card());
+    this.typeItem = Object.assign({}, new BaseType(this.utilitiesService, new CardType(), 'cardType'));
 
     this.showModal = false;
     this.showModalChange.emit(false);

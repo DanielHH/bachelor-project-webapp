@@ -1,3 +1,5 @@
+import { StatusType } from './statusType';
+
 /**
  * DocumentType data model
  */
@@ -14,8 +16,18 @@ export class DocumentType {
   name: string;
 
   /**
-   * Status of the document type
+   * Creation date of DocumentType in database
    */
-  status: TypeStatus;
+  creationDate: Date;
+
+  /**
+   * Last modified date of the DocumentType
+   */
+  modifiedDate: Date;
+
+  /**
+   * DocumentType active/inactive status
+   */
+  status: StatusType;
 
 }

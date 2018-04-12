@@ -1,3 +1,5 @@
+import { StatusType } from './statusType';
+
 /**
  * CardType data model
  */
@@ -14,8 +16,18 @@ export class CardType {
   name: string;
 
   /**
-   * Status of the card type
+   * Creation date of CardType in database
    */
-  status: TypeStatus;
+  creationDate: Date;
+
+  /**
+   * Last modified date of the CardType
+   */
+  modifiedDate: Date;
+
+  /**
+   * CardType active/inactive status
+   */
+  status: StatusType;
 
 }
