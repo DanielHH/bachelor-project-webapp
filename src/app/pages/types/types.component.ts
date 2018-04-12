@@ -20,39 +20,18 @@ import { UtilitiesService } from '../../services/utilities.service';
 })
 export class TypesComponent implements OnInit {
 
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
   typeList: BaseType[] = [];
 
   constructor(
-    public dataService: DataService,
-    private utilitiesService: UtilitiesService
+    public dataService: DataService
   ) {
-    this.dataService.cardTypeList.subscribe((cardTypeList) => {
-      this.cardTypeList = cardTypeList;
-      this.setTypeList();
-    });
-
-    this.dataService.documentTypeList.subscribe((documentTypeList) => {
-      this.documentTypeList = documentTypeList;
-      this.setTypeList();
+    this.dataService.typeList.subscribe((typeList) => {
+      this.typeList = typeList;
     });
 
   }
 
   ngOnInit() {
-  }
-
-  setTypeList() {
-    this.typeList = [];
-
-    this.cardTypeList.forEach(type => {
-      this.typeList.unshift(new BaseType(this.utilitiesService, type, 'cardType'));
-    });
-
-    this.documentTypeList.forEach(type => {
-      this.typeList.unshift(new BaseType(this.utilitiesService, type, 'documentType'));
-    });
   }
 
 }

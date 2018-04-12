@@ -25,14 +25,16 @@ export class BaseType {
   typeStr: string;
 
   constructor(
-    private utilitiesService: UtilitiesService,
     type: CardType|DocumentType,
     typeStr: string) {
+
     this.type = type;
     this.typeStr = typeStr;
+
     if (typeStr !== 'cardType' && typeStr !== 'documentType') {
       console.error('invalid basetype');
     }
+
   }
 
   /**

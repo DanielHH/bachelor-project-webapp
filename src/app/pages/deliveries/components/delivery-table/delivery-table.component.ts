@@ -56,12 +56,12 @@ export class DeliveryTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'documentType': {
+      case 'documentType.name': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
         break;

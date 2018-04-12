@@ -47,10 +47,10 @@
     <div class="table-container">
       <!-- Header row -->
       <div class="row table-header">
-        <div class="col-1" (click)="sortTableList('status')">
+        <div class="col-1" (click)="sortTableList('status.id')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col" (click)="sortTableList('documentType')">
+        <div class="col" (click)="sortTableList('documentType.name')">
           <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'" [class.both-arrow]="orderDocumentType == ''">Typ </span>
         </div>
         <div class="col" (click)="sortTableList('documentNumber')">

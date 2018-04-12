@@ -14,9 +14,9 @@ export class ReceiptTableComponent implements OnInit {
   filterInput = '';
 
   orderStatus = '';
-  orderItemTypeID = '';
+  orderItemType = '';
   orderIDNumber = '';
-  orderUserID = '';
+  orderUser = '';
   orderStartDate = '';
   orderEndDate = '';
 
@@ -47,24 +47,24 @@ export class ReceiptTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'TODO': { // ACTIVE/INACTIVE
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'itemTypeID': {
-        newOrder = this.sortTableListHelper(this.orderItemTypeID);
-        this.orderItemTypeID = newOrder;
+      case 'TODO': { // ITEM TYPE
+        newOrder = this.sortTableListHelper(this.orderItemType);
+        this.orderItemType = newOrder;
         break;
       }
-      case 'IDNumber': {
+      case 'TODO': { // ITEM NUMBER/NAME
         newOrder = this.sortTableListHelper(this.orderIDNumber);
         this.orderIDNumber = newOrder;
         break;
       }
-      case 'userID': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user.name': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
         break;
       }
       case 'startDate': {
@@ -98,7 +98,6 @@ export class ReceiptTableComponent implements OnInit {
       default: return 'asc';
     }
   }
-
 
 }
 

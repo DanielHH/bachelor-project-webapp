@@ -28,6 +28,8 @@ export class TypeItemComponent implements OnInit {
   showRequestModal = false;
   showReturnModal = false;
 
+  isActive: boolean;
+
   constructor(
     private dataService: DataService,
     private router: Router,
@@ -49,7 +51,7 @@ export class TypeItemComponent implements OnInit {
    * Set type to be outputted for editing
   */
   edit() {
-    this.modalService.editType.next(this.typeItem.getType());
+    this.modalService.editType.next(this.typeItem);
   }
 
   /**
@@ -57,15 +59,15 @@ export class TypeItemComponent implements OnInit {
    */
   editStatus() {
     if (this.typeItem.isCardType()) {
-      this.httpService.httpPut<CardType>('updateCardType/', this.typeItem).then(res => {
+      this.httpService.httpPut<CardType>('updateCardType/', this.typeItem.getType()).then(res => {
         if (res.message === 'success') {
-          this.dataService.cardTypeList.next(this.cardTypeList);
+          this.dataService.getCardTypeList();
         }
       });
     } else {
-      this.httpService.httpPut<DocumentType>('updateDocumentType/', this.typeItem).then(res => {
+      this.httpService.httpPut<DocumentType>('updateDocumentType/', this.typeItem.getType()).then(res => {
         if (res.message === 'success') {
-          this.dataService.documentTypeList.next(this.documentTypeList);
+          this.dataService.getDocumentTypeList();
         }
       });
     }

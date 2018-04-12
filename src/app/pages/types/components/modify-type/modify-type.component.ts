@@ -113,7 +113,7 @@ export class ModifyTypeComponent implements OnInit {
   /**
    * Attempts to submit new card to database
    */
-  addNewtype() {
+  addNewType() {
     if (this.isValidInput()) {
       let newType;
       if (this.typeItem.isCardType()) {
@@ -204,7 +204,7 @@ export class ModifyTypeComponent implements OnInit {
     this.typeControl.reset();
     this.modifyForm.resetForm();
 
-    this.typeItem = Object.assign({}, new BaseType(this.utilitiesService, new CardType(), 'cardType'));
+    this.typeItem = Object.assign({}, new BaseType(new CardType(), 'cardType'));
 
     this.showModal = false;
     this.showModalChange.emit(false);

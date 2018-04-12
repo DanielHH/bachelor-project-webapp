@@ -54,7 +54,7 @@
         <div class="col-1" (click)="sortTableList('status.id')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col" (click)="sortTableList('cardType')">
+        <div class="col" (click)="sortTableList('cardType.name')">
           <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'" [class.both-arrow]="orderCardType == ''">Typ </span>
         </div>
         <div class="col" (click)="sortTableList('cardNumber')">

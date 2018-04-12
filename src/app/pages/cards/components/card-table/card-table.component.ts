@@ -62,7 +62,7 @@ export class CardTableComponent implements OnInit {
         this.orderStatus = newOrder;
         break;
       }
-      case 'cardType': {
+      case 'cardType.name': {
         newOrder = this.sortTableListHelper(this.orderCardType);
         this.orderCardType = newOrder;
         break;

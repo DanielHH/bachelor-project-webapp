@@ -46,14 +46,13 @@ export class MatchFilterTypePipe implements PipeTransform {
     showActive: boolean,
     showInactive: boolean
   ) {
-
     if (
       (!baseType) ||
       (!baseType.getType().id) ||
       (baseType.isCardType() && !showCardTypes) ||
       (baseType.isDocumentType() && !showDocumentTypes) ||
-      (baseType.getType().status.id == 1 && !showActive) ||
-      (baseType.getType().status.id == 2 && !showInactive)
+      (baseType.getType().status.id == 5 && !showActive) ||
+      (baseType.getType().status.id == 6 && !showInactive)
     ) {
       return false;
     }
@@ -61,7 +60,11 @@ export class MatchFilterTypePipe implements PipeTransform {
     filterInput = lowerCase(filterInput);
 
     return (
-      (_.includes(lowerCase(baseType.getType().name), filterInput) === true)
+      (_.includes(lowerCase(baseType.getType().name), filterInput) === true) ||
+      (_.includes(lowerCase(this.utilitiesService.getDateString(
+        baseType.getType().creationDate)), filterInput) === true) ||
+      (_.includes(lowerCase(this.utilitiesService.getDateString(
+        baseType.getType().modifiedDate)), filterInput) === true)
     );
   }
 

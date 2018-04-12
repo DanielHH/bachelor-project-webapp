@@ -56,12 +56,12 @@ export class DocumentTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'documentType': {
+      case 'documentType.name': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
         break;
@@ -76,7 +76,7 @@ export class DocumentTableComponent implements OnInit {
         this.orderName = newOrder;
         break;
       }
-      case 'userID': {
+      case 'user.id': {
         newOrder = this.sortTableListHelper(this.orderUserID);
         this.orderUserID = newOrder;
         break;

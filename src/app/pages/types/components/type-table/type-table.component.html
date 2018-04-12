@@ -51,15 +51,23 @@
     <div class="table-container">
       <!-- Header row -->
       <div class="row table-header">
-        <div class="col-1" (click)="sortTableList('name')">
+
+        <div class="col-1" (click)="sortTableList('type.status.id')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col-1" (click)="sortTableList('status')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+
+        <div class="col" (click)="sortTableList('type.name')">
+          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Benämning </span>
         </div>
-        <div class="col-1" (click)="sortTableList('type')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+
+        <div class="col" (click)="sortTableList('type.creationDate')">
+          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Skapad </span>
         </div>
+
+        <div class="col" (click)="sortTableList('type.modifiedDate')">
+          <span class="hover" [class.up-arrow]="orderModifiedDate == 'asc'" [class.down-arrow]="orderModifiedDate == 'desc'" [class.both-arrow]="orderModifiedDate == ''">Senast ändrad </span>
+        </div>
+
       </div>
       <hr>
       <div class="table-items scrollbar-table">

@@ -52,10 +52,10 @@
     <!-- Header row -->
     <div class="table-container">
       <div class="row table-header">
-        <div class="col-1" (click)="sortTableList('status')">
+        <div class="col-1" (click)="sortTableList('status.id')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col" (click)="sortTableList('documentType')">
+        <div class="col" (click)="sortTableList('documentType.name')">
           <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'" [class.both-arrow]="orderDocumentType == ''">Typ </span>
         </div>
         <div class="col" (click)="sortTableList('documentNumber')">
@@ -64,7 +64,7 @@
         <div class="col" (click)="sortTableList('name')">
           <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Benämning </span>
         </div>
-        <div class="col" (click)="sortTableList('userID')">
+        <div class="col" (click)="sortTableList('user.id')">
           <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">Användare </span>
         </div>
         <div class="col" (click)="sortTableList('location')">

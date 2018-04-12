@@ -14,6 +14,8 @@ import { Verification } from '../datamodels/verification';
 import { VerificationType } from '../datamodels/verificationType';
 import { StatusType } from '../datamodels/statusType';
 import { AuthService } from '../auth/auth.service';
+import { BaseType } from '../datamodels/baseType';
+import { UtilitiesService } from './utilities.service';
 
 @Injectable()
 export class DataService {
@@ -129,7 +131,20 @@ export class DataService {
    */
   statusTypeList: BehaviorSubject<StatusType[]> = new BehaviorSubject<StatusType[]>(this._statusTypeList);
 
-  constructor(private httpService: HttpService, private authService: AuthService) {
+  /**
+   * List with all card and document types
+   */
+  _typeList: BaseType[] = [];
+
+  /**
+   * A subscriber to the card and document type list
+   */
+  typeList: BehaviorSubject<BaseType[]> = new BehaviorSubject<BaseType[]>(this._typeList);
+
+  constructor(
+    private httpService: HttpService,
+    private authService: AuthService
+  ) {
     this.authService.user.subscribe(user => {
       if (user && user.id) {
         if (user.userType.id == 1) {
@@ -140,6 +155,14 @@ export class DataService {
       } else {
         this.resetAllData();
       }
+    });
+
+    this.cardTypeList.subscribe(cardTypeList => {
+      this.setTypeList();
+    });
+
+    this.documentTypeList.subscribe(documentTypeList => {
+      this.setTypeList();
     });
   }
 
@@ -181,6 +204,9 @@ export class DataService {
 
     this._verificationList = null;
     this.verificationList.next(this._verificationList);
+
+    this._typeList = null;
+    this.typeList.next(this._typeList);
   }
 
   getUserData(id: number) {
@@ -266,5 +292,19 @@ export class DataService {
       this._statusTypeList = data;
       this.statusTypeList.next(this._statusTypeList);
     });
+  }
+
+  setTypeList() {
+    this._typeList = [];
+
+    this._cardTypeList.forEach(type => {
+      this._typeList.unshift(new BaseType(type, 'cardType'));
+    });
+
+    this._documentTypeList.forEach(type => {
+      this._typeList.unshift(new BaseType(type, 'documentType'));
+    });
+
+    this.typeList.next(this._typeList);
   }
 }

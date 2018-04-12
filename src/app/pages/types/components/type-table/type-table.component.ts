@@ -25,8 +25,8 @@ export class TypeTableComponent implements OnInit {
 
   orderName = '';
   orderStatus = '';
-  orderType = '';
-  orderDate = '';
+  orderCreationDate = '';
+  orderModifiedDate = '';
 
   showCardTypes = true;
   showDocumentTypes = true;
@@ -47,7 +47,7 @@ export class TypeTableComponent implements OnInit {
    * Sorts table after location descending
    */
   sortTableListStart() {
-    // this.typeList = _.orderBy(this.typeList, ['modifiedDate'], ['desc']);
+    this.typeList = _.orderBy(this.typeList, ['modifiedDate'], ['desc']);
   }
 
   /**
@@ -55,49 +55,34 @@ export class TypeTableComponent implements OnInit {
    * @param property
    */
   sortTableList(property: string) {
-    /*let newOrder = '';
+    let newOrder = '';
 
     switch (property) {
-      case 'status.id': {
+      case 'type.status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'cardType': {
-        newOrder = this.sortTableListHelper(this.orderCardType);
-        this.orderCardType = newOrder;
+      case 'type.name': {
+        newOrder = this.sortTableListHelper(this.orderName);
+        this.orderName = newOrder;
         break;
       }
-      case 'cardNumber': {
-        newOrder = this.sortTableListHelper(this.orderCardNumber);
-        this.orderCardNumber = newOrder;
+      case 'type.creationDate': {
+        newOrder = this.sortTableListHelper(this.orderCreationDate);
+        this.orderCreationDate = newOrder;
         break;
       }
-      case 'user.id': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
-        break;
-      }
-      case 'location': {
-        newOrder = this.sortTableListHelper(this.orderLocation);
-        this.orderLocation = newOrder;
-        break;
-      }
-      case 'comment': {
-        newOrder = this.sortTableListHelper(this.orderComment);
-        this.orderComment = newOrder;
-        break;
-      }
-      case 'expirationDate': {
-        newOrder = this.sortTableListHelper(this.orderDate);
-        this.orderDate = newOrder;
+      case 'type.modifiedDate': {
+        newOrder = this.sortTableListHelper(this.orderModifiedDate);
+        this.orderModifiedDate = newOrder;
         break;
       }
     }
 
     if (newOrder) {
-      this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
-    }*/
+      this.typeList = _.orderBy(this.typeList, [property], [newOrder]);
+    }
 
   }
 

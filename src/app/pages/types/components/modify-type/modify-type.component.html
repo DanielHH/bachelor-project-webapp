@@ -1,3 +1,53 @@
-<p>
-  modify-type works!
-</p>
+<form #modifyForm="ngForm" (ngSubmit)="modalType ? editType() : addNewType()">
+  <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [closeName]="'Avbryt'" [submitName]="'Spara'">
+
+    <!-- Row type name -->
+    <div class="row">
+      <!-- Type name -->
+      <div class="col-0 col-md-3"></div>
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="typeNameInput" name="typeNameInput" [(ngModel)]="typeNameInput" maxlength="128" placeholder="Benämning"
+            [formControl]="typeNameControl" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidTypeName()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="typeNameInput" matSuffix mat-icon-button aria-label="Clear" (click)="docNumberInput = ''"
+            tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="typeNameControl.hasError('required')">Ange ett namn</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-0 col-md-3"></div>
+    </div>
+
+    <!-- Row type kind (Card or document type) -->
+    <div class="row">
+      <!-- Type name -->
+      <div class="col-0 col-md-3"></div>
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="typeNameInput" name="typeNameInput" [(ngModel)]="typeNameInput" maxlength="128" placeholder="Benämning"
+            [formControl]="typeNameControl" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidTypeName()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="typeNameInput" matSuffix mat-icon-button aria-label="Clear" (click)="docNumberInput = ''"
+            tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="typeNameControl.hasError('required')">Ange ett namn</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-0 col-md-3"></div>
+    </div>
+
+  </app-modal>
+</form>

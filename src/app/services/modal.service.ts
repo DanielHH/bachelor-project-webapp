@@ -133,7 +133,7 @@ export class ModalService {
   /**
    * Edit type
    */
-  private _editType = new BaseType(null, new CardType(), 'cardType');
+  private _editType = new BaseType(new CardType(), 'cardType');
 
    /**
    * A subscriber to the Type to be edited

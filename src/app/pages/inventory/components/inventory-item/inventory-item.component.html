@@ -24,7 +24,7 @@
   <div class="col">
     <div class="column-text">{{baseItem?.getLastVerifiedString()}}</div>
     <div class="pull-right table-menu-fix">
-      <app-item-menu [item]="baseItem?.item" (editStatus)="editStatus()"></app-item-menu>
+      <app-item-menu [object]="baseItem?.item" (editStatus)="editStatus()" [itemMenu]="true"></app-item-menu>
     </div>
 
   </div>

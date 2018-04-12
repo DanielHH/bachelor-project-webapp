@@ -26,7 +26,7 @@
   <div class="col">
     <div class="column-text">{{utilitiesService.getDateString(this.cardItem?.expirationDate)}}</div>
     <div class="pull-right table-menu-fix">
-      <app-item-menu [item]="cardItem" (editItem)="edit()" (editStatus)="editStatus()" [showDetailsOption]="true" [showEditOption]="true"></app-item-menu>
+      <app-item-menu [object]="cardItem" (editObject)="edit()" (editStatus)="editStatus()" [itemMenu]="true" [showEditOption]="true"></app-item-menu>
     </div>
   </div>
 </div>

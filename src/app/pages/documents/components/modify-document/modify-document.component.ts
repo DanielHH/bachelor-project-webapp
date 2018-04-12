@@ -134,7 +134,10 @@ export class ModifyDocumentComponent implements OnInit {
    * @param str docType input
    */
   filterDocTypes(str: string) {
-    return this.docTypes.filter(docType => str != null && docType.name.toLowerCase().indexOf(str.toLowerCase()) === 0);
+    return this.docTypes.filter(docType =>
+      str != null &&
+      docType.name.toLowerCase().indexOf(str.toLowerCase()) === 0 &&
+      docType.status.id === 5);
   }
 
   /**
