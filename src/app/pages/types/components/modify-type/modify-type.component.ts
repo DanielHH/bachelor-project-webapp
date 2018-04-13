@@ -111,6 +111,13 @@ export class ModifyTypeComponent implements OnInit {
   }
 
   /**
+   * Toggle isCardType value
+  */
+  toggleIsCardType() {
+    this.isCardType = !this.isCardType;
+  }
+
+  /**
    * Attempts to submit new type to database
    */
   addNewType() {
@@ -125,15 +132,12 @@ export class ModifyTypeComponent implements OnInit {
       this.setTypeFromForm(newType);
 
       newType.creationDate = this.utilitiesService.getLocalDate();
-      newType.status = this.utilitiesService.getStatusFromID(1); // Status = active
+      newType.status = this.utilitiesService.getStatusFromID(5); // Status = active
 
-      if (this.typeItem.isCardType()) {
+      if (this.isCardType) {
         this.httpService.httpPost<CardType>('addNewCardType/', newType).then(res => {
           if (res.message === 'success') {
-            this.cardTypeList.unshift(res.data);
-            // Trigger view refresh
-            this.cardTypeList = this.cardTypeList.slice();
-            this.dataService.cardList.next(this.cardTypeList);
+            this.dataService.getCardTypeList();
 
             this.closeForm();
           }
@@ -141,10 +145,7 @@ export class ModifyTypeComponent implements OnInit {
       } else {
         this.httpService.httpPost<DocumentType>('addNewDocumentType/', newType).then(res => {
           if (res.message === 'success') {
-            this.documentTypeList.unshift(res.data);
-            // Trigger view refresh
-            this.documentTypeList = this.documentTypeList.slice();
-            this.dataService.documentList.next(this.documentTypeList);
+            this.dataService.getDocumentTypeList();
 
             this.closeForm();
           }
@@ -163,8 +164,7 @@ export class ModifyTypeComponent implements OnInit {
       if (this.isCardType) {
         this.httpService.httpPut<CardType>('updateCardType/', this.typeItem.getType()).then(res => {
           if (res.message === 'success') {
-            this.cardTypeList = this.cardTypeList.slice();
-            this.dataService.cardTypeList.next(this.cardTypeList);
+            this.dataService.getCardTypeList();
 
             this.closeForm();
           }
@@ -172,8 +172,7 @@ export class ModifyTypeComponent implements OnInit {
       } else {
         this.httpService.httpPut<DocumentType>('updateDocumentType/', this.typeItem.getType()).then(res => {
           if (res.message === 'success') {
-            this.documentTypeList = this.documentTypeList.slice();
-            this.dataService.documentTypeList.next(this.documentTypeList);
+            this.dataService.getDocumentTypeList();
 
             this.closeForm();
           }

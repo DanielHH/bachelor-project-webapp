@@ -20,9 +20,15 @@ import { DataService } from '../services/data.service';
   }
 
   validate(c: FormControl): ValidationErrors {
-    const input = String(c.value);
+    const input = c.value;
 
-    const isValid = !input || (c.value && c.value.id);
+    let isValid;
+    if (input && input.id) { // User object
+      isValid = _.find(this.users, (user) => user.username === input.username);
+    } else { // String input
+      isValid = !input || _.find(this.users, (user) => user.username === input);
+    }
+
     const message = {
       'username': {
         'message': 'Ogiltigt användarnamn'

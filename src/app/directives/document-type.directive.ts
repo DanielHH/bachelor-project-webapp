@@ -19,9 +19,23 @@ import * as _ from 'lodash';
   }
 
   validate(c: FormControl): ValidationErrors {
-    const input = String(c.value);
+    const input = c.value;
+    let docTypeMatch;
 
-    const isValid = !input || _.find(this.docTypes, (docType) => docType.name === input);
+    let isValid;
+    if (!input) {
+      isValid = true;
+    } else {
+      if (input.id) { // DocumentType object
+        docTypeMatch = _.find(this.docTypes, (docType) => docType.name === input.name);
+      } else { // String input
+        docTypeMatch = _.find(this.docTypes, (docType) => docType.name === input);
+      }
+
+      isValid = docTypeMatch && docTypeMatch.status.id === 5;
+
+    }
+
     const message = {
       'docType': {
         'message': 'Ogiltig typ'

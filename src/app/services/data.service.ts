@@ -231,6 +231,7 @@ export class DataService {
     this.httpService.httpGet<CardType>('getCardTypes').then(data => {
       this._cardTypeList = data;
       this.cardTypeList.next(this._cardTypeList);
+      this.getCardList();
     });
   }
 
@@ -252,6 +253,7 @@ export class DataService {
     this.httpService.httpGet<DocumentType>('getDocumentTypes').then(data => {
       this._documentTypeList = data;
       this.documentTypeList.next(this._documentTypeList);
+      this.getDocumentList();
     });
   }
 

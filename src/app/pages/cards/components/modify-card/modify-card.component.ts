@@ -87,7 +87,15 @@ export class ModifyCardComponent implements OnInit {
     private modalService: ModalService
   ) {
     this.dataService.cardTypeList.subscribe(cardTypes => {
-      this.cardTypes = cardTypes;
+      this.cardTypes = [];
+
+      // Only add active card types
+      cardTypes.forEach(cardType => {
+        if (cardType.id && cardType.status.id === 5) {
+          this.cardTypes.unshift(cardType);
+        }
+      });
+
       this.cardTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
@@ -126,7 +134,9 @@ export class ModifyCardComponent implements OnInit {
    */
   filterCardTypes(str: string) {
     return this.cardTypes.filter(
-      cardType => str != null && cardType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
+      cardType =>
+      str != null &&
+      cardType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
     );
   }
 

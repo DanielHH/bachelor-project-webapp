@@ -88,7 +88,15 @@ export class ModifyDocumentComponent implements OnInit {
     private modalService: ModalService
   ) {
     this.dataService.documentTypeList.subscribe(docTypes => {
-      this.docTypes = docTypes;
+      this.docTypes = [];
+
+      // Only add active document types
+      docTypes.forEach(docType => {
+        if (docType.id && docType.status.id === 5) {
+          this.docTypes.unshift(docType);
+        }
+      });
+
       this.docTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
@@ -136,8 +144,8 @@ export class ModifyDocumentComponent implements OnInit {
   filterDocTypes(str: string) {
     return this.docTypes.filter(docType =>
       str != null &&
-      docType.name.toLowerCase().indexOf(str.toLowerCase()) === 0 &&
-      docType.status.id === 5);
+      docType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
+    );
   }
 
   /**
