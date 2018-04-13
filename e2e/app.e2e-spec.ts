@@ -249,3 +249,196 @@ xdescribe('Sprint3', function() {
 
   // Test 25,26,27 manually tested
 });
+
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+describe('Sprint4', function() {
+
+  const logsFromMenu = element(by.linkText('Loggar'));
+  const logoutFromMenu = element(by.linkText('Logga ut'));
+
+  beforeEach(function() {
+    browser.waitForAngularEnabled(true);
+    browser.get('http://pum.nlsn.se/');
+
+    element(by.name('usernameInput')).sendKeys('pumadmin');
+    element(by.name('passwordInput')).sendKeys('pum123');
+    element.all(by.buttonText('Logga in')).click();
+  });
+
+  // 31
+  it('should work to change tab to logs', function() {
+    logsFromMenu.click();
+    expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/logs');
+  });
+
+  // 32
+  it('should work to have 3 users log in at the same time', function() {
+    const browser2 = browser.forkNewDriverInstance(true);
+    browser2.element(by.name('usernameInput')).sendKeys('pumadmin');
+    browser2.element(by.name('passwordInput')).sendKeys('pum123');
+    browser2.element.all(by.buttonText('Logga in')).click();
+
+    const browser3 = browser.forkNewDriverInstance(true);
+    browser3.element(by.name('usernameInput')).sendKeys('pumadmin');
+    browser3.element(by.name('passwordInput')).sendKeys('pum123');
+    browser3.element.all(by.buttonText('Logga in')).click();
+
+    browser.element(by.linkText('Kvittenser')).click();
+    browser2.element(by.linkText('Kort')).click();
+    browser3.element(by.linkText('Handlingar')).click();
+
+    browser.sleep(10000);
+    expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
+    expect(browser2.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
+    expect(browser3.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
+  });
+
+    // 33
+    it('should work to have 20 users log in at the same time', function() {
+      const browser2 = browser.forkNewDriverInstance(true);
+      browser2.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser2.element(by.name('passwordInput')).sendKeys('pum123');
+      browser2.element.all(by.buttonText('Logga in')).click();
+
+      const browser3 = browser.forkNewDriverInstance(true);
+      browser3.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser3.element(by.name('passwordInput')).sendKeys('pum123');
+      browser3.element.all(by.buttonText('Logga in')).click();
+
+      const browser4 = browser.forkNewDriverInstance(true);
+      browser4.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser4.element(by.name('passwordInput')).sendKeys('pum123');
+      browser4.element.all(by.buttonText('Logga in')).click();
+
+      const browser5 = browser.forkNewDriverInstance(true);
+      browser5.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser5.element(by.name('passwordInput')).sendKeys('pum123');
+      browser5.element.all(by.buttonText('Logga in')).click();
+
+      const browser6 = browser.forkNewDriverInstance(true);
+      browser6.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser6.element(by.name('passwordInput')).sendKeys('pum123');
+      browser6.element.all(by.buttonText('Logga in')).click();
+
+      const browser7 = browser.forkNewDriverInstance(true);
+      browser7.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser7.element(by.name('passwordInput')).sendKeys('pum123');
+      browser7.element.all(by.buttonText('Logga in')).click();
+
+      const browser8 = browser.forkNewDriverInstance(true);
+      browser8.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser8.element(by.name('passwordInput')).sendKeys('pum123');
+      browser8.element.all(by.buttonText('Logga in')).click();
+
+      const browser9 = browser.forkNewDriverInstance(true);
+      browser9.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser9.element(by.name('passwordInput')).sendKeys('pum123');
+      browser9.element.all(by.buttonText('Logga in')).click();
+
+      const browser10 = browser.forkNewDriverInstance(true);
+      browser10.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser10.element(by.name('passwordInput')).sendKeys('pum123');
+      browser10.element.all(by.buttonText('Logga in')).click();
+
+      const browser11 = browser.forkNewDriverInstance(true);
+      browser11.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser11.element(by.name('passwordInput')).sendKeys('pum123');
+      browser11.element.all(by.buttonText('Logga in')).click();
+
+      const browser12 = browser.forkNewDriverInstance(true);
+      browser12.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser12.element(by.name('passwordInput')).sendKeys('pum123');
+      browser12.element.all(by.buttonText('Logga in')).click();
+
+      const browser13 = browser.forkNewDriverInstance(true);
+      browser13.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser13.element(by.name('passwordInput')).sendKeys('pum123');
+      browser13.element.all(by.buttonText('Logga in')).click();
+
+      const browser14 = browser.forkNewDriverInstance(true);
+      browser14.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser14.element(by.name('passwordInput')).sendKeys('pum123');
+      browser14.element.all(by.buttonText('Logga in')).click();
+
+      const browser15 = browser.forkNewDriverInstance(true);
+      browser15.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser15.element(by.name('passwordInput')).sendKeys('pum123');
+      browser15.element.all(by.buttonText('Logga in')).click();
+
+      const browser16 = browser.forkNewDriverInstance(true);
+      browser16.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser16.element(by.name('passwordInput')).sendKeys('pum123');
+      browser16.element.all(by.buttonText('Logga in')).click();
+
+      const browser17 = browser.forkNewDriverInstance(true);
+      browser17.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser17.element(by.name('passwordInput')).sendKeys('pum123');
+      browser17.element.all(by.buttonText('Logga in')).click();
+
+      const browser18 = browser.forkNewDriverInstance(true);
+      browser18.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser18.element(by.name('passwordInput')).sendKeys('pum123');
+      browser18.element.all(by.buttonText('Logga in')).click();
+
+      const browser19 = browser.forkNewDriverInstance(true);
+      browser19.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser19.element(by.name('passwordInput')).sendKeys('pum123');
+      browser19.element.all(by.buttonText('Logga in')).click();
+
+      const browser20 = browser.forkNewDriverInstance(true);
+      browser20.element(by.name('usernameInput')).sendKeys('pumadmin');
+      browser20.element(by.name('passwordInput')).sendKeys('pum123');
+      browser20.element.all(by.buttonText('Logga in')).click();
+
+      browser.element(by.linkText('Kvittenser')).click();
+      browser2.element(by.linkText('Kort')).click();
+      browser3.element(by.linkText('Handlingar')).click();
+      browser4.element(by.linkText('Kvittenser')).click();
+      browser5.element(by.linkText('Kort')).click();
+      browser6.element(by.linkText('Handlingar')).click();
+      browser7.element(by.linkText('Kvittenser')).click();
+      browser8.element(by.linkText('Kort')).click();
+      browser9.element(by.linkText('Handlingar')).click();
+      browser10.element(by.linkText('Kvittenser')).click();
+      browser11.element(by.linkText('Kort')).click();
+      browser12.element(by.linkText('Handlingar')).click();
+      browser13.element(by.linkText('Kvittenser')).click();
+      browser14.element(by.linkText('Kort')).click();
+      browser15.element(by.linkText('Handlingar')).click();
+      browser16.element(by.linkText('Kvittenser')).click();
+      browser17.element(by.linkText('Kort')).click();
+      browser18.element(by.linkText('Handlingar')).click();
+      browser19.element(by.linkText('Kvittenser')).click();
+      browser20.element(by.linkText('Kort')).click();
+
+      browser.sleep(10000);
+      expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
+      expect(browser2.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
+      expect(browser3.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
+      expect(browser4.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
+      expect(browser5.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
+      expect(browser6.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
+      expect(browser7.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
+      expect(browser8.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
+      expect(browser9.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
+      expect(browser10.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
+      expect(browser11.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
+      expect(browser12.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
+      expect(browser13.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
+      expect(browser14.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
+      expect(browser15.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
+      expect(browser16.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
+      expect(browser17.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
+      expect(browser18.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
+      expect(browser19.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
+      expect(browser20.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
+    });
+
+});
