@@ -1,5 +1,5 @@
 <form #requestForm="ngForm" (ngSubmit)="requestDocument()">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut handling'" [closeName]="closeText" [submitName]="'Kvittera ut'"
+  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut handling'" [closeName]="closeText" [submitName]="'Bekräfta'"
     [hideSubmit]="hideSubmit">
     <div [class.generating-pdf]="loading || pdfView">
       <!-- Row document info -->
