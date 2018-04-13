@@ -1,7 +1,7 @@
 import { AppPage } from './app.po';
 import { browser, by, element, ExpectedConditions, Button } from 'protractor';
 
-xdescribe('Sprint2', function() {
+describe('Sprint2', function() {
 
   const documentsFromMenu = element(by.linkText('Handlingar'));
   const cardsFromMenu = element(by.linkText('Kort'));
@@ -15,6 +15,7 @@ xdescribe('Sprint2', function() {
   const logoutFromMenu = element(by.linkText('Logga ut'));
 
   beforeEach(function() {
+    browser.driver.manage().window().maximize();
     browser.waitForAngularEnabled(true);
     browser.get('http://pum.nlsn.se/');
 
@@ -60,6 +61,7 @@ xdescribe('Sprint2', function() {
     const s = '"cardType":{"id":1,"name":"DBK"},"cardNumber":"TEST_NUMBER","user":{"id":null,"userType":{"id":0,"name":null},' +
     '"username":null,"name":null,"email":null},"location":"TEST_LOCATION","comment":"TEST_COMMENT","expirationDate":"2000-01-01 00:00:00"';
 
+    browser.sleep(1000);
     expect(element.all(by.tagName('pre')).first().getText()).toContain(s);
   });
 
@@ -215,11 +217,13 @@ xdescribe('Sprint2', function() {
 */
 });
 
-xdescribe('Sprint3', function() {
+describe('Sprint3', function() {
 
   const cardsFromMenu = element(by.linkText('Kort'));
+  const documentsFromMenu = element(by.linkText('Handlingar'));
 
   beforeEach(function() {
+    browser.driver.manage().window().maximize();
     browser.waitForAngularEnabled(true);
     browser.get('http://pum.nlsn.se/');
 
@@ -228,22 +232,81 @@ xdescribe('Sprint3', function() {
     element.all(by.buttonText('Logga in')).click();
   });
 
-  // x
+  // 13 (Should pass once request-card component changes the button name "Kvittera ut" to "Bekräfta")
   it('should work to check out a card', function() {
     cardsFromMenu.click();
-    element.all(by.buttonText('Kvittera ut')).click();
+    element(by.buttonText('Kvittera ut')).click();
+    browser.sleep(500);
     element(by.name('usernameInput')).sendKeys('gusli432');
     element(by.name('locationInput')).sendKeys('Test_checked_out');
-    browser.sleep(5000);
-    // element(by.name('generatePDF')).click();
-    browser.sleep(5000);
-    element.all(by.className('btn btn-primary waves-light')).click();
-    browser.sleep(5000);
+    element(by.id('generatePDF')).click();
+    element(by.buttonText('Bekräfta')).click();
+    browser.sleep(1000);
 
     browser.waitForAngularEnabled(false);
     browser.get('http://api.nlsn.se/getCards');
-    expect(element.all(by.tagName('pre')).first().getText()).toContain('location":"Test_checked_out');
+    browser.sleep(1000);
+    expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_out"');
+    browser.get('http://api.nlsn.se/getreceipts');
+    browser.sleep(1000);
+    expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_out"');
   });
+
+  // 14 (Should pass once request-document component changes the button name "Kvittera ut" to "Bekräfta")
+  it('should work to check out a document', function() {
+    documentsFromMenu.click();
+    element(by.buttonText('Kvittera ut')).click();
+    browser.sleep(500);
+    element(by.name('usernameInput')).sendKeys('gusli432');
+    element(by.name('locationInput')).sendKeys('Test_checked_out');
+    element(by.id('generatePDF')).click();
+    element(by.buttonText('Bekräfta')).click();
+    browser.sleep(1000);
+
+    browser.waitForAngularEnabled(false);
+    browser.get('http://api.nlsn.se/getDocuments');
+    browser.sleep(1000);
+    expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_out"');
+    browser.get('http://api.nlsn.se/getreceipts');
+    browser.sleep(1000);
+    expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_out"');
+  });
+
+  // 15 (Should pass once return-card component changes the button name "Kvittera in" to "Bekräfta")
+  it('should work to check in a card', function() {
+    cardsFromMenu.click();
+    element(by.buttonText('Kvittera in')).click();
+    browser.sleep(500);
+    element(by.name('locationInput')).sendKeys('Test_checked_in');
+    element(by.buttonText('Bekräfta')).click();
+    browser.sleep(1000);
+
+    browser.waitForAngularEnabled(false);
+    browser.get('http://api.nlsn.se/getCards');
+    browser.sleep(1000);
+    expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_in"');
+    browser.get('http://api.nlsn.se/getreceipts');
+    browser.sleep(1000);
+    expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_in"');
+  });
+
+    // 16 (Should pass once return-document component changes the button name "Kvittera in" to "Bekräfta")
+    it('should work to check in a document', function() {
+      documentsFromMenu.click();
+      element(by.buttonText('Kvittera in')).click();
+      browser.sleep(500);
+      element(by.name('locationInput')).sendKeys('Test_checked_in');
+      element(by.buttonText('Bekräfta')).click();
+      browser.sleep(1000);
+
+      browser.waitForAngularEnabled(false);
+      browser.get('http://api.nlsn.se/getdocuments');
+      browser.sleep(1000);
+      expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_in"');
+      browser.get('http://api.nlsn.se/getreceipts');
+      browser.sleep(1000);
+      expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_in"');
+    });
 
   // Test 17-22 manually tested
 
