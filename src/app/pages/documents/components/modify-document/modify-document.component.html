@@ -165,7 +165,7 @@
       <div class="col-12">
         <mat-form-field>
           <!--Input-->
-          <input matInput name="locationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Förvaringsplats" [formControl]="locationControl"
+          <input matInput name="docLocationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Förvaringsplats" [formControl]="locationControl"
             required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -185,7 +185,7 @@
       <div class="col-12">
         <mat-form-field>
           <!--Input-->
-          <textarea matInput name="commentInput" [(ngModel)]="commentInput" maxlength="256" placeholder="Kommentar" matTextareaAutosize
+          <textarea matInput name="docCommentInput" [(ngModel)]="commentInput" maxlength="256" placeholder="Kommentar" matTextareaAutosize
             matAutosizeMaxRows="5">
           </textarea>
           <!--Clear-->
