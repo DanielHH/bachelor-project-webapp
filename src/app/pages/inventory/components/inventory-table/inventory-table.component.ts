@@ -107,21 +107,9 @@ export class InventoryTableComponent implements OnInit {
         orderFunc = (item: BaseItem) => item.getComment();
         break;
       }
-      case 'verifyDate': {
-        newOrder = this.sortTableListHelper(this.orderVerifyDate);
-        this.orderVerifyDate = newOrder;
-        orderFunc = (item: BaseItem) => item.getLastVerifiedString();
-        break;
-      }
     }
     if (newOrder) {
-      this.baseItemList = _.orderBy(
-        this.baseItemList,
-        [
-          orderFunc
-        ],
-        [newOrder]
-      );
+      this.baseItemList = _.orderBy(this.baseItemList, [orderFunc], [newOrder]);
     }
   }
 
@@ -137,8 +125,6 @@ export class InventoryTableComponent implements OnInit {
         return 'asc';
     }
   }
-
-
 
   /**
    * Detect if the given item should be filtered or not,
@@ -165,5 +151,13 @@ export class InventoryTableComponent implements OnInit {
         this.showGone
       );
     }
+  }
+
+  sendVerify(): void {
+    // todo
+  }
+
+  generatePDF(): void {
+    // todo
   }
 }

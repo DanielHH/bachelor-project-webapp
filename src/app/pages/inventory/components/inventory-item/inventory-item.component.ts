@@ -22,6 +22,8 @@ import { VerificationType } from '../../../../datamodels/verificationType';
 })
 export class InventoryItemComponent implements OnInit {
   @Input() baseItem: BaseItem;
+  isChecked: boolean;
+
 
   cardTypeList: CardType[] = [];
   documentTypeList: DocumentType[] = [];
