@@ -94,6 +94,9 @@ import { TypeItemComponent } from './pages/types/components/type-item/type-item.
 import { UserItemComponent } from './pages/users/user-item/user-item.component';
 import { UserTableComponent } from './pages/users/user-table/user-table.component';
 import { ModifyUserComponent } from './pages/users/modify-user/modify-user.component';
+import { LogTableComponent } from './pages/logs/components/log-table/log-table.component';
+import { LogItemComponent } from './pages/logs/components/log-item/log-item.component';
+import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
 
 @NgModule({
   declarations: [
@@ -156,7 +159,10 @@ import { ModifyUserComponent } from './pages/users/modify-user/modify-user.compo
     TypeItemComponent,
     UserItemComponent,
     UserTableComponent,
-    ModifyUserComponent
+    ModifyUserComponent,
+    LogTableComponent,
+    LogItemComponent,
+    MatchFilterLogPipe
   ],
   imports: [
     BrowserModule,
