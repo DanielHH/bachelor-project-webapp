@@ -11,6 +11,7 @@ import {
   NgZone
 } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
+import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
@@ -24,6 +25,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
 import { CardType } from '../../../../datamodels/cardType';
+import { DocumentType } from '../../../../datamodels/documentType';
 import { BaseType } from '../../../../datamodels/baseType';
 
 @Component({
