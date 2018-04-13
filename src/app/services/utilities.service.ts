@@ -129,5 +129,12 @@ export class UtilitiesService {
   getDocumentType(id?: number, name?: string) {
     return _.find(this.documentTypeList, documentType => documentType.id == id || documentType.name == name);
   }
-
+/*
+  updateLogEventList(logEvent: any) {
+    // Update log event list
+    this.logEvents.unshift(logEvent);
+    this.logEvents = this.logEvents.slice();
+    this.dataService.logEventList.next(this.logEvents);
+  }
+*/
 }

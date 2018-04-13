@@ -60,6 +60,11 @@ export class ReturnCardComponent implements OnInit {
       this.cards = cards;
     });
 
+    // Log event list subscriber
+    this.dataService.logEventList.subscribe(logEvents => {
+      this.logEvents = logEvents;
+    });
+
     // Return card subscriber
     this.modalService.returnCard.subscribe(card => {
       if (card && card.id) {

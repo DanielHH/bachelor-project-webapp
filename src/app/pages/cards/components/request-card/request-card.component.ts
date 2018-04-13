@@ -88,6 +88,11 @@ export class RequestCardComponent implements OnInit {
       this.cards = cards;
     });
 
+    // LogEvent list subscriber
+    this.dataService.logEventList.subscribe(logEvents => {
+      this.logEvents = logEvents;
+    });
+
     // Request card subscriber
     this.modalService.requestCard.subscribe(card => {
       if (card && card.id) {

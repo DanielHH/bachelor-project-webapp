@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
+import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
   selector: 'app-modify-card',
@@ -51,6 +52,8 @@ export class ModifyCardComponent implements OnInit {
 
   cardItem: Card;
 
+  logEvents: LogEvent[] = [];
+
   @Input() modalTitle = '';
 
   @Input() modalType: number;
@@ -85,6 +88,11 @@ export class ModifyCardComponent implements OnInit {
         onlySelf: false,
         emitEvent: true
       });
+    });
+
+    // Log event list subscriber
+    this.dataService.logEventList.subscribe(logEvents => {
+      this.logEvents = logEvents;
     });
 
     this.modalService.editCard.subscribe((card) => {
@@ -150,9 +158,20 @@ export class ModifyCardComponent implements OnInit {
       newCard.status = this.utilitiesService.getStatusFromID(1);
       newCard.user = new User();
 
-      this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
+      const logEvent = new LogEvent();
+      logEvent.itemType = this.utilitiesService.getItemTypeFromID(1); // TODO: ENUM, 1 means card
+      logEvent.logType = this.utilitiesService.getLogTypeFromID(6); // TODO: ENUM, 6 means 'Skapat'
+      logEvent.card = newCard;
+      logEvent.logDate = this.utilitiesService.getLocalDate();
+
+      this.httpService.httpPost<Card>('addNewCard/', {card: newCard, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
           this.cardList.unshift(res.data);
+          // Update log event list
+          this.logEvents.unshift(res.data.logEvent);
+          this.logEvents = this.logEvents.slice();
+          this.dataService.logEventList.next(this.logEvents);
+
           // Trigger view refresh
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
