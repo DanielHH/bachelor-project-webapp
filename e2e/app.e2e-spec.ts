@@ -212,3 +212,38 @@ describe('Sprint2', function() {
   });
 */
 });
+
+describe('Sprint3', function() {
+
+  const cardsFromMenu = element(by.linkText('Kort'));
+
+  beforeEach(function() {
+    browser.waitForAngularEnabled(true);
+    browser.get('http://pum.nlsn.se/');
+
+    element(by.name('usernameInput')).sendKeys('pumadmin');
+    element(by.name('passwordInput')).sendKeys('pum123');
+    element.all(by.buttonText('Logga in')).click();
+  });
+
+  // x
+  it('should work to check out a card', function() {
+    cardsFromMenu.click();
+    element.all(by.buttonText('Kvittera ut')).click();
+    element(by.name('usernameInput')).sendKeys('gusli432');
+    element(by.name('locationInput')).sendKeys('Test_checked_out');
+    browser.sleep(5000);
+    // element(by.name('generatePDF')).click();
+    browser.sleep(5000);
+    element.all(by.className('btn btn-primary waves-light')).click();
+    browser.sleep(5000);
+
+    browser.waitForAngularEnabled(false);
+    browser.get('http://api.nlsn.se/getCards');
+    expect(element.all(by.tagName('pre')).first().getText()).toContain('location":"Test_checked_out');
+  });
+
+  // Test 17-22 manually tested
+
+  // Test 25,26,27 manually tested
+});
