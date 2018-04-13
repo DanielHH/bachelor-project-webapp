@@ -60,6 +60,7 @@ describe('Sprint2', function() {
     const s = '"cardType":{"id":1,"name":"DBK"},"cardNumber":"TEST_NUMBER","user":{"id":null,"userType":{"id":0,"name":null},' +
     '"username":null,"name":null,"email":null},"location":"TEST_LOCATION","comment":"TEST_COMMENT","expirationDate":"2000-01-01 00:00:00"';
 
+    browser.sleep(10000);
     expect(element.all(by.tagName('pre')).first().getText()).toContain(s);
   });
 
@@ -128,7 +129,7 @@ describe('Sprint2', function() {
     // 9 - PASS (not for firefox)
     it('should give card added confirmation under average 5 seconds', function() {
       cardsFromMenu.click();
-      const amount = 5;
+      const amount = 3;
       for (let i = 0; i < amount; i++) {
 
         element.all(by.buttonText('Lägg till nytt kort')).click();
@@ -138,6 +139,7 @@ describe('Sprint2', function() {
         element(by.name('expirationDateInput')).sendKeys('2000-01-01');
         element(by.name('cardCommentInput')).sendKeys('TEST_COMMENT_' + i);
         element.all(by.buttonText('Spara')).click();
+        browser.sleep(1000);
 
         // Den senaste tillagda läggs längst upp i tabellen, så kontroll görs visuellt istället för kod
         // expect(element.all(by.className('col')).getText()).toContain('TEST_NUMBER_' + i);
@@ -145,7 +147,7 @@ describe('Sprint2', function() {
 
       browser.waitForAngularEnabled(false);
       browser.get('http://api.nlsn.se/getCards');
-      browser.sleep(500);
+      browser.sleep(1000);
       for (let i = 0; i < amount; i++) {
         expect(element.all(by.tagName('pre')).first().getText()).toContain('comment":"TEST_COMMENT_' + i);
       }
@@ -154,7 +156,7 @@ describe('Sprint2', function() {
     // 10 - PASS (not for firefox)
     it('should give document added confirmation under average 5 seconds', function() {
       documentsFromMenu.click();
-      const amount = 5;
+      const amount = 3;
       for (let i = 0; i < amount; i++) {
 
         element.all(by.buttonText('Lägg till ny handling')).click();
@@ -168,7 +170,7 @@ describe('Sprint2', function() {
         element(by.name('docLocationInput')).sendKeys('TEST_LOCATION_' + i);
         element(by.name('docCommentInput')).sendKeys('TEST_COMMENT_' + i);
         element.all(by.buttonText('Spara')).click();
-        browser.sleep(500);
+        browser.sleep(1000);
 
         // Den senaste tillagda läggs längst upp i tabellen, så kontroll görs visuellt istället för kod
         // expect(element.all(by.className('col')).getText()).toContain('TEST_NUMBER_' + i);
@@ -176,7 +178,7 @@ describe('Sprint2', function() {
 
       browser.waitForAngularEnabled(false);
       browser.get('http://api.nlsn.se/getDocuments');
-      browser.sleep(500);
+      browser.sleep(1000);
       for (let i = 0; i < amount; i++) {
         expect(element.all(by.tagName('pre')).first().getText()).toContain('location":"TEST_LOCATION_' + i);
       }
