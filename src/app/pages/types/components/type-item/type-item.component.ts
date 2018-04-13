@@ -25,9 +25,6 @@ export class TypeItemComponent implements OnInit {
   cardTypeList: CardType[] = [];
   documentTypeList: DocumentType[] = [];
 
-  showRequestModal = false;
-  showReturnModal = false;
-
   isActive: boolean;
 
   constructor(

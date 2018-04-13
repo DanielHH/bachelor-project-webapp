@@ -6,6 +6,7 @@ import { Delivery } from '../datamodels/delivery';
 import { CardType } from '../datamodels/cardType';
 import { DocumentType } from '../datamodels/documentType';
 import { BaseType } from '../datamodels/baseType';
+import { User } from '../datamodels/user';
 
 @Injectable()
 export class ModalService {
@@ -140,6 +141,18 @@ export class ModalService {
    */
   editType: BehaviorSubject<BaseType> = new BehaviorSubject<BaseType>(
     this._editType
+  );
+
+  /**
+   * Edit user
+   */
+  private _editUser = new User();
+
+   /**
+   * A subscriber to the user to be edited
+   */
+  editUser: BehaviorSubject<User> = new BehaviorSubject<User>(
+    this._editUser
   );
 
   constructor() { }

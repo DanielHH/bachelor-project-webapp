@@ -28,11 +28,11 @@
       Återställ
     </a>
 
-    <a class="dropdown-item" (click)="setStatus(6)" *ngIf="typeMenu && (object?.getType()?.status.id === 5)">
+    <a class="dropdown-item" (click)="setStatus(6)" *ngIf="adminMenu && (object?.getType()?.status.id === 5)">
       Inaktivera
     </a>
 
-    <a class="dropdown-item" (click)="setStatus(5)" *ngIf="typeMenu && (object?.getType()?.status.id === 6)">
+    <a class="dropdown-item" (click)="setStatus(5)" *ngIf="adminMenu && (object?.getType()?.status.id === 6)">
       Aktivera
     </a>
 
