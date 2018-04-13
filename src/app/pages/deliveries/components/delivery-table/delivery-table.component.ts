@@ -114,7 +114,6 @@ export class DeliveryTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDelivery() {
-    this.editDelivery = Object.assign({}, new Delivery());
     this.modalTitle = 'Lägg till ny leverans';
     this.modalType = 0;
     this.showModal = true;

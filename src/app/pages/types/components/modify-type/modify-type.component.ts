@@ -100,8 +100,8 @@ export class ModifyTypeComponent implements OnInit {
   ngOnInit() {}
 
   /**
-   * Sets fields in card according to form
-   * @param card Card to set form data to
+   * Sets fields in type according to form
+   * @param type CardType or DocumentType to set form data to
    */
   setTypeFromForm(type: any) {
     if (this.isValidInput()) {
@@ -111,12 +111,12 @@ export class ModifyTypeComponent implements OnInit {
   }
 
   /**
-   * Attempts to submit new card to database
+   * Attempts to submit new type to database
    */
   addNewType() {
     if (this.isValidInput()) {
       let newType;
-      if (this.typeItem.isCardType()) {
+      if (this.isCardType) {
         newType = new CardType();
       } else {
         newType = new DocumentType();
@@ -158,10 +158,10 @@ export class ModifyTypeComponent implements OnInit {
    */
   editType() {
     if (this.isValidInput()) {
-      this.setTypeFromForm(this.typeItem);
+      this.setTypeFromForm(this.typeItem.getType());
 
-      if (this.typeItem.isCardType()) {
-        this.httpService.httpPut<CardType>('updateCardType/', this.typeItem).then(res => {
+      if (this.isCardType) {
+        this.httpService.httpPut<CardType>('updateCardType/', this.typeItem.getType()).then(res => {
           if (res.message === 'success') {
             this.cardTypeList = this.cardTypeList.slice();
             this.dataService.cardTypeList.next(this.cardTypeList);
@@ -170,7 +170,7 @@ export class ModifyTypeComponent implements OnInit {
           }
         });
       } else {
-        this.httpService.httpPut<DocumentType>('updateDocumenType/', this.typeItem).then(res => {
+        this.httpService.httpPut<DocumentType>('updateDocumentType/', this.typeItem.getType()).then(res => {
           if (res.message === 'success') {
             this.documentTypeList = this.documentTypeList.slice();
             this.dataService.documentTypeList.next(this.documentTypeList);
@@ -202,6 +202,7 @@ export class ModifyTypeComponent implements OnInit {
   closeForm() {
     this.typeNameControl.reset();
     this.typeControl.reset();
+    this.isCardType = true;
     this.modifyForm.resetForm();
 
     this.typeItem = Object.assign({}, new BaseType(new CardType(), 'cardType'));
