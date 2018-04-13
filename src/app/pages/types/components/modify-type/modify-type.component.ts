@@ -117,6 +117,10 @@ export class ModifyTypeComponent implements OnInit {
   */
   toggleIsCardType() {
     this.isCardType = !this.isCardType;
+    // Updates too fast I think, works with delay
+    setTimeout(() => {
+      this.typeNameControl.updateValueAndValidity();
+    }, 100);
   }
 
   /**
@@ -187,7 +191,10 @@ export class ModifyTypeComponent implements OnInit {
    * Returns true if entered type name is valid, else false.
    */
   isValidTypeName() {
-    return !this.typeNameControl.hasError('required');
+    return (
+      !this.typeNameControl.hasError('required') &&
+      !this.typeNameControl.hasError('typeName')
+    );
   }
 
   /**

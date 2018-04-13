@@ -46,6 +46,7 @@ import {
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
+import { TypeNameValidatorDirective } from './directives/type-name.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
 import { DateValidatorDirective } from './directives/date.directive';
 import { DataService } from './services/data.service';
@@ -122,6 +123,7 @@ import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
     UsernameValidatorDirective,
     CardTypeValidatorDirective,
     DocumentTypeValidatorDirective,
+    TypeNameValidatorDirective,
     DateValidatorDirective,
     MatchFilterCardPipe,
     MatchFilterTypePipe,

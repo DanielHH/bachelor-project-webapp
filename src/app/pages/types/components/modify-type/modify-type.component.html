@@ -9,7 +9,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="typeNameInput" name="typeNameInput" [(ngModel)]="typeNameInput" maxlength="128" placeholder="Benämning"
-            [formControl]="typeNameControl" required>
+            [formControl]="typeNameControl" [isCardType]="isCardType" required appTypeName>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidTypeName()">done</mat-icon>
@@ -20,6 +20,8 @@
           </button>
           <!--Error-->
           <mat-error *ngIf="typeNameControl.hasError('required')">Ange en benämning</mat-error>
+          <mat-error *ngIf="!typeNameControl.hasError('required') && typeNameControl.hasError('typeName')">
+            Typ med angiven benämning existerar redan</mat-error>
         </mat-form-field>
       </div>
       <div class="col-0 col-md-3"></div>
@@ -34,10 +36,10 @@
           <div class="row radio-buttons">
             <div class="col-0 col-md"></div>
             <div class="col">
-              <mat-radio-button [checked]="isCardType" (change)="toggleIsCardType()" value="cardType">Korttyp</mat-radio-button>
+              <mat-radio-button class="radio-button" [checked]="isCardType" (change)="toggleIsCardType()" value="cardType">Korttyp</mat-radio-button>
             </div>
             <div class="col">
-              <mat-radio-button [checked]="!isCardType" value="documentType" (change)="toggleIsCardType()">Dokumenttyp</mat-radio-button>
+              <mat-radio-button class="radio-button" [checked]="!isCardType" value="documentType" (change)="toggleIsCardType()">Dokumenttyp</mat-radio-button>
             </div>
             <div class="col-0 col-md"></div>
           </div>
