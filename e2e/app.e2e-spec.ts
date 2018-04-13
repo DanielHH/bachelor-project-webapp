@@ -1,7 +1,7 @@
 import { AppPage } from './app.po';
 import { browser, by, element, ExpectedConditions, Button } from 'protractor';
 
-describe('Sprint2', function() {
+xdescribe('Sprint2', function() {
 
   const documentsFromMenu = element(by.linkText('Handlingar'));
   const cardsFromMenu = element(by.linkText('Kort'));
@@ -217,7 +217,7 @@ describe('Sprint2', function() {
 */
 });
 
-describe('Sprint3', function() {
+xdescribe('Sprint3', function() {
 
   const cardsFromMenu = element(by.linkText('Kort'));
   const documentsFromMenu = element(by.linkText('Handlingar'));
