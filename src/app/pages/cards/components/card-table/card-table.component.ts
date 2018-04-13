@@ -22,7 +22,7 @@ export class CardTableComponent implements OnInit {
   orderStatus = '';
   orderCardType = '';
   orderCardNumber = '';
-  orderUserID = '';
+  orderUser = '';
   orderLocation = '';
   orderComment = '';
   orderDate = '';
@@ -72,9 +72,9 @@ export class CardTableComponent implements OnInit {
         this.orderCardNumber = newOrder;
         break;
       }
-      case 'user.id': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user.name': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
         break;
       }
       case 'location': {
