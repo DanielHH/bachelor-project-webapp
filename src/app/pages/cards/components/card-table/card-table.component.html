@@ -60,8 +60,8 @@
         <div class="col" (click)="sortTableList('cardNumber')">
           <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'" [class.both-arrow]="orderCardNumber == ''">Kort-ID </span>
         </div>
-        <div class="col" (click)="sortTableList('user.id')">
-          <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">Användare </span>
+        <div class="col" (click)="sortTableList('user.name')">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
         </div>
         <div class="col" (click)="sortTableList('location')">
           <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
