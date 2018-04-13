@@ -57,9 +57,12 @@ import { ItemMenuComponent } from './components/item-menu/item-menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule
+} from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
-
 
 import { ModifyDocumentComponent } from './pages/documents/components/modify-document/modify-document.component';
 import { UtilitiesService } from './services/utilities.service';
@@ -84,6 +87,10 @@ import { ModalService } from './services/modal.service';
 import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
 import { PdfGenerationComponent } from './components/pdf-generation/pdf-generation.component';
 import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
+import { DatePipe } from '@angular/common';
+import { LOCALE_ID } from '@angular/core';
+
+
 
 @NgModule({
   declarations: [
@@ -180,9 +187,11 @@ import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-
     UtilitiesService,
     MatchFilterCardPipe,
     MatchFilterDocumentPipe,
-    ModalService
+    ModalService,
+    DatePipe,
+    { provide: LOCALE_ID, useValue: 'sv'}
   ],
   entryComponents: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

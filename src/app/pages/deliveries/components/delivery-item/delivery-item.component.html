@@ -21,7 +21,7 @@
   <div class="col">{{deliveryItem?.documentNumber}}</div>
   <div class="col">{{deliveryItem.name}}</div>
   <div class="col">{{deliveryItem?.receiver}}</div>
-  <div class="col">{{this.utilitiesService.getDateString(deliveryItem.sentDate)}}</div>
+  <div class="col">{{deliveryItem.sentDate | date: 'shortDate'}}</div>
   <div class="col">
     <div class="column-text">{{deliveryItem?.comment}}</div>
     <div class="pull-right table-menu-fix">

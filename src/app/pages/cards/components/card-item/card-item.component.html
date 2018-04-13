@@ -24,7 +24,7 @@
   <div class="col">{{cardItem?.location}}</div>
   <div class="col">{{cardItem?.comment}}</div>
   <div class="col">
-    <div class="column-text">{{utilitiesService.getDateString(this.cardItem?.expirationDate)}}</div>
+    <div class="column-text">{{this.cardItem?.expirationDate | date: 'shortDate'}}</div>
     <div class="pull-right table-menu-fix">
       <app-item-menu [item]="cardItem" (editItem)="edit()" (editStatus)="editStatus()" [showDetailsOption]="true" [showEditOption]="true"></app-item-menu>
     </div>
