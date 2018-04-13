@@ -3,6 +3,9 @@ import { Card } from '../datamodels/card';
 import { Document } from '../datamodels/document';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Delivery } from '../datamodels/delivery';
+import { CardType } from '../datamodels/cardType';
+import { DocumentType } from '../datamodels/documentType';
+import { BaseType } from '../datamodels/baseType';
 
 @Injectable()
 export class ModalService {
@@ -127,6 +130,17 @@ export class ModalService {
     this._returnDocument
   );
 
+  /**
+   * Edit type
+   */
+  private _editType = new BaseType(new CardType(), 'cardType');
+
+   /**
+   * A subscriber to the Type to be edited
+   */
+  editType: BehaviorSubject<BaseType> = new BehaviorSubject<BaseType>(
+    this._editType
+  );
 
   constructor() { }
 

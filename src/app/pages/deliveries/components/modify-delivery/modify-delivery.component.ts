@@ -144,7 +144,7 @@ export class ModifyDeliveryComponent implements OnInit {
   }
 
   /**
-   * Attempts to submit new document to database
+   * Attempts to submit new delivery to database
    */
   addNewDelivery() {
     if (this.isValidInput()) {
@@ -156,7 +156,7 @@ export class ModifyDeliveryComponent implements OnInit {
       newDelivery.modifiedDate = this.utilitiesService.getLocalDate();
       newDelivery.status = this.utilitiesService.getStatusFromID(1);
 
-      this.httpService.httpPost<Document>('addNewDelivery/', newDelivery).then(res => {
+      this.httpService.httpPost<Delivery>('addNewDelivery/', newDelivery).then(res => {
         if (res.message === 'success') {
           this.deliveryList.unshift(res.data);
           // Trigger view refresh

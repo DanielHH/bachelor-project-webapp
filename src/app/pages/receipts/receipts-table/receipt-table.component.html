@@ -39,17 +39,17 @@
     </div>
     <div class="table-container">
       <div class="row table-header">
-        <div class="col-1" (click)="sortTableList('endDate')">
-          <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'" [class.both-arrow]="orderEndDate == ''">Status </span>
+        <div class="col-1" (click)="sortTableList('TODO')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col" (click)="sortTableList('itemTypeID')">
-          <span class="hover" [class.up-arrow]="orderItemTypeID == 'asc'" [class.down-arrow]="orderItemTypeID == 'desc'" [class.both-arrow]="orderItemTypeID == ''">Typ </span>
+        <div class="col" (click)="sortTableList('TODO')">
+          <span class="hover" [class.up-arrow]="orderItemType == 'asc'" [class.down-arrow]="orderItemType == 'desc'" [class.both-arrow]="orderItemType == ''">Typ </span>
         </div>
-        <div class="col" (click)="sortTableList('IDNumber')">
+        <div class="col" (click)="sortTableList('TODO')">
           <span class="hover" [class.up-arrow]="orderIDNumber == 'asc'" [class.down-arrow]="orderIDNumber == 'desc'" [class.both-arrow]="orderIDNumber == ''">ID </span>
         </div>
-        <div class="col" (click)="sortTableList('userID')">
-          <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">Användare </span>
+        <div class="col" (click)="sortTableList('user.name')">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
         </div>
         <div class="col" (click)="sortTableList('startDate')">
           <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'" [class.both-arrow]="orderStartDate == ''">Startdatum </span>

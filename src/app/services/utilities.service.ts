@@ -64,7 +64,6 @@ export class UtilitiesService {
     this.dataService.itemTypeList.subscribe(itemTypeList => {
       this.itemTypeList = itemTypeList;
     });
-
   }
 
   /**

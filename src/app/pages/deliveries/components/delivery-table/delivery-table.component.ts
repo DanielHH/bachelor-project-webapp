@@ -56,12 +56,12 @@ export class DeliveryTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'documentType': {
+      case 'documentType.name': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
         break;
@@ -114,7 +114,6 @@ export class DeliveryTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDelivery() {
-    this.editDelivery = Object.assign({}, new Delivery());
     this.modalTitle = 'Lägg till ny leverans';
     this.modalType = 0;
     this.showModal = true;

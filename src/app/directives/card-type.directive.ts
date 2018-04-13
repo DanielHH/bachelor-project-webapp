@@ -19,9 +19,23 @@ import * as _ from 'lodash';
   }
 
   validate(c: FormControl): ValidationErrors {
-    const input = String(c.value);
+    const input = c.value;
+    let cardTypeMatch;
 
-    const isValid = !input || _.find(this.cardTypes, (cardType) => cardType.name === input);
+    let isValid;
+    if (!input) {
+      isValid = true;
+    } else {
+      if (input.id) { // CardType object
+        cardTypeMatch = _.find(this.cardTypes, (cardType) => cardType.name === input.name);
+      } else { // String input
+        cardTypeMatch = _.find(this.cardTypes, (cardType) => cardType.name === input);
+      }
+
+      isValid = cardTypeMatch && cardTypeMatch.status.id === 5;
+
+    }
+
     const message = {
       'cardType': {
         'message': 'Ogiltig typ'

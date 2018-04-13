@@ -1,7 +1,7 @@
 import { HttpModule } from '@angular/http';
 import { HttpService } from './services/http.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { routing } from './routing';
@@ -51,6 +51,7 @@ import { DateValidatorDirective } from './directives/date.directive';
 import { DataService } from './services/data.service';
 import { RouteDataService } from './services/route-data.service';
 import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
+import { MatchFilterTypePipe } from './pipes/match-filter-type.pipe';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
@@ -85,6 +86,14 @@ import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-de
 import { PdfGenerationComponent } from './components/pdf-generation/pdf-generation.component';
 import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
 import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
+import { UsersComponent } from './pages/users/users.component';
+import { TypesComponent } from './pages/types/types.component';
+import { ModifyTypeComponent } from './pages/types/components/modify-type/modify-type.component';
+import { TypeTableComponent } from './pages/types/components/type-table/type-table.component';
+import { TypeItemComponent } from './pages/types/components/type-item/type-item.component';
+import { UserItemComponent } from './pages/users/user-item/user-item.component';
+import { UserTableComponent } from './pages/users/user-table/user-table.component';
+import { ModifyUserComponent } from './pages/users/modify-user/modify-user.component';
 import { LogTableComponent } from './pages/logs/components/log-table/log-table.component';
 import { LogItemComponent } from './pages/logs/components/log-item/log-item.component';
 import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
@@ -115,6 +124,7 @@ import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
     DocumentTypeValidatorDirective,
     DateValidatorDirective,
     MatchFilterCardPipe,
+    MatchFilterTypePipe,
     CardDetailComponent,
     DocumentItemComponent,
     DocumentTableComponent,
@@ -142,6 +152,14 @@ import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
     PdfGenerationComponent,
     DeliveryDetailComponent,
     SelfVerificationComponent,
+    UsersComponent,
+    TypesComponent,
+    ModifyTypeComponent,
+    TypeTableComponent,
+    TypeItemComponent,
+    UserItemComponent,
+    UserTableComponent,
+    ModifyUserComponent,
     LogTableComponent,
     LogItemComponent,
     MatchFilterLogPipe
@@ -187,10 +205,12 @@ import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
     RouteDataService,
     UtilitiesService,
     MatchFilterCardPipe,
+    MatchFilterTypePipe,
     MatchFilterDocumentPipe,
     ModalService
   ],
   entryComponents: [],
+  schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

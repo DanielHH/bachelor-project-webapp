@@ -6,7 +6,7 @@
         <mat-form-field>
           <!--Input-->
           <input id="cardTypeInput" name="cardTypeInput" [(ngModel)]="cardTypeInput" maxlength="128" [style.color]="isValidCardType() ? 'black' : 'gray'"
-            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="cardTypes" [formControl]="cardTypeControl" maxlength="10"
+            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="cardTypes" [formControl]="cardTypeControl"
             appCardType required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">

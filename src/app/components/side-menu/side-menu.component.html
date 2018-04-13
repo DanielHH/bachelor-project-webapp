@@ -26,6 +26,22 @@
         <a class="nav-link" routerLink="/logs">Loggar</a>
       </li>
       <li class="nav-item">
+        <a *ngIf="user.userType.id == 1" class="nav-link collapsable" [class.menu-showing]="subMenu?.isExpanded" (click)="subMenu.toggle()">
+          <i class="fa fa-cog" aria-hidden="true"></i> Administrationsverktyg
+        </a>
+        <div class="nav-title" *ngIf="subMenu?.isExpanded"></div>
+
+        <div [mdbCollapse]="true" #subMenu="bs-collapse">
+          <ul class="navbar-nav sub-menu">
+            <li class="nav-item" routerLinkActive="active">
+              <a class="nav-link" routerLink="/types">Typer</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+              <a class="nav-link" routerLink="/users">Användare</a>
+            </li>
+          </ul>
+        </div>
+        <div class="nav-title" [class.mt-2]="subMenu.isExpanded"></div>
         <a class="nav-link" (click)="logout()" routerLink="/">
           <i class="fa fa-sign-out" aria-hidden="true"></i> Logga ut
         </a>

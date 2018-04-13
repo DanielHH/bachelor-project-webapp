@@ -23,7 +23,7 @@ export class DocumentTableComponent implements OnInit {
   orderDocumentType = '';
   orderDocumentNumber = '';
   orderName = '';
-  orderUserID = '';
+  orderUser = '';
   orderLocation = '';
   orderComment = '';
 
@@ -56,12 +56,12 @@ export class DocumentTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'documentType': {
+      case 'documentType.name': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
         break;
@@ -76,9 +76,9 @@ export class DocumentTableComponent implements OnInit {
         this.orderName = newOrder;
         break;
       }
-      case 'userID': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user.name': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
         break;
       }
       case 'location': {

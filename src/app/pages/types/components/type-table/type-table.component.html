@@ -1,0 +1,83 @@
+<div class="card">
+  <div class="custom-table">
+    <!-- Row text filter input and add new button -->
+    <div class="row">
+
+      <!-- Input field for text filter -->
+      <div class="col-4 px-0 text-filter-input">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="col"></div>
+      <!-- Space -->
+
+      <!-- Add new type button-->
+      <div class="col-2">
+        <span class="add-new-button">
+          <button mat-raised-button (click)="openAddNewType()" color="primary">Lägg till ny typ</button>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Row filter per status -->
+    <div class="pb-1 filter-checkbox-row">
+
+      <div class="mr-2">
+        <mat-checkbox id="showCardTypes" name="showCardTypes" color="primary" class="pr-1" [(ngModel)]="showCardTypes">Korttyper</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showDocumentTypes" name="showDocumentTypes" color="primary" class="pr-1" [(ngModel)]="showDocumentTypes">Dokumenttyper</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showActive" name="showActive" color="primary" class="pr-1" [(ngModel)]="showActive">Aktiva</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showInactive" name="showInactive" color="primary" class="pr-1" [(ngModel)]="showInactive">Inaktiva</mat-checkbox>
+      </div>
+
+    </div>
+
+    <div class="table-container">
+      <!-- Header row -->
+      <div class="row table-header">
+
+        <div class="col-1" (click)="sortTableList('type.status.id')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('type.name')">
+          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Benämning </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('type.creationDate')">
+          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Skapad </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('type.modifiedDate')">
+          <span class="hover" [class.up-arrow]="orderModifiedDate == 'asc'" [class.down-arrow]="orderModifiedDate == 'desc'" [class.both-arrow]="orderModifiedDate == ''">Senast ändrad </span>
+        </div>
+
+      </div>
+      <hr>
+      <div class="table-items scrollbar-table">
+        <!-- Add cards to the table -->
+        <div *ngFor="let type of typeList | matchFilterType:filterInput:showCardTypes:showDocumentTypes:showActive:showInactive">
+          <app-type-item [typeItem]="type"></app-type-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modify-type [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-type>

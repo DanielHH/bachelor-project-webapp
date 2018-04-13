@@ -54,14 +54,14 @@
         <div class="col-1" (click)="sortTableList('status.id')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col" (click)="sortTableList('cardType')">
+        <div class="col" (click)="sortTableList('cardType.name')">
           <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'" [class.both-arrow]="orderCardType == ''">Typ </span>
         </div>
         <div class="col" (click)="sortTableList('cardNumber')">
           <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'" [class.both-arrow]="orderCardNumber == ''">Kort-ID </span>
         </div>
-        <div class="col" (click)="sortTableList('user.id')">
-          <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'" [class.both-arrow]="orderUserID == ''">Användare </span>
+        <div class="col" (click)="sortTableList('user.name')">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
         </div>
         <div class="col" (click)="sortTableList('location')">
           <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>

@@ -9,7 +9,7 @@
         <mat-form-field>
           <!--Input-->
           <input id="docTypeInput" name="docTypeInput" [(ngModel)]="docTypeInput" maxlength="128" [style.color]="isValidDocType() ? 'black' : 'gray'"
-            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl" maxlength="10"
+            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl"
             appDocumentType required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">

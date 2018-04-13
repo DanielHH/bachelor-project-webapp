@@ -1,0 +1,27 @@
+// Adding sorting icons and hover pointer to objects
+.hover {
+  cursor: pointer;
+  &.up-arrow::after {
+      content: "\f0de";
+      font-family: FontAwesome;
+      font-size: 12px;
+  }
+  &.down-arrow::after {
+      content: "\f0dd";
+      font-family: FontAwesome;
+      font-size: 12px;
+  }
+  &.both-arrow::after {
+      content: "\f0dc";
+      font-family: FontAwesome;
+      font-size: 12px;
+  }
+}
+
+.col-narrow {
+width: 11%;
+}
+
+.col-wide {
+width: 13%;
+}
