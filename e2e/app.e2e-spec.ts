@@ -361,6 +361,9 @@ describe('Sprint4', function() {
     expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/receipts');
     expect(browser2.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
     expect(browser3.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
+
+    browser2.close();
+    browser3.close();
   });
 
     // 33
