@@ -1,7 +1,7 @@
 import { AppPage } from './app.po';
 import { browser, by, element, ExpectedConditions, Button } from 'protractor';
 
-xdescribe('Sprint2', function() {
+describe('Sprint2', function() {
 
   const documentsFromMenu = element(by.linkText('Handlingar'));
   const cardsFromMenu = element(by.linkText('Kort'));
@@ -15,6 +15,7 @@ xdescribe('Sprint2', function() {
   const logoutFromMenu = element(by.linkText('Logga ut'));
 
   beforeEach(function() {
+    browser.driver.manage().window().maximize();
     browser.waitForAngularEnabled(true);
     browser.get('http://pum.nlsn.se/');
 
@@ -216,7 +217,7 @@ xdescribe('Sprint2', function() {
 */
 });
 
-xdescribe('Sprint3', function() {
+describe('Sprint3', function() {
 
   const cardsFromMenu = element(by.linkText('Kort'));
   const documentsFromMenu = element(by.linkText('Handlingar'));
@@ -235,11 +236,10 @@ xdescribe('Sprint3', function() {
   it('should work to check out a card', function() {
     cardsFromMenu.click();
     element(by.buttonText('Kvittera ut')).click();
-    browser.sleep(1000);
+    browser.sleep(500);
     element(by.name('usernameInput')).sendKeys('gusli432');
     element(by.name('locationInput')).sendKeys('Test_checked_out');
     element(by.id('generatePDF')).click();
-    browser.sleep(500);
     element(by.buttonText('Bekräfta')).click();
     browser.sleep(1000);
 
@@ -256,11 +256,10 @@ xdescribe('Sprint3', function() {
   it('should work to check out a document', function() {
     documentsFromMenu.click();
     element(by.buttonText('Kvittera ut')).click();
-    browser.sleep(1000);
+    browser.sleep(500);
     element(by.name('usernameInput')).sendKeys('gusli432');
     element(by.name('locationInput')).sendKeys('Test_checked_out');
     element(by.id('generatePDF')).click();
-    browser.sleep(500);
     element(by.buttonText('Bekräfta')).click();
     browser.sleep(1000);
 
@@ -277,9 +276,8 @@ xdescribe('Sprint3', function() {
   it('should work to check in a card', function() {
     cardsFromMenu.click();
     element(by.buttonText('Kvittera in')).click();
-    browser.sleep(1000);
-    element(by.name('locationInput')).sendKeys('Test_checked_in');
     browser.sleep(500);
+    element(by.name('locationInput')).sendKeys('Test_checked_in');
     element(by.buttonText('Bekräfta')).click();
     browser.sleep(1000);
 
@@ -296,9 +294,8 @@ xdescribe('Sprint3', function() {
     it('should work to check in a document', function() {
       documentsFromMenu.click();
       element(by.buttonText('Kvittera in')).click();
-      browser.sleep(1000);
-      element(by.name('locationInput')).sendKeys('Test_checked_in');
       browser.sleep(500);
+      element(by.name('locationInput')).sendKeys('Test_checked_in');
       element(by.buttonText('Bekräfta')).click();
       browser.sleep(1000);
 
