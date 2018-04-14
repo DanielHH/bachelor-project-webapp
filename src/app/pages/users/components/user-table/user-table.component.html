@@ -52,23 +52,23 @@
       <!-- Header row -->
       <div class="row table-header">
 
-        <div class="col-1" (click)="sortTableList('user.status.id')">
+        <div class="col-1" (click)="sortTableList('status.id')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
 
-        <div class="col" (click)="sortTableList('user.username')">
+        <div class="col" (click)="sortTableList('username')">
           <span class="hover" [class.up-arrow]="orderUsername == 'asc'" [class.down-arrow]="orderUsername == 'desc'" [class.both-arrow]="orderUsername == ''">Användarnamn </span>
         </div>
 
-        <div class="col" (click)="sortTableList('user.name')">
+        <div class="col" (click)="sortTableList('name')">
           <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Namn </span>
         </div>
 
-        <div class="col" (click)="sortTableList('user.creationDate')">
+        <div class="col" (click)="sortTableList('creationDate')">
           <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Tillagd </span>
         </div>
 
-        <div class="col" (click)="sortTableList('user.modifiedDate')">
+        <div class="col" (click)="sortTableList('modifiedDate')">
           <span class="hover" [class.up-arrow]="orderModifiedDate == 'asc'" [class.down-arrow]="orderModifiedDate == 'desc'" [class.both-arrow]="orderModifiedDate == ''">Senast ändrad </span>
         </div>
 

@@ -13,8 +13,6 @@ export class CardTableComponent implements OnInit {
 
   @Input() cardList: Card[];
 
-  cardItem = new Card(); // Dummy
-
   showModal = false;
 
   filterInput = '';

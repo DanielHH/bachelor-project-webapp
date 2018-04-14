@@ -13,8 +13,6 @@ export class DocumentTableComponent implements OnInit {
 
   @Input() documentList: Document[];
 
-  documentItem = new Document(); // Dummy
-
   showModal = false;
 
   filterInput = '';

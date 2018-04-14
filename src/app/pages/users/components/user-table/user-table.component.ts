@@ -12,8 +12,6 @@ export class UserTableComponent implements OnInit {
 
   @Input() userList: User[];
 
-  userItem = new User(); // Dummy
-
   showModal = false;
 
   filterInput = '';
@@ -54,27 +52,27 @@ export class UserTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'user.status.id': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'user.username': {
+      case 'username': {
         newOrder = this.sortTableListHelper(this.orderUsername);
         this.orderUsername = newOrder;
         break;
       }
-      case 'user.name': {
+      case 'name': {
         newOrder = this.sortTableListHelper(this.orderName);
         this.orderName = newOrder;
         break;
       }
-      case 'type.creationDate': {
+      case 'creationDate': {
         newOrder = this.sortTableListHelper(this.orderCreationDate);
         this.orderCreationDate = newOrder;
         break;
       }
-      case 'type.modifiedDate': {
+      case 'modifiedDate': {
         newOrder = this.sortTableListHelper(this.orderModifiedDate);
         this.orderModifiedDate = newOrder;
         break;
