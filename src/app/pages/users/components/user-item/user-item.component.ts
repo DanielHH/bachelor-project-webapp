@@ -49,8 +49,7 @@ export class UserItemComponent implements OnInit {
   editStatus() {
     this.httpService.httpPut<User>('updateUser/', this.user).then(res => {
       if (res.message === 'success') {
-        this.userList.slice();
-        this.dataService.userList.next(this.userList);
+        this.dataService.getUserList();
       }
     });
   }

@@ -64,6 +64,10 @@
           <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Namn </span>
         </div>
 
+        <div class="col" (click)="sortTableList('email')">
+          <span class="hover" [class.up-arrow]="orderEmail == 'asc'" [class.down-arrow]="orderEmail == 'desc'" [class.both-arrow]="orderEmail == ''">E-postadress </span>
+        </div>
+
         <div class="col" (click)="sortTableList('creationDate')">
           <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Tillagd </span>
         </div>

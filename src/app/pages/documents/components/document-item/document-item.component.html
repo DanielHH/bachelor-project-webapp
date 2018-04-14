@@ -21,7 +21,7 @@
   </div>
   <div class="col">{{documentItem?.documentNumber}}</div>
   <div class="col">{{documentItem.name}}</div>
-  <div class="col">{{documentItem?.user?.name}}</div>
+  <div class="col">{{utilitiesService.getUserString(documentItem?.user)}}</div>
   <div class="col">{{documentItem?.location}}</div>
   <div class="col">
     <div class="column-text">{{documentItem?.comment}}</div>

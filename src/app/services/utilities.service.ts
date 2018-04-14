@@ -79,14 +79,18 @@ export class UtilitiesService {
    * Returns a string representation of date
    */
   getDateString(date: Date): string {
-    return date ? moment(date).format('YYYY-MM-DD') : 'Saknas';
+    return date ? moment(date).format('YYYY-MM-DD') : '-';
   }
 
   /**
    * Returns a string representation of user
    */
   getUserString(user: User): string {
-    return user && user.id ? user.name : 'Saknas';
+    if (user && user.id) {
+      return user.name + ' <' + user.username + '>';
+    } else {
+      return '-';
+    }
   }
 
   getStatusFromID(id: number) {

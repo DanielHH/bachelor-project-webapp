@@ -7,6 +7,7 @@ import { CardType } from '../datamodels/cardType';
 import { DocumentType } from '../datamodels/documentType';
 import { BaseType } from '../datamodels/baseType';
 import { User } from '../datamodels/user';
+import { BaseItem } from '../datamodels/baseItem';
 
 @Injectable()
 export class ModalService {
@@ -45,6 +46,18 @@ export class ModalService {
    */
   detailDelivery: BehaviorSubject<Delivery> = new BehaviorSubject<Delivery>(
     this._detailDelivery
+  );
+
+  /**
+   * Detail inventory
+   */
+  private _detailInventory = new BaseItem(null, new Card(), 'card');
+
+   /**
+   * A subscriber to the detail inventory
+   */
+  detailInventory: BehaviorSubject<BaseItem> = new BehaviorSubject<BaseItem>(
+    this._detailInventory
   );
 
   /**

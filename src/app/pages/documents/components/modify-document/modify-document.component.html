@@ -22,7 +22,7 @@
           <!--Dropdown-->
           <mat-autocomplete #docTypes="matAutocomplete">
             <mat-option *ngFor="let docType of filteredDocTypes | async" [value]="docType.name">
-              {{ docType.name }}
+              {{docType.name}}
             </mat-option>
           </mat-autocomplete>
           <!--Error-->

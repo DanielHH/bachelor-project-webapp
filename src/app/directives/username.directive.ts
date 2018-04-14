@@ -23,10 +23,13 @@ import { DataService } from '../services/data.service';
     const input = c.value;
 
     let isValid;
+    let userMatch;
     if (input && input.id) { // User object
-      isValid = _.find(this.users, (user) => user.username === input.username);
+      userMatch = _.find(this.users, (user) => user.username === input.username);
+      isValid = userMatch && userMatch.status.id === 5;
     } else { // String input
-      isValid = !input || _.find(this.users, (user) => user.username === input);
+      userMatch =  _.find(this.users, (user) => user.username === input);
+      isValid = !input || (userMatch && userMatch.status.id === 5);
     }
 
     const message = {

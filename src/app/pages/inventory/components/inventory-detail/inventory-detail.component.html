@@ -1,34 +1,34 @@
-<form #detailForm="ngForm" (ngSubmit)="hideDetail()">
+<form #detailForm="ngForm" (ngSubmit)="showModal = false">
   <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
   [submitName]="'Stäng'" [hideClose]="true">
 
-    <!-- Row card info -->
+    <!-- Row mat-card -->
     <div class="row">
-      <div class="col-0 col-md-1"></div>
+      <div class="col-12 col-md-1"></div>
       <div class="col-12 col-md-10 wide-center">
         <mat-card [style.background]="'#E8EAF6'">
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
+              <b>Sort:</b>
+            </div>
+            <div class="col-12 col-md-4">
               <b>Typ:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>Dokument-ID:</b>
-            </div>
-            <div class="col-12 col-md-4">
-              <b>Benämning:</b>
+              <b>ID:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{deliveryItem?.documentType?.name}}
+              {{baseItem?.getItemTypeString()}}
             </div>
             <div class="col-12 col-md-4">
-              {{deliveryItem?.documentNumber}}
+              {{baseItem?.getSubType()?.name}}
             </div>
             <div class="col-12 col-md-4">
-              {{deliveryItem?.name}}
+              {{baseItem?.getNumber()}}
             </div>
           </div>
           <!-- Row Space -->
@@ -36,53 +36,43 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              <b>Mottagare:</b>
+              <b>Användare:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>Daterad:</b>
+              <b>Förvaringsplats:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>Skickad:</b>
+              <b>Senast verifierad:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{deliveryItem?.receiver}}
+              {{utilitiesService.getUserString(baseItem?.getItem()?.user)}}
             </div>
             <div class="col-12 col-md-4">
-              {{displayDocumentDate()}}
+              {{baseItem?.getLocation()}}
             </div>
             <div class="col-12 col-md-4">
-              {{displaySentDate()}}
+              {{utilitiesService.getDateString(baseItem?.getItem().lastVerificationDate)}}
             </div>
           </div>
           <!-- Row Space -->
-          <div class="row py-1"></div>
+          <div  *ngIf="baseItem?.getItem()?.comment" class="row py-1"></div>
           <!-- Row -->
-          <div class="row my-1">
-            <div class="col-12 col-md-4">
-              <b>Skapad:</b>
-            </div>
-            <div class="col-12 col-md-4">
-              <b>Ändrad:</b>
-            </div>
-            <div class="col-12 col-md-4">
+          <div  *ngIf="baseItem?.getItem()?.comment" class="row my-1">
+            <div class="col-12">
               <b>Kommentar:</b>
             </div>
           </div>
           <!-- Row -->
-          <div class="row my-1">
-            <div class="col-12 col-md-4">
-              {{displayCreationDate()}}
-            </div>
-            <div class="col-12 col-md-4">
-              {{displayModifiedDate()}}
-            </div>
-            <div class="col-12 col-md-4">
-              {{deliveryItem?.comment}}
+          <div *ngIf="baseItem?.getItem()?.comment" class="row my-1">
+            <div class="col-12">
+              {{baseItem?.getItem()?.comment}}
             </div>
           </div>
+          <!-- Row Space -->
+          <div class="row py-1"></div>
         </mat-card>
       </div>
       <div class="col-0 col-md-1"></div>

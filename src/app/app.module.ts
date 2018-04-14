@@ -99,6 +99,7 @@ import { ModifyUserComponent } from './pages/users/components/modify-user/modify
 import { LogTableComponent } from './pages/logs/components/log-table/log-table.component';
 import { LogItemComponent } from './pages/logs/components/log-item/log-item.component';
 import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
+import { InventoryDetailComponent } from './pages/inventory/components/inventory-detail/inventory-detail.component';
 
 @NgModule({
   declarations: [
@@ -166,7 +167,8 @@ import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
     ModifyUserComponent,
     LogTableComponent,
     LogItemComponent,
-    MatchFilterLogPipe
+    MatchFilterLogPipe,
+    InventoryDetailComponent
   ],
   imports: [
     BrowserModule,

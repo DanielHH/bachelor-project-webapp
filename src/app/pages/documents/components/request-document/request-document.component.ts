@@ -53,11 +53,6 @@ export class RequestDocumentComponent implements OnInit {
 
   generatePDF = true;
 
-  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
-    startWith(''),
-    map(user => (user ? this.filterUsers(user) : this.users ? this.users.slice() : []))
-  );
-
   loading = false;
 
   hideSubmit = false;
@@ -71,7 +66,7 @@ export class RequestDocumentComponent implements OnInit {
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
     // User list subscriber
@@ -114,16 +109,6 @@ export class RequestDocumentComponent implements OnInit {
   }
 
   ngOnInit() {}
-
-  /**
-   * Filters list of usernames based on username input
-   * @param str username input
-   */
-  filterUsers(str: string) {
-    return this.users.filter(
-      user => str && typeof str === 'string' && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
 
   /**
    * Sets the start date datePicker the date entered in the input field.

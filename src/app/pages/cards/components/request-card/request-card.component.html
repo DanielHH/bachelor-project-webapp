@@ -100,9 +100,8 @@
               </button>
               <!--Dropdown-->
               <mat-autocomplete #userIDs="matAutocomplete" [displayWith]="displayUser">
-                <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
-                  {{ user.username + '
-                  < ' + user.name + '>' }}
+                <mat-option *ngFor="let user of users | matchFilterUser:usernameInput:true:true:true:false" [value]="user">
+                  {{utilitiesService.getUserString(user)}}
                 </mat-option>
               </mat-autocomplete>
               <!--Error-->

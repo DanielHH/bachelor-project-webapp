@@ -19,6 +19,7 @@ export class UserTableComponent implements OnInit {
   orderStatus = '';
   orderUsername = '';
   orderName = '';
+  orderEmail = '';
   orderCreationDate = '';
   orderModifiedDate = '';
 
@@ -65,6 +66,11 @@ export class UserTableComponent implements OnInit {
       case 'name': {
         newOrder = this.sortTableListHelper(this.orderName);
         this.orderName = newOrder;
+        break;
+      }
+      case 'email': {
+        newOrder = this.sortTableListHelper(this.orderEmail);
+        this.orderEmail = newOrder;
         break;
       }
       case 'creationDate': {

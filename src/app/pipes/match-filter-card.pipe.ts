@@ -49,7 +49,7 @@ export class MatchFilterCardPipe implements PipeTransform {
     return (
       (_.includes(lowerCase(card.cardNumber), filterInput) === true) ||
       (_.includes(lowerCase(card.cardType.name), filterInput) === true) ||
-      (_.includes(lowerCase(card.user.name), filterInput) === true) ||
+      (_.includes(lowerCase(this.utilitiesService.getUserString(card.user)), filterInput) === true) ||
       (_.includes(lowerCase(card.comment), filterInput) === true) ||
       (_.includes(lowerCase(card.location), filterInput) === true) ||
       (_.includes(lowerCase(this.utilitiesService.getDateString(card.expirationDate)), filterInput) === true)
