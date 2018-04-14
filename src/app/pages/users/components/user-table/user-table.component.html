@@ -57,15 +57,15 @@
         </div>
 
         <div class="col" (click)="sortTableList('user.username')">
-          <span class="hover" [class.up-arrow]="orderUsername == 'asc'" [class.down-arrow]="orderUsername == 'desc'" [class.both-arrow]="orderUsername == ''">Benämning </span>
+          <span class="hover" [class.up-arrow]="orderUsername == 'asc'" [class.down-arrow]="orderUsername == 'desc'" [class.both-arrow]="orderUsername == ''">Användarnamn </span>
         </div>
 
         <div class="col" (click)="sortTableList('user.name')">
-          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Skapad </span>
+          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Namn </span>
         </div>
 
         <div class="col" (click)="sortTableList('user.creationDate')">
-          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Skapad </span>
+          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Tillagd </span>
         </div>
 
         <div class="col" (click)="sortTableList('user.modifiedDate')">

@@ -46,8 +46,8 @@ export class MatchFilterUserPipe implements PipeTransform {
     if (
       (!user) ||
       (!user.id) ||
-      (user.isAdmin() && !showAdmins) ||
-      (user.isUser() && !showUsers) ||
+      (this.utilitiesService.isAdmin(user) && !showAdmins) ||
+      (this.utilitiesService.isUser(user) && !showUsers) ||
       (user.status.id == 5 && !showActive) ||
       (user.status.id == 6 && !showInactive)
     ) {

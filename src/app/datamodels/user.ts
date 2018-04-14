@@ -46,18 +46,4 @@ export class User {
    */
   status: StatusType;
 
-  /**
-   * Returns true if user is has Admin UserType, else false
-   */
-  isAdmin() {
-    return this.userType.id === 1;
-  }
-
-  /**
-   * Returns true if user is has User UserType, else false
-   */
-  isUser() {
-    return this.userType.id === 2;
-  }
-
 }

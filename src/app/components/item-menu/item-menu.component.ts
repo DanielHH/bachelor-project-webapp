@@ -80,4 +80,12 @@ export class ItemMenuComponent implements OnInit {
     this.editStatus.emit();
   }
 
+  getStatusID() {
+    if (this.isTypeItem) {
+      return this.object.getType().status.id;
+    } else {
+      return this.object.status.id;
+    }
+  }
+
 }

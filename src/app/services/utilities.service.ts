@@ -115,4 +115,18 @@ export class UtilitiesService {
     return _.find(this.documentTypeList, documentType => documentType.id == id || documentType.name == name);
   }
 
+  /**
+   * Returns true if user is has Admin UserType, else false
+   */
+  isAdmin(user: User) {
+    return user.userType.id === 1;
+  }
+
+  /**
+   * Returns true if user is has User UserType, else false
+   */
+  isUser(user: User) {
+    return user.userType.id === 2;
+  }
+
 }
