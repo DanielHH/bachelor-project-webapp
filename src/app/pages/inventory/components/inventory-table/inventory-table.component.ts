@@ -4,7 +4,9 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild
+  ViewChild,
+  QueryList,
+  ViewChildren
 } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { Document } from '../../../../datamodels/document';
@@ -14,6 +16,7 @@ import { ModifyCardComponent } from '../../../cards/components/modify-card/modif
 import { NgForm } from '@angular/forms';
 import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
 import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
+import { InventoryItemComponent } from '../inventory-item/inventory-item.component';
 
 @Component({
   selector: 'inventory-table',
@@ -22,6 +25,7 @@ import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document
 })
 export class InventoryTableComponent implements OnInit {
   @Input() baseItemList: BaseItem[];
+  @ViewChildren(InventoryItemComponent) displayedItems: QueryList<InventoryItemComponent>;
 
   dummyItem: Card = new Card();
 
@@ -152,9 +156,17 @@ export class InventoryTableComponent implements OnInit {
       );
     }
   }
-
+  /**
+   * Update verification date for all checked items.
+  */
   sendVerify(): void {
-    // todo
+    // TODO: should send a single post containing all verifications
+    this.displayedItems.forEach(item => {
+      if (item.isChecked) {
+        item.verifyInventory();
+        console.log('whoop');
+      }
+    });
   }
 
   generatePDF(): void {
