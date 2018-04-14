@@ -138,37 +138,4 @@ export class InventoryTableComponent implements OnInit {
         return 'asc';
     }
   }
-
-
-
-  /**
-   * Detect if the given item should be filtered or not,
-   * depending on checked boxes and input of filter field.
-   * @returns true if the item should be displayed, false otherwise
-   */
-  passesFilter(baseItem: BaseItem): boolean {
-    if (baseItem.isCard()) {
-      return (
-        this.cardPipe.matchFilt(
-          baseItem.item as Card,
-          this.filterInput,
-          this.showIn,
-          this.showOut,
-          this.showArchived,
-          this.showGone
-        ) || (_.includes(lowerCase(baseItem.item.lastVerificationDate), this.filterInput) === true)
-      );
-    } else {
-      return (
-        this.docPipe.matchFilt(
-          baseItem.item as Document,
-          this.filterInput,
-          this.showIn,
-          this.showOut,
-          this.showArchived,
-          this.showGone
-      ) || (_.includes(lowerCase(baseItem.item.lastVerificationDate), this.filterInput) === true)
-      );
-    }
-  }
 }
