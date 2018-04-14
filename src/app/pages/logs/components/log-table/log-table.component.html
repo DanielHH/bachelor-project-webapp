@@ -28,7 +28,7 @@
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showRest" name="showRest" color="primary" class="pr-1" [(ngModel)]="showRest">Resten</mat-checkbox>
+        <mat-checkbox id="showOther" name="showOther" color="primary" class="pr-1" [(ngModel)]="showOther">Övrigt</mat-checkbox>
       </div>
 
 
@@ -54,7 +54,7 @@
       <hr>
       <div class="table-items scrollbar-table">
         <!-- Add cards to the table" -->
-        <div *ngFor="let logEvent of logEventList | matchFilterLog:filterInput:showReceipt:showRest" >
+        <div *ngFor="let logEvent of logEventList | matchFilterLog:filterInput:showReceipt:showOther" >
           <app-log-item [logItem]="logEvent"></app-log-item>
         </div>
       </div>

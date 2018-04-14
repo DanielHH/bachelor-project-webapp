@@ -61,6 +61,18 @@ export class ModalService {
   );
 
   /**
+   * Detail user
+   */
+  private _detailUser = new User();
+
+   /**
+   * A subscriber to the detail user
+   */
+  detailUser: BehaviorSubject<User> = new BehaviorSubject<User>(
+    this._detailUser
+  );
+
+  /**
    * Edit card
    */
   private _editCard = new Card();

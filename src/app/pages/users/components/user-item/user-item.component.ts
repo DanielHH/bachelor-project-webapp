@@ -37,6 +37,13 @@ export class UserItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
+   * Show the modal for user details
+   */
+  showDetailsModal() {
+    this.modalService.detailUser.next(this.user);
+  }
+
+  /**
    * Set user to be outputted for editing
   */
   edit() {

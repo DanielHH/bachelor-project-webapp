@@ -48,6 +48,7 @@ import { CardTypeValidatorDirective } from './directives/card-type.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
 import { TypeNameValidatorDirective } from './directives/type-name.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
+import { NewUsernameValidatorDirective } from './directives/new-username.directive';
 import { DateValidatorDirective } from './directives/date.directive';
 import { DataService } from './services/data.service';
 import { RouteDataService } from './services/route-data.service';
@@ -124,6 +125,7 @@ import { InventoryDetailComponent } from './pages/inventory/components/inventory
     CardTableComponent,
     CardItemComponent,
     UsernameValidatorDirective,
+    NewUsernameValidatorDirective,
     CardTypeValidatorDirective,
     DocumentTypeValidatorDirective,
     TypeNameValidatorDirective,

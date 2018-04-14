@@ -13,7 +13,6 @@ import { DataService } from '../services/data.service';
   users: User[] = [];
 
   constructor(public dataService: DataService) {
-    // Get users from database
     this.dataService.userList.subscribe( (users) => {
       this.users = users;
     });
