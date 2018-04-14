@@ -69,7 +69,7 @@
         </div>
 
         <div class="col" (click)="sortTableList('creationDate')">
-          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Tillagd </span>
+          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Skapad </span>
         </div>
 
         <div class="col" (click)="sortTableList('modifiedDate')">
@@ -90,4 +90,4 @@
 
 <app-modify-user [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-user>
 
-<!-- <app-user-detail></app-user-detail> -->
+<app-user-detail></app-user-detail>

@@ -102,6 +102,7 @@ import { LogTableComponent } from './pages/logs/components/log-table/log-table.c
 import { LogItemComponent } from './pages/logs/components/log-item/log-item.component';
 import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
 import { InventoryDetailComponent } from './pages/inventory/components/inventory-detail/inventory-detail.component';
+import { UserDetailComponent } from './pages/users/components/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -172,7 +173,8 @@ import { InventoryDetailComponent } from './pages/inventory/components/inventory
     LogTableComponent,
     LogItemComponent,
     MatchFilterLogPipe,
-    InventoryDetailComponent
+    InventoryDetailComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserModule,
