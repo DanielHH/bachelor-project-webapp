@@ -36,6 +36,9 @@ export class InventoryComponent implements OnInit {
    */
   setItemList(): void {
     this.baseItemList = [];
+    if (this.cardList.length != 0 || this.documentList.length != 0) {
+      console.log('setitemlist');
+    }
     this.cardList.forEach(element => {
       this.baseItemList.push(new BaseItem(this.utilitiesService, element, 'card'));
     });

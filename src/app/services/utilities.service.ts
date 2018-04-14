@@ -80,7 +80,6 @@ export class UtilitiesService {
    * Returns a string representation of date
    */
   getDateString(date: Date): string {
-    console.log('datestring');
     return date ? moment(date).format('YYYY-MM-DD') : 'Saknas';
   }
 

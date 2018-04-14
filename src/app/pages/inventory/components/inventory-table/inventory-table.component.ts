@@ -4,7 +4,6 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild,
   QueryList,
   ViewChildren
 } from '@angular/core';
