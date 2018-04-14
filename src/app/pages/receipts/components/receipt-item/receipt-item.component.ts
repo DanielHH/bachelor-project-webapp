@@ -1,15 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Receipt } from '../../../datamodels/receipt';
-import { DataService } from '../../../services/data.service';
-import { CardType } from '../../../datamodels/cardType';
-import { Card } from '../../../datamodels/card';
-import { Document } from '../../../datamodels/document';
-import { User } from '../../../datamodels/user';
-import { DocumentType } from '../../../datamodels/documentType';
+import { Receipt } from '../../../../datamodels/receipt';
+import { DataService } from '../../../../services/data.service';
+import { CardType } from '../../../../datamodels/cardType';
+import { Card } from '../../../../datamodels/card';
+import { Document } from '../../../../datamodels/document';
+import { User } from '../../../../datamodels/user';
+import { DocumentType } from '../../../../datamodels/documentType';
 import * as _ from 'lodash';
-import { UtilitiesService } from '../../../services/utilities.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 import * as moment from 'moment';
-import { HttpService } from '../../../services/http.service';
+import { HttpService } from '../../../../services/http.service';
 
 @Component({
   selector: 'app-receipt-item',

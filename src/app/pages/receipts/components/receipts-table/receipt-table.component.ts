@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Receipt } from '../../../datamodels/receipt';
+import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
 
 @Component({

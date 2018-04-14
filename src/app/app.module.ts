@@ -74,9 +74,9 @@ import { DocumentDetailComponent } from './pages/documents/components/document-d
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { DeliveryTableComponent } from './pages/deliveries/components/delivery-table/delivery-table.component';
 import { DeliveryItemComponent } from './pages/deliveries/components/delivery-item/delivery-item.component';
-import { ReceiptTableComponent } from './pages/receipts/receipts-table/receipt-table.component';
+import { ReceiptTableComponent } from './pages/receipts/components/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
-import { ReceiptItemComponent } from './pages/receipts/receipt-item/receipt-item.component';
+import { ReceiptItemComponent } from './pages/receipts/components/receipt-item/receipt-item.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { InventoryTableComponent } from './pages/inventory/components/inventory-table/inventory-table.component';
 import { InventoryItemComponent } from './pages/inventory/components/inventory-item/inventory-item.component';
@@ -103,6 +103,7 @@ import { LogItemComponent } from './pages/logs/components/log-item/log-item.comp
 import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
 import { InventoryDetailComponent } from './pages/inventory/components/inventory-detail/inventory-detail.component';
 import { UserDetailComponent } from './pages/users/components/user-detail/user-detail.component';
+import { ReceiptDetailComponent } from './pages/receipts/components/receipt-detail/receipt-detail.component';
 
 @NgModule({
   declarations: [
@@ -174,7 +175,8 @@ import { UserDetailComponent } from './pages/users/components/user-detail/user-d
     LogItemComponent,
     MatchFilterLogPipe,
     InventoryDetailComponent,
-    UserDetailComponent
+    UserDetailComponent,
+    ReceiptDetailComponent
   ],
   imports: [
     BrowserModule,
