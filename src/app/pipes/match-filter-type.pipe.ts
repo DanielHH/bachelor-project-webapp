@@ -61,10 +61,8 @@ export class MatchFilterTypePipe implements PipeTransform {
 
     return (
       (_.includes(lowerCase(baseType.getType().name), filterInput) === true) ||
-      (_.includes(lowerCase(this.utilitiesService.getDateString(
-        baseType.getType().creationDate)), filterInput) === true) ||
-      (_.includes(lowerCase(this.utilitiesService.getDateString(
-        baseType.getType().modifiedDate)), filterInput) === true)
+      (_.includes(lowerCase(baseType.getType().creationDate), filterInput) === true) ||
+      (_.includes(lowerCase(baseType.getType().modifiedDate), filterInput) === true)
     );
   }
 

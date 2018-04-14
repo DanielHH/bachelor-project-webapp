@@ -60,10 +60,8 @@ export class MatchFilterUserPipe implements PipeTransform {
       (_.includes(lowerCase(user.username), filterInput) === true) ||
       (_.includes(lowerCase(user.name), filterInput) === true) ||
       (_.includes(lowerCase(user.email), filterInput) === true) ||
-      (_.includes(lowerCase(this.utilitiesService.getDateString(
-        user.creationDate)), filterInput) === true) ||
-      (_.includes(lowerCase(this.utilitiesService.getDateString(
-        user.modifiedDate)), filterInput) === true)
+      (_.includes(lowerCase(user.creationDate), filterInput) === true) ||
+      (_.includes(lowerCase(user.modifiedDate), filterInput) === true)
     );
   }
 

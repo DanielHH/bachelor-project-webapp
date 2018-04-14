@@ -78,7 +78,7 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     return (
       (_.includes(lowerCase(itemTypeToDisplay), filterInput) === true) ||
       (_.includes(lowerCase(itemIDToDisplay), filterInput) === true) ||
-      (_.includes(lowerCase(receipt.user.name), filterInput) === true) ||
+      (_.includes(lowerCase(this.utilitiesService.getUserString(receipt.user)), filterInput) === true) ||
       (_.includes(lowerCase(startDate), filterInput) === true) ||
       (_.includes(lowerCase(endDate), filterInput) === true)
     );

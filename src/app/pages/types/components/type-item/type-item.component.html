@@ -20,11 +20,11 @@
   </div>
 
   <div class="col">
-    <div class="column-text">{{utilitiesService.getDateString(typeItem?.getType()?.creationDate)}}</div>
+    <div class="column-text">{{typeItem?.getType()?.creationDate}}</div>
   </div>
 
   <div class="col">
-    <div class="column-text">{{utilitiesService.getDateString(typeItem?.getType()?.modifiedDate)}}</div>
+    <div class="column-text">{{typeItem?.getType()?.modifiedDate}}</div>
     <div class="pull-right table-menu-fix">
       <app-item-menu [object]="typeItem" (editObject)="edit()" (editStatus)="editStatus()"
       [isTypeItem]="true" [adminMenu]="true" [showEditOption]="true"></app-item-menu>

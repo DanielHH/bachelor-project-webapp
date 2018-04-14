@@ -2,5 +2,5 @@
   <div class="col">{{logItem.logDate}}</div>
   <div class="col">{{logItem.logType.name}}</div>
   <div class="col">{{logItem.logText}}</div>
-  <div class="col">{{logItem.user.name}}</div>
+  <div class="col">{{utilitiesService.getUserString(logItem.user)}}</div>
 </div>

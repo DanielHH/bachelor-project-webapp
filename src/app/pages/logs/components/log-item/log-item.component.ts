@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LogEvent } from '../../../../datamodels/logEvent';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-log-item',
@@ -10,7 +11,7 @@ export class LogItemComponent implements OnInit {
 
   @Input() logItem: LogEvent;
 
-  constructor() { }
+  constructor(public utilitiesService: UtilitiesService) { }
 
   ngOnInit() {
   }

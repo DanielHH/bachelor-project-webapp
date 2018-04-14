@@ -54,6 +54,7 @@ import { RouteDataService } from './services/route-data.service';
 import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
 import { MatchFilterTypePipe } from './pipes/match-filter-type.pipe';
 import { MatchFilterUserPipe } from './pipes/match-filter-user.pipe';
+import { MatchFilterInventoryPipe } from './pipes/match-filter-inventory.pipe';
 import { DocumentTableComponent } from './pages/documents/components/document-table/document-table.component';
 import { MatchFilterDocumentPipe } from './pipes/match-filter-document.pipe';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
@@ -144,6 +145,7 @@ import { InventoryDetailComponent } from './pages/inventory/components/inventory
     DeliveryItemComponent,
     ReceiptTableComponent,
     MatchFilterReceiptPipe,
+    MatchFilterInventoryPipe,
     ReceiptItemComponent,
     InventoryComponent,
     InventoryTableComponent,

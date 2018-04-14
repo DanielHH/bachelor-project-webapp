@@ -28,11 +28,11 @@
   </div>
 
   <div class="col">
-    <div class="column-text">{{utilitiesService.getDateString(user?.creationDate)}}</div>
+    <div class="column-text">{{user?.creationDate}}</div>
   </div>
 
   <div class="col">
-    <div class="column-text">{{utilitiesService.getDateString(user?.modifiedDate)}}</div>
+    <div class="column-text">{{user?.modifiedDate}}</div>
     <div class="pull-right table-menu-fix">
       <app-item-menu [object]="user" (editObject)="edit()" (editStatus)="editStatus()" [adminMenu]="true" [showEditOption]="true"></app-item-menu>
     </div>

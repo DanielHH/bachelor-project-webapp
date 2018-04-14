@@ -14,6 +14,7 @@ import { ModifyCardComponent } from '../../../cards/components/modify-card/modif
 import { NgForm } from '@angular/forms';
 import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
 import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'inventory-table',
@@ -110,7 +111,7 @@ export class InventoryTableComponent implements OnInit {
       case 'verifyDate': {
         newOrder = this.sortTableListHelper(this.orderVerifyDate);
         this.orderVerifyDate = newOrder;
-        orderFunc = (item: BaseItem) => item.getLastVerifiedString();
+        orderFunc = (item: BaseItem) => String(item.getLastVerifiedString());
         break;
       }
     }
@@ -147,22 +148,26 @@ export class InventoryTableComponent implements OnInit {
    */
   passesFilter(baseItem: BaseItem): boolean {
     if (baseItem.isCard()) {
-      return this.cardPipe.matchFilt(
-        baseItem.item as Card,
-        this.filterInput,
-        this.showIn,
-        this.showOut,
-        this.showArchived,
-        this.showGone
+      return (
+        this.cardPipe.matchFilt(
+          baseItem.item as Card,
+          this.filterInput,
+          this.showIn,
+          this.showOut,
+          this.showArchived,
+          this.showGone
+        ) || (_.includes(lowerCase(baseItem.item.lastVerificationDate), this.filterInput) === true)
       );
     } else {
-      return this.docPipe.matchFilt(
-        baseItem.item as Document,
-        this.filterInput,
-        this.showIn,
-        this.showOut,
-        this.showArchived,
-        this.showGone
+      return (
+        this.docPipe.matchFilt(
+          baseItem.item as Document,
+          this.filterInput,
+          this.showIn,
+          this.showOut,
+          this.showArchived,
+          this.showGone
+      ) || (_.includes(lowerCase(baseItem.item.lastVerificationDate), this.filterInput) === true)
       );
     }
   }
