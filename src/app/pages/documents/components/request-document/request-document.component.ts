@@ -164,14 +164,13 @@ export class RequestDocumentComponent implements OnInit {
     if (this.isValidInput()) {
       this.documentItem.user = this.usernameInput;
       this.documentItem.location = this.locationInput;
-      this.documentItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
-
-      // Set document information
+      this.documentItem.status = this.utilitiesService.getStatusFromID(2);
       this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.documentItem.comment = this.commentInput;
 
       // Create new receipt
       const receipt = new Receipt();
-      receipt.itemType = this.utilitiesService.getItemTypeFromID(2); // TODO: ENUM, 2 means document
+      receipt.itemType = this.utilitiesService.getItemTypeFromID(2);
       receipt.document = this.documentItem;
       receipt.card = null;
       receipt.user = this.documentItem.user;
@@ -200,7 +199,6 @@ export class RequestDocumentComponent implements OnInit {
                     this.pdfView = true;
                     this.pdfURL = newReceipt.url;
                     this.hideSubmit = true;
-                    this.closeText = 'Avbryt';
                   }
                 });
               }
@@ -245,9 +243,4 @@ export class RequestDocumentComponent implements OnInit {
     return user ? user.username : '';
   }
 
-  getDateString(str: Date) {
-    if (str) {
-      return this.utilitiesService.getDateString(str);
-    }
-  }
 }

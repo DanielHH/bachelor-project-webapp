@@ -21,8 +21,6 @@ export class DocumentsComponent implements OnInit {
       this.documentList = documentList;
     });
 
-    console.log(this.documentList);
-
   }
 
   ngOnInit() {

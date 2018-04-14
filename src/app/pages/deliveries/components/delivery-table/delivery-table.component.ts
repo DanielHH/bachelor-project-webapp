@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash';
 import { Delivery } from '../../../../datamodels/delivery';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-delivery-table',
@@ -35,7 +36,7 @@ export class DeliveryTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() {}
+  constructor(private modalService: ModalService) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -114,9 +115,7 @@ export class DeliveryTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDelivery() {
-    this.modalTitle = 'Lägg till ny leverans';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editDelivery.next(null);
   }
 
 }

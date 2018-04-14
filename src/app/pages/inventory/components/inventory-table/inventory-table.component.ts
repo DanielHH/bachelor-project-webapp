@@ -14,7 +14,7 @@ import { ModifyCardComponent } from '../../../cards/components/modify-card/modif
 import { NgForm } from '@angular/forms';
 import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
 import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
-import { lowerCase } from '../../../../services/utilities.service';
+import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'inventory-table',
@@ -45,7 +45,8 @@ export class InventoryTableComponent implements OnInit {
 
   constructor(
     private cardPipe: MatchFilterCardPipe,
-    private docPipe: MatchFilterDocumentPipe
+    private docPipe: MatchFilterDocumentPipe,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit() {
@@ -93,7 +94,7 @@ export class InventoryTableComponent implements OnInit {
       case 'user': {
         newOrder = this.sortTableListHelper(this.orderUser);
         this.orderUser = newOrder;
-        orderFunc = (item: BaseItem) => item.getUser().name;
+        orderFunc = (item: BaseItem) => this.utilitiesService.getUserString(item.getUser());
         break;
       }
       case 'location': {
@@ -118,9 +119,7 @@ export class InventoryTableComponent implements OnInit {
     if (newOrder) {
       this.baseItemList = _.orderBy(
         this.baseItemList,
-        [
-          orderFunc
-        ],
+        [orderFunc],
         [newOrder]
       );
     }

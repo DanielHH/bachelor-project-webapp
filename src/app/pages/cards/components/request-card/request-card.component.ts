@@ -209,7 +209,6 @@ export class RequestCardComponent implements OnInit {
                     this.pdfView = true;
                     this.pdfURL = newReceipt.url;
                     this.hideSubmit = true;
-                    this.closeText = 'Avbryt';
                   }
                 });
               }
@@ -255,9 +254,4 @@ export class RequestCardComponent implements OnInit {
     return user ? user.username : '';
   }
 
-  displayExpirationDate() {
-    if (this.cardItem) {
-      return this.utilitiesService.getDateString(this.cardItem.expirationDate);
-    }
-  }
 }

@@ -65,7 +65,6 @@ export class InventoryItemComponent implements OnInit {
    * Shows the modal for inventory details
    */
   showDetailsModal() {
-    console.log('showDetailsModal() called');
     this.modalService.detailInventory.next(this.baseItem);
   }
 

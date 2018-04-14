@@ -12,6 +12,7 @@ import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
+import { BaseType } from '../../../../datamodels/baseType';
 
 @Component({
   selector: 'app-modify-document',
@@ -48,14 +49,7 @@ export class ModifyDocumentComponent implements OnInit {
 
   locationControl = new FormControl('', Validators.required);
 
-  // Database data lists
-  docTypes = [];
-
-  // Filtered lists
-  filteredDocTypes: Observable<any[]> = this.docTypeControl.valueChanges.pipe(
-    startWith(''),
-    map(docType => (docType ? this.filterDocTypes(docType) : this.docTypes.slice()))
-  );
+  baseTypes: BaseType[] = []; // All card and document types
 
   @Input() documentList: Document[];
 
@@ -87,15 +81,8 @@ export class ModifyDocumentComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.documentTypeList.subscribe(docTypes => {
-      this.docTypes = [];
-
-      // Only add active document types
-      docTypes.forEach(docType => {
-        if (docType.id && docType.status.id === 5) {
-          this.docTypes.unshift(docType);
-        }
-      });
+    this.dataService.typeList.subscribe(baseTypes => {
+      this.baseTypes = baseTypes;
 
       this.docTypeControl.updateValueAndValidity({
         onlySelf: false,
@@ -136,17 +123,6 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   ngOnInit() {}
-
-  /**
-   * Filters list of docTypes based on docType input
-   * @param str docType input
-   */
-  filterDocTypes(str: string) {
-    return this.docTypes.filter(docType =>
-      str != null &&
-      docType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
 
   /**
    * Sets fields in document according to form

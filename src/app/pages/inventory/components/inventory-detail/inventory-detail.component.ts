@@ -40,9 +40,7 @@ export class InventoryDetailComponent implements OnInit {
       public utilitiesService: UtilitiesService
     ) {
       this.modalService.detailInventory.subscribe((baseItem) => {
-        console.log('In detail ts');
         if (baseItem && baseItem.item.id) {
-          console.log('hej');
           this.baseItem = baseItem;
           this._showModal = true;
         }

@@ -74,10 +74,10 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{deliveryItem?.creationDate}}
+              {{utilitiesService.getDateString(deliveryItem?.creationDate, 'YYYY-MM-DD HH:MM:SS')}}
             </div>
             <div class="col-12 col-md-4">
-              {{deliveryItem?.modifiedDate}}
+              {{utilitiesService.getDateString(deliveryItem?.modifiedDate, 'YYYY-MM-DD HH:MM:SS')}}
             </div>
             <div class="col-12 col-md-4">
               {{deliveryItem?.comment}}

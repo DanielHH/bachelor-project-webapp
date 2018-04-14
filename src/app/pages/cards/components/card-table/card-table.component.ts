@@ -3,6 +3,7 @@ import { Card } from '../../../../datamodels/card';
 import * as _ from 'lodash';
 import { ModifyCardComponent } from '../modify-card/modify-card.component';
 import { NgForm } from '@angular/forms';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-card-table',
@@ -34,7 +35,7 @@ export class CardTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -113,9 +114,7 @@ export class CardTableComponent implements OnInit {
    * Open add new card modal
    */
   openAddNewCard() {
-    this.modalTitle = 'Lägg till nytt kort';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editCard.next(null);
   }
 
 }

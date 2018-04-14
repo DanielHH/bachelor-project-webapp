@@ -83,6 +83,13 @@ export class ModifyUserComponent implements OnInit {
         this.modalTitle = 'Ändra användare';
 
         this._showModal = true;
+      } else {
+          this.userToEdit = null;
+
+          this.modalType = 0;
+          this.modalTitle = 'Lägg till ny användare';
+
+          this._showModal = true;
       }
     });
   }

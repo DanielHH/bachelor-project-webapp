@@ -22,13 +22,13 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{baseItem?.getItemTypeString()}}
+              {{baseItem?.item?.id ? baseItem?.getItemTypeString() : ''}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.getSubType()?.name}}
+              {{baseItem?.item?.id ? baseItem?.getSubType()?.name : ''}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.getNumber()}}
+              {{baseItem?.item?.id ? baseItem?.getNumber() : ''}}
             </div>
           </div>
           <!-- Row Space -->
@@ -48,27 +48,27 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{utilitiesService.getUserString(baseItem?.getItem()?.user)}}
+              {{baseItem?.item?.id ? utilitiesService.getUserString(baseItem?.getItem()?.user) : ''}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.getLocation()}}
+              {{baseItem?.item?.id ? baseItem?.item.location : ''}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.getLastVerifiedString()}}
+              {{baseItem?.item?.id ? baseItem?.getLastVerifiedString() : ''}}
             </div>
           </div>
           <!-- Row Space -->
-          <div  *ngIf="baseItem?.getItem()?.comment" class="row py-1"></div>
+          <div  *ngIf="baseItem?.item?.comment" class="row py-1"></div>
           <!-- Row -->
-          <div  *ngIf="baseItem?.getItem()?.comment" class="row my-1">
+          <div  *ngIf="baseItem?.item?.comment" class="row my-1">
             <div class="col-12">
               <b>Kommentar:</b>
             </div>
           </div>
           <!-- Row -->
-          <div *ngIf="baseItem?.getItem()?.comment" class="row my-1">
+          <div *ngIf="baseItem?.item?.comment" class="row my-1">
             <div class="col-12">
-              {{baseItem?.getItem()?.comment}}
+              {{baseItem?.item?.comment}}
             </div>
           </div>
           <!-- Row Space -->

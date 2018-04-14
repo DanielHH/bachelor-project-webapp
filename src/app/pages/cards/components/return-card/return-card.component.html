@@ -63,7 +63,7 @@
           <div class="row my-1">
             <div class="col-0 col-md-1"></div>
             <div class="col-12 col-md-5">
-              {{displayExpirationDate()}}
+              {{utilitiesService.getDateString(cardItem?.expirationDate)}}
             </div>
             <div class="col-12 col-md-5">
               {{cardItem?.location}}

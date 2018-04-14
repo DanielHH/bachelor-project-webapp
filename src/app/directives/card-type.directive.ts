@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
 import { DataService } from '../services/data.service';
 import { CardType } from '../datamodels/cardType';
@@ -9,6 +9,8 @@ import * as _ from 'lodash';
   providers: [{provide: NG_VALIDATORS, useExisting: CardTypeValidatorDirective, multi: true}]
  })
  export class CardTypeValidatorDirective implements Validator {
+
+  @Input() cardType = null;
 
   cardTypes: CardType[] = [];
 
@@ -32,7 +34,10 @@ import * as _ from 'lodash';
         cardTypeMatch = _.find(this.cardTypes, (cardType) => cardType.name === input);
       }
 
-      isValid = cardTypeMatch && cardTypeMatch.status.id === 5;
+      isValid = (
+        (cardTypeMatch && cardTypeMatch.status.id === 5) ||
+        (cardTypeMatch && this.cardType && cardTypeMatch.id == this.cardType.id)
+      );
 
     }
 

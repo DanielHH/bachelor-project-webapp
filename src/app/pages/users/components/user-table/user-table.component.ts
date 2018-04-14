@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-user-table',
@@ -32,7 +33,7 @@ export class UserTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -106,9 +107,7 @@ export class UserTableComponent implements OnInit {
    * Open add new user modal
    */
   openAddNewUser() {
-    this.modalTitle = 'Lägg till ny användare';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editUser.next(null);
   }
 
 }
