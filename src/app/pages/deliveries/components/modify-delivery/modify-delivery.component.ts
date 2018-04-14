@@ -80,9 +80,9 @@ export class ModifyDeliveryComponent implements OnInit {
     });
 
     this.modalService.editDelivery.subscribe(delivery => {
-      if (delivery && delivery.id) {
-        this.deliveryItem = delivery;
+      this.deliveryItem = delivery;
 
+      if (delivery && delivery.id) {
         this.documentTypeInput = delivery.documentType.name;
         this.documentNumberInput = delivery.documentNumber;
         this.documentNameInput = delivery.name;

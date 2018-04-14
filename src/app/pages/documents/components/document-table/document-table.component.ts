@@ -3,6 +3,7 @@ import { Document } from '../../../../datamodels/document';
 import * as _ from 'lodash';
 import { ModifyDocumentComponent } from '../modify-document/modify-document.component';
 import { NgForm } from '@angular/forms';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-document-table',
@@ -33,7 +34,7 @@ export class DocumentTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -112,9 +113,7 @@ export class DocumentTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDocument() {
-    this.modalTitle = 'Lägg till ny handling';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editDocument.next(null);
   }
 
 }

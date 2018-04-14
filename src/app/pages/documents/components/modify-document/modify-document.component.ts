@@ -118,6 +118,10 @@ export class ModifyDocumentComponent implements OnInit {
         setTimeout(() => {
           this.commentInput = document.comment;
         }, 250);
+      } else {
+        this.modalTitle = 'Lägg till ny handling';
+        this.modalType = 0;
+        this.showModal = true;
       }
     });
   }
