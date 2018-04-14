@@ -51,10 +51,10 @@
               {{deliveryItem?.receiver}}
             </div>
             <div class="col-12 col-md-4">
-              {{displayDocumentDate()}}
+              {{utilitiesService.getDateString(deliveryItem?.documentDate)}}
             </div>
             <div class="col-12 col-md-4">
-              {{displaySentDate()}}
+              {{utilitiesService.getDateString(deliveryItem?.sentDate)}}
             </div>
           </div>
           <!-- Row Space -->
@@ -74,10 +74,10 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{displayCreationDate()}}
+              {{deliveryItem?.creationDate}}
             </div>
             <div class="col-12 col-md-4">
-              {{displayModifiedDate()}}
+              {{deliveryItem?.modifiedDate}}
             </div>
             <div class="col-12 col-md-4">
               {{deliveryItem?.comment}}

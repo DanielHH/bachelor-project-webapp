@@ -39,22 +39,22 @@
               <b>Skapat:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>Utgångsdatum:</b>
+              <b>Ändrat:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>Ändrat:</b>
+              <b>Utgångsdatum:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{displayCreationDate()}}
+              {{cardItem?.creationDate}}
             </div>
             <div class="col-12 col-md-4">
-              {{displayExpirationDate()}}
+              {{cardItem?.modifiedDate}}
             </div>
             <div class="col-12 col-md-4">
-              {{displayModifiedDate()}}
+              {{utilitiesService.getDateString(cardItem?.expirationDate)}}
             </div>
           </div>
           <!-- Row Space -->
@@ -80,7 +80,7 @@
                 {{utilitiesService.getUserString(cardItem?.user)}}
             </div>
             <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(cardItem?.lastVerificationDate)}}
+              {{cardItem?.lastVerificationDate ? cardItem?.lastVerificationDate : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->

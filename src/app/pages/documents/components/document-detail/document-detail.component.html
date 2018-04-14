@@ -77,10 +77,10 @@
               {{utilitiesService.getDateString(documentItem?.registrationDate)}}
             </div>
             <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(documentItem?.creationDate)}}
+              {{documentItem?.creationDate}}
             </div>
             <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(documentItem?.modifiedDate)}}
+              {{documentItem?.modifiedDate}}
             </div>
           </div>
           <!-- Row Space -->
@@ -106,7 +106,7 @@
               {{utilitiesService.getUserString(documentItem?.user)}}
             </div>
             <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(documentItem?.lastVerificationDate)}}
+              {{documentItem?.lastVerificationDate ? documentItem?.lastVerificationDate : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->
