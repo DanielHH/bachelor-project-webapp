@@ -13,24 +13,22 @@
               <b>Typ:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>ID:</b>
+              <b>Utförd av:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>Användare:</b>
+              <b>Datum:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              <i *ngIf="receiptItem?.itemType?.id == 1" class="material-icons">credit_card</i>
-              <i *ngIf="receiptItem?.itemType?.id == 2" class="material-icons">import_contacts</i>
-              {{typeToDisplay}}
+              {{logEventItem?.logType?.name}}
             </div>
             <div class="col-12 col-md-4">
-              {{idToDisplay}}
+              {{utilitiesService.getUserString(logEventItem?.user)}}
             </div>
             <div class="col-12 col-md-4">
-              {{utilitiesService.getUserString(receiptItem?.user)}}
+              {{utilitiesService.getDateString(logEventItem?.logDate, 'YYYY-MM-DD HH:MM:SS')}}
             </div>
           </div>
 
@@ -39,26 +37,14 @@
 
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-12 col-md-4">
-              <b>Status:</b>
-            </div>
-            <div class="col-12 col-md-4">
-              <b>Startdatum:</b>
-            </div>
-            <div *ngIf="receiptItem?.endDate" class="col-12 col-md-4">
-              <b>Slutdatum:</b>
+            <div class="col-12">
+              <b>Händelse:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-12 col-md-4">
-              {{receiptItem?.endDate ? 'Inaktiv' : 'Aktiv'}}
-            </div>
-            <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(receiptItem?.startDate)}}
-            </div>
-            <div *ngIf="receiptItem?.endDate" class="col-12 col-md-4">
-              {{utilitiesService.getDateString(receiptItem?.endDate)}}
+            <div class="col-12">
+              {{logEventItem?.logText}}
             </div>
           </div>
 

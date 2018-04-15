@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import * as moment from 'moment';
 import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-receipt-item',
@@ -31,7 +32,10 @@ export class ReceiptItemComponent implements OnInit {
 
   itemActive: boolean;
 
-  constructor(public utilitiesService: UtilitiesService) { }
+  constructor(
+    public utilitiesService: UtilitiesService,
+    private modalService: ModalService
+  ) {}
 
   ngOnInit() {
 
@@ -45,6 +49,14 @@ export class ReceiptItemComponent implements OnInit {
 
     this.itemActive = this.receiptItem.endDate == null;
   }
+
+  /**
+   * Shows the modal for receipt details
+   */
+  showDetailsModal() {
+    this.modalService.detailReceipt.next(this.receiptItem);
+  }
+
 
   openPDF() {
     if (this.receiptItem.url) {

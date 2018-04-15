@@ -104,6 +104,7 @@ import { MatchFilterLogPipe } from './pipes/match-filter-log.pipe';
 import { InventoryDetailComponent } from './pages/inventory/components/inventory-detail/inventory-detail.component';
 import { UserDetailComponent } from './pages/users/components/user-detail/user-detail.component';
 import { ReceiptDetailComponent } from './pages/receipts/components/receipt-detail/receipt-detail.component';
+import { LogDetailComponent } from './pages/logs/components/log-detail/log-detail.component';
 
 @NgModule({
   declarations: [
@@ -176,7 +177,8 @@ import { ReceiptDetailComponent } from './pages/receipts/components/receipt-deta
     MatchFilterLogPipe,
     InventoryDetailComponent,
     UserDetailComponent,
-    ReceiptDetailComponent
+    ReceiptDetailComponent,
+    LogDetailComponent
   ],
   imports: [
     BrowserModule,

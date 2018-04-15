@@ -55,9 +55,11 @@
       <div class="table-items scrollbar-table">
         <!-- Add cards to the table" -->
         <div *ngFor="let logEvent of logEventList | matchFilterLog:filterInput:showReceipt:showOther" >
-          <app-log-item [logItem]="logEvent"></app-log-item>
+          <app-log-item [logEventItem]="logEvent"></app-log-item>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<app-log-detail></app-log-detail>

@@ -8,6 +8,8 @@ import { DocumentType } from '../datamodels/documentType';
 import { BaseType } from '../datamodels/baseType';
 import { User } from '../datamodels/user';
 import { BaseItem } from '../datamodels/baseItem';
+import { Receipt } from '../datamodels/receipt';
+import { LogEvent } from '../datamodels/logEvent';
 
 @Injectable()
 export class ModalService {
@@ -46,6 +48,30 @@ export class ModalService {
    */
   detailDelivery: BehaviorSubject<Delivery> = new BehaviorSubject<Delivery>(
     this._detailDelivery
+  );
+
+  /**
+   * Detail receipt
+   */
+  private _detailReceipt = new Receipt();
+
+   /**
+   * A subscriber to the detail receipt
+   */
+  detailReceipt: BehaviorSubject<Receipt> = new BehaviorSubject<Receipt>(
+    this._detailReceipt
+  );
+
+  /**
+   * Detail LogEvent
+   */
+  private _detailLogEvent = new LogEvent();
+
+   /**
+   * A subscriber to the detail LogEvent
+   */
+  detailLogEvent: BehaviorSubject<LogEvent> = new BehaviorSubject<LogEvent>(
+    this._detailLogEvent
   );
 
   /**

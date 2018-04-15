@@ -21,7 +21,7 @@ import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} fr
     }
 
     isValidDateString(str: string) {
-      // Format should be 2017-02-28
+      // Format should be YYYY-MM-DD
       const yearStr = str.substring(0, 4);
       const monthStr = str.substring(5, 7);
       const dayStr = str.substring(8, 10);
@@ -47,14 +47,14 @@ import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} fr
         return false;
       }
 
-      if (dayNum > this.getMonthDays(monthNum) || dayNum <= 0) {
+      if (dayNum > this.getMonthDays(monthNum, Number(yearStr)) || dayNum <= 0) {
         return false;
       }
 
       return true;
     }
 
-    getMonthDays(monthNum: Number) {
+    getMonthDays(monthNum: number, yearNum: number) {
       switch (monthNum) {
         case 1:
         case 3:
@@ -65,7 +65,7 @@ import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} fr
         case 12:
           return 31;
         case 2:
-          return 28;
+          return this.isLeapYear(yearNum) ? 29 : 28;
         case 4:
         case 6:
         case 9:
@@ -74,6 +74,10 @@ import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} fr
         default:
           return -1;
       }
+    }
+
+    isLeapYear(year: number) {
+      return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
     }
 
   }

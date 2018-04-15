@@ -1,6 +1,6 @@
-<div class="row table-item">
-  <div class="col">{{utilitiesService.getDateString(logItem.logDate, 'YYYY-MM-DD HH:MM:SS')}}</div>
-  <div class="col">{{logItem.logType.name}}</div>
-  <div class="col">{{logItem.logText}}</div>
-  <div class="col">{{utilitiesService.getUserString(logItem.user)}}</div>
+<div class="row table-item" (click)="showDetailsModal()">
+  <div class="col">{{utilitiesService.getDateString(logEventItem?.logDate, 'YYYY-MM-DD HH:MM:SS')}}</div>
+  <div class="col">{{logEventItem?.logType?.name}}</div>
+  <div class="col">{{logEventItem?.logText}}</div>
+  <div class="col">{{utilitiesService.getUserString(logEventItem?.user)}}</div>
 </div>
