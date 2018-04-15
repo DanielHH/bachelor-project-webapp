@@ -164,4 +164,5 @@ export class InventoryItemComponent implements OnInit {
       this.modalService.detailDocument.next(this.baseItem.item as Document);
     }
   }
+
 }
