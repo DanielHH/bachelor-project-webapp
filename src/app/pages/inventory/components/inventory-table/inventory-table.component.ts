@@ -14,6 +14,7 @@ import { ModifyCardComponent } from '../../../cards/components/modify-card/modif
 import { NgForm } from '@angular/forms';
 import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
 import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
+import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'inventory-table',
@@ -44,7 +45,8 @@ export class InventoryTableComponent implements OnInit {
 
   constructor(
     private cardPipe: MatchFilterCardPipe,
-    private docPipe: MatchFilterDocumentPipe
+    private docPipe: MatchFilterDocumentPipe,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit() {
@@ -92,7 +94,7 @@ export class InventoryTableComponent implements OnInit {
       case 'user': {
         newOrder = this.sortTableListHelper(this.orderUser);
         this.orderUser = newOrder;
-        orderFunc = (item: BaseItem) => item.getUser().name;
+        orderFunc = (item: BaseItem) => this.utilitiesService.getUserString(item.getUser());
         break;
       }
       case 'location': {
@@ -110,16 +112,14 @@ export class InventoryTableComponent implements OnInit {
       case 'verifyDate': {
         newOrder = this.sortTableListHelper(this.orderVerifyDate);
         this.orderVerifyDate = newOrder;
-        orderFunc = (item: BaseItem) => item.getLastVerifiedString();
+        orderFunc = (item: BaseItem) => String(item.getLastVerifiedString());
         break;
       }
     }
     if (newOrder) {
       this.baseItemList = _.orderBy(
         this.baseItemList,
-        [
-          orderFunc
-        ],
+        [orderFunc],
         [newOrder]
       );
     }
@@ -135,35 +135,6 @@ export class InventoryTableComponent implements OnInit {
         return 'desc';
       default:
         return 'asc';
-    }
-  }
-
-
-
-  /**
-   * Detect if the given item should be filtered or not,
-   * depending on checked boxes and input of filter field.
-   * @returns true if the item should be displayed, false otherwise
-   */
-  passesFilter(baseItem: BaseItem): boolean {
-    if (baseItem.isCard()) {
-      return this.cardPipe.matchFilt(
-        baseItem.item as Card,
-        this.filterInput,
-        this.showIn,
-        this.showOut,
-        this.showArchived,
-        this.showGone
-      );
-    } else {
-      return this.docPipe.matchFilt(
-        baseItem.item as Document,
-        this.filterInput,
-        this.showIn,
-        this.showOut,
-        this.showArchived,
-        this.showGone
-      );
     }
   }
 }

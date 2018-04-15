@@ -16,7 +16,9 @@ export class ItemMenuComponent implements OnInit {
 
   @Input() object: any; // Card, CardType, Document or DocumentType
 
-  @Input() typeMenu = false;
+  @Input() adminMenu = false;
+
+  @Input() isTypeItem = false;
 
   @Input() itemMenu = false;
 
@@ -69,13 +71,21 @@ export class ItemMenuComponent implements OnInit {
       value == 1
     ) {
       this.object.status = this.utilitiesService.getStatusFromID(2);
-    } else if (this.typeMenu) {
+    } else if (this.isTypeItem) {
       this.object.getType().status = this.utilitiesService.getStatusFromID(value);
     } else {
       this.object.status = this.utilitiesService.getStatusFromID(value);
     }
 
     this.editStatus.emit();
+  }
+
+  getStatusID() {
+    if (this.isTypeItem) {
+      return this.object.getType().status.id;
+    } else {
+      return this.object.status.id;
+    }
   }
 
 }

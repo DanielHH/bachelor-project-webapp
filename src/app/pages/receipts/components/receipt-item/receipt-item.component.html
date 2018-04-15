@@ -1,4 +1,4 @@
-<div class="row table-item">
+<div class="row table-item" (click)="showDetailsModal()">
 
   <div class="col-1">
     <div *ngIf="!receiptItem?.endDate">
@@ -13,14 +13,14 @@
     </div>
   </div>
   <div class="col">
-    <i *ngIf="this.receiptItem.itemType?.id == 1" class="material-icons">credit_card</i>
-    <i *ngIf="this.receiptItem.itemType?.id == 2" class="material-icons">import_contacts</i>
+    <i *ngIf="receiptItem.itemType?.id == 1" class="material-icons">credit_card</i>
+    <i *ngIf="receiptItem.itemType?.id == 2" class="material-icons">import_contacts</i>
     {{itemTypeToDisplay}}
   </div>
   <div class="col">{{itemIDToDisplay}}</div>
-  <div class="col">{{this.receiptItem.user?.name}}</div>
-  <div class="col">{{utilitiesService.getDateString(this.receiptItem.startDate)}}</div>
-  <div class="col">{{utilitiesService.getDateString(this.receiptItem.endDate)}}
+  <div class="col">{{utilitiesService.getUserString(receiptItem?.user)}}</div>
+  <div class="col">{{utilitiesService.getDateString(receiptItem.startDate)}}</div>
+  <div class="col">{{utilitiesService.getDateString(receiptItem.endDate)}}
     <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 btn-success pull-right" mdbRippleRadius (click)="openPDF()">
       <span>PDF</span>
     </button>

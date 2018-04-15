@@ -53,17 +53,12 @@ export class RequestCardComponent implements OnInit {
 
   generatePDF = true;
 
-  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
-    startWith(''),
-    map(user => (user ? this.filterUsers(user) : this.users ? this.users.slice() : []))
-  );
-
   user: User;
 
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private modalService: ModalService,
     private router: Router
   ) {
@@ -116,16 +111,6 @@ export class RequestCardComponent implements OnInit {
   pdfURL = '';
 
   ngOnInit() {}
-
-  /**
-   * Filters list of usernames based on username input
-   * @param str username input
-   */
-  filterUsers(str: string) {
-    return this.users.filter(
-      user => str && typeof str === 'string' && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
 
   /**
    * Returns user id of user with username
@@ -224,7 +209,6 @@ export class RequestCardComponent implements OnInit {
                     this.pdfView = true;
                     this.pdfURL = newReceipt.url;
                     this.hideSubmit = true;
-                    this.closeText = 'Avbryt';
                   }
                 });
               }
@@ -270,9 +254,4 @@ export class RequestCardComponent implements OnInit {
     return user ? user.username : '';
   }
 
-  displayExpirationDate() {
-    if (this.cardItem) {
-      return this.utilitiesService.getDateString(this.cardItem.expirationDate);
-    }
-  }
 }

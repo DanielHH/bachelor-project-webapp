@@ -18,6 +18,7 @@ import { LogType } from '../datamodels/logType';
 import { AuthService } from '../auth/auth.service';
 import { BaseType } from '../datamodels/baseType';
 import { UtilitiesService } from './utilities.service';
+import { UserType } from '../datamodels/userType';
 
 @Injectable()
 export class DataService {
@@ -167,6 +168,16 @@ export class DataService {
    */
   typeList: BehaviorSubject<BaseType[]> = new BehaviorSubject<BaseType[]>(this._typeList);
 
+  /**
+   * List with all user types
+   */
+  _userTypeList: UserType[] = [];
+
+  /**
+   * A subscriber to the user type list
+   */
+  userTypeList: BehaviorSubject<UserType[]> = new BehaviorSubject<UserType[]>(this._userTypeList);
+
   constructor(
     private httpService: HttpService,
     private authService: AuthService
@@ -194,6 +205,7 @@ export class DataService {
 
   getAllData() {
     this.getUserList();
+    this.getUserTypeList();
 
     this.getCardList();
     this.getCardTypeList();
@@ -218,6 +230,9 @@ export class DataService {
   resetAllData() {
     this._userList = null;
     this.userList.next(this._userList);
+
+    this._userTypeList = null;
+    this.userTypeList.next(this._userTypeList);
 
     this._cardList = null;
     this.cardList.next(this._cardList);
@@ -249,6 +264,13 @@ export class DataService {
     this.httpService.httpGet<User>('getUsers').then(data => {
       this._userList = data;
       this.userList.next(this._userList);
+    });
+  }
+
+  getUserTypeList() {
+    this.httpService.httpGet<UserType>('getUserTypes').then(data => {
+      this._userTypeList = data;
+      this.userTypeList.next(this._userTypeList);
     });
   }
 

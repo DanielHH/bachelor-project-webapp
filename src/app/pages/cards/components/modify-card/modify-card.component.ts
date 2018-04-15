@@ -23,6 +23,7 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
+import { BaseType } from '../../../../datamodels/baseType';
 
 @Component({
   selector: 'app-modify-card',
@@ -46,14 +47,7 @@ export class ModifyCardComponent implements OnInit {
   expirationDateControl = new FormControl('', Validators.required);
   expirationDatePickerControl = new FormControl();
 
-  // Database data lists
-  cardTypes = [];
-
-  // Filtered lists
-  filteredCardTypes: Observable<any[]> = this.cardTypeControl.valueChanges.pipe(
-    startWith(''),
-    map(cardType => (cardType ? this.filterCardTypes(cardType) : this.cardTypes.slice()))
-  );
+  baseTypes: BaseType[] = []; // All card and document types
 
   @Input() cardList: Card[];
 
@@ -86,15 +80,8 @@ export class ModifyCardComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.cardTypeList.subscribe(cardTypes => {
-      this.cardTypes = [];
-
-      // Only add active card types
-      cardTypes.forEach(cardType => {
-        if (cardType.id && cardType.status.id === 5) {
-          this.cardTypes.unshift(cardType);
-        }
-      });
+    this.dataService.typeList.subscribe(baseTypes => {
+      this.baseTypes = baseTypes;
 
       this.cardTypeControl.updateValueAndValidity({
         onlySelf: false,
@@ -103,9 +90,9 @@ export class ModifyCardComponent implements OnInit {
     });
 
     this.modalService.editCard.subscribe(card => {
-      if (card && card.id) {
-        this.cardItem = card;
+      this.cardItem = card;
 
+      if (card && card.id) {
         this.cardTypeInput = card.cardType.name;
         this.cardNumberInput = card.cardNumber;
         this.expirationDateInput = utilitiesService.getDateString(card.expirationDate);
@@ -122,23 +109,16 @@ export class ModifyCardComponent implements OnInit {
         setTimeout(() => {
           this.commentInput = card.comment;
         }, 250);
+
+      } else {
+        this.modalTitle = 'Lägg till nytt kort';
+        this.modalType = 0;
+        this.showModal = true;
       }
     });
   }
 
   ngOnInit() {}
-
-  /**
-   * Filters list of cardTypes based on cardType input
-   * @param str cardType input
-   */
-  filterCardTypes(str: string) {
-    return this.cardTypes.filter(
-      cardType =>
-      str != null &&
-      cardType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
 
   /**
    * Sets fields in card according to form

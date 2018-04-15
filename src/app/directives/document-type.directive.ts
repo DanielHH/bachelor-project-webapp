@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
 import { DataService } from '../services/data.service';
 import { DocumentType } from '../datamodels/documentType';
@@ -9,6 +9,8 @@ import * as _ from 'lodash';
   providers: [{provide: NG_VALIDATORS, useExisting: DocumentTypeValidatorDirective, multi: true}]
  })
  export class DocumentTypeValidatorDirective implements Validator {
+
+  @Input() docType = null;
 
   docTypes: DocumentType[] = [];
 
@@ -32,7 +34,10 @@ import * as _ from 'lodash';
         docTypeMatch = _.find(this.docTypes, (docType) => docType.name === input);
       }
 
-      isValid = docTypeMatch && docTypeMatch.status.id === 5;
+      isValid = (
+        (docTypeMatch && docTypeMatch.status.id === 5) ||
+        (docTypeMatch && this.docType && docTypeMatch.id == this.docType.id)
+      );
 
     }
 

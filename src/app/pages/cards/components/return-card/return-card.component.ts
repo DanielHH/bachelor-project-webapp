@@ -145,10 +145,4 @@ export class ReturnCardComponent implements OnInit {
     this.showModal = false;
   }
 
-  displayExpirationDate() {
-    if (this.cardItem) {
-      return this.utilitiesService.getDateString(this.cardItem.expirationDate);
-    }
-  }
-
 }

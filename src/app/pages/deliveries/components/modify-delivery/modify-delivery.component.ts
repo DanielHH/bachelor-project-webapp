@@ -8,6 +8,7 @@ import { HttpService } from '../../../../services/http.service';
 import { DataService } from '../../../../services/data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
+import { BaseType } from '../../../../datamodels/baseType';
 
 @Component({
   selector: 'app-modify-delivery',
@@ -38,14 +39,7 @@ export class ModifyDeliveryComponent implements OnInit {
   sentDateControl = new FormControl('', Validators.required);
   sentDatePickerControl = new FormControl();
 
-  // Database data lists
-  documentTypes = [];
-
-  // Filtered lists
-  filteredDocumentTypes: Observable<any[]> = this.documentTypeControl.valueChanges.pipe(
-    startWith(''),
-    map(documentType => (documentType ? this.filterDocTypes(documentType) : this.documentTypes.slice()))
-  );
+  baseTypes: BaseType[] = []; // All card and document types
 
   @Input() deliveryList: Delivery[];
 
@@ -77,8 +71,8 @@ export class ModifyDeliveryComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.documentTypeList.subscribe(documentTypes => {
-      this.documentTypes = documentTypes;
+    this.dataService.typeList.subscribe(baseTypes => {
+      this.baseTypes = baseTypes;
       this.documentTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
@@ -86,9 +80,9 @@ export class ModifyDeliveryComponent implements OnInit {
     });
 
     this.modalService.editDelivery.subscribe(delivery => {
-      if (delivery && delivery.id) {
-        this.deliveryItem = delivery;
+      this.deliveryItem = delivery;
 
+      if (delivery && delivery.id) {
         this.documentTypeInput = delivery.documentType.name;
         this.documentNumberInput = delivery.documentNumber;
         this.documentNameInput = delivery.name;
@@ -109,21 +103,15 @@ export class ModifyDeliveryComponent implements OnInit {
         setTimeout(() => {
           this.commentInput = delivery.comment;
         }, 250);
+      } else {
+        this.modalTitle = 'Lägg till ny leverans';
+        this.modalType = 0;
+        this.showModal = true;
       }
     });
   }
 
   ngOnInit() {}
-
-  /**
-   * Filters list of docTypes based on docType input
-   * @param str docType input
-   */
-  filterDocTypes(str: string) {
-    return this.documentTypes.filter(
-      documentType => str != null && documentType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
 
   /**
    * Sets fields in document according to form
@@ -289,6 +277,8 @@ export class ModifyDeliveryComponent implements OnInit {
     this.documentNumberControl.reset();
     this.documentNameControl.reset();
     this.receiverControl.reset();
+    this.documentDateControl.reset();
+    this.documentDatePickerControl.reset();
     this.sentDateControl.reset();
     this.sentDatePickerControl.reset();
 

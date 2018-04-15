@@ -6,7 +6,7 @@ import { User } from './user';
 import { StatusType } from './statusType';
 import { Verification } from './verification';
 import { ItemType } from './itemType';
-import { UtilitiesService } from '../services/utilities.service';
+import { UtilitiesService, lowerCase } from '../services/utilities.service';
 
 
 /**
@@ -104,11 +104,11 @@ export class BaseItem {
   }
 
   /**
-   *
+   * Returns string representation of last verified date
    */
-  getLastVerifiedString(): string {
+  getLastVerifiedString(): Date|string {
     if (this.item.lastVerificationDate) {
-      return this.utilitiesService.getDateString(this.item.lastVerificationDate);
+      return this.utilitiesService.getDateString(this.item.lastVerificationDate, 'YYYY-MM-DD HH:MM:SS');
     } else {
       return 'Aldrig';
     }

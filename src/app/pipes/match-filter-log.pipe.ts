@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 })
 export class MatchFilterLogPipe implements PipeTransform {
 
+  constructor(private utilitiesService: UtilitiesService) { }
+
   transform(value: LogEvent[], input: string, showReceipt: boolean, showRest: boolean): LogEvent[] {
     return _.filter(value, (logEvent) => {
       return this.matchFilt(logEvent, input, showReceipt, showRest);
@@ -46,7 +48,7 @@ export class MatchFilterLogPipe implements PipeTransform {
       (_.includes(lowerCase(logEvent.logDate), filterInput) === true) ||
       (_.includes(lowerCase(logEvent.logType.name), filterInput) === true) ||
       (_.includes(lowerCase(logEvent.logText), filterInput) === true) ||
-      (_.includes(lowerCase(logEvent.user.name), filterInput) === true)
+      (_.includes(lowerCase(this.utilitiesService.getUserString(logEvent.user)), filterInput) === true)
     );
   }
 

@@ -10,7 +10,7 @@
           <!--Input-->
           <input id="docTypeInput" name="docTypeInput" [(ngModel)]="docTypeInput" maxlength="128" [style.color]="isValidDocType() ? 'black' : 'gray'"
             placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl"
-            appDocumentType required>
+            [docType]="documentItem ? documentItem.documentType : null" appDocumentType required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocType()">done</mat-icon>
@@ -21,8 +21,8 @@
           </button>
           <!--Dropdown-->
           <mat-autocomplete #docTypes="matAutocomplete">
-            <mat-option *ngFor="let docType of filteredDocTypes | async" [value]="docType.name">
-              {{ docType.name }}
+            <mat-option *ngFor="let baseType of baseTypes | matchFilterType:docTypeInput:false:true:true:false" [value]="baseType.type.name">
+              {{ baseType.type.name }}
             </mat-option>
           </mat-autocomplete>
           <!--Error-->

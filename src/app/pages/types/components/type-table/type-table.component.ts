@@ -17,8 +17,6 @@ export class TypeTableComponent implements OnInit {
 
   @Input() typeList: BaseType[];
 
-  typeItem = new CardType(); // Dummy
-
   showModal = false;
 
   filterInput = '';

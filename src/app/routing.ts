@@ -11,6 +11,7 @@ import { InventoryComponent } from './pages/inventory/inventory.component';
 import { AuthGuard } from './auth/auth.guard';
 import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
 import { TypesComponent } from './pages/types/types.component';
+import { UsersComponent } from './pages/users/users.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, data: { name: 'Startsidan' } },
@@ -79,12 +80,12 @@ export const routes: Routes = [
     data: { name: 'Typer', validUserTypes: [1] },
     canActivate: [AuthGuard]
   },
-  /*{
+  {
     path: 'users',
     component: UsersComponent,
     data: { name: 'Användare', validUserTypes: [1] },
     canActivate: [AuthGuard]
-  },*/
+  },
   { path: '**', component: HomeComponent, data: { name: 'Startsidan' }, canActivate: [AuthGuard] }
 ];
 

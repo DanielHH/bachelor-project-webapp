@@ -65,28 +65,4 @@ export class DeliveryDetailComponent implements OnInit {
 
     this.showModal = false;
   }
-
-  displayDocumentDate() {
-    if (this.deliveryItem) {
-      return moment(this.deliveryItem.documentDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displaySentDate() {
-    if (this.deliveryItem) {
-      return moment(this.deliveryItem.sentDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayCreationDate() {
-    if (this.deliveryItem) {
-      return moment(this.deliveryItem.creationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayModifiedDate() {
-    if (this.deliveryItem) {
-      return moment(this.deliveryItem.modifiedDate).format('YYYY-MM-DD');
-    }
-  }
 }

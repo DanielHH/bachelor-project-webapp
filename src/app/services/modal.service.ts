@@ -6,6 +6,10 @@ import { Delivery } from '../datamodels/delivery';
 import { CardType } from '../datamodels/cardType';
 import { DocumentType } from '../datamodels/documentType';
 import { BaseType } from '../datamodels/baseType';
+import { User } from '../datamodels/user';
+import { BaseItem } from '../datamodels/baseItem';
+import { Receipt } from '../datamodels/receipt';
+import { LogEvent } from '../datamodels/logEvent';
 
 @Injectable()
 export class ModalService {
@@ -44,6 +48,66 @@ export class ModalService {
    */
   detailDelivery: BehaviorSubject<Delivery> = new BehaviorSubject<Delivery>(
     this._detailDelivery
+  );
+
+  /**
+   * Detail receipt
+   */
+  private _detailReceipt = new Receipt();
+
+   /**
+   * A subscriber to the detail receipt
+   */
+  detailReceipt: BehaviorSubject<Receipt> = new BehaviorSubject<Receipt>(
+    this._detailReceipt
+  );
+
+  /**
+   * Detail LogEvent
+   */
+  private _detailLogEvent = new LogEvent();
+
+   /**
+   * A subscriber to the detail LogEvent
+   */
+  detailLogEvent: BehaviorSubject<LogEvent> = new BehaviorSubject<LogEvent>(
+    this._detailLogEvent
+  );
+
+  /**
+   * Detail inventory
+   */
+  private _detailInventory = new BaseItem(null, new Card(), 'card');
+
+   /**
+   * A subscriber to the detail inventory
+   */
+  detailInventory: BehaviorSubject<BaseItem> = new BehaviorSubject<BaseItem>(
+    this._detailInventory
+  );
+
+  /**
+   * Detail type
+   */
+  private _detailType = new BaseType(new CardType(), 'cardType');
+
+   /**
+   * A subscriber to the detail type
+   */
+  detailType: BehaviorSubject<BaseType> = new BehaviorSubject<BaseType>(
+    this._detailType
+  );
+
+  /**
+   * Detail user
+   */
+  private _detailUser = new User();
+
+   /**
+   * A subscriber to the detail user
+   */
+  detailUser: BehaviorSubject<User> = new BehaviorSubject<User>(
+    this._detailUser
   );
 
   /**
@@ -140,6 +204,18 @@ export class ModalService {
    */
   editType: BehaviorSubject<BaseType> = new BehaviorSubject<BaseType>(
     this._editType
+  );
+
+  /**
+   * Edit user
+   */
+  private _editUser = new User();
+
+   /**
+   * A subscriber to the user to be edited
+   */
+  editUser: BehaviorSubject<User> = new BehaviorSubject<User>(
+    this._editUser
   );
 
   constructor() { }

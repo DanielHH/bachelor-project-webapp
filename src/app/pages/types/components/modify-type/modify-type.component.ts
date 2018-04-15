@@ -6,24 +6,13 @@ import {
   Inject,
   ViewChild,
   Output,
-  EventEmitter,
-  ElementRef,
-  NgZone
+  EventEmitter
 } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
 import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/share';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import * as moment from 'moment';
 import { DataService } from '../../../../services/data.service';
-import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
-import { User } from '../../../../datamodels/user';
 import { CardType } from '../../../../datamodels/cardType';
 import { DocumentType } from '../../../../datamodels/documentType';
 import { BaseType } from '../../../../datamodels/baseType';
@@ -35,19 +24,16 @@ import { BaseType } from '../../../../datamodels/baseType';
 })
 export class ModifyTypeComponent implements OnInit {
 
-  // Form variables
   typeNameInput = '';
   isCardType = true;
 
-  // Form Controls
   typeNameControl = new FormControl('', Validators.required);
   typeControl = new FormControl('', Validators.required);
 
-  // Database data lists
   cardTypeList = [];
   documentTypeList = [];
 
-  typeItem: BaseType;
+  baseItemToEdit: BaseType;
 
   @Input() modalTitle = '';
 
@@ -84,12 +70,12 @@ export class ModifyTypeComponent implements OnInit {
       this.documentTypeList = documentTypeList;
     });
 
-    this.modalService.editType.subscribe(type => {
-      if (type && type.getType().id) {
-        this.typeItem = type;
+    this.modalService.editType.subscribe(baseItem => {
+      if (baseItem && baseItem.getType().id) {
+        this.baseItemToEdit = baseItem;
 
-        this.typeNameInput = type.getType().name;
-        this.isCardType = type.isCardType();
+        this.typeNameInput = baseItem.getType().name;
+        this.isCardType = baseItem.isCardType();
 
         this.modalType = 1;
         this.modalTitle = 'Ändra typ';
@@ -117,6 +103,10 @@ export class ModifyTypeComponent implements OnInit {
   */
   toggleIsCardType() {
     this.isCardType = !this.isCardType;
+    // Updates too fast I think, works with delay
+    setTimeout(() => {
+      this.typeNameControl.updateValueAndValidity();
+    }, 100);
   }
 
   /**
@@ -157,14 +147,14 @@ export class ModifyTypeComponent implements OnInit {
   }
 
   /**
-   * Attempts to submit edited card to database
+   * Attempts to submit edited cardType to database
    */
   editType() {
     if (this.isValidInput()) {
-      this.setTypeFromForm(this.typeItem.getType());
+      this.setTypeFromForm(this.baseItemToEdit.getType());
 
       if (this.isCardType) {
-        this.httpService.httpPut<CardType>('updateCardType/', this.typeItem.getType()).then(res => {
+        this.httpService.httpPut<CardType>('updateCardType/', this.baseItemToEdit.getType()).then(res => {
           if (res.message === 'success') {
             this.dataService.getCardTypeList();
 
@@ -172,7 +162,7 @@ export class ModifyTypeComponent implements OnInit {
           }
         });
       } else {
-        this.httpService.httpPut<DocumentType>('updateDocumentType/', this.typeItem.getType()).then(res => {
+        this.httpService.httpPut<DocumentType>('updateDocumentType/', this.baseItemToEdit.getType()).then(res => {
           if (res.message === 'success') {
             this.dataService.getDocumentTypeList();
 
@@ -187,7 +177,10 @@ export class ModifyTypeComponent implements OnInit {
    * Returns true if entered type name is valid, else false.
    */
   isValidTypeName() {
-    return !this.typeNameControl.hasError('required');
+    return (
+      !this.typeNameControl.hasError('required') &&
+      !this.typeNameControl.hasError('typeName')
+    );
   }
 
   /**
@@ -206,7 +199,7 @@ export class ModifyTypeComponent implements OnInit {
     this.isCardType = true;
     this.modifyForm.resetForm();
 
-    this.typeItem = Object.assign({}, new BaseType(new CardType(), 'cardType'));
+    this.baseItemToEdit = Object.assign({}, new BaseType(new CardType(), 'cardType'));
 
     this.showModal = false;
     this.showModalChange.emit(false);

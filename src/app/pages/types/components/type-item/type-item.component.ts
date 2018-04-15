@@ -25,9 +25,6 @@ export class TypeItemComponent implements OnInit {
   cardTypeList: CardType[] = [];
   documentTypeList: DocumentType[] = [];
 
-  showRequestModal = false;
-  showReturnModal = false;
-
   isActive: boolean;
 
   constructor(
@@ -46,6 +43,13 @@ export class TypeItemComponent implements OnInit {
   }
 
   ngOnInit() { }
+
+  /**
+   * Show the modal for type details
+   */
+  showDetailsModal() {
+    this.modalService.detailType.next(this.typeItem);
+  }
 
   /**
    * Set type to be outputted for editing

@@ -19,7 +19,7 @@ export class LogTableComponent implements OnInit {
   orderLogUser = '';
 
   showReceipt = true;
-  showRest = true;
+  showOther = true;
 
   constructor() { }
 
