@@ -12,9 +12,10 @@ import { BaseItem } from '../../../../datamodels/baseItem';
 import * as _ from 'lodash';
 import { ModifyCardComponent } from '../../../cards/components/modify-card/modify-card.component';
 import { NgForm } from '@angular/forms';
-import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
-import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
 import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
+import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
+import { HttpService } from '../../../../services/http.service';
+import { Verification } from '../../../../datamodels/verification';
 
 @Component({
   selector: 'inventory-table',
@@ -43,10 +44,12 @@ export class InventoryTableComponent implements OnInit {
   showArchived = false;
   showGone = false;
 
+  url = '';
+
   constructor(
-    private cardPipe: MatchFilterCardPipe,
-    private docPipe: MatchFilterDocumentPipe,
-    private utilitiesService: UtilitiesService
+    private inventoryPipe: MatchFilterInventoryPipe,
+    private utilitiesService: UtilitiesService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit() {
@@ -136,5 +139,46 @@ export class InventoryTableComponent implements OnInit {
       default:
         return 'asc';
     }
+  }
+
+  genPDF() {
+    const filteredList = this.inventoryPipe.transform(
+      this.baseItemList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
+
+    const verificationList = [];
+    let verification: Verification;
+
+    filteredList.forEach(baseItem => {
+      verification = new Verification();
+      if (baseItem.isCard()) {
+        verification.card = baseItem.item as Card;
+        verification.itemType = this.utilitiesService.getItemTypeFromID(1);
+      } else {
+        verification.document = baseItem.item as Document;
+        verification.itemType = this.utilitiesService.getItemTypeFromID(2);
+      }
+
+      verification.verificationType = this.utilitiesService.getVerificationTypeFromID(2);
+      verification.user = baseItem.getItem().user;
+      verification.verificationDate = baseItem.getItem().lastVerificationDate;
+
+      verificationList.push(verification);
+    });
+
+    this.httpService.httpPost<any>('genPDF', ['inventory', verificationList] ).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+
+  openPDF() {
+    window.open(this.url, '_blank');
   }
 }

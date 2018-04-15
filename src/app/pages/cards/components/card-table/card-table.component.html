@@ -15,16 +15,18 @@
         </mat-form-field>
       </div>
 
-      <div class="col"></div>
-      <!-- Space -->
-
-      <!-- Add new document button-->
-      <div class="col-2">
+      <!-- PDF buttons and add new card button-->
+      <div class="col">
+        <span class="open-cards-pdf-button">
+          <button mat-raised-button color="primary" *ngIf="url != ''" (click)="openPDF()">Öppna PDF</button>
+        </span>
+        <span class="generate-cards-pdf-button">
+          <button mat-raised-button color="primary" (click)="genPDF()">Generera PDF</button>
+        </span>
         <span class="add-new-button">
           <button mat-raised-button (click)="openAddNewCard()" color="primary">Lägg till nytt kort</button>
         </span>
       </div>
-
     </div>
 
     <!-- Row filter per status -->

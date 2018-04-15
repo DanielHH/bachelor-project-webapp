@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { ModifyCardComponent } from '../modify-card/modify-card.component';
 import { NgForm } from '@angular/forms';
 import { ModalService } from '../../../../services/modal.service';
+import { HttpService } from '../../../../services/http.service';
+import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
 
 @Component({
   selector: 'app-card-table',
@@ -35,7 +37,13 @@ export class CardTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor(private modalService: ModalService) { }
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private cardPipe: MatchFilterCardPipe
+  ) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -117,5 +125,24 @@ export class CardTableComponent implements OnInit {
     this.modalService.editCard.next(null);
   }
 
+  genPDF() {
+    const filteredList = this.cardPipe.transform(
+      this.cardList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
+
+    this.httpService.httpPost<any>('genPDF', ['cards', filteredList] ).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+  openPDF() {
+    window.open(this.url, '_blank');
+  }
 }
 

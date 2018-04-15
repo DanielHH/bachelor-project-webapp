@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { ModifyDocumentComponent } from '../modify-document/modify-document.component';
 import { NgForm } from '@angular/forms';
 import { ModalService } from '../../../../services/modal.service';
+import { HttpService } from '../../../../services/http.service';
+import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
 
 @Component({
   selector: 'app-document-table',
@@ -34,7 +36,13 @@ export class DocumentTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor(private modalService: ModalService) { }
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private documentPipe: MatchFilterDocumentPipe
+  ) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -114,6 +122,27 @@ export class DocumentTableComponent implements OnInit {
    */
   openAddNewDocument() {
     this.modalService.editDocument.next(null);
+  }
+
+  genPDF() {
+    const filteredList = this.documentPipe.transform(
+      this.documentList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
+
+    this.httpService.httpPost<any>('genPDF', ['documents', filteredList] ).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+
+  openPDF() {
+    window.open(this.url, '_blank');
   }
 
 }

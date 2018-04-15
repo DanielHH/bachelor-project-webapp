@@ -22,10 +22,40 @@ input {
   z-index: 2000;
 }
 
-.add-new-button {
+.add-new-button,
+.generate-documents-pdf-button,
+.open-documents-pdf-button,
+.generate-cards-pdf-button,
+.open-cards-pdf-button,
+.generate-verifications-pdf-button,
+.open-verifications-pdf-button,
+.generate-receipts-pdf-button,
+.open-receipts-pdf-button {
   position: absolute !important;
   margin-top: 23px !important;
+}
+.add-new-button {
   right: 40px !important;
+}
+.generate-documents-pdf-button {
+  right: 213px !important;
+}
+.open-documents-pdf-button {
+  right: 350px !important;
+}
+.generate-cards-pdf-button {
+  right: 190px !important;
+}
+.open-cards-pdf-button {
+  right: 320px !important;
+}
+.generate-receipts-pdf-button,
+.generate-verifications-pdf-button {
+  right: 40px !important;
+}
+.open-receipts-pdf-button,
+.open-verifications-pdf-button {
+  right: 175px !important;
 }
 
 .radio-buttons,

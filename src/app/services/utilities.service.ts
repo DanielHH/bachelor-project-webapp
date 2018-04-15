@@ -12,6 +12,7 @@ import { StatusType } from '../datamodels/statusType';
 import * as moment from 'moment';
 import { ItemType } from '../datamodels/itemType';
 import { UserType } from '../datamodels/userType';
+import { VerificationType } from '../datamodels/verificationType';
 
 
 /**
@@ -34,6 +35,7 @@ export class UtilitiesService {
   statusTypeList: StatusType[] = [];
   itemTypeList: ItemType[] = [];
   userTypeList: UserType[] = [];
+  verificationTypeList: VerificationType[] = [];
 
   constructor(private dataService: DataService, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -69,6 +71,10 @@ export class UtilitiesService {
 
     this.dataService.userTypeList.subscribe(userTypeList => {
       this.userTypeList = userTypeList;
+    });
+
+    this.dataService.verificationTypeList.subscribe(verificationTypeList => {
+      this.verificationTypeList = verificationTypeList;
     });
   }
 
@@ -111,6 +117,10 @@ export class UtilitiesService {
 
   getUserTypeFromID(id: number) {
     return _.find(this.userTypeList, userType => userType.id == id);
+  }
+
+  getVerificationTypeFromID(id: number) {
+    return _.find(this.verificationTypeList, verificationType => verificationType.id == id);
   }
 
   /**

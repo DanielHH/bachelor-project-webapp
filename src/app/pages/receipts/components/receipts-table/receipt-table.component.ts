@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
+import { HttpService } from '../../../../services/http.service';
+import { MatchFilterReceiptPipe } from '../../../../pipes/match-filter-receipt.pipe';
 
 @Component({
   selector: 'app-receipt-table',
@@ -25,8 +27,13 @@ export class ReceiptTableComponent implements OnInit {
   showActive = true;
   showInactive = false;
 
+  url = '';
 
-  constructor() { }
+
+  constructor(
+    private receiptPipe: MatchFilterReceiptPipe,
+    private httpService: HttpService
+  ) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -97,6 +104,28 @@ export class ReceiptTableComponent implements OnInit {
       case 'asc': return 'desc';
       default: return 'asc';
     }
+  }
+
+  passFilter(receipt: Receipt) {
+    return this.receiptPipe.matchFilt(receipt, this.filterInput, this.showCard, this.showDocument, this.showActive, this.showInactive);
+  }
+
+  genPDF() {
+    const filteredList = [];
+    for (const receipt of this.receiptList) {
+      if (this.passFilter(receipt)) {
+        filteredList.push(receipt);
+      }
+    }
+    this.httpService.httpPost<any>('genPDF', ['receipts', filteredList] ).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+
+  openPDF() {
+    window.open(this.url, '_blank');
   }
 
 }

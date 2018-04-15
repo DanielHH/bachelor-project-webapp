@@ -15,6 +15,16 @@
         </mat-form-field>
       </div>
 
+      <!-- PDF buttons -->
+      <div class="col">
+        <span class="open-receipts-pdf-button">
+          <button mat-raised-button color="primary" *ngIf="url != ''" (click)="openPDF()">Öppna PDF</button>
+        </span>
+        <span class="generate-receipts-pdf-button">
+          <button mat-raised-button color="primary" (click)="genPDF()">Generera PDF</button>
+        </span>
+      </div>
+
     </div>
 
     <!-- Row filter per type and status -->
