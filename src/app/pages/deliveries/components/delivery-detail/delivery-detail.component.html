@@ -68,7 +68,7 @@
               <b>Ändrad:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>Kommentar:</b>
+                <span *ngIf="deliveryItem?.comment"><b>Kommentar:</b></span>
             </div>
           </div>
           <!-- Row -->
@@ -80,7 +80,7 @@
               {{utilitiesService.getDateString(deliveryItem?.modifiedDate, 'YYYY-MM-DD HH:MM:SS')}}
             </div>
             <div class="col-12 col-md-4">
-              {{deliveryItem?.comment}}
+              <span *ngIf="deliveryItem?.comment">{{deliveryItem?.comment}}</span>
             </div>
           </div>
         </mat-card>
