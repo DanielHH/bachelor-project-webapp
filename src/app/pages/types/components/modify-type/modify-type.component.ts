@@ -81,6 +81,10 @@ export class ModifyTypeComponent implements OnInit {
         this.modalTitle = 'Ändra typ';
 
         this._showModal = true;
+      } else {
+        this.modalTitle = 'Lägg till ny typ';
+        this.modalType = 0;
+        this.showModal = true;
       }
     });
   }
