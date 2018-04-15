@@ -105,6 +105,7 @@ import { InventoryDetailComponent } from './pages/inventory/components/inventory
 import { UserDetailComponent } from './pages/users/components/user-detail/user-detail.component';
 import { ReceiptDetailComponent } from './pages/receipts/components/receipt-detail/receipt-detail.component';
 import { LogDetailComponent } from './pages/logs/components/log-detail/log-detail.component';
+import { TypeDetailComponent } from './pages/types/components/type-detail/type-detail.component';
 
 @NgModule({
   declarations: [
@@ -178,7 +179,8 @@ import { LogDetailComponent } from './pages/logs/components/log-detail/log-detai
     InventoryDetailComponent,
     UserDetailComponent,
     ReceiptDetailComponent,
-    LogDetailComponent
+    LogDetailComponent,
+    TypeDetailComponent
   ],
   imports: [
     BrowserModule,

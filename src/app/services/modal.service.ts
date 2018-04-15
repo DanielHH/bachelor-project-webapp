@@ -87,6 +87,18 @@ export class ModalService {
   );
 
   /**
+   * Detail type
+   */
+  private _detailType = new BaseType(new CardType(), 'cardType');
+
+   /**
+   * A subscriber to the detail type
+   */
+  detailType: BehaviorSubject<BaseType> = new BehaviorSubject<BaseType>(
+    this._detailType
+  );
+
+  /**
    * Detail user
    */
   private _detailUser = new User();

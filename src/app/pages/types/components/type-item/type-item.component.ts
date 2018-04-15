@@ -45,6 +45,13 @@ export class TypeItemComponent implements OnInit {
   ngOnInit() { }
 
   /**
+   * Show the modal for type details
+   */
+  showDetailsModal() {
+    this.modalService.detailType.next(this.typeItem);
+  }
+
+  /**
    * Set type to be outputted for editing
   */
   edit() {
