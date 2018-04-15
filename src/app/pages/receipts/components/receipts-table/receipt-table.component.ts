@@ -3,6 +3,7 @@ import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
 import { HttpService } from '../../../../services/http.service';
 import { MatchFilterReceiptPipe } from '../../../../pipes/match-filter-receipt.pipe';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-receipt-table',
@@ -16,8 +17,8 @@ export class ReceiptTableComponent implements OnInit {
   filterInput = '';
 
   orderStatus = '';
-  orderItemType = '';
-  orderIDNumber = '';
+  orderType = '';
+  orderNumber = '';
   orderUser = '';
   orderStartDate = '';
   orderEndDate = '';
@@ -32,7 +33,8 @@ export class ReceiptTableComponent implements OnInit {
 
   constructor(
     private receiptPipe: MatchFilterReceiptPipe,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private utilitiesService: UtilitiesService
   ) { }
 
   ngOnInit() {
@@ -47,52 +49,62 @@ export class ReceiptTableComponent implements OnInit {
   }
 
   /**
-   * Sorts the table depending on the property of the receipt
+   * Sorts the table depending on the property of the Receipt
    * @param property
    */
   sortTableList(property: string) {
     let newOrder = '';
-
+    let orderFunc = (item: Receipt) => '';
     switch (property) {
-      case 'TODO': { // ACTIVE/INACTIVE
+      case 'status':
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
+        orderFunc = (item: Receipt) => new Receipt(item).endDate ? 'Inaktiv' : 'Aktiv';
+        break;
+      case 'type': {
+        newOrder = this.sortTableListHelper(this.orderType);
+        this.orderType = newOrder;
+        orderFunc = (item: Receipt) => new Receipt(item).getSubType().name;
         break;
       }
-      case 'TODO': { // ITEM TYPE
-        newOrder = this.sortTableListHelper(this.orderItemType);
-        this.orderItemType = newOrder;
+      case 'number': {
+        newOrder = this.sortTableListHelper(this.orderNumber);
+        this.orderNumber = newOrder;
+        orderFunc = (item: Receipt) => new Receipt(item).getNumber();
         break;
       }
-      case 'TODO': { // ITEM NUMBER/NAME
-        newOrder = this.sortTableListHelper(this.orderIDNumber);
-        this.orderIDNumber = newOrder;
-        break;
-      }
-      case 'user.name': {
+      case 'user': {
         newOrder = this.sortTableListHelper(this.orderUser);
         this.orderUser = newOrder;
+        orderFunc = (
+          item: Receipt) => this.utilitiesService.getUserString(new Receipt(item).getUser()
+        );
         break;
       }
       case 'startDate': {
         newOrder = this.sortTableListHelper(this.orderStartDate);
         this.orderStartDate = newOrder;
+        orderFunc = (
+          item: Receipt) => this.utilitiesService.getDateString(new Receipt(item).startDate
+        );
         break;
       }
       case 'endDate': {
         newOrder = this.sortTableListHelper(this.orderEndDate);
         this.orderEndDate = newOrder;
+        orderFunc = (
+          item: Receipt) => this.utilitiesService.getDateString(new Receipt(item).endDate
+        );
         break;
       }
     }
-
-    if (newOrder && property === 'IDNumber') {
-      this.receiptList = _.orderBy(this.receiptList, ['cardID'], [newOrder]);
-      this.receiptList = _.orderBy(this.receiptList, ['documentID'], [newOrder]);
-    } else if (newOrder) {
-      this.receiptList = _.orderBy(this.receiptList, [property], [newOrder]);
+    if (newOrder) {
+      this.receiptList = _.orderBy(
+        this.receiptList,
+        [orderFunc],
+        [newOrder]
+      );
     }
-
   }
 
   /**

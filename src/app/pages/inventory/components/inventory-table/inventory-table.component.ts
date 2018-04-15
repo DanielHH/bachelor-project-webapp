@@ -60,22 +60,17 @@ export class InventoryTableComponent implements OnInit {
    * Sorts table after subType ascending
    */
   sortTableListStart() {
-    this.baseItemList = _.orderBy(this.baseItemList, ['subType'], ['desc']);
+    this.baseItemList = _.orderBy(this.baseItemList, [(item: BaseItem) => item.getLastVerifiedString()], ['desc']);
   }
 
   /**
-   * Sorts the table depending on the property of the Card
+   * Sorts the table depending on the property of the BaseItem
    * @param property
    */
   sortTableList(property: string) {
     let newOrder = '';
     let orderFunc = (item: BaseItem) => '';
     switch (property) {
-      case 'itemType':
-        newOrder = this.sortTableListHelper(this.orderItemType);
-        this.orderItemType = newOrder;
-        orderFunc = (item: BaseItem) => item.itemType;
-        break;
       case 'status': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
@@ -115,7 +110,7 @@ export class InventoryTableComponent implements OnInit {
       case 'verifyDate': {
         newOrder = this.sortTableListHelper(this.orderVerifyDate);
         this.orderVerifyDate = newOrder;
-        orderFunc = (item: BaseItem) => String(item.getLastVerifiedString());
+        orderFunc = (item: BaseItem) => item.getLastVerifiedString();
         break;
       }
     }
