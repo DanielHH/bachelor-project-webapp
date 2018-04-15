@@ -37,6 +37,7 @@ export class TypeDetailComponent implements OnInit {
   typeNameString: string;
   createdDateString: string;
   modifiedDateString: string;
+  statusString: string;
 
   constructor(
     private modalService: ModalService,
@@ -49,6 +50,7 @@ export class TypeDetailComponent implements OnInit {
         this.typeNameString = baseType.getType().name;
         this.createdDateString = utilitiesService.getDateString(baseType.getType().creationDate, 'YYYY-MM-DD HH:MM:SS');
         this.modifiedDateString = utilitiesService.getDateString(baseType.getType().modifiedDate, 'YYYY-MM-DD HH:MM:SS');
+        this.statusString = baseType.getType().status.name;
 
         this._showModal = true;
       }
