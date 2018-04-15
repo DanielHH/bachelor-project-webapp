@@ -51,10 +51,10 @@
               {{deliveryItem?.receiver}}
             </div>
             <div class="col-0 col-md-4">
-              {{displayDocumentDate()}}
+              {{this.deliveryItem?.documentDate | date: 'shortDate'}}
             </div>
             <div class="col-0 col-md-4">
-              {{displaySentDate()}}
+              {{this.deliveryItem?.sentDate | date: 'shortDate'}}
             </div>
           </div>
           <!-- Row Space -->
@@ -74,10 +74,10 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-0 col-md-4">
-              {{displayCreationDate()}}
+              {{this.deliveryItem?.creationDate | date: 'shortDate'}}
             </div>
             <div class="col-0 col-md-4">
-              {{displayModifiedDate()}}
+              {{this.deliveryItem?.modifiedDate | date: 'shortDate'}}
             </div>
             <div class="col-0 col-md-4">
               {{deliveryItem?.comment}}

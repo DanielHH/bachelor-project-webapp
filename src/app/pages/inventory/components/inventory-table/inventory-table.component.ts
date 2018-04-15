@@ -163,7 +163,6 @@ export class InventoryTableComponent implements OnInit {
     this.displayedItems.forEach(item => {
       if (item.isChecked) {
         item.verifyInventory();
-        console.log('whoop');
       }
     });
   }

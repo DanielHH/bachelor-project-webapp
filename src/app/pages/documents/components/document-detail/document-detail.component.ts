@@ -64,28 +64,4 @@ export class DocumentDetailComponent implements OnInit {
 
     this.showModal = false;
   }
-
-  displayRegistrationDate() {
-    if (this.documentItem) {
-      return moment(this.documentItem.registrationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayDocumentDate() {
-    if (this.documentItem) {
-      return moment(this.documentItem.documentDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayCreationDate() {
-    if (this.documentItem) {
-      return moment(this.documentItem.creationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayModifiedDate() {
-    if (this.documentItem) {
-      return moment(this.documentItem.modifiedDate).format('YYYY-MM-DD');
-    }
-  }
 }

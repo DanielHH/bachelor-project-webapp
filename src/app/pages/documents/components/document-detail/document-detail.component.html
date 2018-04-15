@@ -54,7 +54,7 @@
                 {{documentItem?.location}}
               </div>
               <div class="col-0 col-md-4">
-                {{displayDocumentDate()}}
+                {{this.documentItem?.documentDate | date: 'shortDate'}}
               </div>
             </div>
             <!-- Row Space -->
@@ -74,13 +74,13 @@
             <!-- Row -->
             <div class="row my-1">
               <div class="col-0 col-md-4">
-                {{displayRegistrationDate()}}
+                {{this.documentItem?.registrationDate | date: 'shortDate'}}
               </div>
               <div class="col-0 col-md-4">
-                {{displayCreationDate()}}
+                {{this.documentItem?.creationDate | date: 'shortDate'}}
               </div>
               <div class="col-0 col-md-4">
-                {{displayModifiedDate()}}
+                {{this.documentItem?.modifiedDate | date: 'shortDate'}}
               </div>
             </div>
             <!-- Row Space -->
@@ -106,7 +106,7 @@
                 {{utilitiesService.getUserString(documentItem?.user)}}
               </div>
               <div class="col-0 col-md-4">
-                {{utilitiesService.getDateString(documentItem?.lastVerificationDate)}}
+                {{this.documentItem?.lastVerificationDate | date: 'shortDate'}}
               </div>
             </div>
             <!-- Row Space -->

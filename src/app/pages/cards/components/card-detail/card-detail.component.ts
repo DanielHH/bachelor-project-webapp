@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Card } from '../../../../datamodels/card';
 import { DataService } from '../../../../services/data.service';
@@ -63,23 +63,5 @@ export class CardDetailComponent implements OnInit {
     this.modalService.detailCard.next(this.cardItem);
 
     this.showModal = false;
-  }
-
-  displayExpirationDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayCreationDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.creationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayModifiedDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.modifiedDate).format('YYYY-MM-DD');
-    }
   }
 }
