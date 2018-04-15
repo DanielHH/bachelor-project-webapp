@@ -46,4 +46,9 @@ export class User {
    */
   status: StatusType;
 
+  /**
+   * Password when adding a new user
+   */
+  password?: string;
+
 }

@@ -25,7 +25,7 @@ export class ModifyUserComponent implements OnInit {
   nameInput = '';
   emailInput = '';
   usernameInput = '';
-  passwordInput = 'pum123';
+  passwordInput = '';
   isAdmin = false;
 
   nameControl = new FormControl('', Validators.required);
@@ -108,9 +108,9 @@ export class ModifyUserComponent implements OnInit {
 
       const userTypeID = this.isAdmin ? Number(1) : Number(2);
       user.userType = this.utilitiesService.getUserTypeFromID(userTypeID);
-      // user.password = this.passwordInput; TODO: Fix password!
 
       user.modifiedDate = this.utilitiesService.getLocalDate();
+      user.password = btoa(this.passwordInput);
     }
   }
 
