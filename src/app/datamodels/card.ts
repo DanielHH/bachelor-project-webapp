@@ -72,4 +72,9 @@ export class Card {
    */
   lastVerificationDate?: Date;
 
+  /**
+   * Registrator
+   */
+  registrator?: string;
+
 }
