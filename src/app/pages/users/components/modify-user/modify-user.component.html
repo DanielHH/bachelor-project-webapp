@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <!-- Row username & password -->
+    <!-- Row username & admin choice -->
     <div class="row">
       <!-- Username -->
       <div class="col-12 col-md-6">
@@ -65,6 +65,16 @@
         </mat-form-field>
       </div>
 
+      <!-- Admin checkbox -->
+      <div class="col-12 col-md-6 mt-4">
+        <mat-checkbox id="isAdmin" name="isAdmin" color="primary" [(ngModel)]="isAdmin" disableRipple>Administratör</mat-checkbox>
+      </div>
+
+    </div>
+
+    <!-- Row password fields -->
+    <div *ngIf="modalType === 0 || changePassword" class="row py-3">
+
       <!-- Password -->
       <div class="col-12 col-md-6">
         <mat-form-field>
@@ -84,15 +94,28 @@
           <!-- TODO: Add password restrictions such as length, characters? -->
         </mat-form-field>
       </div>
-    </div>
 
-    <!-- Row admin checkbox -->
-    <div class="row py-3">
-      <div class="col-0 col-md-4"></div>
-      <div class="col-12 col-md-4 wide-center">
-        <mat-checkbox id="isAdmin" name="isAdmin" color="primary" [(ngModel)]="isAdmin" disableRipple>Administratör</mat-checkbox>
+      <!-- Password confimation-->
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="confirmPasswordInput" name="confirmPasswordInput" [(ngModel)]="confirmPasswordInput" maxlength="128"
+          placeholder="Bekräfta lösenord" type="password" [formControl]="confirmPasswordControl" autocomplete="off" required>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidConfirmPassword()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="confirmPasswordInput" matSuffix mat-icon-button aria-label="Clear"
+          (click)="confirmPasswordInput = ''" tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="confirmPasswordControl.hasError('required')">Bekräfta lösenord</mat-error>
+          <mat-error *ngIf="!confirmPasswordControl.hasError('required') && confirmPasswordControl.hasError('confirmPassword')">Angivna lösenord matchar inte</mat-error>
+          <!-- TODO: Add password restrictions such as length, characters? -->
+        </mat-form-field>
       </div>
-      <div class="col-0 col-md-4"></div>
+
     </div>
 
   </app-modal>

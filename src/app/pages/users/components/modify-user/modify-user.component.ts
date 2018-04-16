@@ -26,12 +26,15 @@ export class ModifyUserComponent implements OnInit {
   emailInput = '';
   usernameInput = '';
   passwordInput = '';
+  confirmPasswordInput = '';
   isAdmin = false;
+  changePassword = false;
 
   nameControl = new FormControl('', Validators.required);
   emailControl = new FormControl('', Validators.required);
   usernameControl = new FormControl('', Validators.required);
   passwordControl = new FormControl('', Validators.required);
+  confirmPasswordControl = new FormControl('', Validators.required);
 
   userList = [];
 
@@ -76,7 +79,6 @@ export class ModifyUserComponent implements OnInit {
         this.usernameInput = user.username;
         this.emailInput = user.email;
         this.nameInput = user.name;
-        this.passwordInput = 'pum123'; // TODO fix password!
         this.isAdmin = utilitiesService.isAdmin(user);
 
         this.modalType = 1;
@@ -189,7 +191,13 @@ export class ModifyUserComponent implements OnInit {
    */
   isValidPassword() {
     return !this.passwordControl.hasError('required');
-    // TODO: Add password restrictions such as length, characters?
+  }
+
+  /**
+   * Returns true if entered confirmation password is valid, else false.
+   */
+  isValidConfirmPassword() {
+    return !this.confirmPasswordControl.hasError('required');
   }
 
   /**
@@ -199,8 +207,8 @@ export class ModifyUserComponent implements OnInit {
     return (
       this.isValidName() &&
       this.isValidEmail() &&
-      this.isValidUsername() // &&
-      // this.isValidPassword()
+      this.isValidUsername() &&
+      this.isValidPassword()
     );
   }
 
@@ -211,9 +219,12 @@ export class ModifyUserComponent implements OnInit {
     this.nameControl.reset();
     this.emailControl.reset();
     this.usernameControl.reset();
-    // this.passwordControl.reset();
-    this.passwordInput = 'pum123';
+    this.passwordControl.reset();
+    this.confirmPasswordControl.reset();
+
     this.isAdmin = false;
+    this.changePassword = false;
+
     this.modifyForm.resetForm();
 
     this.userToEdit = Object.assign({}, new User());
