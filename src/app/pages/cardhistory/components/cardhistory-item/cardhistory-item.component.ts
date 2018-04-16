@@ -21,15 +21,13 @@ export class CardhistoryItemComponent implements OnInit {
 
   @Input() logEventItem: LogEvent;
   // cardList: Card[] = [];
-
+/*
   logDate: string;
   logType: string;
   eventToDisplay: string;
   userToDisplay: string;
-
+*/
   cardDetail: Card;
-
-  owner: User;
 
   constructor(
     private routeDataService: RouteDataService,
@@ -40,7 +38,7 @@ export class CardhistoryItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.logEventItem.itemType.id === 1 && this.logEventItem.card.id === this.cardDetail.id &&
+    /*if (this.logEventItem.itemType.id === 1 && this.logEventItem.card.id === this.cardDetail.id &&
       this.logEventItem.logType.id === 5) { // show requested cards
       this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
       this.logType = this.logEventItem.logType.name;
@@ -50,6 +48,6 @@ export class CardhistoryItemComponent implements OnInit {
         this.logDate = moment(this.logEventItem.logDate).format('YYYY-MM-DD HH:mm:ss');
         this.logType = this.logEventItem.logType.name;
         this.eventToDisplay = this.logEventItem.logText;
-      }
+      }*/
   }
 }

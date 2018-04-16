@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col">{{logType}}</div>
-  <div class="col">{{eventToDisplay}}</div>
-  <div class="col">{{userToDisplay}}</div>
-  <div class="col-1">{{logDate}}</div>
+  <div class="col">{{logEventItem?.logType?.name}}</div>
+  <div class="col">{{logEventItem?.logText}}</div>
+  <div class="col">{{utilitiesService.getUserString(logEventItem?.user)}}</div>
+  <div class="col-1">{{utilitiesService.getDateString(logEventItem?.logDate, 'YYYY-MM-DD HH:MM:SS')}}</div>
   <div class="col"></div>
 <!--
 <div class="col">{{}}</div>

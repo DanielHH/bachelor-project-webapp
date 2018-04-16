@@ -18,23 +18,63 @@ export class CardhistoryTableComponent implements OnInit {
 
   filterInput = '';
 
-  showReceipts = true;
-  showChanges = false;
+  orderLogDate = '';
+  orderLogType = '';
+  orderLogText = '';
+  orderLogUser = '';
 
-  // cardDetail: Card;
+  showReceipt = true;
+  showOther = true;
 
-  constructor() {
-  }
+  constructor() { }
 
   ngOnInit() {
-   // this.sortTableListStart();
+    this.sortTableListStart();
   }
 
   /**
    * Sorts table after modifiedDate ascending
    */
   sortTableListStart() {
-   // this.receiptList = _.orderBy(this.receiptList, ['modifiedDate'], ['desc']);
+    this.logEventList = _.orderBy(this.logEventList, ['logDate'], ['desc']);
+  }
+
+  /**
+   * Sorts the table depending on the property of the log
+   * @param property
+   */
+  sortTableList(property: string) {
+    let newOrder = '';
+
+    switch (property) {
+      case 'logDate': {
+        newOrder = this.sortTableListHelper(this.orderLogDate);
+        this.orderLogDate = newOrder;
+        break;
+      }
+      case 'logType': {
+        newOrder = this.sortTableListHelper(this.orderLogType);
+        this.orderLogType = newOrder;
+        property = 'logType.name';
+        break;
+      }
+      case 'logText': {
+        newOrder = this.sortTableListHelper(this.orderLogText);
+        this.orderLogText = newOrder;
+        break;
+      }
+      case 'user': {
+        newOrder = this.sortTableListHelper(this.orderLogUser);
+        this.orderLogUser = newOrder;
+        property = 'user.name';
+        break;
+      }
+    }
+
+    if (newOrder) {
+      this.logEventList = _.orderBy(this.logEventList, [property], [newOrder]);
+    }
+
   }
 
   /**
