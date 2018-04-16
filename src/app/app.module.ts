@@ -225,6 +225,7 @@ import { TypeDetailComponent } from './pages/types/components/type-detail/type-d
     MatchFilterCardPipe,
     MatchFilterTypePipe,
     MatchFilterDocumentPipe,
+    MatchFilterDeliveryPipe,
     MatchFilterReceiptPipe,
     MatchFilterInventoryPipe,
     ModalService

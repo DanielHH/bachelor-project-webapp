@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash';
 import { Delivery } from '../../../../datamodels/delivery';
 import { ModalService } from '../../../../services/modal.service';
+import { MatchFilterDeliveryPipe } from '../../../../pipes/match-filter-delivery.pipe';
+import { HttpService } from '../../../../services/http.service';
 
 @Component({
   selector: 'app-delivery-table',
@@ -9,7 +11,6 @@ import { ModalService } from '../../../../services/modal.service';
   styleUrls: ['./delivery-table.component.scss']
 })
 export class DeliveryTableComponent implements OnInit {
-
   @Input() deliveryList: Delivery[];
 
   editDelivery: Delivery = null; // delivery document to be edited
@@ -36,7 +37,13 @@ export class DeliveryTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor(private modalService: ModalService) {}
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private deliveryPipe: MatchFilterDeliveryPipe
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -97,7 +104,6 @@ export class DeliveryTableComponent implements OnInit {
     if (newOrder) {
       this.deliveryList = _.orderBy(this.deliveryList, [property], [newOrder]);
     }
-
   }
 
   /**
@@ -106,8 +112,10 @@ export class DeliveryTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -118,5 +126,23 @@ export class DeliveryTableComponent implements OnInit {
     this.modalService.editDelivery.next(null);
   }
 
-}
+  genPDF() {
+    const filteredList = this.deliveryPipe.transform(
+      this.deliveryList,
+      this.filterInput,
+      this.showActive,
+      this.showArchived,
+      this.showGone
+    );
 
+    this.httpService.httpPost<any>('genPDF', ['deliveries', filteredList]).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+
+  openPDF() {
+    window.open(this.url, '_blank');
+  }
+}
