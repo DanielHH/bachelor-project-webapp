@@ -130,7 +130,7 @@ export class ModifyCardComponent implements OnInit {
       card.cardNumber = this.cardNumberInput;
       card.location = this.locationInput;
       card.expirationDate = new Date(this.expirationDateInput);
-      card.comment = this.commentInput;
+      card.comment = this.commentInput ? this.commentInput : null;
 
       card.modifiedDate = this.utilitiesService.getLocalDate();
     }

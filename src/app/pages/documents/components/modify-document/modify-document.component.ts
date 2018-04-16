@@ -144,7 +144,7 @@ export class ModifyDocumentComponent implements OnInit {
       document.sender = this.senderInput;
 
       document.location = this.locationInput;
-      document.comment = this.commentInput;
+      document.comment = this.commentInput ? this.commentInput : null;
     }
   }
 

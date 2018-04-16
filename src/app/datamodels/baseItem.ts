@@ -106,7 +106,7 @@ export class BaseItem {
   /**
    * Returns string representation of last verified date
    */
-  getLastVerifiedString(): Date|string {
+  getLastVerifiedString(): string {
     if (this.item.lastVerificationDate) {
       return this.utilitiesService.getDateString(this.item.lastVerificationDate, 'YYYY-MM-DD HH:MM:SS');
     } else {

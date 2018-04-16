@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 import { CardType } from '../../../../datamodels/cardType';
 import { DocumentType } from '../../../../datamodels/documentType';
 import { BaseType } from '../../../../datamodels/baseType';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-type-table',
@@ -35,7 +36,7 @@ export class TypeTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -99,9 +100,7 @@ export class TypeTableComponent implements OnInit {
    * Open add new type modal
    */
   openAddNewType() {
-    this.modalTitle = 'Lägg till ny typ';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editType.next(null);
   }
 
 }

@@ -127,7 +127,7 @@ export class ModifyDeliveryComponent implements OnInit {
       delivery.documentDate = new Date(this.documentDateInput);
       delivery.sentDate = new Date(this.sentDateInput);
 
-      delivery.comment = this.commentInput;
+      delivery.comment = this.commentInput ? this.commentInput : null;
     }
   }
 
