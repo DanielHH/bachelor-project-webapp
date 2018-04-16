@@ -166,7 +166,7 @@ export class ModifyCardComponent implements OnInit {
 
       this.httpService.httpPost<Card>('addNewCard/', {card: newCard, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
-          this.cardList.unshift(res.data);
+          this.cardList.unshift(res.data.card);
           // Update log event list
           this.logEvents.unshift(res.data.logEvent);
           this.logEvents = this.logEvents.slice();
