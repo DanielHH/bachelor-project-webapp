@@ -9,6 +9,7 @@ import { HttpService } from '../../services/http.service';
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
 import { LogEvent } from '../../datamodels/logEvent';
+import { RouteDataService } from '../../services/route-data.service';
 
 @Component({
   selector: 'app-cardhistory',
@@ -19,9 +20,14 @@ export class CardhistoryComponent implements OnInit {
 
   logEventList: LogEvent[] = [];
 
-  constructor(public dataService: DataService) {
+  card: Card;
+
+  constructor(public dataService: DataService, private routeDataService: RouteDataService) {
+    this.routeDataService.card.subscribe((card) => {
+      this.card = card;
+    });
     this.dataService.logEventList.subscribe((logEventList) => {
-      this.logEventList = logEventList;
+      this.logEventList = logEventList; //_.filter(logEventList, (logEvent) => (logEvent.card.id  == this.card.id))
     });
 
   }

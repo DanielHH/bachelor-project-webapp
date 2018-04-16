@@ -1,5 +1,5 @@
 <h4>History of card:
-  <span>{{cardDetail.cardNumber}}</span>
+  <span>{{card.cardNumber}}</span>
 </h4>
 <div class="card">
   <div class="card-body">
@@ -30,7 +30,7 @@
       </div>
 
       <div class="col-1 px-1">
-        <mat-checkbox id="showChanges" name="showChanges" color="primary" class="px-1" [(ngModel)]="showChanges">Infoändringar</mat-checkbox>
+        <mat-checkbox id="showChanges" name="showChanges" color="primary" class="px-1" [(ngModel)]="showChanges">Övrigt</mat-checkbox>
       </div>
 
       <div class="col-8"></div>
@@ -41,9 +41,6 @@
   <!-- Header row -->
   <div class="row">
     <div class="col-1">
-      <span class="hover">Datum & tid </span>
-    </div>
-    <div class="col">
       <span class="hover">Typ </span>
     </div>
     <div class="col">
@@ -51,6 +48,9 @@
     </div>
      <div class="col">
       <span class="hover">Utförd av </span>
+    </div>
+    <div class="col">
+      <span class="hover">Datum & tid </span>
     </div>
   </div>
   <hr>

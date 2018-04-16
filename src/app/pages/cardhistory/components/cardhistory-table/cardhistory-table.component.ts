@@ -14,18 +14,16 @@ import { LogEvent } from '../../../../datamodels/logEvent';
 export class CardhistoryTableComponent implements OnInit {
 
   @Input() logEventList: LogEvent[];
+  @Input() card: Card;
 
   filterInput = '';
 
   showReceipts = true;
   showChanges = false;
 
-  cardDetail: Card;
+  // cardDetail: Card;
 
-  constructor(private routeDataService: RouteDataService) {
-    this.routeDataService.card.subscribe((card) => {
-      this.cardDetail = card;
-    });
+  constructor() {
   }
 
   ngOnInit() {
