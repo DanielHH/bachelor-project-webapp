@@ -21,16 +21,26 @@ export class CardHistoryComponent implements OnInit {
   card: Card;
 
   constructor(public dataService: DataService, private routeDataService: RouteDataService) {
-    this.routeDataService.card.subscribe((card) => {
+    this.routeDataService.card.subscribe(card => {
       this.card = card;
       if (this.logEventList) {
-        this.filteredLogEventList = _.filter(this.logEventList, (logEvent) => (logEvent.card.id  == this.card.id));
+        this.filteredLogEventList = _.filter(this.logEventList, logEvent => {
+          if (logEvent.card && logEvent.card.id) {
+            return logEvent.card.id == this.card.id;
+          }
+          return false;
+        });
       }
     });
-    this.dataService.logEventList.subscribe((logEventList) =>  {
+    this.dataService.logEventList.subscribe(logEventList => {
       this.logEventList = logEventList;
       if (this.card && this.card.id) {
-        this.filteredLogEventList = _.filter(this.logEventList, (logEvent) => (logEvent.card.id  == this.card.id));
+        this.filteredLogEventList = _.filter(this.logEventList, logEvent => {
+          if (logEvent.card && logEvent.card.id) {
+            return logEvent.card.id == this.card.id;
+          }
+          return false;
+        });
       }
     });
   }
