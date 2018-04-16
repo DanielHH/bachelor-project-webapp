@@ -112,15 +112,12 @@ export class ModifyUserComponent implements OnInit {
       user.userType = this.utilitiesService.getUserTypeFromID(userTypeID);
 
       user.modifiedDate = this.utilitiesService.getLocalDate();
-      user.password = btoa(this.passwordInput);
-    }
-  }
 
-  /**
-   * Toggle isAdmin value
-  */
-  toggleIsAdmin() {
-    this.isAdmin = !this.isAdmin;
+      if (this.modalType === 0 || this.changePassword) {
+        console.log('changing password!');
+        user.password = btoa(this.passwordInput);
+      }
+    }
   }
 
   /**
@@ -162,6 +159,13 @@ export class ModifyUserComponent implements OnInit {
     }
   }
 
+  updateConfirmPassword() {
+    // Updates too fast I think, works with delay
+    setTimeout(() => {
+      this.confirmPasswordControl.updateValueAndValidity();
+    }, 500);
+  }
+
   /**
    * Returns true if entered name is valid, else false.
    */
@@ -190,7 +194,15 @@ export class ModifyUserComponent implements OnInit {
    * Returns true if entered password is valid, else false.
    */
   isValidPassword() {
-    return !this.passwordControl.hasError('required');
+    if (this.modalType === 1 && !this.changePassword) {
+      return true;
+    }
+
+    return (
+      !this.passwordControl.hasError('required') &&
+      !this.confirmPasswordControl.hasError('required') &&
+      !this.confirmPasswordControl.hasError('confirmPassword')
+    );
   }
 
   /**

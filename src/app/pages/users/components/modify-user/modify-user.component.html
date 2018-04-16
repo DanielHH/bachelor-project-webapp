@@ -1,4 +1,5 @@
-<form #modifyForm="ngForm" (ngSubmit)="modalType ? editUser() : addNewUser()">
+<form #modifyForm="ngForm" (ngSubmit)="modalType ? editUser() : addNewUser()" autocomplete="new-password">
+
   <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [closeName]="'Avbryt'" [submitName]="'Spara'">
 
     <!-- Row name & email -->
@@ -27,7 +28,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="emailInput" name="emailInput" [(ngModel)]="emailInput" maxlength="128" placeholder="E-postadress"
-            [formControl]="emailControl" autocomplete="off" required>
+            [formControl]="emailControl" autocomplete="off" type="email" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidEmail()">done</mat-icon>
@@ -72,15 +73,24 @@
 
     </div>
 
+    <!-- Row change password choice (Edit modal only) -->
+    <div *ngIf="modalType === 1" class="row py-3">
+      <div class="col-12 wide-center">
+        <mat-checkbox id="changePassword" name="changePassword" color="primary" [(ngModel)]="changePassword"
+        (change)="confirmPasswordControl.reset(); passwordControl.reset();" disableRipple>
+          Byt lösenord</mat-checkbox>
+      </div>
+    </div>
+
     <!-- Row password fields -->
-    <div *ngIf="modalType === 0 || changePassword" class="row py-3">
+    <div *ngIf="modalType === 0 || changePassword" class="row py-1">
 
       <!-- Password -->
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
           <input matInput id="passwordInput" name="passwordInput" [(ngModel)]="passwordInput" maxlength="128" placeholder="Lösenord"
-            type="password" [formControl]="passwordControl" autocomplete="off" required>
+            type="password" [formControl]="passwordControl" (input)="updateConfirmPassword()" autocomplete="new-password" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidPassword()">done</mat-icon>
@@ -100,7 +110,8 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="confirmPasswordInput" name="confirmPasswordInput" [(ngModel)]="confirmPasswordInput" maxlength="128"
-          placeholder="Bekräfta lösenord" type="password" [formControl]="confirmPasswordControl" autocomplete="off" required>
+          placeholder="Bekräfta lösenord" type="password" [formControl]="confirmPasswordControl" autocomplete="new-password"
+          [passwordInput]="passwordInput" [confirmPasswordInput]="confirmPasswordInput" (input)="updateConfirmPassword()" appConfirmPassword required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidConfirmPassword()">done</mat-icon>
