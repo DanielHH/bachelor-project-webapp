@@ -12,6 +12,8 @@ import { StatusType } from '../datamodels/statusType';
 import * as moment from 'moment';
 import { ItemType } from '../datamodels/itemType';
 import { LogType } from '../datamodels/logType';
+import { UserType } from '../datamodels/userType';
+import { VerificationType } from '../datamodels/verificationType';
 
 
 /**
@@ -34,6 +36,8 @@ export class UtilitiesService {
   statusTypeList: StatusType[] = [];
   itemTypeList: ItemType[] = [];
   logTypeList: LogType[] = [];
+  userTypeList: UserType[] = [];
+  verificationTypeList: VerificationType[] = [];
 
   constructor(private dataService: DataService, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -71,6 +75,13 @@ export class UtilitiesService {
       this.logTypeList = logTypeList;
     });
 
+    this.dataService.userTypeList.subscribe(userTypeList => {
+      this.userTypeList = userTypeList;
+    });
+
+    this.dataService.verificationTypeList.subscribe(verificationTypeList => {
+      this.verificationTypeList = verificationTypeList;
+    });
   }
 
   /**
@@ -83,17 +94,23 @@ export class UtilitiesService {
   }
 
   /**
-   * Returns a string representation of date
+   * Returns a string representation of date in given format
+   * or in YYYY-MM-DD format if no format is specified
    */
-  getDateString(date: Date): string {
-    return date ? moment(date).format('YYYY-MM-DD') : 'Saknas';
+  getDateString(date: Date, format?: string): string {
+    format = format ? format : 'YYYY-MM-DD';
+    return date ? moment(date).format(format) : '-';
   }
 
   /**
    * Returns a string representation of user
    */
   getUserString(user: User): string {
-    return user && user.id ? user.name : 'Saknas';
+    if (user && user.id) {
+      return user.name + ' <' + user.username + '>';
+    } else {
+      return '-';
+    }
   }
 
   getUserFromID(id: number) {
@@ -110,6 +127,13 @@ export class UtilitiesService {
 
   getLogTypeFromID(id: number) {
     return _.find(this.logTypeList, logType => logType.id == id);
+  }
+  getUserTypeFromID(id: number) {
+    return _.find(this.userTypeList, userType => userType.id == id);
+  }
+
+  getVerificationTypeFromID(id: number) {
+    return _.find(this.verificationTypeList, verificationType => verificationType.id == id);
   }
 
   /**
@@ -137,4 +161,19 @@ export class UtilitiesService {
     this.dataService.logEventList.next(this.logEvents);
   }
 */
+
+  /**
+   * Returns true if user is has Admin UserType, else false
+   */
+  isAdmin(user: User) {
+    return user.userType.id === 1;
+  }
+
+  /**
+   * Returns true if user is has User UserType, else false
+   */
+  isUser(user: User) {
+    return user.userType.id === 2;
+  }
+
 }

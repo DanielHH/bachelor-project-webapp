@@ -55,17 +55,12 @@ export class RequestCardComponent implements OnInit {
 
   generatePDF = true;
 
-  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
-    startWith(''),
-    map(user => (user ? this.filterUsers(user) : this.users ? this.users.slice() : []))
-  );
-
   user: User;
 
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private modalService: ModalService,
     private router: Router
   ) {
@@ -100,10 +95,14 @@ export class RequestCardComponent implements OnInit {
 
         this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
         this.startDateDatepickerInput = this.startDateInput;
-        this.commentInput = this.cardItem.comment;
         this.generatePDF = true;
 
         this._showModal = true;
+        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
+        // is 0 until after 200ms~ becuase of modal?
+        setTimeout(() => {
+          this.commentInput = card.comment;
+        }, 250);
       }
     });
 
@@ -124,16 +123,6 @@ export class RequestCardComponent implements OnInit {
   pdfURL = '';
 
   ngOnInit() {}
-
-  /**
-   * Filters list of usernames based on username input
-   * @param str username input
-   */
-  filterUsers(str: string) {
-    return this.users.filter(
-      user => str && typeof str === 'string' && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
 
   /**
    * Returns user id of user with username
@@ -224,6 +213,8 @@ export class RequestCardComponent implements OnInit {
         .then(res => {
           if (res.message === 'success') {
             const newReceipt = res.data.receipt;
+
+            this.cardItem.activeReceipt = Number(newReceipt.id);
 
             if (this.generatePDF) {
               this.loading = true;

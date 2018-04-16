@@ -12,8 +12,10 @@ import { BaseItem } from '../../../../datamodels/baseItem';
 import * as _ from 'lodash';
 import { ModifyCardComponent } from '../../../cards/components/modify-card/modify-card.component';
 import { NgForm } from '@angular/forms';
-import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
-import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
+import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
+import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
+import { HttpService } from '../../../../services/http.service';
+import { Verification } from '../../../../datamodels/verification';
 
 @Component({
   selector: 'inventory-table',
@@ -42,9 +44,12 @@ export class InventoryTableComponent implements OnInit {
   showArchived = false;
   showGone = false;
 
+  url = '';
+
   constructor(
-    private cardPipe: MatchFilterCardPipe,
-    private docPipe: MatchFilterDocumentPipe
+    private inventoryPipe: MatchFilterInventoryPipe,
+    private utilitiesService: UtilitiesService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit() {
@@ -55,22 +60,17 @@ export class InventoryTableComponent implements OnInit {
    * Sorts table after subType ascending
    */
   sortTableListStart() {
-    this.baseItemList = _.orderBy(this.baseItemList, ['subType'], ['desc']);
+    this.baseItemList = _.orderBy(this.baseItemList, [(item: BaseItem) => item.getLastVerifiedString()], ['desc']);
   }
 
   /**
-   * Sorts the table depending on the property of the Card
+   * Sorts the table depending on the property of the BaseItem
    * @param property
    */
   sortTableList(property: string) {
     let newOrder = '';
     let orderFunc = (item: BaseItem) => '';
     switch (property) {
-      case 'itemType':
-        newOrder = this.sortTableListHelper(this.orderItemType);
-        this.orderItemType = newOrder;
-        orderFunc = (item: BaseItem) => item.itemType;
-        break;
       case 'status': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
@@ -92,7 +92,7 @@ export class InventoryTableComponent implements OnInit {
       case 'user': {
         newOrder = this.sortTableListHelper(this.orderUser);
         this.orderUser = newOrder;
-        orderFunc = (item: BaseItem) => item.getUser().name;
+        orderFunc = (item: BaseItem) => this.utilitiesService.getUserString(item.getUser());
         break;
       }
       case 'location': {
@@ -117,9 +117,7 @@ export class InventoryTableComponent implements OnInit {
     if (newOrder) {
       this.baseItemList = _.orderBy(
         this.baseItemList,
-        [
-          orderFunc
-        ],
+        [orderFunc],
         [newOrder]
       );
     }
@@ -138,32 +136,44 @@ export class InventoryTableComponent implements OnInit {
     }
   }
 
+  genPDF() {
+    const filteredList = this.inventoryPipe.transform(
+      this.baseItemList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
 
+    const verificationList = [];
+    let verification: Verification;
 
-  /**
-   * Detect if the given item should be filtered or not,
-   * depending on checked boxes and input of filter field.
-   * @returns true if the item should be displayed, false otherwise
-   */
-  passesFilter(baseItem: BaseItem): boolean {
-    if (baseItem.isCard()) {
-      return this.cardPipe.matchFilt(
-        baseItem.item as Card,
-        this.filterInput,
-        this.showIn,
-        this.showOut,
-        this.showArchived,
-        this.showGone
-      );
-    } else {
-      return this.docPipe.matchFilt(
-        baseItem.item as Document,
-        this.filterInput,
-        this.showIn,
-        this.showOut,
-        this.showArchived,
-        this.showGone
-      );
-    }
+    filteredList.forEach(baseItem => {
+      verification = new Verification();
+      if (baseItem.isCard()) {
+        verification.card = baseItem.item as Card;
+        verification.itemType = this.utilitiesService.getItemTypeFromID(1);
+      } else {
+        verification.document = baseItem.item as Document;
+        verification.itemType = this.utilitiesService.getItemTypeFromID(2);
+      }
+
+      verification.verificationType = this.utilitiesService.getVerificationTypeFromID(2);
+      verification.user = baseItem.getItem().user;
+      verification.verificationDate = baseItem.getItem().lastVerificationDate;
+
+      verificationList.push(verification);
+    });
+
+    this.httpService.httpPost<any>('genPDF', ['inventory', verificationList] ).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+
+  openPDF() {
+    window.open(this.url, '_blank');
   }
 }

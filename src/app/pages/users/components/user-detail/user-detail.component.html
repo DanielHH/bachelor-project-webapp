@@ -1,0 +1,87 @@
+<form #detailForm="ngForm" (ngSubmit)="showModal = false">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
+  [submitName]="'Stäng'" [hideClose]="true">
+
+    <!-- Row card info -->
+    <div class="row">
+      <div class="col-0 col-md-1"></div>
+      <div class="col-12 col-md-10 wide-center">
+        <mat-card [style.background]="'#E8EAF6'">
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12 col-md-4">
+              <b>Namn:</b>
+            </div>
+            <div class="col-12 col-md-4">
+              <b>E-postadress:</b>
+            </div>
+            <div class="col-12 col-md-4">
+              <b>Användarnamn:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12 col-md-4">
+              {{userItem?.name}}
+            </div>
+            <div class="col-12 col-md-4">
+              {{userItem?.email}}
+            </div>
+            <div class="col-12 col-md-4">
+              {{userItem?.username}}
+            </div>
+          </div>
+
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12 col-md-4">
+              <b>Status:</b>
+            </div>
+            <div class="col-12 col-md-4">
+              <b>Skapad:</b>
+            </div>
+            <div class="col-12 col-md-4">
+              <b>Senast ändrad:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12 col-md-4">
+              {{userItem?.status?.id == 5 ? 'Aktiv' : 'Inaktiv'}}
+            </div>
+            <div class="col-12 col-md-4">
+              {{utilitiesService.getDateString(userItem?.creationDate, 'YYYY-MM-DD HH:MM:SS')}}
+            </div>
+            <div class="col-12 col-md-4">
+              {{utilitiesService.getDateString(userItem?.modifiedDate, 'YYYY-MM-DD HH:MM:SS')}}
+            </div>
+          </div>
+
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12">
+              <b>Administratör:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12">
+              {{userItem?.userType?.id == 1 ? 'Ja' : 'Nej'}}
+            </div>
+          </div>
+
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+        </mat-card>
+      </div>
+      <div class="col-0 col-md-1"></div>
+    </div>
+
+  </app-modal>
+</form>

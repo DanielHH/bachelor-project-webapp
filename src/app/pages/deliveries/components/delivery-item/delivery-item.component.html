@@ -25,7 +25,7 @@
   <div class="col">
     <div class="column-text">{{deliveryItem?.comment}}</div>
     <div class="pull-right table-menu-fix">
-      <app-item-menu [item]="deliveryItem" (editItem)="edit()" (editStatus)="editStatus()" [showEditOption]="true"></app-item-menu>
+      <app-item-menu [object]="deliveryItem" (editObject)="edit()" (editStatus)="editStatus()" [itemMenu]="true" [showEditOption]="true"></app-item-menu>
     </div>
   </div>
 </div>

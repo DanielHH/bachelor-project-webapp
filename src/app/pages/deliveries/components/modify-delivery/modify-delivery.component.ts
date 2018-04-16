@@ -8,6 +8,7 @@ import { HttpService } from '../../../../services/http.service';
 import { DataService } from '../../../../services/data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
+import { BaseType } from '../../../../datamodels/baseType';
 
 @Component({
   selector: 'app-modify-delivery',
@@ -15,7 +16,6 @@ import { ModalService } from '../../../../services/modal.service';
   styleUrls: ['./modify-delivery.component.scss']
 })
 export class ModifyDeliveryComponent implements OnInit {
-
   // Form variables
   documentTypeInput = '';
   documentNumberInput = '';
@@ -39,15 +39,7 @@ export class ModifyDeliveryComponent implements OnInit {
   sentDateControl = new FormControl('', Validators.required);
   sentDatePickerControl = new FormControl();
 
-  // Database data lists
-  documentTypes = [];
-
-  // Filtered lists
-  filteredDocumentTypes: Observable<any[]> = this.documentTypeControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(documentType => documentType ? this.filterDocTypes(documentType) : this.documentTypes.slice())
-    );
+  baseTypes: BaseType[] = []; // All card and document types
 
   @Input() deliveryList: Delivery[];
 
@@ -73,23 +65,24 @@ export class ModifyDeliveryComponent implements OnInit {
 
   @Output() showModalChange = new EventEmitter<any>();
 
-  constructor(private httpService: HttpService,
+  constructor(
+    private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService) {
-
-    this.dataService.documentTypeList.subscribe(documentTypes => {
-      this.documentTypes = documentTypes;
+    private modalService: ModalService
+  ) {
+    this.dataService.typeList.subscribe(baseTypes => {
+      this.baseTypes = baseTypes;
       this.documentTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
       });
     });
 
-    this.modalService.editDelivery.subscribe((delivery) => {
-      if (delivery && delivery.id) {
-        this.deliveryItem = delivery;
+    this.modalService.editDelivery.subscribe(delivery => {
+      this.deliveryItem = delivery;
 
+      if (delivery && delivery.id) {
         this.documentTypeInput = delivery.documentType.name;
         this.documentNumberInput = delivery.documentNumber;
         this.documentNameInput = delivery.name;
@@ -100,29 +93,25 @@ export class ModifyDeliveryComponent implements OnInit {
         this.sentDateInput = utilitiesService.getDateString(delivery.sentDate);
         this.sentDateDatepickerInput = this.sentDateInput;
 
-        this.commentInput = delivery.comment;
-
         this.modalType = 1;
         this.modalTitle = 'Ändra leverans';
 
         this._showModal = true;
 
+        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
+        // is 0 until after 200ms~ becuase of modal?
+        setTimeout(() => {
+          this.commentInput = delivery.comment;
+        }, 250);
+      } else {
+        this.modalTitle = 'Lägg till ny leverans';
+        this.modalType = 0;
+        this.showModal = true;
       }
     });
-
   }
 
-  ngOnInit() {
-  }
-
-  /**
-   * Filters list of docTypes based on docType input
-   * @param str docType input
-   */
-  filterDocTypes(str: string) {
-    return this.documentTypes.filter(documentType =>
-      str != null && documentType.name.toLowerCase().indexOf(str.toLowerCase()) === 0);
-  }
+  ngOnInit() {}
 
   /**
    * Sets fields in document according to form
@@ -138,14 +127,13 @@ export class ModifyDeliveryComponent implements OnInit {
       delivery.documentDate = new Date(this.documentDateInput);
       delivery.sentDate = new Date(this.sentDateInput);
 
-      delivery.comment = this.commentInput;
-
+      delivery.comment = this.commentInput ? this.commentInput : null;
     }
   }
 
   /**
-   * Attempts to submit new document to database
-  */
+   * Attempts to submit new delivery to database
+   */
   addNewDelivery() {
     if (this.isValidInput()) {
       const newDelivery = new Delivery();
@@ -156,7 +144,7 @@ export class ModifyDeliveryComponent implements OnInit {
       newDelivery.modifiedDate = this.utilitiesService.getLocalDate();
       newDelivery.status = this.utilitiesService.getStatusFromID(1);
 
-      this.httpService.httpPost<Document>('addNewDelivery/', newDelivery).then(res => {
+      this.httpService.httpPost<Delivery>('addNewDelivery/', newDelivery).then(res => {
         if (res.message === 'success') {
           this.deliveryList.unshift(res.data);
           // Trigger view refresh
@@ -164,7 +152,6 @@ export class ModifyDeliveryComponent implements OnInit {
           this.dataService.deliveryList.next(this.deliveryList);
 
           this.showModal = false;
-
         }
       });
     }
@@ -172,7 +159,7 @@ export class ModifyDeliveryComponent implements OnInit {
 
   /**
    * Attempts to submit changes to a document to database
-  */
+   */
   editDelivery() {
     if (this.isValidInput()) {
       this.setDeliveryFromForm(this.deliveryItem);
@@ -209,7 +196,7 @@ export class ModifyDeliveryComponent implements OnInit {
 
   /**
    * Sets the sent date datePicker the date entered in the input field.
-  */
+   */
   setSentDateToDatePicker() {
     if (!this.sentDateControl.hasError('required') && !this.sentDateControl.hasError('dateFormat')) {
       this.sentDateDatepickerInput = this.sentDateInput; // Set date in Datepicker
@@ -228,55 +215,49 @@ export class ModifyDeliveryComponent implements OnInit {
 
   /**
    * Returns true if entered document type is valid, else false.
-  */
+   */
   isValidDocumentType() {
-    return (
-      !this.documentTypeControl.hasError('required') &&
-      !this.documentTypeControl.hasError('docType')
-    );
+    return !this.documentTypeControl.hasError('required') && !this.documentTypeControl.hasError('docType');
   }
 
   /**
    * Returns true if entered document number is valid, else false.
-  */
+   */
   isValidDocumentNumber() {
     return !this.documentNumberControl.hasError('required');
   }
 
   /**
    * Returns true if entered document name is valid, else false.
-  */
+   */
   isValidDocumentName() {
     return !this.documentNameControl.hasError('required');
   }
 
   /**
    * Returns true if entered receiver is valid, else false.
-  */
+   */
   isValidReceiver() {
     return !this.receiverControl.hasError('required');
   }
 
   /**
-     * Returns true if entered document date is valid, else false.
-    */
-   isValidDocumentDate() {
-    return (
-      !this.documentDateControl.hasError('required') &&
-      !this.documentDateControl.hasError('dateFormat')
-    );
+   * Returns true if entered document date is valid, else false.
+   */
+  isValidDocumentDate() {
+    return !this.documentDateControl.hasError('required') && !this.documentDateControl.hasError('dateFormat');
   }
 
   /**
-     * Returns true if entered sent date is valid, else false.
-    */
+   * Returns true if entered sent date is valid, else false.
+   */
   isValidSentDate() {
     return !this.sentDateControl.hasError('required') && !this.sentDateControl.hasError('dateFormat');
   }
 
   /**
    * Returns true if everything in the form is valid, else false
-  */
+   */
   isValidInput() {
     return (
       this.isValidDocumentType() &&
@@ -296,6 +277,8 @@ export class ModifyDeliveryComponent implements OnInit {
     this.documentNumberControl.reset();
     this.documentNameControl.reset();
     this.receiverControl.reset();
+    this.documentDateControl.reset();
+    this.documentDatePickerControl.reset();
     this.sentDateControl.reset();
     this.sentDatePickerControl.reset();
 
@@ -308,5 +291,4 @@ export class ModifyDeliveryComponent implements OnInit {
     this.showModal = false;
     this.showModalChange.emit(false);
   }
-
 }

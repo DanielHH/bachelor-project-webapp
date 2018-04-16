@@ -3,6 +3,9 @@ import { Card } from '../../../../datamodels/card';
 import * as _ from 'lodash';
 import { ModifyCardComponent } from '../modify-card/modify-card.component';
 import { NgForm } from '@angular/forms';
+import { ModalService } from '../../../../services/modal.service';
+import { HttpService } from '../../../../services/http.service';
+import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
 
 @Component({
   selector: 'app-card-table',
@@ -13,8 +16,6 @@ export class CardTableComponent implements OnInit {
 
   @Input() cardList: Card[];
 
-  cardItem = new Card(); // Dummy
-
   showModal = false;
 
   filterInput = '';
@@ -22,7 +23,7 @@ export class CardTableComponent implements OnInit {
   orderStatus = '';
   orderCardType = '';
   orderCardNumber = '';
-  orderUserID = '';
+  orderUser = '';
   orderLocation = '';
   orderComment = '';
   orderDate = '';
@@ -36,7 +37,13 @@ export class CardTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private cardPipe: MatchFilterCardPipe
+  ) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -62,7 +69,7 @@ export class CardTableComponent implements OnInit {
         this.orderStatus = newOrder;
         break;
       }
-      case 'cardType': {
+      case 'cardType.name': {
         newOrder = this.sortTableListHelper(this.orderCardType);
         this.orderCardType = newOrder;
         break;
@@ -72,9 +79,9 @@ export class CardTableComponent implements OnInit {
         this.orderCardNumber = newOrder;
         break;
       }
-      case 'user.id': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user.name': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
         break;
       }
       case 'location': {
@@ -115,10 +122,27 @@ export class CardTableComponent implements OnInit {
    * Open add new card modal
    */
   openAddNewCard() {
-    this.modalTitle = 'Lägg till nytt kort';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editCard.next(null);
   }
 
+  genPDF() {
+    const filteredList = this.cardPipe.transform(
+      this.cardList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
+
+    this.httpService.httpPost<any>('genPDF', ['cards', filteredList] ).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+  openPDF() {
+    window.open(this.url, '_blank');
+  }
 }
 

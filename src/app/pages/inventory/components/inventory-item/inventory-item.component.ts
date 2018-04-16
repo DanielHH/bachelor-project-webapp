@@ -14,6 +14,7 @@ import { HttpService } from '../../../../services/http.service';
 import { Verification } from '../../../../datamodels/verification';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { VerificationType } from '../../../../datamodels/verificationType';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'inventory-item',
@@ -35,7 +36,8 @@ export class InventoryItemComponent implements OnInit {
     private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
-    private utilitiesService: UtilitiesService
+    public utilitiesService: UtilitiesService,
+    private modalService: ModalService
   ) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
@@ -58,6 +60,13 @@ export class InventoryItemComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  /**
+   * Shows the modal for inventory details
+   */
+  showDetailsModal() {
+    this.modalService.detailInventory.next(this.baseItem);
+  }
 
   /**
    * Sets the status of the document in the database

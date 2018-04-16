@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as _ from 'lodash';
 import { Delivery } from '../../../../datamodels/delivery';
+import { ModalService } from '../../../../services/modal.service';
+import { MatchFilterDeliveryPipe } from '../../../../pipes/match-filter-delivery.pipe';
+import { HttpService } from '../../../../services/http.service';
 
 @Component({
   selector: 'app-delivery-table',
@@ -8,7 +11,6 @@ import { Delivery } from '../../../../datamodels/delivery';
   styleUrls: ['./delivery-table.component.scss']
 })
 export class DeliveryTableComponent implements OnInit {
-
   @Input() deliveryList: Delivery[];
 
   editDelivery: Delivery = null; // delivery document to be edited
@@ -35,7 +37,13 @@ export class DeliveryTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() {}
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private deliveryPipe: MatchFilterDeliveryPipe
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -56,12 +64,12 @@ export class DeliveryTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'documentType': {
+      case 'documentType.name': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
         break;
@@ -96,7 +104,6 @@ export class DeliveryTableComponent implements OnInit {
     if (newOrder) {
       this.deliveryList = _.orderBy(this.deliveryList, [property], [newOrder]);
     }
-
   }
 
   /**
@@ -105,8 +112,10 @@ export class DeliveryTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -114,11 +123,26 @@ export class DeliveryTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDelivery() {
-    this.editDelivery = Object.assign({}, new Delivery());
-    this.modalTitle = 'Lägg till ny leverans';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editDelivery.next(null);
   }
 
-}
+  genPDF() {
+    const filteredList = this.deliveryPipe.transform(
+      this.deliveryList,
+      this.filterInput,
+      this.showActive,
+      this.showArchived,
+      this.showGone
+    );
 
+    this.httpService.httpPost<any>('genPDF', ['deliveries', filteredList]).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+
+  openPDF() {
+    window.open(this.url, '_blank');
+  }
+}

@@ -1,0 +1,59 @@
+<form #detailForm="ngForm" (ngSubmit)="showModal = false">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
+  [submitName]="'Stäng'" [hideClose]="true">
+
+    <!-- Row card info -->
+    <div class="row">
+      <div class="col-0 col-md-1"></div>
+      <div class="col-12 col-md-10 wide-center">
+        <mat-card [style.background]="'#E8EAF6'">
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12 col-md-4">
+              <b>Typ:</b>
+            </div>
+            <div class="col-12 col-md-4">
+              <b>Utförd av:</b>
+            </div>
+            <div class="col-12 col-md-4">
+              <b>Datum:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12 col-md-4">
+              {{logEventItem?.logType?.name}}
+            </div>
+            <div class="col-12 col-md-4">
+              {{utilitiesService.getUserString(logEventItem?.user)}}
+            </div>
+            <div class="col-12 col-md-4">
+              {{utilitiesService.getDateString(logEventItem?.logDate, 'YYYY-MM-DD HH:MM:SS')}}
+            </div>
+          </div>
+
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12">
+              <b>Händelse:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-12">
+              {{logEventItem?.logText}}
+            </div>
+          </div>
+
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+        </mat-card>
+      </div>
+      <div class="col-0 col-md-1"></div>
+    </div>
+
+  </app-modal>
+</form>

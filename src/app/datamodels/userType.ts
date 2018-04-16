@@ -12,5 +12,4 @@ export class UserType {
    * Name of the user type
    */
   name: string;
-
 }

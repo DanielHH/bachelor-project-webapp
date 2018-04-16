@@ -3,6 +3,9 @@ import { Document } from '../../../../datamodels/document';
 import * as _ from 'lodash';
 import { ModifyDocumentComponent } from '../modify-document/modify-document.component';
 import { NgForm } from '@angular/forms';
+import { ModalService } from '../../../../services/modal.service';
+import { HttpService } from '../../../../services/http.service';
+import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
 
 @Component({
   selector: 'app-document-table',
@@ -13,8 +16,6 @@ export class DocumentTableComponent implements OnInit {
 
   @Input() documentList: Document[];
 
-  documentItem = new Document(); // Dummy
-
   showModal = false;
 
   filterInput = '';
@@ -23,7 +24,7 @@ export class DocumentTableComponent implements OnInit {
   orderDocumentType = '';
   orderDocumentNumber = '';
   orderName = '';
-  orderUserID = '';
+  orderUser = '';
   orderLocation = '';
   orderComment = '';
 
@@ -35,7 +36,13 @@ export class DocumentTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private documentPipe: MatchFilterDocumentPipe
+  ) { }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -56,12 +63,12 @@ export class DocumentTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.id': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'documentType': {
+      case 'documentType.name': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
         break;
@@ -76,9 +83,9 @@ export class DocumentTableComponent implements OnInit {
         this.orderName = newOrder;
         break;
       }
-      case 'userID': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user.name': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
         break;
       }
       case 'location': {
@@ -114,9 +121,28 @@ export class DocumentTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDocument() {
-    this.modalTitle = 'Lägg till ny handling';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editDocument.next(null);
+  }
+
+  genPDF() {
+    const filteredList = this.documentPipe.transform(
+      this.documentList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
+
+    this.httpService.httpPost<any>('genPDF', ['documents', filteredList] ).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+      }
+    });
+  }
+
+  openPDF() {
+    window.open(this.url, '_blank');
   }
 
 }

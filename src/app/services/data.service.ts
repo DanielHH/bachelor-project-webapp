@@ -16,6 +16,9 @@ import { StatusType } from '../datamodels/statusType';
 import { LogEvent } from '../datamodels/logEvent';
 import { LogType } from '../datamodels/logType';
 import { AuthService } from '../auth/auth.service';
+import { BaseType } from '../datamodels/baseType';
+import { UtilitiesService } from './utilities.service';
+import { UserType } from '../datamodels/userType';
 
 @Injectable()
 export class DataService {
@@ -155,7 +158,30 @@ export class DataService {
     this._logEventList
   );
 
-  constructor(private httpService: HttpService, private authService: AuthService) {
+  /**
+   * List with all card and document types
+   */
+  _typeList: BaseType[] = [];
+
+  /**
+   * A subscriber to the card and document type list
+   */
+  typeList: BehaviorSubject<BaseType[]> = new BehaviorSubject<BaseType[]>(this._typeList);
+
+  /**
+   * List with all user types
+   */
+  _userTypeList: UserType[] = [];
+
+  /**
+   * A subscriber to the user type list
+   */
+  userTypeList: BehaviorSubject<UserType[]> = new BehaviorSubject<UserType[]>(this._userTypeList);
+
+  constructor(
+    private httpService: HttpService,
+    private authService: AuthService
+  ) {
     this.authService.user.subscribe(user => {
       if (user && user.id) {
         if (user.userType.id == 1) {
@@ -167,10 +193,19 @@ export class DataService {
         this.resetAllData();
       }
     });
+
+    this.cardTypeList.subscribe(cardTypeList => {
+      this.setTypeList();
+    });
+
+    this.documentTypeList.subscribe(documentTypeList => {
+      this.setTypeList();
+    });
   }
 
   getAllData() {
     this.getUserList();
+    this.getUserTypeList();
 
     this.getCardList();
     this.getCardTypeList();
@@ -196,6 +231,9 @@ export class DataService {
     this._userList = null;
     this.userList.next(this._userList);
 
+    this._userTypeList = null;
+    this.userTypeList.next(this._userTypeList);
+
     this._cardList = null;
     this.cardList.next(this._cardList);
 
@@ -213,6 +251,9 @@ export class DataService {
 
     this._verificationList = null;
     this.verificationList.next(this._verificationList);
+
+    this._typeList = null;
+    this.typeList.next(this._typeList);
   }
 
   getUserData(id: number) {
@@ -223,6 +264,13 @@ export class DataService {
     this.httpService.httpGet<User>('getUsers').then(data => {
       this._userList = data;
       this.userList.next(this._userList);
+    });
+  }
+
+  getUserTypeList() {
+    this.httpService.httpGet<UserType>('getUserTypes').then(data => {
+      this._userTypeList = data;
+      this.userTypeList.next(this._userTypeList);
     });
   }
 
@@ -237,6 +285,7 @@ export class DataService {
     this.httpService.httpGet<CardType>('getCardTypes').then(data => {
       this._cardTypeList = data;
       this.cardTypeList.next(this._cardTypeList);
+      this.getCardList();
     });
   }
 
@@ -258,6 +307,7 @@ export class DataService {
     this.httpService.httpGet<DocumentType>('getDocumentTypes').then(data => {
       this._documentTypeList = data;
       this.documentTypeList.next(this._documentTypeList);
+      this.getDocumentList();
     });
   }
 
@@ -312,6 +362,20 @@ export class DataService {
       this._logTypeList = data;
       this.logTypeList.next(this._logTypeList);
     });
+  }
+
+  setTypeList() {
+    this._typeList = [];
+
+    this._cardTypeList.forEach(type => {
+      this._typeList.unshift(new BaseType(type, 'cardType'));
+    });
+
+    this._documentTypeList.forEach(type => {
+      this._typeList.unshift(new BaseType(type, 'documentType'));
+    });
+
+    this.typeList.next(this._typeList);
   }
 
 }

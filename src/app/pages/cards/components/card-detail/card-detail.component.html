@@ -5,29 +5,29 @@
     <!-- Row card info -->
     <div class="row">
       <div class="col-0 col-md-1"></div>
-      <div class="col-0 col-md-10 wide-center">
+      <div class="col-12 col-md-10 wide-center">
         <mat-card [style.background]="'#E8EAF6'">
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               <b>Typ:</b>
             </div>
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               <b>Kort-ID:</b>
             </div>
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               <b>Förvaringsplats:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               {{cardItem?.cardType?.name}}
             </div>
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               {{cardItem?.cardNumber}}
             </div>
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               {{cardItem?.location}}
             </div>
           </div>
@@ -35,65 +35,66 @@
           <div class="row py-1"></div>
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               <b>Skapat:</b>
             </div>
-            <div class="col-0 col-md-4">
-              <b>Utgångsdatum:</b>
-            </div>
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               <b>Ändrat:</b>
+            </div>
+            <div class="col-12 col-md-4">
+              <b>Utgångsdatum:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-0 col-md-4">
-              {{displayCreationDate()}}
+            <div class="col-12 col-md-4">
+              {{utilitiesService.getDateString(cardItem?.creationDate, 'YYYY-MM-DD HH:MM:SS')}}
             </div>
-            <div class="col-0 col-md-4">
-              {{displayExpirationDate()}}
+            <div class="col-12 col-md-4">
+              {{utilitiesService.getDateString(cardItem?.modifiedDate, 'YYYY-MM-DD HH:MM:SS')}}
             </div>
-            <div class="col-0 col-md-4">
-              {{displayModifiedDate()}}
+            <div class="col-12 col-md-4">
+              {{utilitiesService.getDateString(cardItem?.expirationDate)}}
             </div>
           </div>
           <!-- Row Space -->
           <div class="row py-1"></div>
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               <b>Status:</b>
             </div>
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
                 <b>Användare:</b>
             </div>
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               <b>Senast inventerat:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
               {{cardItem?.status?.name}}
             </div>
-            <div class="col-0 col-md-4">
+            <div class="col-12 col-md-4">
                 {{utilitiesService.getUserString(cardItem?.user)}}
             </div>
-            <div class="col-0 col-md-4">
-              {{utilitiesService.getDateString(cardItem?.lastVerificationDate)}}
+            <div class="col-12 col-md-4">
+              {{cardItem?.lastVerificationDate ?
+                utilitiesService.getDateString(cardItem?.lastVerificationDate, 'YYYY-MM-DD HH:MM:SS') : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->
-          <div class="row py-1"></div>
+          <div *ngIf="cardItem?.comment" class="row py-1"></div>
           <!-- Row -->
           <div *ngIf="cardItem?.comment" class="row my-1">
-            <div class="col-0 col-md-12">
+            <div class="col-12">
               <b>Kommentar:</b>
             </div>
           </div>
           <!-- Row -->
           <div *ngIf="cardItem?.comment" class="row my-1">
-            <div class="col-0 col-md-12">
+            <div class="col-12">
               {{cardItem?.comment}}
             </div>
           </div>

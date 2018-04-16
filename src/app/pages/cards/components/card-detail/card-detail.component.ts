@@ -64,22 +64,4 @@ export class CardDetailComponent implements OnInit {
 
     this.showModal = false;
   }
-
-  displayExpirationDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayCreationDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.creationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayModifiedDate() {
-    if (this.cardItem) {
-      return moment(this.cardItem.modifiedDate).format('YYYY-MM-DD');
-    }
-  }
 }

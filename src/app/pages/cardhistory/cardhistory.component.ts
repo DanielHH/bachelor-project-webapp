@@ -16,7 +16,7 @@ import { RouteDataService } from '../../services/route-data.service';
   templateUrl: './cardhistory.component.html',
   styleUrls: ['./cardhistory.component.scss']
 })
-export class CardhistoryComponent implements OnInit {
+export class CardHistoryComponent implements OnInit {
 
   logEventList: LogEvent[] = [];
 
@@ -27,9 +27,8 @@ export class CardhistoryComponent implements OnInit {
       this.card = card;
     });
     this.dataService.logEventList.subscribe((logEventList) => {
-      this.logEventList = logEventList; //_.filter(logEventList, (logEvent) => (logEvent.card.id  == this.card.id))
+      this.logEventList = logEventList; // _.filter(logEventList, (logEvent) => (logEvent.card.id  == this.card.id))
     });
-
   }
 
   ngOnInit() {

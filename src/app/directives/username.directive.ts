@@ -13,16 +13,24 @@ import { DataService } from '../services/data.service';
   users: User[] = [];
 
   constructor(public dataService: DataService) {
-    // Get users from database
     this.dataService.userList.subscribe( (users) => {
       this.users = users;
     });
   }
 
   validate(c: FormControl): ValidationErrors {
-    const input = String(c.value);
+    const input = c.value;
 
-    const isValid = !input || (c.value && c.value.id);
+    let isValid;
+    let userMatch;
+    if (input && input.id) { // User object
+      userMatch = _.find(this.users, (user) => user.username === input.username);
+      isValid = userMatch && userMatch.status.id === 5;
+    } else { // String input
+      userMatch =  _.find(this.users, (user) => user.username === input);
+      isValid = !input || (userMatch && userMatch.status.id === 5);
+    }
+
     const message = {
       'username': {
         'message': 'Ogiltigt användarnamn'

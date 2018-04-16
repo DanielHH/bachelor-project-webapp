@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-document-item',
@@ -25,7 +26,8 @@ export class DocumentItemComponent implements OnInit {
     public dataService: DataService,
     private router: Router,
     private httpService: HttpService,
-    private modalService: ModalService) {
+    private modalService: ModalService,
+    public utilitiesService: UtilitiesService) {
 
     this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;

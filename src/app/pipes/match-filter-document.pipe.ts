@@ -56,7 +56,7 @@ export class MatchFilterDocumentPipe implements PipeTransform {
       (_.includes(lowerCase(document.documentType.name), filterInput) === true) ||
       (_.includes(lowerCase(document.documentNumber), filterInput) === true) ||
       (_.includes(lowerCase(document.name), filterInput) === true) ||
-      (_.includes(lowerCase(document.user.name), filterInput) === true) ||
+      (_.includes(lowerCase(this.utilitiesService.getUserString(document.user)), filterInput) === true) ||
       (_.includes(lowerCase(document.location), filterInput) === true) ||
       (_.includes(lowerCase(document.comment), filterInput) === true)
     );

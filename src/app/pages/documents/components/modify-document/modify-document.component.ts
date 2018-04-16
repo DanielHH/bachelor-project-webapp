@@ -12,6 +12,7 @@ import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
+import { BaseType } from '../../../../datamodels/baseType';
 
 @Component({
   selector: 'app-modify-document',
@@ -19,7 +20,6 @@ import { User } from '../../../../datamodels/user';
   styleUrls: ['./modify-document.component.scss']
 })
 export class ModifyDocumentComponent implements OnInit {
-
   // Form variables
   docTypeInput = '';
   docNumberInput = '';
@@ -49,15 +49,7 @@ export class ModifyDocumentComponent implements OnInit {
 
   locationControl = new FormControl('', Validators.required);
 
-  // Database data lists
-  docTypes = [];
-
-  // Filtered lists
-  filteredDocTypes: Observable<any[]> = this.docTypeControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(docType => docType ? this.filterDocTypes(docType) : this.docTypes.slice())
-    );
+  baseTypes: BaseType[] = []; // All card and document types
 
   @Input() documentList: Document[];
 
@@ -83,20 +75,22 @@ export class ModifyDocumentComponent implements OnInit {
 
   @Output() showModalChange = new EventEmitter<any>();
 
-  constructor(private httpService: HttpService,
+  constructor(
+    private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService) {
+    private modalService: ModalService
+  ) {
+    this.dataService.typeList.subscribe(baseTypes => {
+      this.baseTypes = baseTypes;
 
-    this.dataService.documentTypeList.subscribe(docTypes => {
-      this.docTypes = docTypes;
       this.docTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
       });
     });
 
-    this.modalService.editDocument.subscribe((document) => {
+    this.modalService.editDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -113,29 +107,26 @@ export class ModifyDocumentComponent implements OnInit {
         this.senderInput = document.sender;
 
         this.locationInput = document.location;
-        this.commentInput = document.comment;
 
         this.modalType = 1;
         this.modalTitle = 'Ändra handling';
 
         this._showModal = true;
 
+        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
+        // is 0 until after 200ms~ becuase of modal?
+        setTimeout(() => {
+          this.commentInput = document.comment;
+        }, 250);
+      } else {
+        this.modalTitle = 'Lägg till ny handling';
+        this.modalType = 0;
+        this.showModal = true;
       }
     });
-
   }
 
-  ngOnInit() {
-  }
-
-  /**
-   * Filters list of docTypes based on docType input
-   * @param str docType input
-   */
-  filterDocTypes(str: string) {
-    return this.docTypes.filter(docType =>
-      str != null && docType.name.toLowerCase().indexOf(str.toLowerCase()) === 0);
-  }
+  ngOnInit() {}
 
   /**
    * Sets fields in document according to form
@@ -153,14 +144,13 @@ export class ModifyDocumentComponent implements OnInit {
       document.sender = this.senderInput;
 
       document.location = this.locationInput;
-      document.comment = this.commentInput;
-
+      document.comment = this.commentInput ? this.commentInput : null;
     }
   }
 
   /**
    * Attempts to submit new document to database
-  */
+   */
   addNewDocument() {
     if (this.isValidInput()) {
       const newDoc = new Document();
@@ -180,7 +170,6 @@ export class ModifyDocumentComponent implements OnInit {
           this.dataService.documentList.next(this.documentList);
 
           this.showModal = false;
-
         }
       });
     }
@@ -188,7 +177,7 @@ export class ModifyDocumentComponent implements OnInit {
 
   /**
    * Attempts to submit changes to a document to database
-  */
+   */
   editDocument() {
     if (this.isValidInput()) {
       this.setDocumentFromForm(this.documentItem);
@@ -205,8 +194,8 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   /**
-     * Sets the registration date datePicker the date entered in the input field.
-    */
+   * Sets the registration date datePicker the date entered in the input field.
+   */
   setRegistrationDateToDatePicker() {
     if (!this.registrationDateControl.hasError('required') && !this.registrationDateControl.hasError('dateFormat')) {
       this.registrationDateDatepickerInput = this.registrationDateInput; // Set date in Datepicker
@@ -225,7 +214,7 @@ export class ModifyDocumentComponent implements OnInit {
 
   /**
    * Sets the doc date datePicker the date entered in the input field.
-  */
+   */
   setDocDateToDatePicker() {
     if (!this.docDateControl.hasError('required') && !this.docDateControl.hasError('dateFormat')) {
       this.docDateDatepickerInput = this.docDateInput; // Set date in Datepicker
@@ -244,59 +233,56 @@ export class ModifyDocumentComponent implements OnInit {
 
   /**
    * Returns true if entered document type is valid, else false.
-  */
+   */
   isValidDocType() {
-    return (
-      !this.docTypeControl.hasError('required') &&
-      !this.docTypeControl.hasError('docType')
-    );
+    return !this.docTypeControl.hasError('required') && !this.docTypeControl.hasError('docType');
   }
 
   /**
    * Returns true if entered document number is valid, else false.
-  */
+   */
   isValidDocNumber() {
     return !this.docNumberControl.hasError('required');
   }
 
   /**
    * Returns true if entered document name is valid, else false.
-  */
+   */
   isValidDocName() {
     return !this.nameControl.hasError('required');
   }
 
   /**
    * Returns true if entered sender is valid, else false.
-  */
+   */
   isValidSender() {
     return !this.senderControl.hasError('required');
   }
 
   /**
    * Returns true if entered location is valid, else false.
-  */
+   */
   isValidLocation() {
     return !this.locationControl.hasError('required');
   }
 
   /**
-     * Returns true if entered registration date is valid, else false.
-    */
+   * Returns true if entered registration date is valid, else false.
+   */
   isValidRegistrationDate() {
     return !this.registrationDateControl.hasError('required') && !this.registrationDateControl.hasError('dateFormat');
   }
 
   /**
    * Returns true if entered document date is valid, else false.
-  */
+   */
   isValidDocDate() {
     return !this.docDateControl.hasError('required') && !this.docDateControl.hasError('dateFormat');
   }
 
   /**
    * Returns true if everything in the form is valid, else false
-  */
+   */
   isValidInput() {
     return (
       this.isValidDocType() &&
@@ -334,5 +320,4 @@ export class ModifyDocumentComponent implements OnInit {
     this.showModal = false;
     this.showModalChange.emit(false);
   }
-
 }

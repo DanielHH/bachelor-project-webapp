@@ -53,11 +53,6 @@ export class RequestDocumentComponent implements OnInit {
 
   generatePDF = true;
 
-  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
-    startWith(''),
-    map(user => (user ? this.filterUsers(user) : this.users ? this.users.slice() : []))
-  );
-
   loading = false;
 
   hideSubmit = false;
@@ -71,7 +66,7 @@ export class RequestDocumentComponent implements OnInit {
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService,
+    public utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
     // User list subscriber
@@ -100,25 +95,20 @@ export class RequestDocumentComponent implements OnInit {
 
         this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
         this.startDateDatepickerInput = this.startDateInput;
-        this.commentInput = this.documentItem.comment;
         this.generatePDF = true;
 
         this._showModal = true;
+
+        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
+        // is 0 until after 200ms~ becuase of modal?
+        setTimeout(() => {
+          this.commentInput = this.documentItem.comment;
+        }, 250);
       }
     });
   }
 
   ngOnInit() {}
-
-  /**
-   * Filters list of usernames based on username input
-   * @param str username input
-   */
-  filterUsers(str: string) {
-    return this.users.filter(
-      user => str && typeof str === 'string' && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
-  }
 
   /**
    * Sets the start date datePicker the date entered in the input field.
@@ -174,14 +164,13 @@ export class RequestDocumentComponent implements OnInit {
     if (this.isValidInput()) {
       this.documentItem.user = this.usernameInput;
       this.documentItem.location = this.locationInput;
-      this.documentItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
-
-      // Set document information
+      this.documentItem.status = this.utilitiesService.getStatusFromID(2);
       this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.documentItem.comment = this.commentInput;
 
       // Create new receipt
       const receipt = new Receipt();
-      receipt.itemType = this.utilitiesService.getItemTypeFromID(2); // TODO: ENUM, 2 means document
+      receipt.itemType = this.utilitiesService.getItemTypeFromID(2);
       receipt.document = this.documentItem;
       receipt.card = null;
       receipt.user = this.documentItem.user;
@@ -210,7 +199,6 @@ export class RequestDocumentComponent implements OnInit {
                     this.pdfView = true;
                     this.pdfURL = newReceipt.url;
                     this.hideSubmit = true;
-                    this.closeText = 'Avbryt';
                   }
                 });
               }
@@ -255,9 +243,4 @@ export class RequestDocumentComponent implements OnInit {
     return user ? user.username : '';
   }
 
-  getDateString(str: Date) {
-    if (str) {
-      return this.utilitiesService.getDateString(str);
-    }
-  }
 }

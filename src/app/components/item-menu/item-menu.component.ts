@@ -14,13 +14,19 @@ import { UtilitiesService } from '../../services/utilities.service';
 })
 export class ItemMenuComponent implements OnInit {
 
-  @Input() item: any; // Card or Document
+  @Input() object: any; // Card, CardType, Document or DocumentType
 
-  @Input() showDetailsOption = false;
+  @Input() adminMenu = false;
+
+  @Input() isTypeItem = false;
+
+  @Input() itemMenu = false;
+
+  @Input() showHistoryOption = true;
 
   @Input() showEditOption = false;
 
-  @Output() editItem = new EventEmitter<any>();
+  @Output() editObject = new EventEmitter<any>();
 
   @Output() editStatus = new EventEmitter<any>();
 
@@ -32,25 +38,25 @@ export class ItemMenuComponent implements OnInit {
   }
 
   /**
-   * Change route and send route data
+   * Change route and send route data, TODO: FIX THIS FOR TYPES AND USERS AS WELL?
    */
   route() {
-    if (this.item.cardType) {
-      this.routeDataService.card.next(this.item);
-      this.router.navigate(['cardhistory']); // Daniel: Fixa att den navigerar till cardhistory
+    if (this.object.cardType) {
+      this.routeDataService.card.next(this.object);
+      this.router.navigate(['card-history']);
     }
 
-    if (this.item.documentType && this.item.location) { // document with a location, aka not a delivery
-      this.routeDataService.document.next(this.item);
-      this.router.navigate(['document-detail']);
+    if (this.object.documentType && this.object.location) { // document with a location, aka not a delivery
+      this.routeDataService.document.next(this.object);
+      this.router.navigate(['document-history']);
     }
   }
 
   /**
-   * Set item to be outputted for editing.
+   * Set item or type to be outputted for editing.
   */
-  edit() {
-    this.editItem.next();
+  setEdit() {
+    this.editObject.next();
   }
 
   /**
@@ -58,13 +64,28 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    if (this.item.user && this.item.user.id && value == 1) { // If has owner and is restored
-      this.item.status = this.utilitiesService.getStatusFromID(2);
+    if ( // If is item that has owner and is being restored, set to "utkvitterad"
+      this.itemMenu &&
+      this.object.user &&
+      this.object.user.id &&
+      value == 1
+    ) {
+      this.object.status = this.utilitiesService.getStatusFromID(2);
+    } else if (this.isTypeItem) {
+      this.object.getType().status = this.utilitiesService.getStatusFromID(value);
     } else {
-      this.item.status = this.utilitiesService.getStatusFromID(value);
+      this.object.status = this.utilitiesService.getStatusFromID(value);
     }
 
     this.editStatus.emit();
+  }
+
+  getStatusID() {
+    if (this.isTypeItem) {
+      return this.object.getType().status.id;
+    } else {
+      return this.object.status.id;
+    }
   }
 
 }

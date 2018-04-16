@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
 import { DataService } from '../services/data.service';
 import { DocumentType } from '../datamodels/documentType';
@@ -10,6 +10,8 @@ import * as _ from 'lodash';
  })
  export class DocumentTypeValidatorDirective implements Validator {
 
+  @Input() docType = null;
+
   docTypes: DocumentType[] = [];
 
   constructor(public dataService: DataService) {
@@ -19,9 +21,26 @@ import * as _ from 'lodash';
   }
 
   validate(c: FormControl): ValidationErrors {
-    const input = String(c.value);
+    const input = c.value;
+    let docTypeMatch;
 
-    const isValid = !input || _.find(this.docTypes, (docType) => docType.name === input);
+    let isValid;
+    if (!input) {
+      isValid = true;
+    } else {
+      if (input.id) { // DocumentType object
+        docTypeMatch = _.find(this.docTypes, (docType) => docType.name === input.name);
+      } else { // String input
+        docTypeMatch = _.find(this.docTypes, (docType) => docType.name === input);
+      }
+
+      isValid = (
+        (docTypeMatch && docTypeMatch.status.id === 5) ||
+        (docTypeMatch && this.docType && docTypeMatch.id == this.docType.id)
+      );
+
+    }
+
     const message = {
       'docType': {
         'message': 'Ogiltig typ'

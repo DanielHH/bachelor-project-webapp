@@ -8,23 +8,21 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input id="docTypeInput" name="docTypeInput" [(ngModel)]="docTypeInput"
-          maxlength="128" [style.color]="isValidDocType() ? 'black' : 'gray'"
-            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="docTypes"
-            [formControl]="docTypeControl"
-            maxlength="10" appDocumentType required>
+          <input id="docTypeInput" name="docTypeInput" [(ngModel)]="docTypeInput" maxlength="128" [style.color]="isValidDocType() ? 'black' : 'gray'"
+            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl"
+            [docType]="documentItem ? documentItem.documentType : null" appDocumentType required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocType()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="docTypeInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="docTypeInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="docTypeInput" matSuffix mat-icon-button aria-label="Clear" (click)="docTypeInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Dropdown-->
           <mat-autocomplete #docTypes="matAutocomplete">
-            <mat-option *ngFor="let docType of filteredDocTypes | async" [value]="docType.name">
-              {{ docType.name }}
+            <mat-option *ngFor="let baseType of baseTypes | matchFilterType:docTypeInput:false:true:true:false" [value]="baseType.type.name">
+              {{ baseType.type.name }}
             </mat-option>
           </mat-autocomplete>
           <!--Error-->
@@ -36,15 +34,14 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput"
-          maxlength="128" placeholder="Dokument-ID"
+          <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput" maxlength="128" placeholder="Dokument-ID"
             [formControl]="docNumberControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocNumber()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="docNumberInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="docNumberInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="docNumberInput" matSuffix mat-icon-button aria-label="Clear" (click)="docNumberInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -60,15 +57,14 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput"
-          [(formControl)]="nameControl" maxlength="128"
-            placeholder="Benämning" [style.color]="isValidDocName() ? 'black' : 'gray'" required>
+          <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput" [(formControl)]="nameControl" maxlength="128" placeholder="Benämning"
+            [style.color]="isValidDocName() ? 'black' : 'gray'" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocName()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear"
-          (click)="nameInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear" (click)="nameInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -80,14 +76,14 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="senderInput" name="senderInput" [(ngModel)]="senderInput" maxlength="128"
-          placeholder="Avsändare" [formControl]="senderControl" [style.color]="isValidSender() ? 'black' : 'gray'" required>
+          <input matInput id="senderInput" name="senderInput" [(ngModel)]="senderInput" maxlength="128" placeholder="Avsändare" [formControl]="senderControl"
+            [style.color]="isValidSender() ? 'black' : 'gray'" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidSender()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="senderInput" matSuffix mat-icon-button aria-label="Clear"
-          (click)="senderInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="senderInput" matSuffix mat-icon-button aria-label="Clear" (click)="senderInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -104,26 +100,22 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="registrationDateInput" name="registrationDateInput"
-          [(ngModel)]="registrationDateInput" placeholder="Inkommen datum"
-            [style.color]="isValidRegistrationDate() ? 'black' : 'gray'" maxlength="10"
-            (input)="setRegistrationDateToDatePicker();"
+          <input matInput id="registrationDateInput" name="registrationDateInput" [(ngModel)]="registrationDateInput" placeholder="Inkommen datum"
+            [style.color]="isValidRegistrationDate() ? 'black' : 'gray'" maxlength="10" (input)="setRegistrationDateToDatePicker();"
             [formControl]="registrationDateControl" appDate required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidRegistrationDate()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="registrationDateInput" matSuffix
-          mat-icon-button aria-label="Clear" (click)="registrationDateInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="registrationDateInput" matSuffix mat-icon-button aria-label="Clear" (click)="registrationDateInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--DatePicker-->
           <mat-datepicker #registrationDatepicker></mat-datepicker>
           <!--Hidden input connected to the date picker-->
-          <input id="registrationDateDatepickerInput" name="registrationDateDatepickerInput"
-          [(ngModel)]="registrationDateDatepickerInput"
-            [matDatepicker]="registrationDatepicker" (dateInput)="setRegistrationDateFromDatepicker($event);"
-            type="hidden">
+          <input id="registrationDateDatepickerInput" name="registrationDateDatepickerInput" [(ngModel)]="registrationDateDatepickerInput"
+            [matDatepicker]="registrationDatepicker" (dateInput)="setRegistrationDateFromDatepicker($event);" type="hidden">
           <mat-datepicker-toggle matSuffix class="size-big" [for]="registrationDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="registrationDateControl.hasError('required')">
@@ -139,25 +131,21 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="docDateInput" name="docDateInput" [(ngModel)]="docDateInput"
-          placeholder="Daterad datum"
-            [style.color]="isValidDocDate() ? 'black' : 'gray'" maxlength="10" (input)="setDocDateToDatePicker();"
-            [formControl]="docDateControl"
-            appDate required>
+          <input matInput id="docDateInput" name="docDateInput" [(ngModel)]="docDateInput" placeholder="Daterad datum" [style.color]="isValidDocDate() ? 'black' : 'gray'"
+            maxlength="10" (input)="setDocDateToDatePicker();" [formControl]="docDateControl" appDate required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocDate()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="docDateInput" matSuffix mat-icon-button aria-label="Clear"
-          (click)="docDateInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="docDateInput" matSuffix mat-icon-button aria-label="Clear" (click)="docDateInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--DatePicker-->
           <mat-datepicker #docDatepicker></mat-datepicker>
           <!--Hidden input connected to the date picker-->
-          <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="docDateDatepickerInput"
-          [matDatepicker]="docDatepicker"
-          (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
+          <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="docDateDatepickerInput" [matDatepicker]="docDatepicker"
+            (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
           <mat-datepicker-toggle matSuffix [for]="docDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="docDateControl.hasError('required')">
@@ -174,33 +162,35 @@
     <div class="row">
 
       <!-- Location -->
-      <div class="col-12 col-md-6">
+      <div class="col-12">
         <mat-form-field>
           <!--Input-->
-          <input matInput name="locationInput" [(ngModel)]="locationInput"
-          maxlength="128" placeholder="Förvaringsplats" [formControl]="locationControl" required>
+          <input matInput name="docLocationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Förvaringsplats" [formControl]="locationControl"
+            required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear"
-          (click)="locationInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
           <mat-error *ngIf="locationControl.hasError('required')">Ange en förvaringsplats</mat-error>
         </mat-form-field>
       </div>
-
+    </div>
+    <div class="row">
       <!-- Comment -->
-      <div class="col-12 col-md-6">
+      <div class="col-12">
         <mat-form-field>
           <!--Input-->
-          <input matInput name="commentInput" [(ngModel)]="commentInput"
-          maxlength="128" placeholder="Kommentar">
+          <textarea matInput name="docCommentInput" [(ngModel)]="commentInput" maxlength="256" placeholder="Kommentar" matTextareaAutosize
+            matAutosizeMaxRows="5">
+          </textarea>
           <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
+          <button mat-button class="size-medium textarea-button" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear"
+            (click)="commentInput = ''" tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>

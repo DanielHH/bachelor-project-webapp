@@ -1,0 +1,33 @@
+<div class="row table-item" (click)="showDetailsModal()">
+
+  <div class="col-1">
+    <div *ngIf="typeItem?.getType()?.status.id === 5">
+      <button type="button" class="status-btn btn btn-rounded btn-sm btn-success m-0 px-2 py-1 disabled mdbRippleRadius">
+        <span>Aktiv</span>
+      </button>
+    </div>
+    <div *ngIf="typeItem?.getType()?.status.id === 6">
+      <button type="button" class="status-btn btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <span>Inaktiv</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="col">
+    <i *ngIf="typeItem.isCardType()" class="material-icons">credit_card</i>
+    <i *ngIf="typeItem.isDocumentType()" class="material-icons">import_contacts</i>
+    {{typeItem?.getType()?.name}}
+  </div>
+
+  <div class="col">
+    <div class="column-text">{{typeItem?.getType()?.creationDate}}</div>
+  </div>
+
+  <div class="col">
+    <div class="column-text">{{typeItem?.getType()?.modifiedDate}}</div>
+    <div class="pull-right table-menu-fix">
+      <app-item-menu [object]="typeItem" (editObject)="edit()" (editStatus)="editStatus()"
+      [isTypeItem]="true" [adminMenu]="true" [showEditOption]="true"></app-item-menu>
+    </div>
+  </div>
+</div>

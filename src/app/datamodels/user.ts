@@ -1,4 +1,5 @@
 import { UserType } from './userType';
+import { StatusType } from './statusType';
 
 /**
  * User data model
@@ -29,5 +30,25 @@ export class User {
    * Email
    */
   email: string;
+
+  /**
+   * Creation date of User in database
+   */
+  creationDate: Date;
+
+  /**
+   * Last modified date of User
+   */
+  modifiedDate: Date;
+
+  /**
+   * User active/inactive status
+   */
+  status: StatusType;
+
+  /**
+   * Password when adding a new user
+   */
+  password?: string;
 
 }

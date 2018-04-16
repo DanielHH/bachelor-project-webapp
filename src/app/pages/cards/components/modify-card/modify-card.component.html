@@ -5,23 +5,21 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input id="cardTypeInput" name="cardTypeInput"    [(ngModel)]="cardTypeInput"
-          maxlength="128" [style.color]="isValidCardType() ? 'black' : 'gray'"
-            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="cardTypes"
-            [formControl]="cardTypeControl"
-            maxlength="10" appCardType required>
+          <input id="cardTypeInput" name="cardTypeInput" [(ngModel)]="cardTypeInput" maxlength="128" [style.color]="isValidCardType() ? 'black' : 'gray'"
+            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="cardTypes" [formControl]="cardTypeControl"
+            [cardType]="cardItem ? cardItem.cardType : null" appCardType required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidCardType()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="cardTypeInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="cardTypeInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="cardTypeInput" matSuffix mat-icon-button aria-label="Clear" (click)="cardTypeInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Dropdown-->
           <mat-autocomplete #cardTypes="matAutocomplete">
-            <mat-option *ngFor="let cardType of filteredCardTypes | async" [value]="cardType.name">
-              {{ cardType.name }}
+            <mat-option *ngFor="let baseType of baseTypes | matchFilterType:cardTypeInput:true:false:true:false" [value]="baseType.type.name">
+              {{ baseType.type.name }}
             </mat-option>
           </mat-autocomplete>
           <!--Error-->
@@ -33,15 +31,14 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput"
-            maxlength="128" placeholder="Kort-ID"
+          <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput" maxlength="128" placeholder="Kort-ID"
             [formControl]="cardNumberControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidCardNumber()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="cardNumberInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="cardNumberInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="cardNumberInput" matSuffix mat-icon-button aria-label="Clear" (click)="cardNumberInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -55,15 +52,14 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput name="locationInput" [(ngModel)]="locationInput"
-            maxlength="128" placeholder="Förvaringsplats"
-            [formControl]="locationControl" required>
+          <input matInput name="cardLocationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Förvaringsplats" [formControl]="locationControl"
+            required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidLocation()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="locationInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="locationInput" matSuffix mat-icon-button aria-label="Clear" (click)="locationInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--Error-->
@@ -73,23 +69,21 @@
       <div class="col-12 col-md-6">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="expirationDateInput" name="expirationDateInput"
-          [(ngModel)]="expirationDateInput" placeholder="Utgångsdatum"
-            [style.color]="isValidExpirationDate() ? 'black' : 'gray'" maxlength="10"
-            (input)="setExpirationDateToDatePicker();" [formControl]="expirationDateControl" appDate required>
+          <input matInput id="expirationDateInput" name="expirationDateInput" [(ngModel)]="expirationDateInput" placeholder="Utgångsdatum"
+            [style.color]="isValidExpirationDate() ? 'black' : 'gray'" maxlength="10" (input)="setExpirationDateToDatePicker();"
+            [formControl]="expirationDateControl" appDate required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidExpirationDate()">done</mat-icon>
           </button>
-          <button mat-button class="size-medium" *ngIf="expirationDateInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="expirationDateInput = ''" tabindex="-1">
+          <button mat-button class="size-medium" *ngIf="expirationDateInput" matSuffix mat-icon-button aria-label="Clear" (click)="expirationDateInput = ''"
+            tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
           <!--DatePicker-->
           <mat-datepicker #picker></mat-datepicker>
           <!--Hidden input connected to the date picker-->
-          <input id="expirationDateDatepickerInput" name="expirationDateDatepickerInput"
-          [(ngModel)]="expirationDateDatepickerInput"
+          <input id="expirationDateDatepickerInput" name="expirationDateDatepickerInput" [(ngModel)]="expirationDateDatepickerInput"
             [matDatepicker]="picker" (dateInput)="setExpirationDateFromDatepicker($event);" type="hidden">
           <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
           <!--Errors-->
@@ -106,13 +100,15 @@
     <!-- Row comment -->
     <div class="row">
       <div class="col-12 wide-center">
+
         <mat-form-field>
-          <!--Input-->
-          <input matInput name="commentInput" [(ngModel)]="commentInput"
-          maxlength="128" placeholder="Kommentar">
-          <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
+
+
+          <textarea matInput name="cardCommentInput" [(ngModel)]="commentInput" maxlength="256" placeholder="Kommentar" matTextareaAutosize matAutosizeMaxRows="5" >
+          </textarea>
+
+          <button mat-button class="size-medium textarea-button" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear"
+            (click)="commentInput = ''" tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>

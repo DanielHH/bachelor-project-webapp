@@ -1,15 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Receipt } from '../../../datamodels/receipt';
-import { DataService } from '../../../services/data.service';
-import { CardType } from '../../../datamodels/cardType';
-import { Card } from '../../../datamodels/card';
-import { Document } from '../../../datamodels/document';
-import { User } from '../../../datamodels/user';
-import { DocumentType } from '../../../datamodels/documentType';
+import { Receipt } from '../../../../datamodels/receipt';
+import { DataService } from '../../../../services/data.service';
+import { CardType } from '../../../../datamodels/cardType';
+import { Card } from '../../../../datamodels/card';
+import { Document } from '../../../../datamodels/document';
+import { User } from '../../../../datamodels/user';
+import { DocumentType } from '../../../../datamodels/documentType';
 import * as _ from 'lodash';
-import { UtilitiesService } from '../../../services/utilities.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 import * as moment from 'moment';
-import { HttpService } from '../../../services/http.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-receipt-item',
@@ -31,7 +32,10 @@ export class ReceiptItemComponent implements OnInit {
 
   itemActive: boolean;
 
-  constructor(public utilitiesService: UtilitiesService) { }
+  constructor(
+    public utilitiesService: UtilitiesService,
+    private modalService: ModalService
+  ) {}
 
   ngOnInit() {
 
@@ -45,6 +49,14 @@ export class ReceiptItemComponent implements OnInit {
 
     this.itemActive = this.receiptItem.endDate == null;
   }
+
+  /**
+   * Shows the modal for receipt details
+   */
+  showDetailsModal() {
+    this.modalService.detailReceipt.next(this.receiptItem);
+  }
+
 
   openPDF() {
     if (this.receiptItem.url) {

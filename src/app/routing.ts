@@ -9,10 +9,12 @@ import { CardsComponent } from './pages/cards/cards.component';
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
-import { CardhistoryComponent } from './pages/cardhistory/cardhistory.component';
-import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
+import { CardHistoryComponent } from './pages/cardhistory/cardhistory.component';
+import { DocumentHistoryComponent } from './pages/documents/components/document-detail/document-detail.component';
 import { AuthGuard } from './auth/auth.guard';
 import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
+import { TypesComponent } from './pages/types/types.component';
+import { UsersComponent } from './pages/users/users.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, data: { name: 'Startsidan' } },
@@ -58,26 +60,36 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'card-detail',
-    component: CardDetailComponent,
-    data: { name: 'Kortdetaljer', validUserTypes: [1] },
+    path: 'card-history',
+    component: CardHistoryComponent,
+    data: { name: 'Korthistorik', validUserTypes: [1] },
     canActivate: [AuthGuard]
   },
-  { path: 'cardhistory',
-    component: CardhistoryComponent,
-    data: {name: 'Korthistorik', validUserTypes: [1]}
-  },
   {
-    path: 'document-detail',
-    component: DocumentDetailComponent,
-    data: { name: 'Dokumentdetaljer', validUserTypes: [1] }
+    path: 'document-history',
+    component: DocumentHistoryComponent,
+    data: { name: 'Dokumenthistorik', validUserTypes: [1] },
+    canActivate: [AuthGuard]
   },
   {
     path: 'self-verification',
     component: SelfVerificationComponent,
-    data: { name: 'Egenkontroll', validUserTypes: [2] }
+    data: { name: 'Egenkontroll', validUserTypes: [2] },
+    canActivate: [AuthGuard]
   },
-  { path: '**', component: HomeComponent, data: { name: 'Startsidan' } }
+  {
+    path: 'types',
+    component: TypesComponent,
+    data: { name: 'Typer', validUserTypes: [1] },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    data: { name: 'Användare', validUserTypes: [1] },
+    canActivate: [AuthGuard]
+  },
+  { path: '**', component: HomeComponent, data: { name: 'Startsidan' }, canActivate: [AuthGuard] }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {
