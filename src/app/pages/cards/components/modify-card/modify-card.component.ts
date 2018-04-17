@@ -181,11 +181,17 @@ export class ModifyCardComponent implements OnInit {
   editCard() {
     if (this.isValidInput()) {
       this.setCardFromForm(this.cardItem);
+      // Create new log event
+      const logText = 'Uppgifter för' + this.cardItem.cardNumber;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 10, this.cardItem, logText);
 
-      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+      this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
+
+          // Update log event list
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           this.closeForm();
         }

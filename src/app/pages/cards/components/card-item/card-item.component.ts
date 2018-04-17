@@ -68,9 +68,8 @@ export class CardItemComponent implements OnInit {
    * Sets the status of the card in the database
    */
   editStatus() {
-    const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.status.name;
-
     // Create new log event
+    const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.status.name;
     const logEvent = this.utilitiesService.createNewLogEventForItem(1, 12, this.cardItem, logText);
 
     this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
