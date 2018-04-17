@@ -14,6 +14,7 @@ import { ItemType } from '../datamodels/itemType';
 import { LogType } from '../datamodels/logType';
 import { UserType } from '../datamodels/userType';
 import { VerificationType } from '../datamodels/verificationType';
+import { LogEvent } from '../datamodels/logEvent';
 
 
 /**
@@ -38,6 +39,7 @@ export class UtilitiesService {
   logTypeList: LogType[] = [];
   userTypeList: UserType[] = [];
   verificationTypeList: VerificationType[] = [];
+  logEventList: LogEvent[] = [];
 
   constructor(private dataService: DataService, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -82,7 +84,39 @@ export class UtilitiesService {
     this.dataService.verificationTypeList.subscribe(verificationTypeList => {
       this.verificationTypeList = verificationTypeList;
     });
+
+    this.dataService.logEventList.subscribe(logEventList => {
+      this.logEventList = logEventList;
+    });
   }
+
+  /**
+   * Fills in variables for new log event
+   */
+  createNewLogEventForItem(itemTypeID: number, logTypeID: number, item: any, logText?: string): LogEvent {
+    const logEvent = new LogEvent();
+    logEvent.itemType = this.getItemTypeFromID(itemTypeID); // TODO: ENUM
+    logEvent.logType = this.getLogTypeFromID(logTypeID); // TODO: ENUM
+    if (itemTypeID == 1) { // Av någon anledning funkar inte följande kod här: ' logEvent.itemType.name == 'Kort' '
+      logEvent.card = item;
+    } else {
+      logEvent.document = item;
+    }
+    logEvent.logDate = this.getLocalDate();
+    if (logText) {
+      logEvent.logText = logText;
+    }
+    return logEvent;
+  }
+
+  /**
+   * Updates logEventList
+   */
+   updateLogEventList(logEvent: any) {
+    this.logEventList.unshift(logEvent);
+    this.logEventList = this.logEventList.slice();
+    this.dataService.logEventList.next(this.logEventList);
+   }
 
   /**
    * Returns a Date object representing current local time

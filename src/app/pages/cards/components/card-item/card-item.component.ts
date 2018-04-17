@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
+import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
   selector: 'app-card-item',
@@ -67,9 +68,14 @@ export class CardItemComponent implements OnInit {
    * Sets the status of the card in the database
    */
   editStatus() {
-    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+    // Create new log event
+    const logEvent = this.utilitiesService.createNewLogEventForItem(1, 12, this.cardItem, this.cardItem.cardNumber);
+
+    this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
       if (res.message === 'success') {
         this.dataService.cardList.next(this.cardList);
+
+        this.utilitiesService.updateLogEventList(res.data.logEvent);
       }
     });
   }

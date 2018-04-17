@@ -119,12 +119,7 @@ export class ReturnCardComponent implements OnInit {
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
       // Create new log event
-      const logEvent = new LogEvent();
-      logEvent.itemType = this.utilitiesService.getItemTypeFromID(1); // TODO: ENUM, 1 means card
-      logEvent.logType = this.utilitiesService.getLogTypeFromID(4); // TODO: ENUM, 4 means 'inkvittering'
-      logEvent.card = this.cardItem;
-      logEvent.logDate = this.cardItem.modifiedDate;
-      logEvent.logText = this.latestUser.name;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.latestUser.name);
 
       // Submit changes to server
 
@@ -139,9 +134,7 @@ export class ReturnCardComponent implements OnInit {
           if (res.message === 'success') {
             this.cardItem.activeReceipt = null;
             // Update log event list
-            this.logEvents.unshift(res.data.logEvent);
-            this.logEvents = this.logEvents.slice();
-            this.dataService.logEventList.next(this.logEvents);
+            this.utilitiesService.updateLogEventList(res.data.logEvent);
 
             // Update receipt list
             this.receipts = this.receipts.slice();

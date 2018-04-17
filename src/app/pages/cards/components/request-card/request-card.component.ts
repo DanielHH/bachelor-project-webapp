@@ -201,12 +201,7 @@ export class RequestCardComponent implements OnInit {
       receipt.endDate = null;
 
       // Create new log event
-      const logEvent = new LogEvent();
-      logEvent.itemType = this.utilitiesService.getItemTypeFromID(1); // TODO: ENUM, 1 means card
-      logEvent.logType = this.utilitiesService.getLogTypeFromID(5); // TODO: ENUM, 5 means 'utkvittering'
-      logEvent.card = this.cardItem;
-      logEvent.logDate = this.utilitiesService.getLocalDate();
-      logEvent.logText = this.cardItem.user.name;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 5, this.cardItem, this.cardItem.user.name);
 
       this.httpService
         .httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.cardItem })
@@ -273,9 +268,7 @@ export class RequestCardComponent implements OnInit {
 
   updateLists(logEvent: any, receipt: any) {
     // Update log event list
-    this.logEvents.unshift(logEvent);
-    this.logEvents = this.logEvents.slice();
-    this.dataService.logEventList.next(this.logEvents);
+  this.utilitiesService.updateLogEventList(logEvent);
 
     // Update receipt list
     this.receipts.unshift(receipt);

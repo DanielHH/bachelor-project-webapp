@@ -156,19 +156,14 @@ export class ModifyCardComponent implements OnInit {
       newCard.status = this.utilitiesService.getStatusFromID(1);
       newCard.user = new User();
 
-      const logEvent = new LogEvent();
-      logEvent.itemType = this.utilitiesService.getItemTypeFromID(1); // TODO: ENUM, 1 means card
-      logEvent.logType = this.utilitiesService.getLogTypeFromID(6); // TODO: ENUM, 6 means 'Skapat'
-      logEvent.card = newCard;
-      logEvent.logDate = this.utilitiesService.getLocalDate();
+      // Create new log event
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 6, newCard);
 
       this.httpService.httpPost<Card>('addNewCard/', {card: newCard, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
           this.cardList.unshift(res.data.card);
           // Update log event list
-          this.logEvents.unshift(res.data.logEvent);
-          this.logEvents = this.logEvents.slice();
-          this.dataService.logEventList.next(this.logEvents);
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           // Trigger view refresh
           this.cardList = this.cardList.slice();
