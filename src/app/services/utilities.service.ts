@@ -93,7 +93,7 @@ export class UtilitiesService {
   /**
    * Fills in variables for new log event
    */
-  createNewLogEventForItem(itemTypeID: number, logTypeID: number, item: any, logText?: string): LogEvent {
+  createNewLogEventForItem(itemTypeID: number, logTypeID: number, item: any, user?: User, logText?: string): LogEvent {
     const logEvent = new LogEvent();
     logEvent.itemType = this.getItemTypeFromID(itemTypeID); // TODO: ENUM
     logEvent.logType = this.getLogTypeFromID(logTypeID); // TODO: ENUM
@@ -102,6 +102,7 @@ export class UtilitiesService {
     } else {
       logEvent.document = item;
     }
+    logEvent.user = user;
     logEvent.logDate = this.getLocalDate();
     if (logText) {
       logEvent.logText = logText;

@@ -9,6 +9,7 @@ import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { LogEvent } from '../../../../datamodels/logEvent';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-return-card',
@@ -44,12 +45,20 @@ export class ReturnCardComponent implements OnInit {
   locationInput = '';
   commentInput = '';
 
+  user: User;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
+
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
     // Receipt list subscriber
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
@@ -119,7 +128,7 @@ export class ReturnCardComponent implements OnInit {
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.latestUser.name);
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, this.latestUser.name);
 
       // Submit changes to server
 

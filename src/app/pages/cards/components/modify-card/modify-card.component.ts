@@ -25,6 +25,7 @@ import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
 import { LogEvent } from '../../../../datamodels/logEvent';
 import { BaseType } from '../../../../datamodels/baseType';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-modify-card',
@@ -54,6 +55,8 @@ export class ModifyCardComponent implements OnInit {
 
   cardItem: Card;
 
+  user: User;
+
   logEvents: LogEvent[] = [];
 
   @Input() modalTitle = '';
@@ -81,7 +84,8 @@ export class ModifyCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
     this.dataService.typeList.subscribe(baseTypes => {
       this.baseTypes = baseTypes;
@@ -90,6 +94,10 @@ export class ModifyCardComponent implements OnInit {
         onlySelf: false,
         emitEvent: true
       });
+    });
+
+    this.authService.user.subscribe((user) => {
+      this.user = user;
     });
 
     // Log event list subscriber
@@ -157,7 +165,7 @@ export class ModifyCardComponent implements OnInit {
       newCard.user = new User();
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 6, newCard);
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 6, newCard, this.user);
 
       this.httpService.httpPost<Card>('addNewCard/', {card: newCard, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
@@ -182,8 +190,8 @@ export class ModifyCardComponent implements OnInit {
     if (this.isValidInput()) {
       this.setCardFromForm(this.cardItem);
       // Create new log event
-      const logText = 'Uppgifter för' + this.cardItem.cardNumber;
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 10, this.cardItem, logText);
+      const logText = 'Uppgifter för ' + this.cardItem.cardNumber;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 10, this.cardItem, this.user, logText);
 
       this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {

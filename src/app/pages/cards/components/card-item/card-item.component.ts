@@ -11,6 +11,7 @@ import { HttpService } from '../../../../services/http.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
 import { LogEvent } from '../../../../datamodels/logEvent';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-card-item',
@@ -22,6 +23,8 @@ export class CardItemComponent implements OnInit {
 
   cardList: Card[] = [];
 
+  user: User;
+
   showRequestModal = false;
   showReturnModal = false;
 
@@ -30,9 +33,13 @@ export class CardItemComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService) {
+    public utilitiesService: UtilitiesService,
+    private authService: AuthService) {
       this.dataService.cardList.subscribe(cardList => {
         this.cardList = cardList;
+      });
+      this.authService.user.subscribe((user) => {
+        this.user = user;
       });
   }
 
@@ -70,7 +77,7 @@ export class CardItemComponent implements OnInit {
   editStatus() {
     // Create new log event
     const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.status.name;
-    const logEvent = this.utilitiesService.createNewLogEventForItem(1, 12, this.cardItem, logText);
+    const logEvent = this.utilitiesService.createNewLogEventForItem(1, 12, this.cardItem, this.user, logText);
 
     this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
       if (res.message === 'success') {

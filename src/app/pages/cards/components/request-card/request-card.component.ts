@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import { CardType } from '../../../../datamodels/cardType';
 import { LogEvent } from '../../../../datamodels/logEvent';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-request-card',
@@ -62,8 +63,13 @@ export class RequestCardComponent implements OnInit {
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
     private modalService: ModalService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
     // User list subscriber
     this.dataService.userList.subscribe(users => {
       this.users = users;
@@ -201,7 +207,7 @@ export class RequestCardComponent implements OnInit {
       receipt.endDate = null;
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 5, this.cardItem, this.cardItem.user.name);
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 5, this.cardItem, this.user, this.cardItem.user.name);
 
       this.httpService
         .httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.cardItem })
