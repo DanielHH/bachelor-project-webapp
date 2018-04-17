@@ -114,7 +114,6 @@ export class ModifyUserComponent implements OnInit {
       user.modifiedDate = this.utilitiesService.getLocalDate();
 
       if (this.modalType === 0 || this.changePassword) {
-        console.log('changing password!');
         user.password = btoa(this.passwordInput);
       }
     }
@@ -159,9 +158,10 @@ export class ModifyUserComponent implements OnInit {
     }
   }
 
-  updateConfirmPassword() {
+  updatePasswordControl() {
     // Updates too fast I think, works with delay
     setTimeout(() => {
+      this.passwordControl.updateValueAndValidity();
       this.confirmPasswordControl.updateValueAndValidity();
     }, 500);
   }
@@ -200,16 +200,10 @@ export class ModifyUserComponent implements OnInit {
 
     return (
       !this.passwordControl.hasError('required') &&
+      !this.passwordControl.hasError('password') &&
       !this.confirmPasswordControl.hasError('required') &&
       !this.confirmPasswordControl.hasError('confirmPassword')
     );
-  }
-
-  /**
-   * Returns true if entered confirmation password is valid, else false.
-   */
-  isValidConfirmPassword() {
-    return !this.confirmPasswordControl.hasError('required');
   }
 
   /**

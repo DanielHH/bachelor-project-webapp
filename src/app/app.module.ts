@@ -51,6 +51,7 @@ import { UsernameValidatorDirective } from './directives/username.directive';
 import { NewUsernameValidatorDirective } from './directives/new-username.directive';
 import { DateValidatorDirective } from './directives/date.directive';
 import { ConfirmPasswordValidatorDirective } from './directives/confirm-password.directive';
+import { PasswordValidatorDirective } from './directives/password.directive';
 import { DataService } from './services/data.service';
 import { RouteDataService } from './services/route-data.service';
 import { MatchFilterCardPipe } from './pipes/match-filter-card.pipe';
@@ -136,6 +137,7 @@ import { TypeDetailComponent } from './pages/types/components/type-detail/type-d
     TypeNameValidatorDirective,
     DateValidatorDirective,
     ConfirmPasswordValidatorDirective,
+    PasswordValidatorDirective,
     MatchFilterCardPipe,
     MatchFilterTypePipe,
     MatchFilterUserPipe,

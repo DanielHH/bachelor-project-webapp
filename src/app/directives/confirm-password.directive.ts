@@ -1,8 +1,5 @@
 import { Directive, Input } from '@angular/core';
 import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
-import { DataService } from '../services/data.service';
-import { CardType } from '../datamodels/cardType';
-import * as _ from 'lodash';
 
 @Directive({
   selector: '[appConfirmPassword]',
