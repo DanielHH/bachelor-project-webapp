@@ -14,8 +14,8 @@
   </div>
 
   <div class="col">
-    <i *ngIf="utilitiesService.isAdmin(user)" class="material-icons">person_add</i>
-    <i *ngIf="!utilitiesService.isAdmin(user)" class="material-icons">person</i>
+    <i *ngIf="utilitiesService.isAdmin(user)" class="material-icons sm-icon">person_add</i>
+    <i *ngIf="!utilitiesService.isAdmin(user)" class="material-icons sm-icon">person</i>
     {{user?.username}}
   </div>
 

@@ -1,0 +1,40 @@
+<form #modifyForm="ngForm" (ngSubmit)="generatePDF()">
+
+  <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [hideSubmit]="hideSubmit" [closeName]="closeText" [submitName]="'Generera PDF'">
+    <div *ngIf="showGenerationOptions" [class.generating-pdf]="loading || pdfView">
+      <!-- Generate from header -->
+      <div class="row my-3">
+        <div class="col-0 col-md-2"></div>
+        <div class="col-12 col-md-8 wide-center">
+          <h5><b>Generera från:</b></h5>
+        </div>
+        <div class="col-0 col-md-2"></div>
+      </div>
+
+      <!-- Generation from selection -->
+      <div class="row">
+        <div class="col-0 col-md-2"></div>
+        <div class="col-12 col-md-8">
+          <mat-radio-group>
+            <div class="row radio-buttons">
+              <div class="col-0 col-md"></div>
+              <div class="col">
+                <mat-radio-button class="radio-button" [checked]="selectedOnly" (change)="toggleSelectedOnly()"
+                value="cardType"><span class="ml-1">Markerade</span></mat-radio-button>
+              </div>
+              <div class="col">
+                <mat-radio-button class="radio-button" [checked]="!selectedOnly" value="documentType"
+                (change)="toggleSelectedOnly()"><span class="ml-1">Filtrerade</span></mat-radio-button>
+              </div>
+              <div class="col-0 col-md"></div>
+            </div>
+          </mat-radio-group>
+        </div>
+        <div class="col-0 col-md-2"></div>
+      </div>
+    </div>
+    <div *ngIf="loading || pdfView" [class.pdf-loading]="loading" [class.pdf-generated]="pdfView">
+      <app-pdf-generation [pdfView]="pdfView" [loading]="loading" [pdfURL]="url"></app-pdf-generation>
+    </div>
+  </app-modal>
+</form>
