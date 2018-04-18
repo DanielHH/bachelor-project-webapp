@@ -70,7 +70,6 @@ import { ModifyDocumentComponent } from './pages/documents/components/modify-doc
 import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
 import { ModalComponent } from './components/modal/modal.component';
-import { DocumentHistoryComponent } from './pages/documents/components/document-detail/document-detail.component';
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { DeliveryTableComponent } from './pages/deliveries/components/delivery-table/delivery-table.component';
 import { DeliveryItemComponent } from './pages/deliveries/components/delivery-item/delivery-item.component';
@@ -109,6 +108,9 @@ import { UserDetailComponent } from './pages/users/components/user-detail/user-d
 import { ReceiptDetailComponent } from './pages/receipts/components/receipt-detail/receipt-detail.component';
 import { LogDetailComponent } from './pages/logs/components/log-detail/log-detail.component';
 import { TypeDetailComponent } from './pages/types/components/type-detail/type-detail.component';
+import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
+import { DocumentHistoryItemComponent } from './pages/document-history/components/document-history-item/document-history-item.component';
+import { DocumentHistoryTableComponent } from './pages/document-history/components/document-history-table/document-history-table.component';
 
 @NgModule({
   declarations: [
@@ -186,7 +188,9 @@ import { TypeDetailComponent } from './pages/types/components/type-detail/type-d
     UserDetailComponent,
     ReceiptDetailComponent,
     LogDetailComponent,
-    TypeDetailComponent
+    TypeDetailComponent,
+    DocumentHistoryItemComponent,
+    DocumentHistoryTableComponent
   ],
   imports: [
     BrowserModule,

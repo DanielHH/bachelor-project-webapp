@@ -10,7 +10,7 @@ import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
 import { CardHistoryComponent } from './pages/cardhistory/cardhistory.component';
-import { DocumentHistoryComponent } from './pages/documents/components/document-detail/document-detail.component';
+import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
 import { AuthGuard } from './auth/auth.guard';
 import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
 import { TypesComponent } from './pages/types/types.component';
