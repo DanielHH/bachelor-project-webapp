@@ -110,7 +110,8 @@ export class ReturnDocumentComponent implements OnInit {
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 4, this.documentItem, this.user, this.latestUser.name);
+      const logText = this.documentItem.documentNumber + ' från ' + this.latestUser.name;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 4, this.documentItem, this.user, logText);
 
       this.httpService.httpPut<Receipt>('updateReceipt/', {
         receipt: activeReceipt,

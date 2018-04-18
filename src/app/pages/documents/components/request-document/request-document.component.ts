@@ -189,8 +189,9 @@ export class RequestDocumentComponent implements OnInit {
       receipt.endDate = null;
 
       // Create new log event
+      const logText = this.documentItem.documentNumber + ' till ' + this.documentItem.user.name;
       const logEvent = this.utilitiesService.
-      createNewLogEventForItem(2, 5, this.documentItem, this.user, this.documentItem.user.name);
+      createNewLogEventForItem(2, 5, this.documentItem, this.user, logText);
 
       // Submit changes to database
       this.httpService.httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.documentItem })

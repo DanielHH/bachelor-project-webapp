@@ -127,7 +127,8 @@ export class ReturnCardComponent implements OnInit {
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, this.latestUser.name);
+      const logText = this.cardItem.cardNumber + ' från ' + this.latestUser.name;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, logText);
 
       // Submit changes to server
       this.httpService
