@@ -39,6 +39,7 @@ export class RequestCardComponent implements OnInit {
     this.showModal = value;
   }
 
+  user: User;
   users: User[] = [];
   cards: Card[] = [];
   receipts: Receipt[] = [];
@@ -55,8 +56,6 @@ export class RequestCardComponent implements OnInit {
   commentInput = '';
 
   generatePDF = true;
-
-  user: User;
 
   constructor(
     private httpService: HttpService,
