@@ -218,6 +218,30 @@ export class ModalService {
     this._editUser
   );
 
+  /**
+   * Filtered list from table for PDF generation
+   */
+  private _pdfFilteredList = [];
+
+   /**
+   * A subscriber to the filtered list for PDF generation
+   */
+  pdfFilteredList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
+    this._pdfFilteredList
+  );
+
+  /**
+   * Selected list from table for PDF generation
+   */
+  private _pdfSelectedList = [];
+
+   /**
+   * A subscriber to the selected list for PDF generation
+   */
+  pdfSelectedList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(
+    this._pdfSelectedList
+  );
+
   constructor() { }
 
 }

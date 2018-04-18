@@ -16,6 +16,7 @@ import { lowerCase, UtilitiesService } from '../../../../services/utilities.serv
 import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
 import { HttpService } from '../../../../services/http.service';
 import { Verification } from '../../../../datamodels/verification';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'inventory-table',
@@ -24,6 +25,8 @@ import { Verification } from '../../../../datamodels/verification';
 })
 export class InventoryTableComponent implements OnInit {
   @Input() baseItemList: BaseItem[];
+
+  showPdfGenerationModal = false;
 
   dummyItem: Card = new Card();
 
@@ -49,7 +52,8 @@ export class InventoryTableComponent implements OnInit {
   constructor(
     private inventoryPipe: MatchFilterInventoryPipe,
     private utilitiesService: UtilitiesService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -136,7 +140,7 @@ export class InventoryTableComponent implements OnInit {
     }
   }
 
-  genPDF() {
+  openPdfGenerationModal() {
     const filteredList = this.inventoryPipe.transform(
       this.baseItemList,
       this.filterInput,
@@ -166,14 +170,7 @@ export class InventoryTableComponent implements OnInit {
       verificationList.push(verification);
     });
 
-    this.httpService.httpPost<any>('genPDF', ['inventory', verificationList] ).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-      }
-    });
-  }
-
-  openPDF() {
-    window.open(this.url, '_blank');
+    this.modalService.pdfSelectedList.next(verificationList);
+    this.modalService.pdfFilteredList.next(verificationList);
   }
 }

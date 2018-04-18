@@ -106,7 +106,7 @@ export class ModifyDeliveryComponent implements OnInit {
       } else {
         this.modalTitle = 'Lägg till ny leverans';
         this.modalType = 0;
-        this.showModal = true;
+        this._showModal = true;
       }
     });
   }

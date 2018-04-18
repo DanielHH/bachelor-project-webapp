@@ -19,6 +19,7 @@ export class DeliveryTableComponent implements OnInit {
   dummyItem = new Delivery();
 
   showModal = false;
+  showPdfGenerationModal = false;
 
   filterInput = '';
 
@@ -131,7 +132,7 @@ export class DeliveryTableComponent implements OnInit {
     this.modalService.editDelivery.next(null);
   }
 
-  genPDF() {
+  openPdfGenerationModal() {
     const filteredList = this.deliveryPipe.transform(
       this.deliveryList,
       this.filterInput,
@@ -139,15 +140,6 @@ export class DeliveryTableComponent implements OnInit {
       this.showArchived,
       this.showGone
     );
-
-    this.httpService.httpPost<any>('genPDF', ['deliveries', filteredList]).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-      }
-    });
-  }
-
-  openPDF() {
-    window.open(this.url, '_blank');
+    this.modalService.pdfFilteredList.next(filteredList);
   }
 }

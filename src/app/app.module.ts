@@ -108,6 +108,7 @@ import { UserDetailComponent } from './pages/users/components/user-detail/user-d
 import { ReceiptDetailComponent } from './pages/receipts/components/receipt-detail/receipt-detail.component';
 import { LogDetailComponent } from './pages/logs/components/log-detail/log-detail.component';
 import { TypeDetailComponent } from './pages/types/components/type-detail/type-detail.component';
+import { PdfGenerationModalComponent } from './components/pdf-generation-modal/pdf-generation-modal.component';
 
 @NgModule({
   declarations: [
@@ -184,7 +185,8 @@ import { TypeDetailComponent } from './pages/types/components/type-detail/type-d
     UserDetailComponent,
     ReceiptDetailComponent,
     LogDetailComponent,
-    TypeDetailComponent
+    TypeDetailComponent,
+    PdfGenerationModalComponent
   ],
   imports: [
     BrowserModule,
