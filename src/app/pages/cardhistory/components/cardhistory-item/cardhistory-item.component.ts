@@ -20,13 +20,7 @@ import { LogEvent } from '../../../../datamodels/logEvent';
 export class CardhistoryItemComponent implements OnInit {
 
   @Input() logEventItem: LogEvent;
-  // cardList: Card[] = [];
-/*
-  logDate: string;
-  logType: string;
-  eventToDisplay: string;
-  userToDisplay: string;
-*/
+
   cardDetail: Card;
 
   constructor(

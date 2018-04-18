@@ -15,7 +15,7 @@ import * as moment from 'moment';
   templateUrl: './document-detail.component.html',
   styleUrls: ['./document-detail.component.scss']
 })
-export class DocumentHistoryComponent implements OnInit {
+export class DocumentDetailComponent implements OnInit {
 
   @ViewChild('detailForm') detailForm: NgForm;
 

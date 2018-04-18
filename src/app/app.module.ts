@@ -71,6 +71,7 @@ import { TokenInterceptor } from './auth/token.interceptor';
 import { ModifyDocumentComponent } from './pages/documents/components/modify-document/modify-document.component';
 import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
+import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { DeliveryTableComponent } from './pages/deliveries/components/delivery-table/delivery-table.component';
@@ -194,7 +195,8 @@ import { DocumentHistoryTableComponent } from './pages/document-history/componen
     LogDetailComponent,
     TypeDetailComponent,
     DocumentHistoryItemComponent,
-    DocumentHistoryTableComponent
+    DocumentHistoryTableComponent,
+    DocumentDetailComponent
   ],
   imports: [
     BrowserModule,

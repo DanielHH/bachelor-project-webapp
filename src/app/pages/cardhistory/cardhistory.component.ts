@@ -45,8 +45,6 @@ export class CardHistoryComponent implements OnInit {
     });
   }
 
-  // this.logEventList = logEventList.filter(logEvent => logEvent.card.id == this.card.id);
-
   ngOnInit() {
   }
 
