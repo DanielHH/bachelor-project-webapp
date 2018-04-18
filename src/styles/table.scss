@@ -67,3 +67,27 @@
     height: 94vh;
   }
 }
+
+.hover {
+  cursor: pointer;
+  &.up-arrow::after {
+    content: "\f0de";
+    font-family: FontAwesome;
+    font-size: 12px;
+  }
+  &.down-arrow::after {
+    content: "\f0dd";
+    font-family: FontAwesome;
+    font-size: 12px;
+  }
+  &.both-arrow::after {
+    content: "\f0dc";
+    font-family: FontAwesome;
+    font-size: 12px;
+  }
+}
+
+.material-icons {
+  font-size: 15px !important;
+  margin-right: 8px !important;
+}

@@ -135,7 +135,7 @@ export class DeliveryTableComponent implements OnInit {
       this.showGone
     );
 
-    this.httpService.httpPost<any>('genPDF', ['deliveries', filteredList]).then(pdfRes => {
+    this.httpService.httpPost<any>('genPDF', ['documents', filteredList]).then(pdfRes => {
       if (pdfRes.message === 'success') {
         this.url = pdfRes.url;
       }

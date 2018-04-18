@@ -18,9 +18,8 @@
       <!-- PDF buttons -->
       <div class="col text-right">
         <div class="mt-3">
-          <button class="table-button" mat-raised-button color="primary" (click)="url ? openPDF() : genPDF()">
-            <span *ngIf="!url">Generera PDF</span>
-            <span *ngIf="url">Öppna PDF</span>
+          <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
+            <span>Generera PDF</span>
           </button>
         </div>
       </div>
@@ -81,3 +80,6 @@
 </div>
 
 <app-receipt-detail></app-receipt-detail>
+
+<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från kvitteringstabell'"
+[pdfType]="'receipts'"></app-pdf-generation-modal>

@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { HttpService } from '../../../../services/http.service';
 import { MatchFilterReceiptPipe } from '../../../../pipes/match-filter-receipt.pipe';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-receipt-table',
@@ -13,6 +14,8 @@ import { UtilitiesService } from '../../../../services/utilities.service';
 export class ReceiptTableComponent implements OnInit {
 
   @Input() receiptList: Receipt[];
+
+  showPdfGenerationModal = false;
 
   filterInput = '';
 
@@ -34,7 +37,8 @@ export class ReceiptTableComponent implements OnInit {
   constructor(
     private receiptPipe: MatchFilterReceiptPipe,
     private httpService: HttpService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -118,26 +122,16 @@ export class ReceiptTableComponent implements OnInit {
     }
   }
 
-  passFilter(receipt: Receipt) {
-    return this.receiptPipe.matchFilt(receipt, this.filterInput, this.showCard, this.showDocument, this.showActive, this.showInactive);
-  }
-
-  genPDF() {
-    const filteredList = [];
-    for (const receipt of this.receiptList) {
-      if (this.passFilter(receipt)) {
-        filteredList.push(receipt);
-      }
-    }
-    this.httpService.httpPost<any>('genPDF', ['receipts', filteredList] ).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-      }
-    });
-  }
-
-  openPDF() {
-    window.open(this.url, '_blank');
+  openPdfGenerationModal() {
+    const filteredList = this.receiptPipe.transform(
+      this.receiptList,
+      this.filterInput,
+      this.showCard,
+      this.showDocument,
+      this.showActive,
+      this.showInactive
+    );
+    this.modalService.pdfFilteredList.next(filteredList);
   }
 
 }

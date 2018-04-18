@@ -17,6 +17,7 @@ export class DocumentTableComponent implements OnInit {
   @Input() documentList: Document[];
 
   showModal = false;
+  showPdfGenerationModal = false;
 
   filterInput = '';
 
@@ -124,7 +125,7 @@ export class DocumentTableComponent implements OnInit {
     this.modalService.editDocument.next(null);
   }
 
-  genPDF() {
+  openPdfGenerationModal() {
     const filteredList = this.documentPipe.transform(
       this.documentList,
       this.filterInput,
@@ -133,16 +134,7 @@ export class DocumentTableComponent implements OnInit {
       this.showArchived,
       this.showGone
     );
-
-    this.httpService.httpPost<any>('genPDF', ['documents', filteredList] ).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-      }
-    });
-  }
-
-  openPDF() {
-    window.open(this.url, '_blank');
+    this.modalService.pdfFilteredList.next(filteredList);
   }
 
 }
