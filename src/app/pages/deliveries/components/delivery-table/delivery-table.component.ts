@@ -4,6 +4,7 @@ import { Delivery } from '../../../../datamodels/delivery';
 import { ModalService } from '../../../../services/modal.service';
 import { MatchFilterDeliveryPipe } from '../../../../pipes/match-filter-delivery.pipe';
 import { HttpService } from '../../../../services/http.service';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-delivery-table',
@@ -102,7 +103,11 @@ export class DeliveryTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.deliveryList = _.orderBy(this.deliveryList, [property], [newOrder]);
+      this.deliveryList = _.orderBy(
+        this.deliveryList,
+        [delivery => (delivery[property] ? (lowerCase(delivery[property]) as string) : (delivery[property] as string))],
+        [newOrder]
+      );
     }
   }
 

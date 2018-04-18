@@ -113,6 +113,9 @@ export class RequestDocumentComponent implements OnInit {
         }, 250);
       }
     });
+
+    this.authService.user.subscribe(user => (this.user = user));
+
   }
 
   ngOnInit() {}
@@ -174,6 +177,7 @@ export class RequestDocumentComponent implements OnInit {
       this.documentItem.status = this.utilitiesService.getStatusFromID(2);
       this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
       this.documentItem.comment = this.commentInput;
+      this.documentItem.registrator = this.user.name;
 
       // Create new receipt
       const receipt = new Receipt();

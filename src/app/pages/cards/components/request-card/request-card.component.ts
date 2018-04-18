@@ -195,6 +195,7 @@ export class RequestCardComponent implements OnInit {
       this.cardItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
       this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.cardItem.registrator = this.user.name;
 
       // Create new receipt
       const receipt = new Receipt();

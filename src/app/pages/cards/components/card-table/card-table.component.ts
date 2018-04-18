@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { ModalService } from '../../../../services/modal.service';
 import { HttpService } from '../../../../services/http.service';
 import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
+import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-card-table',
@@ -13,7 +14,6 @@ import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
   styleUrls: ['./card-table.component.scss']
 })
 export class CardTableComponent implements OnInit {
-
   @Input() cardList: Card[];
 
   showModal = false;
@@ -42,8 +42,9 @@ export class CardTableComponent implements OnInit {
   constructor(
     private modalService: ModalService,
     private httpService: HttpService,
-    private cardPipe: MatchFilterCardPipe
-  ) { }
+    private cardPipe: MatchFilterCardPipe,
+    private utilitiesService: UtilitiesService
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -102,9 +103,12 @@ export class CardTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
+      this.cardList = _.orderBy(
+        this.cardList,
+        [card => (card[property] ? (lowerCase(card[property]) as string) : (card[property] as string))],
+        [newOrder]
+      );
     }
-
   }
 
   /**
@@ -113,8 +117,10 @@ export class CardTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -135,7 +141,7 @@ export class CardTableComponent implements OnInit {
       this.showGone
     );
 
-    this.httpService.httpPost<any>('genPDF', ['cards', filteredList] ).then(pdfRes => {
+    this.httpService.httpPost<any>('genPDF', ['cards', filteredList]).then(pdfRes => {
       if (pdfRes.message === 'success') {
         this.url = pdfRes.url;
       }
@@ -145,4 +151,3 @@ export class CardTableComponent implements OnInit {
     window.open(this.url, '_blank');
   }
 }
-
