@@ -11,8 +11,10 @@ import { DataService } from '../services/data.service';
 import { StatusType } from '../datamodels/statusType';
 import * as moment from 'moment';
 import { ItemType } from '../datamodels/itemType';
+import { LogType } from '../datamodels/logType';
 import { UserType } from '../datamodels/userType';
 import { VerificationType } from '../datamodels/verificationType';
+import { LogEvent } from '../datamodels/logEvent';
 
 
 /**
@@ -34,8 +36,10 @@ export class UtilitiesService {
   userList: User[] = [];
   statusTypeList: StatusType[] = [];
   itemTypeList: ItemType[] = [];
+  logTypeList: LogType[] = [];
   userTypeList: UserType[] = [];
   verificationTypeList: VerificationType[] = [];
+  logEventList: LogEvent[] = [];
 
   constructor(private dataService: DataService, private httpService: HttpService) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -69,6 +73,10 @@ export class UtilitiesService {
       this.itemTypeList = itemTypeList;
     });
 
+    this.dataService.logTypeList.subscribe(logTypeList => {
+      this.logTypeList = logTypeList;
+    });
+
     this.dataService.userTypeList.subscribe(userTypeList => {
       this.userTypeList = userTypeList;
     });
@@ -76,7 +84,40 @@ export class UtilitiesService {
     this.dataService.verificationTypeList.subscribe(verificationTypeList => {
       this.verificationTypeList = verificationTypeList;
     });
+
+    this.dataService.logEventList.subscribe(logEventList => {
+      this.logEventList = logEventList;
+    });
   }
+
+  /**
+   * Fills in variables for new log event
+   */
+  createNewLogEventForItem(itemTypeID: number, logTypeID: number, item: any, user?: User, logText?: string): LogEvent {
+    const logEvent = new LogEvent();
+    logEvent.itemType = this.getItemTypeFromID(itemTypeID); // TODO: ENUM
+    logEvent.logType = this.getLogTypeFromID(logTypeID); // TODO: ENUM
+    if (itemTypeID == 1) { // Av någon anledning funkar inte följande kod här: ' logEvent.itemType.name == 'Kort' '
+      logEvent.card = item;
+    } else {
+      logEvent.document = item;
+    }
+    logEvent.user = user;
+    logEvent.logDate = this.getLocalDate();
+    if (logText) {
+      logEvent.logText = logText;
+    }
+    return logEvent;
+  }
+
+  /**
+   * Updates logEventList
+   */
+   updateLogEventList(logEvent: any) {
+    this.logEventList.unshift(logEvent);
+    this.logEventList = this.logEventList.slice();
+    this.dataService.logEventList.next(this.logEventList);
+   }
 
   /**
    * Returns a Date object representing current local time
@@ -107,6 +148,10 @@ export class UtilitiesService {
     }
   }
 
+  getUserFromID(id: number) {
+    return _.find(this.userList, user => user.id == id);
+  }
+
   getStatusFromID(id: number) {
     return _.find(this.statusTypeList, statusType => statusType.id == id);
   }
@@ -115,6 +160,9 @@ export class UtilitiesService {
     return _.find(this.itemTypeList, itemType => itemType.id == id);
   }
 
+  getLogTypeFromID(id: number) {
+    return _.find(this.logTypeList, logType => logType.id == id);
+  }
   getUserTypeFromID(id: number) {
     return _.find(this.userTypeList, userType => userType.id == id);
   }

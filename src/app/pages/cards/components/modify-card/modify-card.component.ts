@@ -23,7 +23,9 @@ import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
+import { LogEvent } from '../../../../datamodels/logEvent';
 import { BaseType } from '../../../../datamodels/baseType';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-modify-card',
@@ -51,7 +53,11 @@ export class ModifyCardComponent implements OnInit {
 
   @Input() cardList: Card[];
 
+  user: User;
   cardItem: Card;
+
+
+  logEvents: LogEvent[] = [];
 
   @Input() modalTitle = '';
 
@@ -78,8 +84,12 @@ export class ModifyCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
     this.dataService.typeList.subscribe(baseTypes => {
       this.baseTypes = baseTypes;
 
@@ -89,6 +99,10 @@ export class ModifyCardComponent implements OnInit {
       });
     });
 
+    // Log event list subscriber
+    this.dataService.logEventList.subscribe(logEvents => {
+      this.logEvents = logEvents;
+    });
     this.modalService.editCard.subscribe(card => {
       this.cardItem = card;
 
@@ -149,9 +163,15 @@ export class ModifyCardComponent implements OnInit {
       newCard.status = this.utilitiesService.getStatusFromID(1);
       newCard.user = new User();
 
-      this.httpService.httpPost<Card>('addNewCard/', newCard).then(res => {
+      // Create new log event
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 6, newCard, this.user);
+
+      this.httpService.httpPost<Card>('addNewCard/', {card: newCard, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
-          this.cardList.unshift(res.data);
+          this.cardList.unshift(res.data.card);
+          // Update log event list
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
+
           // Trigger view refresh
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
@@ -168,11 +188,17 @@ export class ModifyCardComponent implements OnInit {
   editCard() {
     if (this.isValidInput()) {
       this.setCardFromForm(this.cardItem);
+      // Create new log event
+      const logText = 'Uppgifter för ' + this.cardItem.cardNumber;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 10, this.cardItem, this.user, logText);
 
-      this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+      this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
+
+          // Update log event list
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           this.closeForm();
         }

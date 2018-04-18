@@ -22,7 +22,7 @@ export class ItemMenuComponent implements OnInit {
 
   @Input() itemMenu = false;
 
-  @Input() showHistoryOption = false;
+  @Input() showHistoryOption = true;
 
   @Input() showEditOption = false;
 

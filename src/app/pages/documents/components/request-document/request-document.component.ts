@@ -38,6 +38,7 @@ export class RequestDocumentComponent implements OnInit {
     this.showModal = value;
   }
 
+  user: User;
   users = [];
   documents: Document[] = [];
   receipts: Receipt[] = [];
@@ -64,8 +65,6 @@ export class RequestDocumentComponent implements OnInit {
 
   pdfURL = '';
 
-  user: User;
-
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -73,6 +72,10 @@ export class RequestDocumentComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
     // User list subscriber
     this.dataService.userList.subscribe(users => {
       this.users = users;
@@ -185,45 +188,39 @@ export class RequestDocumentComponent implements OnInit {
       receipt.startDate = this.utilitiesService.getLocalDate();
       receipt.endDate = null;
 
+      // Create new log event
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(2, 5, this.documentItem, this.user, this.documentItem.user.name);
+
       // Submit changes to database
-      this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
-        if (receiptRes.message === 'success') {
-          const newReceipt = receiptRes.data;
+      this.httpService.httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.documentItem })
+      .then(res => {
+        if (res.message === 'success') {
+          const newReceipt = res.data.receipt;
 
           this.documentItem.activeReceipt = Number(newReceipt.id);
 
-          this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
-            if (documentRes.message === 'success') {
-              if (this.generatePDF) {
-                this.loading = true;
-                this.hideSubmit = true;
-                this.closeText = 'Stäng';
+          if (this.generatePDF) {
+            this.loading = true;
+            this.hideSubmit = true;
+            this.closeText = 'Stäng';
 
-                this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
-                  if (pdfRes.message === 'success') {
-                    newReceipt.url = pdfRes.url;
-                    newReceipt.url = pdfRes.url;
-                    this.loading = false;
-                    this.pdfView = true;
-                    this.pdfURL = newReceipt.url;
-                    this.hideSubmit = true;
-                  }
-                });
-              }
-              // Update receipt list
-              this.receipts.unshift(newReceipt);
-              this.receipts = this.receipts.slice();
-              this.dataService.receiptList.next(this.receipts);
-
-              // Update document list
-              this.dataService.documentList.next(this.documents);
-              if (!this.generatePDF) {
-                this.closeForm();
-              }
+            this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
+                if (pdfRes.message === 'success') {
+                  newReceipt.url = pdfRes.url;
+                  newReceipt.url = pdfRes.url;
+                  this.loading = false;
+                  this.pdfView = true;
+                  this.pdfURL = newReceipt.url;
+                  this.hideSubmit = true;
+                }
+              });
+            } else {
+              this.updateLists(res.data.logEvent, newReceipt);
+              this.closeForm();
             }
-          });
-        }
-      });
+          }
+        });
     }
   }
 
@@ -249,6 +246,19 @@ export class RequestDocumentComponent implements OnInit {
 
   displayUser(user?: User) {
     return user ? user.username : '';
+  }
+
+  updateLists(logEvent: any, receipt: any) {
+    // Update log event list
+  this.utilitiesService.updateLogEventList(logEvent);
+
+    // Update receipt list
+    this.receipts.unshift(receipt);
+    this.receipts = this.receipts.slice();
+    this.dataService.receiptList.next(this.receipts);
+
+    // Update card list
+    this.dataService.documentList.next(this.documents);
   }
 
 }
