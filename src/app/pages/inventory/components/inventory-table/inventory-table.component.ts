@@ -132,7 +132,6 @@ export class InventoryTableComponent implements OnInit {
   }
 
   genPDF() {
-    console.log('generating pdf');
 
     const filteredList = this.inventoryPipe.transform(
       this.baseItemList,
@@ -165,8 +164,6 @@ export class InventoryTableComponent implements OnInit {
         verificationList.push(verification);
       }
     });
-
-    console.log(verificationList);
 
     /*filteredList.forEach(baseItem => {
       verification = new Verification();
