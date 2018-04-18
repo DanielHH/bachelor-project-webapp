@@ -163,7 +163,10 @@ export class InventoryTableComponent implements OnInit {
     this.generateFilterArray();
 
     this.modalService.pdfSelectedList.next(verificationList);
+    this.modalService.pdfSelectedList.next([]);
+
     this.modalService.pdfFilteredList.next(verificationList);
+    this.modalService.pdfFilteredList.next([]);
   }
 
   /**
