@@ -18,6 +18,8 @@ export class CardTableComponent implements OnInit {
 
   showModal = false;
 
+  showPdfGenerationModal = false;
+
   filterInput = '';
 
   orderStatus = '';
@@ -125,7 +127,17 @@ export class CardTableComponent implements OnInit {
     this.modalService.editCard.next(null);
   }
 
-  genPDF() {
+  openPdfGenerationModal() {
+    const selectedList = this.cardPipe.transform(
+      this.cardList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
+    this.modalService.pdfSelectedList.next(selectedList);
+
     const filteredList = this.cardPipe.transform(
       this.cardList,
       this.filterInput,
@@ -134,15 +146,7 @@ export class CardTableComponent implements OnInit {
       this.showArchived,
       this.showGone
     );
-
-    this.httpService.httpPost<any>('genPDF', ['cards', filteredList] ).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-      }
-    });
-  }
-  openPDF() {
-    window.open(this.url, '_blank');
+    this.modalService.pdfFilteredList.next(filteredList);
   }
 }
 
