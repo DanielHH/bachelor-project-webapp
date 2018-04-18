@@ -29,11 +29,6 @@ input {
   text-align: center !important;
 }
 
-.title-center {
-  flex: 1 1 auto !important;
-  text-align: center !important;
-}
-
 .size-medium,
 .mat-datepicker-toggle .mat-icon-button {
   font-size: 22px !important;
@@ -60,38 +55,6 @@ input {
   margin-left: 15px;
   min-width: 496px;
   max-width: 496px;
-}
-
-.filter-checkbox,
-.narrow-filter-checkbox {
-  display: inline-flex;
-  justify-content: flex-start;
-  margin-left: 5px;
-}
-
-.filter-checkbox {
-  min-width: 115px;
-  max-width: 115px;
-}
-
-.small-filter-checkbox {
-  min-width: 65px;
-  max-width: 65px;
-}
-
-.medium-filter-checkbox {
-  min-width: 75px;
-  max-width: 75px;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.status-button {
-  position: relative;
-  text-align: left;
-  margin-right: 10px;
 }
 
 .generating-pdf {
