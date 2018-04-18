@@ -1,100 +1,100 @@
 <div class="card">
-    <div class="custom-table">
+  <div class="custom-table">
 
-        <!-- Row text filter input -->
-        <div class="row">
+    <!-- Row text filter input -->
+    <div class="row">
 
-            <!-- Input field for text filter -->
-            <div class="col-4 px-0 text-filter-input">
-                <mat-form-field>
-                    <!--Input-->
-                    <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
-                    <!--Clear-->
-                    <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
-            <mat-icon>close</mat-icon>
-          </button>
-                </mat-form-field>
-            </div>
+      <!-- Input field for text filter -->
+      <div class="col-4 px-0 text-filter-input">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+      <mat-icon>close</mat-icon>
+      </button>
+        </mat-form-field>
+      </div>
 
-            <div class="col"></div>
-            <!-- Space -->
+      <div class="col"></div>
+      <!-- Space -->
 
-            <div class="col-2">
-                <span class="add-new-button">
-          <button mat-raised-button (click)="sendVerify(); $event.stopPropagation()"> color="primary">Verifiera</button>
-        </span>
-            </div>
-
-
-        </div>
-
-        <!-- Row filter per status -->
-        <div class="pb-3 pt-1 filter-checkbox-row">
-
-            <div class="mr-2">
-                <mat-checkbox id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
-            </div>
-
-            <div class="mr-2">
-                <mat-checkbox id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
-            </div>
-
-            <div class="mr-2">
-                <mat-checkbox id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
-            </div>
-
-            <div class="mr-2">
-                <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
-            </div>
-
-            <button id="pdf-button" mat-raised-button (click)="url ? openPDF() : generatePDF()" color="primary">
-              <span *ngIf="!url">Generera PDF</span>
-              <span *ngIf="url">Öppna PDF</span>
-            </button>
-        </div>
+      <div class="col-2">
+        <span class="add-new-button">
+      <button mat-raised-button (click)="sendVerify(); $event.stopPropagation()"> color="primary">Verifiera</button>
+    </span>
+      </div>
 
 
-        <div class="table-container">
-            <!-- Header row -->
-            <div class="row table-header">
-
-                <div class="col-1" (click)="$event.stopPropagation()">
-                    <mat-checkbox color="primary" [(ngModel)]="isChecked" (change)="changeItems()"></mat-checkbox>
-                </div>
-
-                <div class="col" (click)="sortTableList('status')">
-                    <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
-                </div>
-
-                <div class="col" (click)="sortTableList('subType')">
-                    <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Typ </span>
-                </div>
-
-                <div class="col" (click)="sortTableList('number')">
-                    <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">ID </span>
-                </div>
-
-                <div class="col" (click)="sortTableList('user')">
-                    <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
-                </div>
-
-                <div class="col" (click)="sortTableList('location')">
-                    <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring </span>
-                </div>
-
-                <div class="col" (click)="sortTableList('comment')">
-                    <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
-                </div>
-
-            </div>
-            <hr>
-            <div class="table-items scrollbar-table">
-                <div *ngFor="let item of baseItemList | matchFilterInventory:filterInput:showIn:showOut:showArchived:showGone">
-                    <inventory-item [baseItem]="item"> </inventory-item>
-                </div>
-            </div>
-        </div>
     </div>
+
+    <!-- Row filter per status -->
+    <div class="pb-3 pt-1 filter-checkbox-row">
+
+      <div class="mr-2">
+        <mat-checkbox id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+      </div>
+
+      <button id="pdf-button" mat-raised-button (click)="url ? openPDF() : generatePDF()" color="primary">
+        <span *ngIf="!url">Generera PDF</span>
+        <span *ngIf="url">Öppna PDF</span>
+      </button>
+    </div>
+
+
+    <div class="table-container">
+      <!-- Header row -->
+      <div class="row table-header">
+
+        <div class="col-1" (click)="$event.stopPropagation()">
+          <mat-checkbox color="primary" [(ngModel)]="isChecked" (change)="changeItems()"></mat-checkbox>
+        </div>
+
+        <div class="col" (click)="sortTableList('status')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('subType')">
+          <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Typ </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('number')">
+          <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">ID </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('user')">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('location')">
+          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('comment')">
+          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
+        </div>
+
+      </div>
+      <hr>
+      <div class="table-items scrollbar-table">
+        <div *ngFor="let item of baseItemList | matchFilterInventory:filterInput:showIn:showOut:showArchived:showGone">
+          <inventory-item [baseItem]="item"> </inventory-item>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <app-inventory-detail></app-inventory-detail>
