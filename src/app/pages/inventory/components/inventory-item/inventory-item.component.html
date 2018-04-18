@@ -1,6 +1,6 @@
 <div class="row table-item" (click)="showDetailsModal()">
   <div class="col-1" *ngIf="baseItem?.getStatus()?.id == 1 || baseItem?.getStatus()?.id == 2">
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" (click)="verifyInventory()" [class.btn-success]="true"
+    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" (click)="verifyInventory(); $event.stopPropagation()" [class.btn-success]="true"
       mdbRippleRadius>
       <span>Verifiera</span>
     </button>
