@@ -166,7 +166,10 @@ export class InventoryTableComponent implements OnInit {
       verificationList.push(verification);
     });
 
-    this.httpService.httpPost<any>('genPDF', ['inventory', verificationList] ).then(pdfRes => {
+    const filters = [[this.filterInput, this.filterInput], ['Tillgängliga', this.showIn], ['Utkvitterade', this.showOut],
+                     ['Arkiverade', this.showArchived], ['Borttappade', this.showGone]];
+
+    this.httpService.httpPost<any>('genPDF', ['inventory', verificationList, filters] ).then(pdfRes => {
       if (pdfRes.message === 'success') {
         this.url = pdfRes.url;
       }
