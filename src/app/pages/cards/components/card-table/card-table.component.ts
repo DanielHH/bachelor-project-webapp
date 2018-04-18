@@ -146,6 +146,7 @@ export class CardTableComponent implements OnInit {
     this.generateFilterArray();
 
     this.modalService.pdfFilteredList.next(filteredList);
+    this.modalService.pdfFilteredList.next([]);
   }
 
   generateFilterArray() {

@@ -144,6 +144,8 @@ export class DeliveryTableComponent implements OnInit {
     this.generateFilterArray();
 
     this.modalService.pdfFilteredList.next(filteredList);
+    this.modalService.pdfFilteredList.next([]);
+
   }
 
   generateFilterArray() {

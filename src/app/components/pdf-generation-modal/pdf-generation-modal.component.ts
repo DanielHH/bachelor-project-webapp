@@ -48,6 +48,7 @@ export class PdfGenerationModalComponent implements OnInit {
     this.modalService.pdfSelectedList.subscribe(selectedList => (this.selectedList = selectedList));
 
     this.modalService.pdfFilteredList.subscribe(filteredList => {
+      console.log(filteredList);
       if (filteredList.length) {
         this.filteredList = filteredList;
         this.showModal = true;

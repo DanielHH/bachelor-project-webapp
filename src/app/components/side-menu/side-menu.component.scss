@@ -57,4 +57,11 @@
       }
     }
   }
+
+  .menu-divider {
+    display: none;
+    &.show-divider {
+      display: block !important;
+    }
+  }
 }
