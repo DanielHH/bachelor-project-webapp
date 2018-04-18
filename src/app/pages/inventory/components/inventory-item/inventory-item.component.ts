@@ -164,15 +164,4 @@ export class InventoryItemComponent implements OnInit {
   getUser() {
   return this.utilitiesService.getUserString(this.baseItem.getUser());
   }
-
-  /**
-   * Show the modal for the card/document details.
-   */
-  /*showDetailsModal() {
-  if (this.baseItem.isCard()) {
-    this.modalService.detailCard.next(this.baseItem.item as Card);
-  } else {
-    this.modalService.detailDocument.next(this.baseItem.item as Document);
-  }
-  }*/
 }
