@@ -2,9 +2,10 @@
 <div class="dropdown" dropdown #dropdown="bs-dropdown">
 
   <!--Trigger-->
-  <button dropdownToggle class="btn-menu" (click)="$event.stopPropagation()">
+  <button class="btn-menu" (click)="dropdown.toggle(); $event.stopPropagation()">
     <i class="material-icons">more_vert</i>
   </button>
+  <div *ngIf="dropdown.isOpen" dropdownToggle></div>
 
   <!--Menu-->
   <div class="dropdown-menu" (click)="$event.stopPropagation(); dropdown.toggle()">
