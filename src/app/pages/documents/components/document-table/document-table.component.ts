@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { ModalService } from '../../../../services/modal.service';
 import { HttpService } from '../../../../services/http.service';
 import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-document-table',
@@ -101,7 +102,11 @@ export class DocumentTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.documentList = _.orderBy(this.documentList, [property], [newOrder]);
+      this.documentList = _.orderBy(
+        this.documentList,
+        [document => (document[property] ? (lowerCase(document[property]) as string) : (document[property] as string))],
+        [newOrder]
+      );
     }
 
   }

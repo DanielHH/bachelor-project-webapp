@@ -14,6 +14,7 @@ import { Receipt } from '../../../../datamodels/receipt';
 import * as moment from 'moment';
 import { CardType } from '../../../../datamodels/cardType';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-request-card',
@@ -60,7 +61,8 @@ export class RequestCardComponent implements OnInit {
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
     private modalService: ModalService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     // User list subscriber
     this.dataService.userList.subscribe(users => {
@@ -98,6 +100,8 @@ export class RequestCardComponent implements OnInit {
         }, 250);
       }
     });
+
+    this.authService.user.subscribe(user => (this.user = user));
   }
 
   loading = false;
@@ -178,6 +182,7 @@ export class RequestCardComponent implements OnInit {
       this.cardItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
       this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.cardItem.registrator = this.user.name;
 
       // Create new receipt
       const receipt = new Receipt();
@@ -253,5 +258,4 @@ export class RequestCardComponent implements OnInit {
   displayUser(user?: User) {
     return user ? user.username : '';
   }
-
 }

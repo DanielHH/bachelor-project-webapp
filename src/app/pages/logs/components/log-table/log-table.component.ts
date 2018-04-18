@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LogEvent } from '../../../../datamodels/logEvent';
 import * as _ from 'lodash';
+import { lowerCase } from 'lodash';
 
 @Component({
   selector: 'app-log-table',
@@ -67,7 +68,11 @@ export class LogTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.logEventList = _.orderBy(this.logEventList, [property], [newOrder]);
+      this.logEventList = _.orderBy(
+        this.logEventList,
+        [logEvent => (logEvent[property] ? (lowerCase(logEvent[property]) as string) : (logEvent[property] as string))],
+        [newOrder]
+      );
     }
 
   }
