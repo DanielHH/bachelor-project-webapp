@@ -11,7 +11,9 @@ import { ModalService } from '../../services/modal.service';
 })
 export class PdfGenerationModalComponent implements OnInit {
 
+  showGenerationOptions = true;
   selectedOnly = true;
+
   loading = false;
   hideSubmit = false;
   closeText = 'Avbryt';
@@ -48,8 +50,15 @@ export class PdfGenerationModalComponent implements OnInit {
     );
 
     this.modalService.pdfFilteredList.subscribe(filteredList => {
-        this.filteredList = filteredList;
-        this.showModal = true;
+      if (filteredList.length) {
+          this.filteredList = filteredList;
+          this.showModal = true;
+          if (this.pdfType !== 'inventory') {
+            this.selectedOnly = false;
+            this.showGenerationOptions = false;
+            this.generatePDF();
+          }
+        }
       }
     );
   }
@@ -62,38 +71,32 @@ export class PdfGenerationModalComponent implements OnInit {
   */
  toggleSelectedOnly() {
   this.selectedOnly = !this.selectedOnly;
-}
+  }
 
 generatePDF() {
   this.loading = true;
   this.hideSubmit = true;
   this.closeText = 'Stäng';
+
+  let list = this.filteredList;
   if (this.selectedOnly) {
-    console.log('Not implemented yet!');
-    this.httpService.httpPost<any>('genPDF', [this.pdfType, this.selectedList] ).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-        this.loading = false;
-        this.pdfView = true;
-        this.hideSubmit = true;
-      }
-    });
-  } else {
-    this.httpService.httpPost<any>('genPDF', [this.pdfType, this.filteredList] ).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-        this.loading = false;
-        this.pdfView = true;
-        this.hideSubmit = true;
-      }
-    });
+    list = this.selectedList;
   }
+  this.httpService.httpPost<any>('genPDF', [this.pdfType, list] ).then(pdfRes => {
+    if (pdfRes.message === 'success') {
+      this.url = pdfRes.url;
+      this.loading = false;
+      this.pdfView = true;
+      this.hideSubmit = true;
+    }
+  });
 }
 
 /**
    * Closes modal
    */
   closeModal() {
+    this.showGenerationOptions = true;
     this.selectedOnly = true;
 
     this.loading = false;

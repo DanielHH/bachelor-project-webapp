@@ -1,7 +1,7 @@
 <form #modifyForm="ngForm" (ngSubmit)="generatePDF()">
 
   <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [hideSubmit]="hideSubmit" [closeName]="closeText" [submitName]="'Generera PDF'">
-    <div [class.generating-pdf]="loading || pdfView">
+    <div *ngIf="showGenerationOptions" [class.generating-pdf]="loading || pdfView">
       <!-- Generate from header -->
       <div class="row my-3">
         <div class="col-0 col-md-2"></div>

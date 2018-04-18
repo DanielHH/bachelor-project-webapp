@@ -128,16 +128,6 @@ export class CardTableComponent implements OnInit {
   }
 
   openPdfGenerationModal() {
-    const selectedList = this.cardPipe.transform(
-      this.cardList,
-      this.filterInput,
-      this.showIn,
-      this.showOut,
-      this.showArchived,
-      this.showGone
-    );
-    this.modalService.pdfSelectedList.next(selectedList);
-
     const filteredList = this.cardPipe.transform(
       this.cardList,
       this.filterInput,
