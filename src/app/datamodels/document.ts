@@ -88,4 +88,9 @@ export class Document {
    */
   lastVerificationDate?: Date;
 
+  /**
+   * Registrator
+   */
+  registrator?: string;
+
 }
