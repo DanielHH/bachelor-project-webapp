@@ -21,7 +21,7 @@
 
       <div class="col-2">
         <span class="add-new-button">
-      <button mat-raised-button (click)="sendVerify(); $event.stopPropagation()"> color="primary">Verifiera</button>
+      <button mat-raised-button (click)="sendVerify(); $event.stopPropagation()" color="primary">Verifiera</button>
     </span>
       </div>
 
@@ -47,7 +47,7 @@
         <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
-      <button id="pdf-button" mat-raised-button (click)="url ? openPDF() : generatePDF()" color="primary">
+      <button class="pdf-button" mat-raised-button (click)="url ? openPDF() : generatePDF()" color="primary">
         <span *ngIf="!url">Generera PDF</span>
         <span *ngIf="url">Öppna PDF</span>
       </button>
