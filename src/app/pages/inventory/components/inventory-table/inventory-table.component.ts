@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { Document } from '../../../../datamodels/document';
 import { BaseItem } from '../../../../datamodels/baseItem';
@@ -16,6 +9,7 @@ import { lowerCase, UtilitiesService } from '../../../../services/utilities.serv
 import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
 import { HttpService } from '../../../../services/http.service';
 import { Verification } from '../../../../datamodels/verification';
+import { InventoryItemComponent } from '../inventory-item/inventory-item.component';
 import { ModalService } from '../../../../services/modal.service';
 
 @Component({
@@ -25,6 +19,7 @@ import { ModalService } from '../../../../services/modal.service';
 })
 export class InventoryTableComponent implements OnInit {
   @Input() baseItemList: BaseItem[];
+  @ViewChildren(InventoryItemComponent) displayedItems: QueryList<InventoryItemComponent>;
 
   showPdfGenerationModal = false;
 
@@ -48,6 +43,8 @@ export class InventoryTableComponent implements OnInit {
   showGone = false;
 
   url = '';
+
+  isChecked = false;
 
   constructor(
     private inventoryPipe: MatchFilterInventoryPipe,
@@ -111,19 +108,9 @@ export class InventoryTableComponent implements OnInit {
         orderFunc = (item: BaseItem) => item.getComment();
         break;
       }
-      case 'verifyDate': {
-        newOrder = this.sortTableListHelper(this.orderVerifyDate);
-        this.orderVerifyDate = newOrder;
-        orderFunc = (item: BaseItem) => item.getLastVerifiedString();
-        break;
-      }
     }
     if (newOrder) {
-      this.baseItemList = _.orderBy(
-        this.baseItemList,
-        [orderFunc],
-        [newOrder]
-      );
+      this.baseItemList = _.orderBy(this.baseItemList, [orderFunc], [newOrder]);
     }
   }
 
@@ -153,24 +140,73 @@ export class InventoryTableComponent implements OnInit {
     const verificationList = [];
     let verification: Verification;
 
-    filteredList.forEach(baseItem => {
-      verification = new Verification();
-      if (baseItem.isCard()) {
-        verification.card = baseItem.item as Card;
-        verification.itemType = this.utilitiesService.getItemTypeFromID(1);
-      } else {
-        verification.document = baseItem.item as Document;
-        verification.itemType = this.utilitiesService.getItemTypeFromID(2);
+    this.displayedItems.forEach(item => {
+      if (item.isChecked && _.includes(filteredList, item.baseItem)) {
+        verification = new Verification();
+        const baseItem = item.baseItem;
+        if (baseItem.isCard()) {
+          verification.card = baseItem.item as Card;
+          verification.itemType = this.utilitiesService.getItemTypeFromID(1);
+        } else {
+          verification.document = baseItem.item as Document;
+          verification.itemType = this.utilitiesService.getItemTypeFromID(2);
+        }
+
+        verification.verificationType = this.utilitiesService.getVerificationTypeFromID(2);
+        verification.user = baseItem.getItem().user;
+        verification.verificationDate = baseItem.getItem().lastVerificationDate;
+
+        verificationList.push(verification);
       }
-
-      verification.verificationType = this.utilitiesService.getVerificationTypeFromID(2);
-      verification.user = baseItem.getItem().user;
-      verification.verificationDate = baseItem.getItem().lastVerificationDate;
-
-      verificationList.push(verification);
     });
+
+    this.generateFilterArray();
 
     this.modalService.pdfSelectedList.next(verificationList);
     this.modalService.pdfFilteredList.next(verificationList);
+  }
+
+  /**
+   * Update verification date for all checked items.
+   */
+  sendVerify(): void {
+    // TODO: should send a single post containing all verifications
+    this.displayedItems.forEach(item => {
+      if (item.isChecked) {
+        item.verifyInventory();
+      }
+    });
+  }
+
+  changeItems() {
+    this.displayedItems.forEach(item => {
+      item.isChecked = this.isChecked;
+    });
+  }
+
+  generateFilterArray() {
+    const filters = [];
+
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showIn) {
+      filters.push('Tillgängliga');
+    }
+
+    if (this.showOut) {
+      filters.push('Utkvitterade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    this.modalService.filterList.next(filters);
   }
 }

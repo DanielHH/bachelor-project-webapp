@@ -1,14 +1,6 @@
 <div class="row table-item" (click)="showDetailsModal()">
-  <div class="col-1" *ngIf="baseItem?.getStatus()?.id == 1 || baseItem?.getStatus()?.id == 2">
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" (click)="verifyInventory(); $event.stopPropagation()" [class.btn-success]="true"
-      mdbRippleRadius>
-      <span>Verifiera</span>
-    </button>
-  </div>
-  <div class="col-1" *ngIf="baseItem?.getStatus()?.id == 3 || baseItem?.getStatus()?.id == 4">
-    <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
-      <span>Verifiera</span>
-    </button>
+  <div class="col-1" (click)="$event.stopPropagation()">
+    <mat-checkbox disableRipple color="primary" [(ngModel)]="isChecked"></mat-checkbox>
   </div>
 
   <div class="col">{{baseItem?.getStatus()?.name}}</div>
@@ -18,14 +10,13 @@
     {{baseItem?.getSubType()?.name}}
   </div>
   <div class="col">{{baseItem?.getNumber()}}</div>
-  <div class="col">{{utilitiesService.getUserString(baseItem?.getUser())}}</div>
+  <div class="col">{{getUser()}}</div>
   <div class="col">{{baseItem?.getLocation()}}</div>
-  <div class="col">{{baseItem?.getComment()}}</div>
+
   <div class="col">
-    <div class="column-text">{{baseItem?.getLastVerifiedString()}}</div>
+    <div class="column-text">{{baseItem?.getComment()}}</div>
     <div class="pull-right table-menu-fix">
       <app-item-menu [object]="baseItem?.item" (editStatus)="editStatus()" [itemMenu]="true"></app-item-menu>
     </div>
-
   </div>
 </div>

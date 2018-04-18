@@ -64,9 +64,12 @@ import { ItemMenuComponent } from './components/item-menu/item-menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule
+} from '@angular/common/http';
 import { TokenInterceptor } from './auth/token.interceptor';
-
 
 import { ModifyDocumentComponent } from './pages/documents/components/modify-document/modify-document.component';
 import { UtilitiesService } from './services/utilities.service';
@@ -111,6 +114,8 @@ import { UserDetailComponent } from './pages/users/components/user-detail/user-d
 import { ReceiptDetailComponent } from './pages/receipts/components/receipt-detail/receipt-detail.component';
 import { LogDetailComponent } from './pages/logs/components/log-detail/log-detail.component';
 import { TypeDetailComponent } from './pages/types/components/type-detail/type-detail.component';
+import { DatePipe } from '@angular/common';
+import { LOCALE_ID } from '@angular/core';
 import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
 import { DocumentHistoryItemComponent } from './pages/document-history/components/document-history-item/document-history-item.component';
 import { DocumentHistoryTableComponent } from './pages/document-history/components/document-history-table/document-history-table.component';
@@ -246,10 +251,12 @@ import { PdfGenerationModalComponent } from './components/pdf-generation-modal/p
     MatchFilterDeliveryPipe,
     MatchFilterReceiptPipe,
     MatchFilterInventoryPipe,
-    ModalService
+    ModalService,
+    DatePipe,
+    { provide: LOCALE_ID, useValue: 'sv'}
   ],
   entryComponents: [],
   schemas: [NO_ERRORS_SCHEMA],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

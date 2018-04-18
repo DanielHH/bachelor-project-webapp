@@ -36,11 +36,19 @@ export class InventoryComponent implements OnInit {
    */
   setItemList(): void {
     this.baseItemList = [];
-    this.cardList.forEach(element => {
-      this.baseItemList.push(new BaseItem(this.utilitiesService, element, 'card'));
-    });
-    this.documentList.forEach(element => {
-      this.baseItemList.push(new BaseItem(this.utilitiesService, element, 'document'));
-    });
+    if (this.cardList) {
+      this.cardList.forEach(element => {
+        this.baseItemList.push(
+          new BaseItem(this.utilitiesService, element, 'card')
+        );
+      });
+    }
+    if (this.documentList) {
+      this.documentList.forEach(element => {
+        this.baseItemList.push(
+          new BaseItem(this.utilitiesService, element, 'document')
+        );
+      });
+    }
   }
 }

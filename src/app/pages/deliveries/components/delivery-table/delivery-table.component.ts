@@ -140,6 +140,32 @@ export class DeliveryTableComponent implements OnInit {
       this.showArchived,
       this.showGone
     );
+
+    this.generateFilterArray();
+
     this.modalService.pdfFilteredList.next(filteredList);
+
+  }
+
+  generateFilterArray() {
+    const filters = [];
+
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showActive) {
+      filters.push('Levererade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    this.modalService.filterList.next(filters);
   }
 }

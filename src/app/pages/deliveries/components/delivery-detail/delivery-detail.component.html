@@ -1,6 +1,5 @@
 <form #detailForm="ngForm" (ngSubmit)="hideDetail()">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
-  [submitName]="'Stäng'" [hideClose]="true">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'" [submitName]="'Stäng'" [hideClose]="true">
 
     <!-- Row card info -->
     <div class="row">
@@ -50,11 +49,11 @@
             <div class="col-12 col-md-4">
               {{deliveryItem?.receiver}}
             </div>
-            <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(deliveryItem?.documentDate)}}
+            <div class="col-0 col-md-4">
+              {{this.deliveryItem?.documentDate | date: 'shortDate'}}
             </div>
-            <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(deliveryItem?.sentDate)}}
+            <div class="col-0 col-md-4">
+              {{this.deliveryItem?.sentDate | date: 'shortDate'}}
             </div>
           </div>
           <!-- Row Space -->
@@ -68,16 +67,16 @@
               <b>Ändrad:</b>
             </div>
             <div class="col-12 col-md-4">
-                <span *ngIf="deliveryItem?.comment"><b>Kommentar:</b></span>
+              <span *ngIf="deliveryItem?.comment"><b>Kommentar:</b></span>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(deliveryItem?.creationDate, 'YYYY-MM-DD HH:MM:SS')}}
+            <div class="col-0 col-md-4">
+              {{this.deliveryItem?.creationDate | date: 'shortDate'}}
             </div>
-            <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(deliveryItem?.modifiedDate, 'YYYY-MM-DD HH:MM:SS')}}
+            <div class="col-0 col-md-4">
+              {{this.deliveryItem?.modifiedDate | date: 'shortDate'}}
             </div>
             <div class="col-12 col-md-4">
               <span *ngIf="deliveryItem?.comment">{{deliveryItem?.comment}}</span>

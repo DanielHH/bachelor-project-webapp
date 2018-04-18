@@ -10,6 +10,8 @@ import { User } from '../../datamodels/user';
 export class SideMenuComponent implements OnInit {
   user: User;
 
+  subMenu: any;
+
   constructor(private authService: AuthService) {
     this.authService.user.subscribe(user => (this.user = user));
   }

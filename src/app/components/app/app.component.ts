@@ -3,6 +3,8 @@ import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../datamodels/user';
+import { registerLocaleData } from '@angular/common';
+import swedish from '@angular/common/locales/sv';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +20,13 @@ export class AppComponent implements OnInit {
     private router: Router,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe((user) => {
+    this.authService.user.subscribe(user => {
       this.user = user;
     });
   }
 
   ngOnInit() {
+    /* Needed by the DatePipe used to format dates and times */
+    registerLocaleData(swedish);
   }
-
 }

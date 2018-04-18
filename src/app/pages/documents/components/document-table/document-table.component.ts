@@ -14,7 +14,6 @@ import { lowerCase } from '../../../../services/utilities.service';
   styleUrls: ['./document-table.component.scss']
 })
 export class DocumentTableComponent implements OnInit {
-
   @Input() documentList: Document[];
 
   showModal = false;
@@ -44,7 +43,7 @@ export class DocumentTableComponent implements OnInit {
     private modalService: ModalService,
     private httpService: HttpService,
     private documentPipe: MatchFilterDocumentPipe
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -109,7 +108,6 @@ export class DocumentTableComponent implements OnInit {
         [newOrder]
       );
     }
-
   }
 
   /**
@@ -118,8 +116,10 @@ export class DocumentTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -139,8 +139,36 @@ export class DocumentTableComponent implements OnInit {
       this.showArchived,
       this.showGone
     );
+
+    this.generateFilterArray();
+
     this.modalService.pdfFilteredList.next(filteredList);
+
   }
 
-}
+  generateFilterArray() {
+    const filters = [];
 
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showIn) {
+      filters.push('Tillgängliga');
+    }
+
+    if (this.showOut) {
+      filters.push('Utkvitterade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    this.modalService.filterList.next(filters);
+  }
+}
