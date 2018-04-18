@@ -160,7 +160,7 @@ export class InventoryTableComponent implements OnInit {
       }
     });
 
-    const filters = this.generateFilterString();
+    this.generateFilterString();
 
     this.modalService.pdfSelectedList.next(verificationList);
     this.modalService.pdfFilteredList.next(verificationList);
@@ -207,6 +207,6 @@ export class InventoryTableComponent implements OnInit {
       filters.push('Borttappade');
     }
 
-    return filters;
+    this.modalService.filterList.next(filters);
   }
 }

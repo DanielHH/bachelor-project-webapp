@@ -1,6 +1,6 @@
 <div class="row table-item" (click)="showDetailsModal()">
   <div class="col-1" (click)="$event.stopPropagation()">
-    <mat-checkbox color="primary" [(ngModel)]="isChecked"></mat-checkbox>
+    <mat-checkbox disableRipple color="primary" [(ngModel)]="isChecked"></mat-checkbox>
   </div>
 
   <div class="col">{{baseItem?.getStatus()?.name}}</div>

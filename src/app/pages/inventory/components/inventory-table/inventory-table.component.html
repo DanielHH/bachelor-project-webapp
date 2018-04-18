@@ -22,34 +22,31 @@
           <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
             <span>Generera PDF</span>
           </button>
+          <button class="table-button" mat-raised-button color="primary" (click)="sendVerify()">Verifiera</button>
         </div>
       </div>
 
     </div>
 
     <!-- Row filter per status -->
-    <div class="pb-3 pt-1 filter-checkbox-row">
+    <div class="pb-1 filter-checkbox-row">
 
       <div class="mr-2">
-        <mat-checkbox id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+        <mat-checkbox disableRipple id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+        <mat-checkbox disableRipple id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
-      <button class="pdf-button" mat-raised-button (click)="url ? openPDF() : generatePDF()" color="primary">
-        <span *ngIf="!url">Generera PDF</span>
-        <span *ngIf="url">Öppna PDF</span>
-      </button>
     </div>
 
 
@@ -58,7 +55,7 @@
       <div class="row table-header">
 
         <div class="col-1" (click)="$event.stopPropagation()">
-          <mat-checkbox color="primary" [(ngModel)]="isChecked" (change)="changeItems()"></mat-checkbox>
+          <mat-checkbox disableRipple color="primary" [(ngModel)]="isChecked" (change)="changeItems()"></mat-checkbox>
         </div>
 
         <div class="col" (click)="sortTableList('status')">

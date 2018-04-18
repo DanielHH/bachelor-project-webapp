@@ -10,7 +10,6 @@ import { ModalService } from '../../services/modal.service';
   styleUrls: ['./pdf-generation-modal.component.scss']
 })
 export class PdfGenerationModalComponent implements OnInit {
-
   showGenerationOptions = true;
   selectedOnly = true;
 
@@ -22,6 +21,7 @@ export class PdfGenerationModalComponent implements OnInit {
 
   filteredList: any[] = [];
   selectedList: any[] = [];
+  filterList: any[] = [];
 
   @Input() pdfType = '';
 
@@ -45,54 +45,52 @@ export class PdfGenerationModalComponent implements OnInit {
   }
 
   constructor(private httpService: HttpService, private modalService: ModalService) {
-    this.modalService.pdfSelectedList.subscribe(selectedList =>
-      this.selectedList = selectedList
-    );
+    this.modalService.pdfSelectedList.subscribe(selectedList => (this.selectedList = selectedList));
 
     this.modalService.pdfFilteredList.subscribe(filteredList => {
       if (filteredList.length) {
-          this.filteredList = filteredList;
-          this.showModal = true;
-          if (this.pdfType !== 'inventory') {
-            this.selectedOnly = false;
-            this.showGenerationOptions = false;
-            this.generatePDF();
-          }
+        this.filteredList = filteredList;
+        this.showModal = true;
+        if (this.pdfType !== 'inventory') {
+          this.selectedOnly = false;
+          this.showGenerationOptions = false;
+          this.generatePDF();
         }
       }
-    );
+    });
+
+    this.modalService.filterList.subscribe(filterList => (this.filterList = filterList));
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Toggle selectedOnly value
-  */
- toggleSelectedOnly() {
-  this.selectedOnly = !this.selectedOnly;
+   */
+  toggleSelectedOnly() {
+    this.selectedOnly = !this.selectedOnly;
   }
 
-generatePDF() {
-  this.loading = true;
-  this.hideSubmit = true;
-  this.closeText = 'Stäng';
+  generatePDF() {
+    this.loading = true;
+    this.hideSubmit = true;
+    this.closeText = 'Stäng';
 
-  let list = this.filteredList;
-  if (this.selectedOnly) {
-    list = this.selectedList;
-  }
-  this.httpService.httpPost<any>('genPDF', [this.pdfType, list] ).then(pdfRes => {
-    if (pdfRes.message === 'success') {
-      this.url = pdfRes.url;
-      this.loading = false;
-      this.pdfView = true;
-      this.hideSubmit = true;
+    let list = this.filteredList;
+    if (this.selectedOnly) {
+      list = this.selectedList;
     }
-  });
-}
+    this.httpService.httpPost<any>('genPDF', [this.pdfType, list, this.filterList]).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.url = pdfRes.url;
+        this.loading = false;
+        this.pdfView = true;
+        this.hideSubmit = true;
+      }
+    });
+  }
 
-/**
+  /**
    * Closes modal
    */
   closeModal() {
@@ -107,5 +105,4 @@ generatePDF() {
 
     this.showModal = false;
   }
-
 }
