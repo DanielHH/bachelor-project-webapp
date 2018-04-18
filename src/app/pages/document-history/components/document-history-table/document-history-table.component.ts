@@ -4,6 +4,7 @@ import { Document } from '../../../../datamodels/document';
 
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-document-history-table',
@@ -71,7 +72,11 @@ export class DocumentHistoryTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.logEventList = _.orderBy(this.logEventList, [property], [newOrder]);
+      this.logEventList = _.orderBy(
+        this.logEventList,
+        [logEvent => (logEvent[property] ? (lowerCase(logEvent[property]) as string) : (logEvent[property] as string))],
+        [newOrder]
+      );
     }
 
   }

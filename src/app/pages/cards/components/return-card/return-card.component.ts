@@ -150,7 +150,7 @@ export class ReturnCardComponent implements OnInit {
             // Update card list
             this.dataService.cardList.next(this.cards);
 
-            this.showModal = false;
+            this.closeForm();
           }
         });
     }

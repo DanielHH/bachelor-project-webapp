@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { LogEvent } from '../../../../datamodels/logEvent';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-cardhistory-table',
@@ -72,7 +73,11 @@ export class CardhistoryTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.logEventList = _.orderBy(this.logEventList, [property], [newOrder]);
+      this.logEventList = _.orderBy(
+        this.logEventList,
+        [logEvent => (logEvent[property] ? (lowerCase(logEvent[property]) as string) : (logEvent[property] as string))],
+        [newOrder]
+      );
     }
 
   }
