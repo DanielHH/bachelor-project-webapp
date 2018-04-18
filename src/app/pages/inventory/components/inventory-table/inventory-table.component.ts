@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  QueryList,
-  ViewChildren
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { Document } from '../../../../datamodels/document';
 import { BaseItem } from '../../../../datamodels/baseItem';
@@ -132,7 +124,6 @@ export class InventoryTableComponent implements OnInit {
   }
 
   genPDF() {
-
     const filteredList = this.inventoryPipe.transform(
       this.baseItemList,
       this.filterInput,
@@ -165,27 +156,11 @@ export class InventoryTableComponent implements OnInit {
       }
     });
 
-    /*filteredList.forEach(baseItem => {
-      verification = new Verification();
-      if (baseItem.isCard()) {
-        verification.card = baseItem.item as Card;
-        verification.itemType = this.utilitiesService.getItemTypeFromID(1);
-      } else {
-        verification.document = baseItem.item as Document;
-        verification.itemType = this.utilitiesService.getItemTypeFromID(2);
-      }
+    const filters = this.generateFilterString();
 
-      verification.verificationType = this.utilitiesService.getVerificationTypeFromID(2);
-      verification.user = baseItem.getItem().user;
-      verification.verificationDate = baseItem.getItem().lastVerificationDate;
 
-      verificationList.push(verification);
-    });*/
 
-    const filters = [[this.filterInput, this.filterInput], ['Tillgängliga', this.showIn], ['Utkvitterade', this.showOut],
-                     ['Arkiverade', this.showArchived], ['Borttappade', this.showGone]];
-
-    this.httpService.httpPost<any>('genPDF', ['inventory', verificationList, filters] ).then(pdfRes => {
+    this.httpService.httpPost<any>('genPDF', ['inventory', verificationList, filters]).then(pdfRes => {
       if (pdfRes.message === 'success') {
         this.url = pdfRes.url;
       }
@@ -195,9 +170,10 @@ export class InventoryTableComponent implements OnInit {
   openPDF() {
     window.open(this.url, '_blank');
   }
+
   /**
    * Update verification date for all checked items.
-  */
+   */
   sendVerify(): void {
     // TODO: should send a single post containing all verifications
     this.displayedItems.forEach(item => {
@@ -216,5 +192,31 @@ export class InventoryTableComponent implements OnInit {
     this.displayedItems.forEach(item => {
       item.isChecked = this.isChecked;
     });
+  }
+
+  generateFilterString() {
+    const filters = [];
+
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showIn) {
+      filters.push('Tillgängliga');
+    }
+
+    if (this.showOut) {
+      filters.push('Utkvitterade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    return filters;
   }
 }
