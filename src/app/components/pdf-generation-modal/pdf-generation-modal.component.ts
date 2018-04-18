@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from '../../services/http.service';
 import { DataService } from '../../services/data.service';
@@ -9,7 +9,7 @@ import { ModalService } from '../../services/modal.service';
   templateUrl: './pdf-generation-modal.component.html',
   styleUrls: ['./pdf-generation-modal.component.scss']
 })
-export class PdfGenerationModalComponent implements OnInit {
+export class PdfGenerationModalComponent implements OnInit, OnDestroy {
   showGenerationOptions = true;
   selectedOnly = true;
 
@@ -44,14 +44,22 @@ export class PdfGenerationModalComponent implements OnInit {
     this.showModal = value;
   }
 
-  constructor(private httpService: HttpService, private modalService: ModalService) {
-    this.modalService.pdfSelectedList.subscribe(selectedList => (this.selectedList = selectedList));
+  filteredSubscription: any;
 
-    this.modalService.pdfFilteredList.subscribe(filteredList => {
-      console.log(filteredList);
+  selectedSubscription: any;
+
+  filterSubscription: any;
+
+  constructor(private httpService: HttpService, private modalService: ModalService) {
+    this.selectedSubscription = this.modalService.pdfSelectedList.subscribe(
+      selectedList => (this.selectedList = selectedList)
+    );
+
+    this.filteredSubscription = this.modalService.pdfFilteredList.subscribe(filteredList => {
       if (filteredList.length) {
         this.filteredList = filteredList;
         this.showModal = true;
+
         if (this.pdfType !== 'inventory') {
           this.selectedOnly = false;
           this.showGenerationOptions = false;
@@ -60,10 +68,19 @@ export class PdfGenerationModalComponent implements OnInit {
       }
     });
 
-    this.modalService.filterList.subscribe(filterList => (this.filterList = filterList));
+    this.filterSubscription = this.modalService.filterList.subscribe(filterList => (this.filterList = filterList));
   }
 
   ngOnInit() {}
+
+  /**
+   * Need to unsubscribe, subscriptions are not destroyed when component is destroyed
+   */
+  ngOnDestroy() {
+    this.selectedSubscription.unsubscribe();
+    this.filteredSubscription.unsubscribe();
+    this.filterSubscription.unsubscribe();
+  }
 
   /**
    * Toggle selectedOnly value
@@ -87,6 +104,9 @@ export class PdfGenerationModalComponent implements OnInit {
         this.loading = false;
         this.pdfView = true;
         this.hideSubmit = true;
+        this.modalService.pdfFilteredList.next([]);
+        this.modalService.pdfSelectedList.next([]);
+        this.modalService.filterList.next([]);
       }
     });
   }
