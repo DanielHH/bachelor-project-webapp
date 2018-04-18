@@ -53,9 +53,9 @@ export class ModifyCardComponent implements OnInit {
 
   @Input() cardList: Card[];
 
+  user: User;
   cardItem: Card;
 
-  user: User;
 
   logEvents: LogEvent[] = [];
 
@@ -87,6 +87,9 @@ export class ModifyCardComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
     this.dataService.typeList.subscribe(baseTypes => {
       this.baseTypes = baseTypes;
 
@@ -94,10 +97,6 @@ export class ModifyCardComponent implements OnInit {
         onlySelf: false,
         emitEvent: true
       });
-    });
-
-    this.authService.user.subscribe((user) => {
-      this.user = user;
     });
 
     // Log event list subscriber
