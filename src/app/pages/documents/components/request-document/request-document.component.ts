@@ -12,6 +12,7 @@ import { User } from '../../../../datamodels/user';
 import { Receipt } from '../../../../datamodels/receipt';
 import { ModalService } from '../../../../services/modal.service';
 import * as moment from 'moment';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-request-document',
@@ -63,11 +64,14 @@ export class RequestDocumentComponent implements OnInit {
 
   pdfURL = '';
 
+  user: User;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
     // User list subscriber
     this.dataService.userList.subscribe(users => {
@@ -106,6 +110,9 @@ export class RequestDocumentComponent implements OnInit {
         }, 250);
       }
     });
+
+    this.authService.user.subscribe(user => (this.user = user));
+
   }
 
   ngOnInit() {}
@@ -167,6 +174,7 @@ export class RequestDocumentComponent implements OnInit {
       this.documentItem.status = this.utilitiesService.getStatusFromID(2);
       this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
       this.documentItem.comment = this.commentInput;
+      this.documentItem.registrator = this.user.name;
 
       // Create new receipt
       const receipt = new Receipt();
