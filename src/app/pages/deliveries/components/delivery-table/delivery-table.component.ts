@@ -4,6 +4,7 @@ import { Delivery } from '../../../../datamodels/delivery';
 import { ModalService } from '../../../../services/modal.service';
 import { MatchFilterDeliveryPipe } from '../../../../pipes/match-filter-delivery.pipe';
 import { HttpService } from '../../../../services/http.service';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-delivery-table',
@@ -18,6 +19,7 @@ export class DeliveryTableComponent implements OnInit {
   dummyItem = new Delivery();
 
   showModal = false;
+  showPdfGenerationModal = false;
 
   filterInput = '';
 
@@ -102,7 +104,11 @@ export class DeliveryTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.deliveryList = _.orderBy(this.deliveryList, [property], [newOrder]);
+      this.deliveryList = _.orderBy(
+        this.deliveryList,
+        [delivery => (delivery[property] ? (lowerCase(delivery[property]) as string) : (delivery[property] as string))],
+        [newOrder]
+      );
     }
   }
 
@@ -126,7 +132,7 @@ export class DeliveryTableComponent implements OnInit {
     this.modalService.editDelivery.next(null);
   }
 
-  genPDF() {
+  openPdfGenerationModal() {
     const filteredList = this.deliveryPipe.transform(
       this.deliveryList,
       this.filterInput,
@@ -134,15 +140,6 @@ export class DeliveryTableComponent implements OnInit {
       this.showArchived,
       this.showGone
     );
-
-    this.httpService.httpPost<any>('genPDF', ['documents', filteredList]).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-      }
-    });
-  }
-
-  openPDF() {
-    window.open(this.url, '_blank');
+    this.modalService.pdfFilteredList.next(filteredList);
   }
 }
