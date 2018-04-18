@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-document-item',
@@ -18,6 +19,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
 export class DocumentItemComponent implements OnInit {
   @Input() documentItem: Document;
 
+  user: User;
   documentList: Document[] = [];
   documentTypeList: DocumentType[] = [];
   userList: User[] = [];
@@ -27,7 +29,12 @@ export class DocumentItemComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService) {
+    public utilitiesService: UtilitiesService,
+    private authService: AuthService) {
+
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
 
     this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
@@ -74,9 +81,15 @@ export class DocumentItemComponent implements OnInit {
    * Sets the status of the document in the database
    */
   editStatus() {
-    this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+    // Create new log event
+    const logText = this.documentItem.documentNumber + ' till ' + this.documentItem.status.name;
+    const logEvent = this.utilitiesService.createNewLogEventForItem(2, 12, this.documentItem, this.user, logText);
+
+    this.httpService.httpPut<Document>('updateDocument/', {documentItem: this.documentItem, logEvent: logEvent}).then(res => {
       if (res.message === 'success') {
         this.dataService.documentList.next(this.documentList);
+
+        this.utilitiesService.updateLogEventList(res.data.logEvent);
       }
     });
   }

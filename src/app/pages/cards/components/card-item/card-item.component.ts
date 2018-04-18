@@ -21,9 +21,9 @@ import { AuthService } from '../../../../auth/auth.service';
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
 
+  user: User;
   cardList: Card[] = [];
 
-  user: User;
 
   showRequestModal = false;
   showReturnModal = false;
@@ -35,12 +35,14 @@ export class CardItemComponent implements OnInit {
     private modalService: ModalService,
     public utilitiesService: UtilitiesService,
     private authService: AuthService) {
-      this.dataService.cardList.subscribe(cardList => {
-        this.cardList = cardList;
-      });
-      this.authService.user.subscribe((user) => {
-        this.user = user;
-      });
+
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
+    this.dataService.cardList.subscribe(cardList => {
+      this.cardList = cardList;
+    });
   }
 
   ngOnInit() { }
