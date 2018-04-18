@@ -32,6 +32,7 @@ export class ReturnCardComponent implements OnInit {
     this.showModal = value;
   }
 
+  user: User;
   cards: Card[] = [];
   receipts: Receipt[] = [];
   logEvents: LogEvent[] = [];
@@ -44,8 +45,6 @@ export class ReturnCardComponent implements OnInit {
 
   locationInput = '';
   commentInput = '';
-
-  user: User;
 
   constructor(
     private httpService: HttpService,
@@ -131,7 +130,6 @@ export class ReturnCardComponent implements OnInit {
       const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, this.latestUser.name);
 
       // Submit changes to server
-
       this.httpService
         .httpPut<Receipt>('updateReceipt/', {
           receipt: activeReceipt,
