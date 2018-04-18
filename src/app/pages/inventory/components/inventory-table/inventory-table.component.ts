@@ -160,7 +160,7 @@ export class InventoryTableComponent implements OnInit {
       }
     });
 
-    this.generateFilterString();
+    this.generateFilterArray();
 
     this.modalService.pdfSelectedList.next(verificationList);
     this.modalService.pdfFilteredList.next(verificationList);
@@ -184,7 +184,7 @@ export class InventoryTableComponent implements OnInit {
     });
   }
 
-  generateFilterString() {
+  generateFilterArray() {
     const filters = [];
 
     if (this.filterInput) {

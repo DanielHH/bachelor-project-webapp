@@ -132,6 +132,35 @@ export class ReceiptTableComponent implements OnInit {
       this.showActive,
       this.showInactive
     );
+
+    this.generateFilterArray();
+
     this.modalService.pdfFilteredList.next(filteredList);
+  }
+
+  generateFilterArray() {
+    const filters = [];
+
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showCard) {
+      filters.push('Kort');
+    }
+
+    if (this.showDocument) {
+      filters.push('Handlingar');
+    }
+
+    if (this.showActive) {
+      filters.push('Aktiva');
+    }
+
+    if (this.showInactive) {
+      filters.push('Inaktiva');
+    }
+
+    this.modalService.filterList.next(filters);
   }
 }

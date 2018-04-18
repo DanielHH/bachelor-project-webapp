@@ -143,6 +143,34 @@ export class CardTableComponent implements OnInit {
       this.showGone
     );
 
+    this.generateFilterArray();
+
     this.modalService.pdfFilteredList.next(filteredList);
+  }
+
+  generateFilterArray() {
+    const filters = [];
+
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showIn) {
+      filters.push('Tillgängliga');
+    }
+
+    if (this.showOut) {
+      filters.push('Utkvitterade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    this.modalService.filterList.next(filters);
   }
 }
