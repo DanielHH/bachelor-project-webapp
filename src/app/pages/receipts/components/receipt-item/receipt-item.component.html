@@ -21,7 +21,7 @@
   <div class="col">{{utilitiesService.getUserString(receiptItem?.user)}}</div>
   <div class="col">{{utilitiesService.getDateString(receiptItem.startDate)}}</div>
   <div class="col">{{utilitiesService.getDateString(receiptItem.endDate)}}
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 btn-success pull-right" mdbRippleRadius (click)="openPDF()">
+    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 btn-success pull-right" mdbRippleRadius (click)="openPDF(); $event.stopPropagation()">
       <span>PDF</span>
     </button>
   </div>
