@@ -114,6 +114,7 @@ import { TypeDetailComponent } from './pages/types/components/type-detail/type-d
 import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
 import { DocumentHistoryItemComponent } from './pages/document-history/components/document-history-item/document-history-item.component';
 import { DocumentHistoryTableComponent } from './pages/document-history/components/document-history-table/document-history-table.component';
+import { PdfGenerationModalComponent } from './components/pdf-generation-modal/pdf-generation-modal.component';
 
 @NgModule({
   declarations: [
@@ -196,7 +197,8 @@ import { DocumentHistoryTableComponent } from './pages/document-history/componen
     TypeDetailComponent,
     DocumentHistoryItemComponent,
     DocumentHistoryTableComponent,
-    DocumentDetailComponent
+    DocumentDetailComponent,
+    PdfGenerationModalComponent
   ],
   imports: [
     BrowserModule,

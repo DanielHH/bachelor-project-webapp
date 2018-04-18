@@ -127,7 +127,7 @@ export class ModifyDocumentComponent implements OnInit {
       } else {
         this.modalTitle = 'Lägg till ny handling';
         this.modalType = 0;
-        this.showModal = true;
+        this._showModal = true;
       }
     });
   }

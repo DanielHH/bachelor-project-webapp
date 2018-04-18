@@ -127,7 +127,7 @@ export class ModifyCardComponent implements OnInit {
       } else {
         this.modalTitle = 'Lägg till nytt kort';
         this.modalType = 0;
-        this.showModal = true;
+        this._showModal = true;
       }
     });
   }

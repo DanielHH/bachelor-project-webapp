@@ -1,0 +1,105 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '../node_modules/material-design-icons/iconfont/material-icons.css';
+
+@import 'styles/scrollbar';
+@import 'styles/table';
+@import 'styles/text';
+
+.mat-form-field-label-wrapper {
+  overflow: visible !important;
+}
+
+input {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.mat-form-field {
+  width: 100% !important;
+}
+
+.cdk-overlay-container {
+  z-index: 2000;
+}
+
+.radio-buttons,
+.wide-center {
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.size-medium,
+.mat-datepicker-toggle .mat-icon-button {
+  font-size: 22px !important;
+  height: 22px !important;
+  width: 22px !important;
+}
+
+.radio-button,
+.form-check-label,
+.table-header,
+.mat-checkbox {
+  -webkit-user-select: none !important; /* Safari */
+  -moz-user-select: none !important; /* Firefox */
+  -ms-user-select: none !important; /* IE10+/Edge */
+  user-select: none !important; /* Standard */
+  white-space: nowrap !important;
+}
+
+.mat-checkbox-inner-container {
+  transform: scale(0.75) !important;
+}
+
+.text-filter-input {
+  margin-left: 15px;
+  min-width: 496px;
+  max-width: 496px;
+}
+
+.generating-pdf {
+  opacity: 0.2;
+  transition: opacity 0.3s ease-in;
+  -moz-transition: opacity 0.3s ease-in;
+  -webkit-transition: opacity 0.3s ease-in;
+}
+
+.mat-button-focus-overlay {
+  top: 2px !important;
+  bottom: -2px !important;
+}
+
+input[type] {
+  height: unset !important;
+}
+
+.mat-input-suffix {
+  align-self: flex-start !important;
+  margin-top: $font-size;
+}
+
+.modal-content {
+  .mat-form-field {
+    padding: 8px 16px !important;
+  }
+}
+
+.mat-radio-checked {
+
+
+  .mat-radio-outer-circle {
+    border-color: $secondary-color-dark !important;
+  }
+
+  .mat-radio-inner-circle {
+    background-color: $secondary-color-dark !important;
+
+  }
+}
+
+.mat-radio-ripple {
+
+  .mat-ripple-element {
+    background-color: rgba($secondary-color-dark, 0.1) !important;
+  }
+}
