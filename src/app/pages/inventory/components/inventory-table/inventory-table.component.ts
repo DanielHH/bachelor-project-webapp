@@ -49,6 +49,8 @@ export class InventoryTableComponent implements OnInit {
 
   url = '';
 
+  isChecked = false;
+
   constructor(
     private inventoryPipe: MatchFilterInventoryPipe,
     private utilitiesService: UtilitiesService,
@@ -130,6 +132,8 @@ export class InventoryTableComponent implements OnInit {
   }
 
   genPDF() {
+    console.log('generating pdf');
+
     const filteredList = this.inventoryPipe.transform(
       this.baseItemList,
       this.filterInput,
@@ -142,7 +146,29 @@ export class InventoryTableComponent implements OnInit {
     const verificationList = [];
     let verification: Verification;
 
-    filteredList.forEach(baseItem => {
+    this.displayedItems.forEach(item => {
+      if (item.isChecked && _.includes(filteredList, item.baseItem)) {
+        verification = new Verification();
+        const baseItem = item.baseItem;
+        if (baseItem.isCard()) {
+          verification.card = baseItem.item as Card;
+          verification.itemType = this.utilitiesService.getItemTypeFromID(1);
+        } else {
+          verification.document = baseItem.item as Document;
+          verification.itemType = this.utilitiesService.getItemTypeFromID(2);
+        }
+
+        verification.verificationType = this.utilitiesService.getVerificationTypeFromID(2);
+        verification.user = baseItem.getItem().user;
+        verification.verificationDate = baseItem.getItem().lastVerificationDate;
+
+        verificationList.push(verification);
+      }
+    });
+
+    console.log(verificationList);
+
+    /*filteredList.forEach(baseItem => {
       verification = new Verification();
       if (baseItem.isCard()) {
         verification.card = baseItem.item as Card;
@@ -157,7 +183,7 @@ export class InventoryTableComponent implements OnInit {
       verification.verificationDate = baseItem.getItem().lastVerificationDate;
 
       verificationList.push(verification);
-    });
+    });*/
 
     const filters = [[this.filterInput, this.filterInput], ['Tillgängliga', this.showIn], ['Utkvitterade', this.showOut],
                      ['Arkiverade', this.showArchived], ['Borttappade', this.showGone]];
@@ -186,5 +212,12 @@ export class InventoryTableComponent implements OnInit {
 
   generatePDF(): void {
     // todo
+    this.genPDF();
+  }
+
+  changeItems() {
+    this.displayedItems.forEach(item => {
+      item.isChecked = this.isChecked;
+    });
   }
 }

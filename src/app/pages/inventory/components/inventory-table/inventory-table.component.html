@@ -18,85 +18,91 @@
 
             <!-- PDF buttons -->
             <div class="col text-right">
-                <div class="mt-3">
-                    <button class="table-button" mat-raised-button color="primary" (click)="url ? openPDF() : genPDF()">
-            <span *ngIf="!url">Generera PDF</span>
-            <span *ngIf="url">Öppna PDF</span>
-          </button>
-                </div>
-                <div class="col"></div>
-                <!-- Space -->
+                <!-- <div class="mt-3"> -->
+                <!-- <button class="table-button" mat-raised-button color="primary" (click)="url ? openPDF() : genPDF()"> -->
+                <!-- <span *ngIf="!url">Generera PDF</span> -->
+                <!-- <span *ngIf="url">Öppna PDF</span> -->
+                <!-- </button> -->
+            </div>
+            <div class="col"></div>
+            <!-- Space -->
 
-                <div class="col-2">
-                    <span class="add-new-button">
+            <div class="col-2">
+                <span class="add-new-button">
           <button mat-raised-button (click)="sendVerify()" color="primary">Verifiera</button>
         </span>
-                </div>
-
-            </div>
-
-            <!-- Row filter per status -->
-            <div class="pb-3 pt-1 filter-checkbox-row">
-
-                <div class="mr-2">
-                    <mat-checkbox id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
-                </div>
-
-                <div class="mr-2">
-                    <mat-checkbox id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
-                </div>
-
-                <div class="mr-2">
-                    <mat-checkbox id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
-                </div>
-
-                <div class="mr-2">
-                    <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
-                </div>
-
-                <button id="pdf-button" mat-raised-button (click)="generatePDF()" color="primary">Generera PDF</button>
             </div>
 
 
-            <div class="table-container">
-                <!-- Header row -->
-                <div class="row table-header">
+        </div>
 
-                    <div class="col-1"></div>
+        <!-- Row filter per status -->
+        <div class="pb-3 pt-1 filter-checkbox-row">
 
-                    <div class="col" (click)="sortTableList('status')">
-                        <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
-                    </div>
+            <div class="mr-2">
+                <mat-checkbox id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+            </div>
 
-                    <div class="col" (click)="sortTableList('subType')">
-                        <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Typ </span>
-                    </div>
+            <div class="mr-2">
+                <mat-checkbox id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+            </div>
 
-                    <div class="col" (click)="sortTableList('number')">
-                        <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">ID </span>
-                    </div>
+            <div class="mr-2">
+                <mat-checkbox id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+            </div>
 
-                    <div class="col" (click)="sortTableList('user')">
-                        <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
-                    </div>
+            <div class="mr-2">
+                <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+            </div>
 
-                    <div class="col" (click)="sortTableList('location')">
-                        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring </span>
-                    </div>
+            <button id="pdf-button" mat-raised-button (click)="url ? openPDF() : generatePDF()" color="primary">
+              <span *ngIf="!url">Generera PDF</span>
+              <span *ngIf="url">Öppna PDF</span>
+            </button>
+        </div>
 
-                    <div class="col" (click)="sortTableList('comment')">
-                        <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
-                    </div>
 
+        <div class="table-container">
+            <!-- Header row -->
+            <div class="row table-header">
+
+                <div class="col-1" (click)="$event.stopPropagation()">
+                    <mat-checkbox color="primary" [(ngModel)]="isChecked" (change)="changeItems()"></mat-checkbox>
                 </div>
-                <hr>
-                <div class="table-items scrollbar-table">
-                    <div *ngFor="let item of baseItemList | matchFilterInventory:filterInput:showIn:showOut:showArchived:showGone">
-                        <inventory-item [baseItem]="item"> </inventory-item>
-                    </div>
+
+                <div class="col" (click)="sortTableList('status')">
+                    <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+                </div>
+
+                <div class="col" (click)="sortTableList('subType')">
+                    <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Typ </span>
+                </div>
+
+                <div class="col" (click)="sortTableList('number')">
+                    <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">ID </span>
+                </div>
+
+                <div class="col" (click)="sortTableList('user')">
+                    <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
+                </div>
+
+                <div class="col" (click)="sortTableList('location')">
+                    <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring </span>
+                </div>
+
+                <div class="col" (click)="sortTableList('comment')">
+                    <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
+                </div>
+
+            </div>
+            <hr>
+            <div class="table-items scrollbar-table">
+                <div *ngFor="let item of baseItemList | matchFilterInventory:filterInput:showIn:showOut:showArchived:showGone">
+                    <inventory-item [baseItem]="item"> </inventory-item>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <app-inventory-detail></app-inventory-detail>
+<app-inventory-detail></app-inventory-detail>
