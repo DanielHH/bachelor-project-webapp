@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, DatePipe } from '@angular/common';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Card } from '../../../../datamodels/card';
 import { DataService } from '../../../../services/data.service';

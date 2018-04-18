@@ -12,7 +12,6 @@ import { ModalService } from '../../../../services/modal.service';
   styleUrls: ['./receipt-table.component.scss']
 })
 export class ReceiptTableComponent implements OnInit {
-
   @Input() receiptList: Receipt[];
 
   showPdfGenerationModal = false;
@@ -33,13 +32,12 @@ export class ReceiptTableComponent implements OnInit {
 
   url = '';
 
-
   constructor(
     private receiptPipe: MatchFilterReceiptPipe,
     private httpService: HttpService,
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -63,7 +61,7 @@ export class ReceiptTableComponent implements OnInit {
       case 'status':
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
-        orderFunc = (item: Receipt) => new Receipt(item).endDate ? 'Inaktiv' : 'Aktiv';
+        orderFunc = (item: Receipt) => (new Receipt(item).endDate ? 'Inaktiv' : 'Aktiv');
         break;
       case 'type': {
         newOrder = this.sortTableListHelper(this.orderType);
@@ -80,46 +78,49 @@ export class ReceiptTableComponent implements OnInit {
       case 'user': {
         newOrder = this.sortTableListHelper(this.orderUser);
         this.orderUser = newOrder;
-        orderFunc = (
-          item: Receipt) => this.utilitiesService.getUserString(new Receipt(item).getUser()
-        );
+        orderFunc = (item: Receipt) => this.utilitiesService.getUserString(new Receipt(item).getUser());
         break;
       }
       case 'startDate': {
         newOrder = this.sortTableListHelper(this.orderStartDate);
         this.orderStartDate = newOrder;
-        orderFunc = (
-          item: Receipt) => this.utilitiesService.getDateString(new Receipt(item).startDate
-        );
+        orderFunc = (item: Receipt) => this.utilitiesService.getDateString(new Receipt(item).startDate);
         break;
       }
       case 'endDate': {
         newOrder = this.sortTableListHelper(this.orderEndDate);
         this.orderEndDate = newOrder;
-        orderFunc = (
-          item: Receipt) => this.utilitiesService.getDateString(new Receipt(item).endDate
-        );
+        orderFunc = (item: Receipt) => this.utilitiesService.getDateString(new Receipt(item).endDate);
         break;
       }
     }
     if (newOrder) {
-      this.receiptList = _.orderBy(
-        this.receiptList,
-        [orderFunc],
-        [newOrder]
-      );
+      this.receiptList = _.orderBy(this.receiptList, [orderFunc], [newOrder]);
     }
   }
 
   /**
    * Sets the order to sort by
    * @param order
-  */
+   */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
+  }
+
+  passFilter(receipt: Receipt) {
+    return this.receiptPipe.matchFilt(
+      receipt,
+      this.filterInput,
+      this.showCard,
+      this.showDocument,
+      this.showActive,
+      this.showInactive
+    );
   }
 
   openPdfGenerationModal() {
@@ -131,9 +132,35 @@ export class ReceiptTableComponent implements OnInit {
       this.showActive,
       this.showInactive
     );
+
+    this.generateFilterArray();
+
     this.modalService.pdfFilteredList.next(filteredList);
   }
 
+  generateFilterArray() {
+    const filters = [];
+
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showCard) {
+      filters.push('Kort');
+    }
+
+    if (this.showDocument) {
+      filters.push('Handlingar');
+    }
+
+    if (this.showActive) {
+      filters.push('Aktiva');
+    }
+
+    if (this.showInactive) {
+      filters.push('Inaktiva');
+    }
+
+    this.modalService.filterList.next(filters);
+  }
 }
-
-

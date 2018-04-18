@@ -1,6 +1,5 @@
 <form #detailForm="ngForm" (ngSubmit)="hideDetail()">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
-  [submitName]="'Stäng'" [hideClose]="true">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'" [submitName]="'Stäng'" [hideClose]="true">
 
     <!-- Row card info -->
     <div class="row">
@@ -47,14 +46,14 @@
           </div>
           <!-- Row -->
           <div class="row my-1">
-            <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(cardItem?.creationDate, 'YYYY-MM-DD HH:MM:SS')}}
+            <div class="col-0 col-md-4">
+              {{this.cardItem?.creationDate | date: 'shortDate'}}
             </div>
-            <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(cardItem?.modifiedDate, 'YYYY-MM-DD HH:MM:SS')}}
+            <div class="col-0 col-md-4">
+              {{this.cardItem?.expirationDate | date: 'shortDate'}}
             </div>
-            <div class="col-12 col-md-4">
-              {{utilitiesService.getDateString(cardItem?.expirationDate)}}
+            <div class="col-0 col-md-4">
+              {{this.cardItem?.modifiedDate | date: 'shortDate'}}
             </div>
           </div>
           <!-- Row Space -->
@@ -65,7 +64,7 @@
               <b>Status:</b>
             </div>
             <div class="col-12 col-md-4">
-                <b>Användare:</b>
+              <b>Användare:</b>
             </div>
             <div class="col-12 col-md-4">
               <b>Senast inventerat:</b>
@@ -77,11 +76,10 @@
               {{cardItem?.status?.name}}
             </div>
             <div class="col-12 col-md-4">
-                {{utilitiesService.getUserString(cardItem?.user)}}
+              {{utilitiesService.getUserString(cardItem?.user)}}
             </div>
-            <div class="col-12 col-md-4">
-              {{cardItem?.lastVerificationDate ?
-                utilitiesService.getDateString(cardItem?.lastVerificationDate, 'YYYY-MM-DD HH:MM:SS') : 'Aldrig'}}
+            <div class="col-0 col-md-4">
+              {{cardItem?.lastVerificationDate | date: 'shortDate'}}
             </div>
           </div>
           <!-- Row Space -->

@@ -22,6 +22,7 @@
           <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
             <span>Generera PDF</span>
           </button>
+          <button class="table-button" mat-raised-button color="primary" (click)="sendVerify()">Verifiera</button>
         </div>
       </div>
 
@@ -31,28 +32,31 @@
     <div class="pb-1 filter-checkbox-row">
 
       <div class="mr-2">
-        <mat-checkbox id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+        <mat-checkbox disableRipple id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+        <mat-checkbox disableRipple id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
     </div>
+
 
     <div class="table-container">
       <!-- Header row -->
       <div class="row table-header">
 
-        <div class="col-1"></div>
+        <div class="col-1" (click)="$event.stopPropagation()">
+          <mat-checkbox disableRipple color="primary" [(ngModel)]="isChecked" (change)="changeItems()"></mat-checkbox>
+        </div>
 
         <div class="col" (click)="sortTableList('status')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
@@ -78,10 +82,6 @@
           <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
         </div>
 
-        <div class="col" (click)="sortTableList('verifyDate')">
-          <span class="hover" [class.up-arrow]="orderVerifyDate == 'asc'" [class.down-arrow]="orderVerifyDate == 'desc'" [class.both-arrow]="orderVerifyDate == ''">Verifierad </span>
-        </div>
-
       </div>
       <hr>
       <div class="table-items scrollbar-table">
@@ -95,6 +95,4 @@
 
 <app-inventory-detail></app-inventory-detail>
 
-<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från inventeringstabell'"
-[pdfType]="'inventory'"></app-pdf-generation-modal>
-
+<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från inventeringstabell'" [pdfType]="'inventory'"></app-pdf-generation-modal>

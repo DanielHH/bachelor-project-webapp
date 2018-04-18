@@ -18,9 +18,9 @@
     {{itemTypeToDisplay}}
   </div>
   <div class="col">{{itemIDToDisplay}}</div>
-  <div class="col">{{utilitiesService.getUserString(receiptItem?.user)}}</div>
-  <div class="col">{{utilitiesService.getDateString(receiptItem.startDate)}}</div>
-  <div class="col">{{utilitiesService.getDateString(receiptItem.endDate)}}
+  <div class="col">{{this.receiptItem.user?.name}}</div>
+  <div class="col">{{this.receiptItem.startDate | date: 'shortDate'}}</div>
+  <div class="col">{{this.receiptItem.endDate | date: 'shortDate'}}
     <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 btn-success pull-right" mdbRippleRadius (click)="openPDF(); $event.stopPropagation()">
       <span>PDF</span>
     </button>

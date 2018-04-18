@@ -151,6 +151,7 @@ export class ModifyDocumentComponent implements OnInit {
 
       document.location = this.locationInput;
       document.comment = this.commentInput ? this.commentInput : null;
+      document.modifiedDate = this.utilitiesService.getLocalDate();
     }
   }
 
