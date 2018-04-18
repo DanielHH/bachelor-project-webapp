@@ -23,6 +23,7 @@ import { ModalService } from '../../../../services/modal.service';
 })
 export class InventoryItemComponent implements OnInit {
   @Input() baseItem: BaseItem;
+  isChecked: boolean;
 
   cardTypeList: CardType[] = [];
   documentTypeList: DocumentType[] = [];
@@ -36,7 +37,7 @@ export class InventoryItemComponent implements OnInit {
     private routeDataService: RouteDataService,
     private router: Router,
     private httpService: HttpService,
-    public utilitiesService: UtilitiesService,
+    private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
     this.dataService.cardTypeList.subscribe(cardTypeList => {
@@ -73,18 +74,21 @@ export class InventoryItemComponent implements OnInit {
    */
   editStatus() {
     if (this.baseItem.isCard()) {
-      this.httpService.httpPut<Card>('updateCard/', this.baseItem.getItem()).then(res => {
-        if (res.message === 'success') {
-          this.dataService.cardList.next(this.cardList);
-        }
-      });
-
+      this.httpService
+        .httpPut<Card>('updateCard/', this.baseItem.getItem())
+        .then(res => {
+          if (res.message === 'success') {
+            this.dataService.cardList.next(this.cardList);
+          }
+        });
     } else {
-      this.httpService.httpPut<Document>('updateDocument/', this.baseItem.getItem()).then(res => {
-        if (res.message === 'success') {
-          this.dataService.documentList.next(this.documentList);
-        }
-      });
+      this.httpService
+        .httpPut<Document>('updateDocument/', this.baseItem.getItem())
+        .then(res => {
+          if (res.message === 'success') {
+            this.dataService.documentList.next(this.documentList);
+          }
+        });
     }
   }
 
@@ -94,7 +98,6 @@ export class InventoryItemComponent implements OnInit {
    */
   verifyInventory(): void {
     if (this.baseItem) {
-
       const itemToUpdate: Card | Document = this.baseItem.getItem();
 
       const verification = new Verification();
@@ -123,35 +126,53 @@ export class InventoryItemComponent implements OnInit {
       verification.verificationDate = this.utilitiesService.getLocalDate();
 
       // Submit changes to database
-      this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
-        if (verificationRes.message === 'success') {
+      this.httpService
+        .httpPost<Verification>('addNewVerification/', verification)
+        .then(verificationRes => {
+          if (verificationRes.message === 'success') {
+            itemToUpdate.lastVerificationID = Number(verificationRes.data.id);
+            itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
+            itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
 
-          itemToUpdate.lastVerificationID = Number(verificationRes.data.id);
-          itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
-          itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
+            if (this.baseItem.isCard()) {
+              this.httpService
+                .httpPut<Card>('updateCard/', itemToUpdate)
+                .then(cardRes => {
+                  if (cardRes.message === 'success') {
+                    this.dataService.cardList.next(this.cardList);
+                  }
+                });
+            } else {
+              this.httpService
+                .httpPut<Document>('updateDocument/', itemToUpdate)
+                .then(documentRes => {
+                  if (documentRes.message === 'success') {
+                    this.dataService.documentList.next(this.documentList);
+                  }
+                });
+            }
 
-          if (this.baseItem.isCard()) {
-            this.httpService.httpPut<Card>('updateCard/', itemToUpdate).then(cardRes => {
-              if (cardRes.message === 'success') {
-                this.dataService.cardList.next(this.cardList);
-              }
-            });
-
-          } else {
-            this.httpService.httpPut<Document>('updateDocument/', itemToUpdate).then(documentRes => {
-              if (documentRes.message === 'success') {
-                this.dataService.documentList.next(this.documentList);
-              }
-            });
+            // Update verification list
+            this.verificationList.unshift(verificationRes.data);
+            this.verificationList = this.verificationList.slice();
+            this.dataService.verificationList.next(this.verificationList);
           }
-
-          // Update verification list
-          this.verificationList.unshift(verificationRes.data);
-          this.verificationList = this.verificationList.slice();
-          this.dataService.verificationList.next(this.verificationList);
-
-        }
-      });
+        });
     }
   }
+
+  getUser() {
+    return this.utilitiesService.getUserString(this.baseItem.getUser());
+  }
+
+  /**
+   * Show the modal for the card/document details.
+   */
+  /*showDetailsModal() {
+    if (this.baseItem.isCard()) {
+      this.modalService.detailCard.next(this.baseItem.item as Card);
+    } else {
+      this.modalService.detailDocument.next(this.baseItem.item as Document);
+    }
+  }*/
 }

@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild
+  QueryList,
+  ViewChildren
 } from '@angular/core';
 import { Card } from '../../../../datamodels/card';
 import { Document } from '../../../../datamodels/document';
@@ -16,6 +17,7 @@ import { lowerCase, UtilitiesService } from '../../../../services/utilities.serv
 import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
 import { HttpService } from '../../../../services/http.service';
 import { Verification } from '../../../../datamodels/verification';
+import { InventoryItemComponent } from '../inventory-item/inventory-item.component';
 
 @Component({
   selector: 'inventory-table',
@@ -24,6 +26,7 @@ import { Verification } from '../../../../datamodels/verification';
 })
 export class InventoryTableComponent implements OnInit {
   @Input() baseItemList: BaseItem[];
+  @ViewChildren(InventoryItemComponent) displayedItems: QueryList<InventoryItemComponent>;
 
   dummyItem: Card = new Card();
 
@@ -107,19 +110,9 @@ export class InventoryTableComponent implements OnInit {
         orderFunc = (item: BaseItem) => item.getComment();
         break;
       }
-      case 'verifyDate': {
-        newOrder = this.sortTableListHelper(this.orderVerifyDate);
-        this.orderVerifyDate = newOrder;
-        orderFunc = (item: BaseItem) => item.getLastVerifiedString();
-        break;
-      }
     }
     if (newOrder) {
-      this.baseItemList = _.orderBy(
-        this.baseItemList,
-        [orderFunc],
-        [newOrder]
-      );
+      this.baseItemList = _.orderBy(this.baseItemList, [orderFunc], [newOrder]);
     }
   }
 
@@ -178,5 +171,20 @@ export class InventoryTableComponent implements OnInit {
 
   openPDF() {
     window.open(this.url, '_blank');
+  }
+  /**
+   * Update verification date for all checked items.
+  */
+  sendVerify(): void {
+    // TODO: should send a single post containing all verifications
+    this.displayedItems.forEach(item => {
+      if (item.isChecked) {
+        item.verifyInventory();
+      }
+    });
+  }
+
+  generatePDF(): void {
+    // todo
   }
 }

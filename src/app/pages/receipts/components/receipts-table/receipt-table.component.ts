@@ -123,13 +123,14 @@ export class ReceiptTableComponent implements OnInit {
   }
 
   genPDF() {
-    const filteredList = [];
-    for (const receipt of this.receiptList) {
-      if (this.passFilter(receipt)) {
-        filteredList.push(receipt);
-      }
-    }
-    this.httpService.httpPost<any>('genPDF', ['receipts', filteredList] ).then(pdfRes => {
+    const filteredList = this.receiptPipe.transform(this.receiptList, this.filterInput,
+       this.showCard, this.showDocument, this.showActive, this.showInactive);
+
+    const filters = [[this.filterInput, this.filterInput], ['Kort', this.showCard], ['Handlingar', this.showDocument],
+                     ['Aktiva', this.showActive], ['Inaktiva', this.showInactive]];
+
+
+    this.httpService.httpPost<any>('genPDF', ['receipts', filteredList, filters] ).then(pdfRes => {
       if (pdfRes.message === 'success') {
         this.url = pdfRes.url;
       }

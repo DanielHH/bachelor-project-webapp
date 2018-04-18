@@ -134,7 +134,10 @@ export class DocumentTableComponent implements OnInit {
       this.showGone
     );
 
-    this.httpService.httpPost<any>('genPDF', ['documents', filteredList] ).then(pdfRes => {
+    const filters = [[this.filterInput, this.filterInput], ['Tillgängliga', this.showIn], ['Utkvitterade', this.showOut],
+                     ['Arkiverade', this.showArchived], ['Borttappade', this.showGone]];
+
+    this.httpService.httpPost<any>('genPDF', ['documents', filteredList, filters] ).then(pdfRes => {
       if (pdfRes.message === 'success') {
         this.url = pdfRes.url;
       }
