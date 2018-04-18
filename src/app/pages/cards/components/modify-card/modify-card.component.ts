@@ -164,7 +164,7 @@ export class ModifyCardComponent implements OnInit {
       newCard.user = new User();
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 6, newCard, this.user);
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 6, newCard, this.user, newCard.cardNumber);
 
       this.httpService.httpPost<Card>('addNewCard/', {card: newCard, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
