@@ -29,7 +29,7 @@
 
             <div class="col-2">
                 <span class="add-new-button">
-          <button mat-raised-button (click)="sendVerify()" color="primary">Verifiera</button>
+          <button mat-raised-button (click)="sendVerify(); $event.stopPropagation()"> color="primary">Verifiera</button>
         </span>
             </div>
 
