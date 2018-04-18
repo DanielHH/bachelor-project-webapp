@@ -11,20 +11,19 @@
           <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
-      <mat-icon>close</mat-icon>
-      </button>
+            <mat-icon>close</mat-icon>
+          </button>
         </mat-form-field>
       </div>
 
-      <div class="col"></div>
-      <!-- Space -->
-
-      <div class="col-2">
-        <span class="add-new-button">
-      <button mat-raised-button (click)="sendVerify(); $event.stopPropagation()" color="primary">Verifiera</button>
-    </span>
+      <!-- PDF buttons -->
+      <div class="col text-right">
+        <div class="mt-3">
+          <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
+            <span>Generera PDF</span>
+          </button>
+        </div>
       </div>
-
 
     </div>
 
@@ -98,3 +97,5 @@
 </div>
 
 <app-inventory-detail></app-inventory-detail>
+
+<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från inventeringstabell'" [pdfType]="'inventory'"></app-pdf-generation-modal>

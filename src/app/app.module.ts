@@ -74,13 +74,16 @@ import { TokenInterceptor } from './auth/token.interceptor';
 import { ModifyDocumentComponent } from './pages/documents/components/modify-document/modify-document.component';
 import { UtilitiesService } from './services/utilities.service';
 import { DocumentItemComponent } from './pages/documents/components/document-item/document-item.component';
-import { ModalComponent } from './components/modal/modal.component';
 import { DocumentDetailComponent } from './pages/documents/components/document-detail/document-detail.component';
+import { ModalComponent } from './components/modal/modal.component';
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { DeliveryTableComponent } from './pages/deliveries/components/delivery-table/delivery-table.component';
 import { DeliveryItemComponent } from './pages/deliveries/components/delivery-item/delivery-item.component';
 import { ReceiptTableComponent } from './pages/receipts/components/receipts-table/receipt-table.component';
 import { MatchFilterReceiptPipe } from './pipes/match-filter-receipt.pipe';
+import { CardHistoryComponent } from './pages/cardhistory/cardhistory.component';
+import { CardhistoryTableComponent } from './pages/cardhistory/components/cardhistory-table/cardhistory-table.component';
+import { CardhistoryItemComponent } from './pages/cardhistory/components/cardhistory-item/cardhistory-item.component';
 import { ReceiptItemComponent } from './pages/receipts/components/receipt-item/receipt-item.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
 import { InventoryTableComponent } from './pages/inventory/components/inventory-table/inventory-table.component';
@@ -113,8 +116,10 @@ import { LogDetailComponent } from './pages/logs/components/log-detail/log-detai
 import { TypeDetailComponent } from './pages/types/components/type-detail/type-detail.component';
 import { DatePipe } from '@angular/common';
 import { LOCALE_ID } from '@angular/core';
-
-
+import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
+import { DocumentHistoryItemComponent } from './pages/document-history/components/document-history-item/document-history-item.component';
+import { DocumentHistoryTableComponent } from './pages/document-history/components/document-history-table/document-history-table.component';
+import { PdfGenerationModalComponent } from './components/pdf-generation-modal/pdf-generation-modal.component';
 
 @NgModule({
   declarations: [
@@ -156,7 +161,7 @@ import { LOCALE_ID } from '@angular/core';
     LoginComponent,
     ModifyDocumentComponent,
     ModalComponent,
-    DocumentDetailComponent,
+    DocumentHistoryComponent,
     DeliveriesComponent,
     DeliveryTableComponent,
     DeliveryItemComponent,
@@ -164,6 +169,9 @@ import { LOCALE_ID } from '@angular/core';
     MatchFilterReceiptPipe,
     MatchFilterInventoryPipe,
     ReceiptItemComponent,
+    CardHistoryComponent,
+    CardhistoryTableComponent,
+    CardhistoryItemComponent,
     InventoryComponent,
     InventoryTableComponent,
     InventoryItemComponent,
@@ -191,7 +199,11 @@ import { LOCALE_ID } from '@angular/core';
     UserDetailComponent,
     ReceiptDetailComponent,
     LogDetailComponent,
-    TypeDetailComponent
+    TypeDetailComponent,
+    DocumentHistoryItemComponent,
+    DocumentHistoryTableComponent,
+    DocumentDetailComponent,
+    PdfGenerationModalComponent
   ],
   imports: [
     BrowserModule,

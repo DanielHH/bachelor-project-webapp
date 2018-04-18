@@ -8,6 +8,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
 import { ModalService } from '../../../../services/modal.service';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-return-document',
@@ -30,9 +31,12 @@ export class ReturnDocumentComponent implements OnInit {
     this.showModal = value;
   }
 
+  user: User;
   documentItem: Document = null;
   documents: Document[] = [];
   receipts: Receipt[] = [];
+
+  latestUser: User = null;
 
   locationControl = new FormControl('', Validators.required);
 
@@ -43,8 +47,14 @@ export class ReturnDocumentComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
+
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
@@ -87,6 +97,9 @@ export class ReturnDocumentComponent implements OnInit {
    */
   returnDocument() {
     if (this.isValidLocation()) {
+      // Save latestUser for LogEvent
+      this.latestUser = this.documentItem.user;
+
       this.documentItem.user = new User();
       this.documentItem.location = this.locationInput;
       this.documentItem.comment = this.commentInput != '' ? this.commentInput : null;
@@ -96,12 +109,19 @@ export class ReturnDocumentComponent implements OnInit {
       const activeReceipt = this.getReceipt(this.documentItem.activeReceipt);
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
-      this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
-        if (receiptRes.message === 'success') {
-          this.documentItem.activeReceipt = null;
+      // Create new log event
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 4, this.documentItem, this.user, this.latestUser.name);
 
-          this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
-            if (documentRes.message === 'success') {
+      this.httpService.httpPut<Receipt>('updateReceipt/', {
+        receipt: activeReceipt,
+        logEvent: logEvent,
+        document: this.documentItem})
+        .then(res => {
+        if (res.message === 'success') {
+          this.documentItem.activeReceipt = null;
+            // Update log event list
+            this.utilitiesService.updateLogEventList(res.data.logEvent);
+
               // Update receipt list
               this.receipts = this.receipts.slice();
               this.dataService.receiptList.next(this.receipts);
@@ -112,8 +132,6 @@ export class ReturnDocumentComponent implements OnInit {
               this.showModal = false;
             }
           });
-        }
-      });
     }
   }
 

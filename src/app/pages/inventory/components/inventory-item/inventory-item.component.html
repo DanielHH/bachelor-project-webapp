@@ -5,8 +5,9 @@
 
   <div class="col">{{baseItem?.getStatus()?.name}}</div>
   <div class="col">
-    <i *ngIf="this.baseItem?.getItemTypeString() == 'Kort'" class="material-icons">credit_card</i>
-    <i *ngIf="this.baseItem?.getItemTypeString() == 'Handling'" class="material-icons">import_contacts</i> {{baseItem?.getSubType()?.name}}
+    <i *ngIf="this.baseItem?.getItemTypeString() == 'Kort'" class="material-icons sm-icon">credit_card</i>
+    <i *ngIf="this.baseItem?.getItemTypeString() == 'Handling'" class="material-icons sm-icon">import_contacts</i>
+    {{baseItem?.getSubType()?.name}}
   </div>
   <div class="col">{{baseItem?.getNumber()}}</div>
   <div class="col">{{getUser()}}</div>

@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
+import { LogEvent } from '../../../../datamodels/logEvent';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-card-item',
@@ -19,7 +21,9 @@ import { ModalService } from '../../../../services/modal.service';
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
 
+  user: User;
   cardList: Card[] = [];
+
 
   showRequestModal = false;
   showReturnModal = false;
@@ -29,10 +33,16 @@ export class CardItemComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService) {
-      this.dataService.cardList.subscribe(cardList => {
-        this.cardList = cardList;
-      });
+    public utilitiesService: UtilitiesService,
+    private authService: AuthService) {
+
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
+    this.dataService.cardList.subscribe(cardList => {
+      this.cardList = cardList;
+    });
   }
 
   ngOnInit() { }
@@ -67,9 +77,15 @@ export class CardItemComponent implements OnInit {
    * Sets the status of the card in the database
    */
   editStatus() {
-    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+    // Create new log event
+    const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.status.name;
+    const logEvent = this.utilitiesService.createNewLogEventForItem(1, 12, this.cardItem, this.user, logText);
+
+    this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
       if (res.message === 'success') {
         this.dataService.cardList.next(this.cardList);
+
+        this.utilitiesService.updateLogEventList(res.data.logEvent);
       }
     });
   }

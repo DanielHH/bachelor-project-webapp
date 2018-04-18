@@ -8,6 +8,9 @@ import { ExamplesComponent } from './pages/examples/examples.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
+import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
+import { CardHistoryComponent } from './pages/cardhistory/cardhistory.component';
+import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
 import { AuthGuard } from './auth/auth.guard';
 import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
 import { TypesComponent } from './pages/types/types.component';
@@ -56,7 +59,7 @@ export const routes: Routes = [
     data: { name: 'Inventarie', validUserTypes: [1] },
     canActivate: [AuthGuard]
   },
-  /*{
+  {
     path: 'card-history',
     component: CardHistoryComponent,
     data: { name: 'Korthistorik', validUserTypes: [1] },
@@ -67,7 +70,7 @@ export const routes: Routes = [
     component: DocumentHistoryComponent,
     data: { name: 'Dokumenthistorik', validUserTypes: [1] },
     canActivate: [AuthGuard]
-  },*/
+  },
   {
     path: 'self-verification',
     component: SelfVerificationComponent,

@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
 import { BaseType } from '../../../../datamodels/baseType';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-modify-document',
@@ -70,7 +71,7 @@ export class ModifyDocumentComponent implements OnInit {
     }
     this.showModal = value;
   }
-
+  user: User;
   documentItem: Document;
 
   @Output() showModalChange = new EventEmitter<any>();
@@ -79,8 +80,13 @@ export class ModifyDocumentComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
     this.dataService.typeList.subscribe(baseTypes => {
       this.baseTypes = baseTypes;
 
@@ -121,7 +127,7 @@ export class ModifyDocumentComponent implements OnInit {
       } else {
         this.modalTitle = 'Lägg till ny handling';
         this.modalType = 0;
-        this.showModal = true;
+        this._showModal = true;
       }
     });
   }
@@ -163,14 +169,20 @@ export class ModifyDocumentComponent implements OnInit {
       newDoc.status = this.utilitiesService.getStatusFromID(1);
       newDoc.user = new User();
 
-      this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
+      // Create new log event
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 6, newDoc, this.user);
+
+      this.httpService.httpPost<Document>('addNewDocument/', {document: newDoc, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
-          this.documentList.unshift(res.data);
+          this.documentList.unshift(res.data.document);
+          // Update log event list
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
+
           // Trigger view refresh
           this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
 
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }
@@ -183,10 +195,17 @@ export class ModifyDocumentComponent implements OnInit {
     if (this.isValidInput()) {
       this.setDocumentFromForm(this.documentItem);
 
-      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
+      // Create new log event
+      const logText = 'Uppgifter för ' + this.documentItem.documentNumber;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 10, this.documentItem, this.user, logText);
+
+      this.httpService.httpPut<Document>('updateDocument/', {documentItem: this.documentItem, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
           this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
+
+          // Update log event list
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           this.closeForm();
         }

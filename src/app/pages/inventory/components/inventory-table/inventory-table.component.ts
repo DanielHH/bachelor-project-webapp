@@ -10,6 +10,7 @@ import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-invento
 import { HttpService } from '../../../../services/http.service';
 import { Verification } from '../../../../datamodels/verification';
 import { InventoryItemComponent } from '../inventory-item/inventory-item.component';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'inventory-table',
@@ -19,6 +20,8 @@ import { InventoryItemComponent } from '../inventory-item/inventory-item.compone
 export class InventoryTableComponent implements OnInit {
   @Input() baseItemList: BaseItem[];
   @ViewChildren(InventoryItemComponent) displayedItems: QueryList<InventoryItemComponent>;
+
+  showPdfGenerationModal = false;
 
   dummyItem: Card = new Card();
 
@@ -46,7 +49,8 @@ export class InventoryTableComponent implements OnInit {
   constructor(
     private inventoryPipe: MatchFilterInventoryPipe,
     private utilitiesService: UtilitiesService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -123,7 +127,7 @@ export class InventoryTableComponent implements OnInit {
     }
   }
 
-  genPDF() {
+  openPdfGenerationModal() {
     const filteredList = this.inventoryPipe.transform(
       this.baseItemList,
       this.filterInput,
@@ -158,17 +162,8 @@ export class InventoryTableComponent implements OnInit {
 
     const filters = this.generateFilterString();
 
-
-
-    this.httpService.httpPost<any>('genPDF', ['inventory', verificationList, filters]).then(pdfRes => {
-      if (pdfRes.message === 'success') {
-        this.url = pdfRes.url;
-      }
-    });
-  }
-
-  openPDF() {
-    window.open(this.url, '_blank');
+    this.modalService.pdfSelectedList.next(verificationList);
+    this.modalService.pdfFilteredList.next(verificationList);
   }
 
   /**
@@ -181,11 +176,6 @@ export class InventoryTableComponent implements OnInit {
         item.verifyInventory();
       }
     });
-  }
-
-  generatePDF(): void {
-    // todo
-    this.genPDF();
   }
 
   changeItems() {

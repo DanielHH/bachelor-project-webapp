@@ -8,6 +8,8 @@ import { DataService } from '../../../../services/data.service';
 import { Receipt } from '../../../../datamodels/receipt';
 import * as _ from 'lodash';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import { LogEvent } from '../../../../datamodels/logEvent';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-return-card',
@@ -15,7 +17,6 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   styleUrls: ['./return-card.component.scss']
 })
 export class ReturnCardComponent implements OnInit {
-
   @ViewChild('returnForm') returnForm: NgForm;
 
   showModal = false;
@@ -31,10 +32,14 @@ export class ReturnCardComponent implements OnInit {
     this.showModal = value;
   }
 
+  user: User;
   cards: Card[] = [];
   receipts: Receipt[] = [];
+  logEvents: LogEvent[] = [];
 
   cardItem: Card = null;
+
+  latestUser: User = null;
 
   locationControl = new FormControl('', Validators.required);
 
@@ -45,8 +50,14 @@ export class ReturnCardComponent implements OnInit {
     private httpService: HttpService,
     private dataService: DataService,
     public utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
+
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
     // Receipt list subscriber
     this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
@@ -57,8 +68,13 @@ export class ReturnCardComponent implements OnInit {
       this.cards = cards;
     });
 
+    // Log event list subscriber
+    this.dataService.logEventList.subscribe(logEvents => {
+      this.logEvents = logEvents;
+    });
+
     // Return card subscriber
-    this.modalService.returnCard.subscribe((card) => {
+    this.modalService.returnCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -74,15 +90,14 @@ export class ReturnCardComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Returns receipts from id
    * @param id Id of receipt
    */
   getReceipt(id: number) {
-    return _.find(this.receipts, (receipt) => receipt.id == id);
+    return _.find(this.receipts, receipt => receipt.id == id);
   }
 
   /**
@@ -97,37 +112,47 @@ export class ReturnCardComponent implements OnInit {
    */
   returnCard() {
     if (this.isValidLocation()) {
+      // Save latestUser for LogEvent
+      this.latestUser = this.cardItem.user;
       // Set card information
       this.cardItem.user = new User();
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(1); // TODO: ENUM FOR STATUS, 1 = Returned
-      this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
+      this.cardItem.comment =
+        this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
-
 
       // Update receipt
       const activeReceipt = this.getReceipt(this.cardItem.activeReceipt);
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
+      // Create new log event
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, this.latestUser.name);
+
       // Submit changes to server
-      this.httpService.httpPut<Receipt>('updateReceipt/', activeReceipt).then(receiptRes => {
-        if (receiptRes.message === 'success') {
-          this.cardItem.activeReceipt = null;
+      this.httpService
+        .httpPut<Receipt>('updateReceipt/', {
+          receipt: activeReceipt,
+          logEvent: logEvent,
+          card: this.cardItem
+        })
+        .then(res => {
+          console.log(res);
+          if (res.message === 'success') {
+            this.cardItem.activeReceipt = null;
+            // Update log event list
+            this.utilitiesService.updateLogEventList(res.data.logEvent);
 
-          this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(cardRes => {
-            if (cardRes.message === 'success') {
-              // Update receipt list
-              this.receipts = this.receipts.slice();
-              this.dataService.receiptList.next(this.receipts);
+            // Update receipt list
+            this.receipts = this.receipts.slice();
+            this.dataService.receiptList.next(this.receipts);
 
-              // Update card list
-              this.dataService.cardList.next(this.cards);
+            // Update card list
+            this.dataService.cardList.next(this.cards);
 
-              this.showModal = false;
-            }
-          });
-        }
-      });
+            this.closeForm();
+          }
+        });
     }
   }
 
