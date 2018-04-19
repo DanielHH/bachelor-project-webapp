@@ -4,6 +4,7 @@ import { Document } from '../../datamodels/document';
 import { DataService } from '../../services/data.service';
 import { BaseItem } from '../../datamodels/baseItem';
 import { UtilitiesService } from '../../services/utilities.service';
+import { HttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-inventory',
@@ -17,7 +18,8 @@ export class InventoryComponent implements OnInit {
 
   constructor(
     public dataService: DataService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private httpService: HttpService
   ) {
     this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
@@ -39,14 +41,14 @@ export class InventoryComponent implements OnInit {
     if (this.cardList) {
       this.cardList.forEach(element => {
         this.baseItemList.push(
-          new BaseItem(this.utilitiesService, element, 'card')
+          new BaseItem(this.utilitiesService, this.dataService, this.httpService, element, 'card')
         );
       });
     }
     if (this.documentList) {
       this.documentList.forEach(element => {
         this.baseItemList.push(
-          new BaseItem(this.utilitiesService, element, 'document')
+          new BaseItem(this.utilitiesService, this.dataService, this.httpService, element, 'document')
         );
       });
     }

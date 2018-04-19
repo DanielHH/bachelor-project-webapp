@@ -8,7 +8,8 @@
       <div class="col-4 px-0 text-filter-input">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på"
+          (change)="updateItemSelection()">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
             <mat-icon>close</mat-icon>
@@ -32,19 +33,23 @@
     <div class="pb-1 filter-checkbox-row">
 
       <div class="mr-2">
-        <mat-checkbox disableRipple id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+        <mat-checkbox disableRipple id="showIn" name="showIn" color="primary" class="pr-1"
+        (change)="updateItemSelection()" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox disableRipple id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+        <mat-checkbox disableRipple id="showOut" name="showOut" color="primary" class="pr-1"
+        (change)="updateItemSelection()" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary"
+        (change)="updateItemSelection()" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1"
+        (change)="updateItemSelection()" [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
     </div>
@@ -55,7 +60,7 @@
       <div class="row table-header">
 
         <div class="col-1" (click)="$event.stopPropagation()">
-          <mat-checkbox disableRipple color="primary" [(ngModel)]="isChecked" (change)="changeItems()"></mat-checkbox>
+          <mat-checkbox disableRipple color="primary" [(ngModel)]="selectAll" (change)="updateItemSelection()"></mat-checkbox>
         </div>
 
         <div class="col" (click)="sortTableList('status')">

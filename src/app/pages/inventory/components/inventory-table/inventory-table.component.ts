@@ -11,6 +11,7 @@ import { HttpService } from '../../../../services/http.service';
 import { Verification } from '../../../../datamodels/verification';
 import { InventoryItemComponent } from '../inventory-item/inventory-item.component';
 import { ModalService } from '../../../../services/modal.service';
+import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'inventory-table',
@@ -18,9 +19,6 @@ import { ModalService } from '../../../../services/modal.service';
   styleUrls: ['./inventory-table.component.scss']
 })
 export class InventoryTableComponent implements OnInit {
-  @Input() baseItemList: BaseItem[];
-  @ViewChildren(InventoryItemComponent) displayedItems: QueryList<InventoryItemComponent>;
-
   showPdfGenerationModal = false;
 
   dummyItem: Card = new Card();
@@ -44,14 +42,21 @@ export class InventoryTableComponent implements OnInit {
 
   url = '';
 
-  isChecked = false;
+  selectAll = false;
+
+  baseItemList: BaseItem[] = [];
 
   constructor(
     private inventoryPipe: MatchFilterInventoryPipe,
     private utilitiesService: UtilitiesService,
     private httpService: HttpService,
-    private modalService: ModalService
-  ) {}
+    private modalService: ModalService,
+    private dataService: DataService
+  ) {
+    this.dataService.itemList.subscribe(baseItemList =>
+      this.baseItemList = baseItemList
+    );
+  }
 
   ngOnInit() {
     this.sortTableListStart();
@@ -127,8 +132,8 @@ export class InventoryTableComponent implements OnInit {
     }
   }
 
-  openPdfGenerationModal() {
-    const filteredList = this.inventoryPipe.transform(
+  getFilteredList() {
+    return this.inventoryPipe.transform(
       this.baseItemList,
       this.filterInput,
       this.showIn,
@@ -136,33 +141,39 @@ export class InventoryTableComponent implements OnInit {
       this.showArchived,
       this.showGone
     );
+  }
+
+  openPdfGenerationModal() {
+    const filteredList = this.getFilteredList();
 
     const verificationList = [];
+    const selectedVerificationList = [];
     let verification: Verification;
 
-    this.displayedItems.forEach(item => {
-      if (item.isChecked && _.includes(filteredList, item.baseItem)) {
-        verification = new Verification();
-        const baseItem = item.baseItem;
-        if (baseItem.isCard()) {
-          verification.card = baseItem.item as Card;
-          verification.itemType = this.utilitiesService.getItemTypeFromID(1);
-        } else {
-          verification.document = baseItem.item as Document;
-          verification.itemType = this.utilitiesService.getItemTypeFromID(2);
-        }
+    filteredList.forEach(baseItem => {
+      verification = new Verification();
+      if (baseItem.isCard()) {
+        verification.card = baseItem.getItem() as Card;
+        verification.itemType = this.utilitiesService.getItemTypeFromID(1);
+      } else {
+        verification.document = baseItem.getItem() as Document;
+        verification.itemType = this.utilitiesService.getItemTypeFromID(2);
+      }
 
-        verification.verificationType = this.utilitiesService.getVerificationTypeFromID(2);
-        verification.user = baseItem.getItem().user;
-        verification.verificationDate = baseItem.getItem().lastVerificationDate;
+      verification.verificationType = this.utilitiesService.getVerificationTypeFromID(2);
+      verification.user = baseItem.getItem().user;
+      verification.verificationDate = baseItem.getItem().lastVerificationDate;
 
-        verificationList.push(verification);
+      verificationList.push(verification);
+
+      if (baseItem.isChecked) {
+        selectedVerificationList.push(verification);
       }
     });
 
     this.generateFilterArray();
 
-    this.modalService.pdfSelectedList.next(verificationList);
+    this.modalService.pdfSelectedList.next(selectedVerificationList);
     this.modalService.pdfFilteredList.next(verificationList);
   }
 
@@ -171,16 +182,16 @@ export class InventoryTableComponent implements OnInit {
    */
   sendVerify(): void {
     // TODO: should send a single post containing all verifications
-    this.displayedItems.forEach(item => {
-      if (item.isChecked) {
-        item.verifyInventory();
+    this.getFilteredList().forEach(baseItem => {
+      if (baseItem.isChecked) {
+        baseItem.verifyInventory();
       }
     });
   }
 
-  changeItems() {
-    this.displayedItems.forEach(item => {
-      item.isChecked = this.isChecked;
+  updateItemSelection() {
+    this.getFilteredList().forEach(baseItem => {
+      baseItem.isChecked = this.selectAll;
     });
   }
 
