@@ -34,7 +34,7 @@ export class InventoryTableComponent implements OnInit {
   orderNumber = '';
   orderUser = '';
   orderLocation = '';
-  orderComment = '';
+  orderVerify = '';
   orderDate = '';
   orderItemType = '';
   orderVerifyDate = '';
@@ -140,10 +140,10 @@ export class InventoryTableComponent implements OnInit {
         orderFunc = (item: BaseItem) => lowerCase(item.getLocation());
         break;
       }
-      case 'comment': {
-        newOrder = this.sortTableListHelper(this.orderComment);
-        this.orderComment = newOrder;
-        orderFunc = (item: BaseItem) => lowerCase(item.getComment());
+      case 'verify': {
+        newOrder = this.sortTableListHelper(this.orderVerify);
+        this.orderVerify = newOrder;
+        orderFunc = (item: BaseItem) => item.getItem().lastVerificationDate;
         break;
       }
     }

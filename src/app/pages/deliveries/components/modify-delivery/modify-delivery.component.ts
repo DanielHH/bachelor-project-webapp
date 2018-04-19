@@ -146,6 +146,8 @@ export class ModifyDeliveryComponent implements OnInit {
 
       this.httpService.httpPost<Delivery>('addNewDelivery/', newDelivery).then(res => {
         if (res.message === 'success') {
+          newDelivery.creationDate = new Date();
+          newDelivery.modifiedDate = new Date();
           this.deliveryList.unshift(res.data);
           // Trigger view refresh
           this.deliveryList = this.deliveryList.slice();
@@ -166,6 +168,7 @@ export class ModifyDeliveryComponent implements OnInit {
 
       this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
         if (res.message === 'success') {
+          this.deliveryItem.modifiedDate = new Date();
           this.deliveryList = this.deliveryList.slice();
           this.dataService.deliveryList.next(this.deliveryList);
 

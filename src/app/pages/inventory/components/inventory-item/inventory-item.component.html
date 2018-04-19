@@ -14,7 +14,7 @@
   <div class="col">{{baseItem?.getLocation()}}</div>
 
   <div class="col">
-    <div class="column-text">{{baseItem?.getComment()}}</div>
+    <div class="column-text">{{baseItem?.getLastVerifiedString()}}</div>
     <div class="pull-right table-menu-fix">
       <app-item-menu [object]="baseItem?.item" (editStatus)="editStatus()" [itemMenu]="true"></app-item-menu>
     </div>

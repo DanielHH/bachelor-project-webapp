@@ -76,10 +76,10 @@
                             {{this.documentItem?.registrationDate | date: 'shortDate'}}
                         </div>
                         <div class="col-0 col-md-4">
-                            {{this.documentItem?.creationDate | date: 'shortDate'}}
+                            {{this.documentItem?.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
                         </div>
                         <div class="col-0 col-md-4">
-                            {{this.documentItem?.modifiedDate | date: 'shortDate'}}
+                            {{this.documentItem?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}
                         </div>
                     </div>
                     <!-- Row Space -->
@@ -105,7 +105,9 @@
                             {{utilitiesService.getUserString(documentItem?.user)}}
                         </div>
                         <div class="col-0 col-md-4">
-                            {{this.documentItem?.lastVerificationDate | date: 'shortDate'}}
+                            {{this.documentItem?.lastVerificationDate?
+                            (this.documentItem?.lastVerificationDate ? (this.documentItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig')
+                          : 'Aldrig'}}
                         </div>
                     </div>
                     <!-- Row Space -->

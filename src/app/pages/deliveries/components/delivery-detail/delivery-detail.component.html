@@ -73,10 +73,10 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-0 col-md-4">
-              {{this.deliveryItem?.creationDate | date: 'shortDate'}}
+              {{this.deliveryItem?.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.deliveryItem?.modifiedDate | date: 'shortDate'}}
+              {{this.deliveryItem?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}
             </div>
             <div class="col-12 col-md-4">
               <span *ngIf="deliveryItem?.comment">{{deliveryItem?.comment}}</span>
