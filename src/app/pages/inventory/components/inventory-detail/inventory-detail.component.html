@@ -54,7 +54,9 @@
               {{baseItem?.item?.id ? baseItem?.item.location : ''}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.getItem().lastVerificationDate | date: 'medium'}}
+              {{(baseItem?.getItem().lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') ?
+                (baseItem?.getItem().lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss')
+                : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->

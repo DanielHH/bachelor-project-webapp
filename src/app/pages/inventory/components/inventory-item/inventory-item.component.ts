@@ -118,7 +118,8 @@ export class InventoryItemComponent implements OnInit {
         ? new VerificationType('Egenkontroll')
         : new VerificationType('Inventering');
       verification.itemType = this.baseItem.getItemType();
-      verification.verificationDate = this.utilitiesService.getLocalDate();
+      // verification.verificationDate = this.utilitiesService.getLocalDate();
+      verification.verificationDate = new Date();
 
       // Submit changes to database
       this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
