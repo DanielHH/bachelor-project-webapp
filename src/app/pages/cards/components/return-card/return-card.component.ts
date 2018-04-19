@@ -138,7 +138,6 @@ export class ReturnCardComponent implements OnInit {
           card: this.cardItem
         })
         .then(res => {
-          console.log(res);
           if (res.message === 'success') {
             this.cardItem.activeReceipt = null;
             // Update log event list
