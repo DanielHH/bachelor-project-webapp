@@ -1,21 +1,18 @@
-import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import { Document } from '../../../../datamodels/document';
-import { BaseItem } from '../../../../datamodels/baseItem';
+import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { ModifyCardComponent } from '../../../cards/components/modify-card/modify-card.component';
-import { NgForm } from '@angular/forms';
-import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
-import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
-import { HttpService } from '../../../../services/http.service';
-import { Verification } from '../../../../datamodels/verification';
-import { InventoryItemComponent } from '../inventory-item/inventory-item.component';
-import { ModalService } from '../../../../services/modal.service';
-import { DataService } from '../../../../services/data.service';
-import { VerificationType } from '../../../../datamodels/verificationType';
+import { BaseItem } from '../../../../datamodels/baseItem';
+import { Card } from '../../../../datamodels/card';
 import { CardType } from '../../../../datamodels/cardType';
+import { Document } from '../../../../datamodels/document';
 import { DocumentType } from '../../../../datamodels/documentType';
 import { User } from '../../../../datamodels/user';
+import { Verification } from '../../../../datamodels/verification';
+import { VerificationType } from '../../../../datamodels/verificationType';
+import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService, lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'inventory-table',
@@ -86,7 +83,6 @@ export class InventoryTableComponent implements OnInit {
     this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
     });
-
   }
 
   ngOnInit() {
@@ -224,13 +220,16 @@ export class InventoryTableComponent implements OnInit {
   updateItemSelection() {
     setTimeout(() => {
       this.baseItemList.forEach(baseItem => {
-        if (this.inventoryPipe.matchFilt(
+        if (
+          this.inventoryPipe.matchFilt(
             baseItem,
             this.filterInput,
             this.showIn,
             this.showOut,
             this.showArchived,
-            this.showGone)) {
+            this.showGone
+          )
+        ) {
           baseItem.isChecked = this.selectAll;
         } else {
           baseItem.isChecked = false;

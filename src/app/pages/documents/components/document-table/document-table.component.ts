@@ -1,11 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Document } from '../../../../datamodels/document';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { ModifyDocumentComponent } from '../modify-document/modify-document.component';
-import { NgForm } from '@angular/forms';
-import { ModalService } from '../../../../services/modal.service';
-import { HttpService } from '../../../../services/http.service';
+import { Document } from '../../../../datamodels/document';
 import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
 import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
@@ -104,7 +102,15 @@ export class DocumentTableComponent implements OnInit {
     if (newOrder) {
       this.documentList = _.orderBy(
         this.documentList,
-        [document => (document[property] ? (lowerCase(document[property]) as string) : (document[property] as string))],
+        [
+          document => {
+            if (document[property]) {
+              return lowerCase(document[property]) as string;
+            } else {
+              return document[property.slice(0, -5)] ? (lowerCase(document[property.slice(0, -5)].name) as string) : '';
+            }
+          }
+        ],
         [newOrder]
       );
     }
@@ -143,7 +149,6 @@ export class DocumentTableComponent implements OnInit {
     this.generateFilterArray();
 
     this.modalService.pdfFilteredList.next(filteredList);
-
   }
 
   generateFilterArray() {

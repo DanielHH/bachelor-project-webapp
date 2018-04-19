@@ -106,7 +106,15 @@ export class DeliveryTableComponent implements OnInit {
     if (newOrder) {
       this.deliveryList = _.orderBy(
         this.deliveryList,
-        [delivery => (delivery[property] ? (lowerCase(delivery[property]) as string) : (delivery[property] as string))],
+        [
+          delivery => {
+            if (delivery[property]) {
+              return lowerCase(delivery[property]) as string;
+            } else {
+              return delivery[property.slice(0, -5)] ? (lowerCase(delivery[property.slice(0, -5)].name) as string) : '';
+            }
+          }
+        ],
         [newOrder]
       );
     }
@@ -144,7 +152,6 @@ export class DeliveryTableComponent implements OnInit {
     this.generateFilterArray();
 
     this.modalService.pdfFilteredList.next(filteredList);
-
   }
 
   generateFilterArray() {
