@@ -56,7 +56,7 @@ export const routes: Routes = [
   {
     path: 'inventory',
     component: InventoryComponent,
-    data: { name: 'Inventarie', validUserTypes: [1] },
+    data: { name: 'Inventarie', validUserTypes: [1, 2] },
     canActivate: [AuthGuard]
   },
   {
@@ -72,12 +72,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'self-verification',
-    component: SelfVerificationComponent,
-    data: { name: 'Egenkontroll', validUserTypes: [2] },
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'types',
     component: TypesComponent,
     data: { name: 'Typer', validUserTypes: [1] },
@@ -89,7 +83,7 @@ export const routes: Routes = [
     data: { name: 'Användare', validUserTypes: [1] },
     canActivate: [AuthGuard]
   },
-  { path: '**', component: HomeComponent, data: { name: 'Startsidan' }, canActivate: [AuthGuard] }
+  { path: '**', component: HomeComponent, data: { name: 'SecTrack' }, canActivate: [AuthGuard] }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {

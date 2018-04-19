@@ -96,7 +96,7 @@ export class InventoryItemComponent implements OnInit {
    * Send a message to the backend updating when this item was last inventoried
    * to be the current time.
    */
-  verifyInventory(): void {
+  verifyInventory(selfVerification = false): void {
   if (this.baseItem) {
     const itemToUpdate: Card | Document = this.baseItem.getItem();
 
@@ -121,7 +121,7 @@ export class InventoryItemComponent implements OnInit {
     itemToUpdate.activeReceipt = null;
     }
 
-    verification.verificationType = new VerificationType('Inventering');
+    verification.verificationType = selfVerification ? new VerificationType('Egenkontroll') : new VerificationType('Inventering');
     verification.itemType = this.baseItem.getItemType();
     verification.verificationDate = this.utilitiesService.getLocalDate();
 
@@ -136,7 +136,7 @@ export class InventoryItemComponent implements OnInit {
 
       if (this.baseItem.isCard()) {
         this.httpService
-        .httpPut<Card>('updateCard/', itemToUpdate)
+        .httpPut<Card>('updateCard/', {cardItem: itemToUpdate})
         .then(cardRes => {
           if (cardRes.message === 'success') {
           this.dataService.cardList.next(this.cardList);
@@ -144,7 +144,7 @@ export class InventoryItemComponent implements OnInit {
         });
       } else {
         this.httpService
-        .httpPut<Document>('updateDocument/', itemToUpdate)
+        .httpPut<Document>('updateDocument/', {documentItem: itemToUpdate})
         .then(documentRes => {
           if (documentRes.message === 'success') {
           this.dataService.documentList.next(this.documentList);
