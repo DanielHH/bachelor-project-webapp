@@ -39,7 +39,7 @@
     <div class="table-container">
       <div class="row table-header">
 
-        <div class="col" (click)="sortTableList('logType')">
+        <div class="col-2" (click)="sortTableList('logType')">
           <span class="hover" [class.up-arrow]="orderLogType == 'asc'" [class.down-arrow]="orderLogType == 'desc'" [class.both-arrow]="orderLogType == ''">Typ </span>
         </div>
         <div class="col" (click)="sortTableList('logText')">
@@ -48,7 +48,7 @@
         <div class="col" (click)="sortTableList('user')">
           <span class="hover" [class.up-arrow]="orderLogUser == 'asc'" [class.down-arrow]="orderLogUser == 'desc'" [class.both-arrow]="orderLogUser == ''">Utförd av </span>
         </div>
-        <div class="col" (click)="sortTableList('logDate')">
+        <div class="col-2" (click)="sortTableList('logDate')">
           <span class="hover" [class.up-arrow]="orderLogDate == 'asc'" [class.down-arrow]="orderLogDate == 'desc'" [class.both-arrow]="orderLogDate == ''">Datum </span>
         </div>
       </div>
