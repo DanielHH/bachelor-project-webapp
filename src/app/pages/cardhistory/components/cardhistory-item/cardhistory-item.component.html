@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col">{{logEventItem?.logType?.name}}</div>
+  <div class="col-2">{{logEventItem?.logType?.name}}</div>
   <div class="col">{{logEventItem?.logText}}</div>
   <div class="col">{{utilitiesService.getUserString(logEventItem?.user)}}</div>
-  <div class="col-1">{{logEventItem?.logDate ? (logEventItem?.logDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}</div>
+  <div class="col-2">{{logEventItem?.logDate ? (logEventItem?.logDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}</div>
   <div class="col"></div>
 </div>
 
