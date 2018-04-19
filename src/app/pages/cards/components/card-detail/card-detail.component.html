@@ -47,13 +47,13 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-0 col-md-4">
-              {{this.cardItem?.creationDate | date: 'shortDate'}}
+              {{this.cardItem?.creationDate ? (this.cardItem?.creationDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+            </div>
+            <div class="col-0 col-md-4">
+              {{this.cardItem?.modifiedDate ? (this.cardItem?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
             </div>
             <div class="col-0 col-md-4">
               {{this.cardItem?.expirationDate | date: 'shortDate'}}
-            </div>
-            <div class="col-0 col-md-4">
-              {{this.cardItem?.modifiedDate | date: 'shortDate'}}
             </div>
           </div>
           <!-- Row Space -->
@@ -79,7 +79,10 @@
               {{utilitiesService.getUserString(cardItem?.user)}}
             </div>
             <div class="col-0 col-md-4">
-              {{cardItem?.lastVerificationDate | date: 'shortDate'}}
+              {{cardItem?.lastVerificationDate?
+              (cardItem?.lastVerificationDate ?
+              (cardItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig')
+              : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->

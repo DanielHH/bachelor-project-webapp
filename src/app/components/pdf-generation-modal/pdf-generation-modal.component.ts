@@ -64,6 +64,8 @@ export class PdfGenerationModalComponent implements OnInit, OnDestroy {
           this.selectedOnly = false;
           this.showGenerationOptions = false;
           this.generatePDF();
+        } else if (!this.selectedList.length) {
+          this.selectedOnly = false;
         }
       }
     });
@@ -87,6 +89,7 @@ export class PdfGenerationModalComponent implements OnInit, OnDestroy {
    */
   toggleSelectedOnly() {
     this.selectedOnly = !this.selectedOnly;
+    this.hideSubmit = this.selectedOnly ? !Boolean(this.selectedList.length) : false;
   }
 
   generatePDF() {

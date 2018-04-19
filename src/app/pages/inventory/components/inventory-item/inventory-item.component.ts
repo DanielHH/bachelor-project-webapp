@@ -13,6 +13,7 @@ import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'inventory-item',
@@ -21,14 +22,10 @@ import { UtilitiesService } from '../../../../services/utilities.service';
 })
 export class InventoryItemComponent implements OnInit {
   @Input() baseItem: BaseItem;
-  isChecked: boolean;
 
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
-  verificationList: Verification[];
   cardList: Card[];
   documentList: Document[];
+  baseItemList: BaseItem[];
 
   constructor(
     private dataService: DataService,
@@ -38,23 +35,14 @@ export class InventoryItemComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
-      this.cardTypeList = cardTypeList;
-    });
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
-      this.documentTypeList = documentTypeList;
-    });
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
-    this.dataService.verificationList.subscribe(verificationList => {
-      this.verificationList = verificationList;
-    });
     this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
     });
     this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
+    });
+    this.dataService.itemList.subscribe(baseItemList => {
+      this.baseItemList = baseItemList;
     });
   }
 
@@ -86,76 +74,29 @@ export class InventoryItemComponent implements OnInit {
     }
   }
 
-  /**
-   * Send a message to the backend updating when this item was last inventoried
-   * to be the current time.
-   */
-  verifyInventory(selfVerification = false): void {
-    if (this.baseItem) {
-      const itemToUpdate: Card | Document = this.baseItem.getItem();
-
-      const verification = new Verification();
-
-      if (this.baseItem.isCard()) {
-        verification.card = itemToUpdate as Card;
-        verification.document = null;
-      } else {
-        verification.document = itemToUpdate as Document;
-        verification.card = null;
-      }
-
-      if (this.baseItem.getUser() && this.baseItem.getUser().id !== 0) {
-        verification.user = this.baseItem.getUser();
-      } else {
-        verification.user = null;
-      }
-
-      if (itemToUpdate.activeReceipt === 0) {
-        itemToUpdate.activeReceipt = null;
-      }
-
-      verification.verificationType = selfVerification
-        ? new VerificationType('Egenkontroll')
-        : new VerificationType('Inventering');
-      verification.itemType = this.baseItem.getItemType();
-      verification.verificationDate = this.utilitiesService.getLocalDate();
-
-      // Submit changes to database
-      this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
-        if (verificationRes.message === 'success') {
-          itemToUpdate.lastVerificationID = Number(verificationRes.data.id);
-          itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
-          itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
-
-          if (this.baseItem.isCard()) {
-            this.httpService.httpPut<Card>('updateCard/', { cardItem: itemToUpdate }).then(cardRes => {
-              if (cardRes.message === 'success') {
-                // So we don't adjust for timezone twice for dates not received from server
-                itemToUpdate.lastVerificationDate = new Date();
-                itemToUpdate.modifiedDate = new Date();
-                this.dataService.cardList.next(this.cardList);
-              }
-            });
-          } else {
-            this.httpService.httpPut<Document>('updateDocument/', { documentItem: itemToUpdate }).then(documentRes => {
-              if (documentRes.message === 'success') {
-                itemToUpdate.lastVerificationDate = new Date();
-                itemToUpdate.modifiedDate = new Date();
-                this.dataService.documentList.next(this.documentList);
-              }
-            });
-          }
-
-          // Update verification list
-          this.verificationList.unshift(verificationRes.data);
-          this.verificationList = this.verificationList.slice();
-          this.dataService.verificationList.next(this.verificationList);
-        }
-      });
-    }
-  }
-
   getUser() {
     return this.utilitiesService.getUserString(this.baseItem.getUser());
+  }
+
+  toggleSelected() {
+    setTimeout(() => {
+      if (this.baseItem.isCard()) {
+        for (const baseItem of this.baseItemList) {
+          if (baseItem.isCard() && baseItem.getItem().id === this.baseItem.item.id) {
+            baseItem.isChecked = !baseItem.isChecked;
+            break;
+          }
+        }
+      } else {
+        for (const baseItem of this.baseItemList) {
+          if (!baseItem.isCard() && baseItem.item.id === this.baseItem.item.id) {
+            baseItem.isChecked = !baseItem.isChecked;
+            break;
+          }
+        }
+      }
+      this.baseItemList.slice();
+      this.dataService.itemList.next(this.baseItemList);
+    } , 100);
   }
 }

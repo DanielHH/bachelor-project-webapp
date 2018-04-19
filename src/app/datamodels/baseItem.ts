@@ -2,11 +2,16 @@ import { Card } from './card';
 import { Document } from './document';
 import { CardDetailComponent } from '../pages/cards/components/card-detail/card-detail.component';
 import { CardType } from './cardType';
+import { DocumentType } from './documentType';
 import { User } from './user';
 import { StatusType } from './statusType';
-import { Verification } from './verification';
 import { ItemType } from './itemType';
 import { UtilitiesService, lowerCase } from '../services/utilities.service';
+import { VerificationType } from './verificationType';
+import { DataService } from '../services/data.service';
+import { HttpService } from '../services/http.service';
+import * as _ from 'lodash';
+import * as moment from 'moment';
 
 
 /**
@@ -30,12 +35,17 @@ export class BaseItem {
    */
   itemType: string;
 
+  /**
+   * Returns true if this item is selected in the table
+   */
+  isChecked: boolean;
+
   constructor(
-    private utilitiesService: UtilitiesService,
     item: Card|Document,
     itemType: string) {
     this.item = item;
     this.itemType = itemType;
+    this.isChecked = false;
     if (itemType !== BaseItem.CARD_NAME && itemType !== BaseItem.DOCUMENT_NAME) {
       console.error('invalid baseitem type');
     }
@@ -108,7 +118,8 @@ export class BaseItem {
    */
   getLastVerifiedString(): string {
     if (this.item.lastVerificationDate) {
-      return this.utilitiesService.getDateString(this.item.lastVerificationDate, 'YYYY-MM-DD HH:MM:SS');
+      return this.item.lastVerificationDate ?
+      moment(this.item.lastVerificationDate).format('YYYY-MM-DD HH:MM:SS') : '-';
     } else {
       return 'Aldrig';
     }
@@ -143,5 +154,4 @@ export class BaseItem {
   isDocument(): boolean {
     return this.itemType === BaseItem.DOCUMENT_NAME;
   }
-
 }

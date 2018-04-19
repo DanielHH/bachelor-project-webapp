@@ -11,7 +11,6 @@ import { CardDetailComponent } from './pages/cards/components/card-detail/card-d
 import { CardHistoryComponent } from './pages/cardhistory/cardhistory.component';
 import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
 import { AuthGuard } from './auth/auth.guard';
-import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
 import { TypesComponent } from './pages/types/types.component';
 import { UsersComponent } from './pages/users/users.component';
 

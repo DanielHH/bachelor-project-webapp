@@ -37,7 +37,9 @@ export class InventoryDetailComponent implements OnInit {
 
     constructor(
       private modalService: ModalService,
-      public utilitiesService: UtilitiesService
+      public utilitiesService: UtilitiesService,
+      private httpService: HttpService,
+      private dataService: DataService
     ) {
       this.modalService.detailInventory.subscribe((baseItem) => {
         if (baseItem && baseItem.item.id) {
@@ -56,7 +58,7 @@ export class InventoryDetailComponent implements OnInit {
     closeForm() {
       this.detailForm.resetForm();
 
-      this.baseItem = Object.assign({}, new BaseItem(null, new Card(), 'card'));
+      this.baseItem = Object.assign({}, new BaseItem(new Card(), 'card'));
       this.modalService.detailInventory.next(this.baseItem);
 
       this.showModal = false;

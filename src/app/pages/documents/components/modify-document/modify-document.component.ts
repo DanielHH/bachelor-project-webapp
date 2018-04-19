@@ -174,6 +174,8 @@ export class ModifyDocumentComponent implements OnInit {
 
       this.httpService.httpPost<Document>('addNewDocument/', {document: newDoc, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
+          newDoc.creationDate = new Date();
+          newDoc.modifiedDate = new Date();
           this.documentList.unshift(res.data.document);
           // Update log event list
           this.utilitiesService.updateLogEventList(res.data.logEvent);
@@ -201,6 +203,7 @@ export class ModifyDocumentComponent implements OnInit {
 
       this.httpService.httpPut<Document>('updateDocument/', {documentItem: this.documentItem, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
+          this.documentItem.modifiedDate = new Date();
           this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
 
