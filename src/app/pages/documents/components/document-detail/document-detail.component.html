@@ -105,7 +105,9 @@
                             {{utilitiesService.getUserString(documentItem?.user)}}
                         </div>
                         <div class="col-0 col-md-4">
-                            {{this.documentItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+                            {{(this.documentItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss')?
+                            (this.documentItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss')
+                          : 'Aldrig'}}
                         </div>
                     </div>
                     <!-- Row Space -->

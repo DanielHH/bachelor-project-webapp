@@ -79,7 +79,9 @@
               {{utilitiesService.getUserString(cardItem?.user)}}
             </div>
             <div class="col-0 col-md-4">
-              {{cardItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+              {{(cardItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') ?
+              (cardItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss')
+              : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->
