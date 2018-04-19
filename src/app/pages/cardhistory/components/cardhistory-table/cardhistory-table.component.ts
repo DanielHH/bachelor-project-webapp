@@ -1,9 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import { Receipt } from '../../../../datamodels/receipt';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { NgForm } from '@angular/forms';
-import { RouteDataService } from '../../../../services/route-data.service';
+import { Card } from '../../../../datamodels/card';
 import { LogEvent } from '../../../../datamodels/logEvent';
 import { lowerCase } from '../../../../services/utilities.service';
 
@@ -13,7 +10,6 @@ import { lowerCase } from '../../../../services/utilities.service';
   styleUrls: ['./cardhistory-table.component.scss']
 })
 export class CardhistoryTableComponent implements OnInit {
-
   @Input() logEventList: LogEvent[];
   @Input() card: Card;
 
@@ -27,7 +23,7 @@ export class CardhistoryTableComponent implements OnInit {
   showReceipt = true;
   showOther = true;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -71,15 +67,21 @@ export class CardhistoryTableComponent implements OnInit {
         break;
       }
     }
-
     if (newOrder) {
       this.logEventList = _.orderBy(
         this.logEventList,
-        [logEvent => (logEvent[property] ? (lowerCase(logEvent[property]) as string) : (logEvent[property] as string))],
+        [
+          logEvent => {
+            if (logEvent[property]) {
+              return lowerCase(logEvent[property]) as string;
+            } else {
+              return logEvent[property.slice(0, -5)] ? (lowerCase(logEvent[property.slice(0, -5)].name) as string) : '';
+            }
+          }
+        ],
         [newOrder]
       );
     }
-
   }
 
   /**
@@ -88,10 +90,10 @@ export class CardhistoryTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
-
 }
-

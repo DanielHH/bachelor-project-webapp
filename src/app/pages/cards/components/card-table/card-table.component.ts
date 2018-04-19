@@ -107,7 +107,15 @@ export class CardTableComponent implements OnInit {
     if (newOrder) {
       this.cardList = _.orderBy(
         this.cardList,
-        [card => (card[property] ? (lowerCase(card[property]) as string) : (card[property] as string))],
+        [
+          card => {
+            if (card[property]) {
+              return lowerCase(card[property]) as string;
+            } else {
+              return card[property.slice(0, -5)] ? lowerCase(card[property.slice(0, -5)].name) as string : '';
+            }
+          }
+        ],
         [newOrder]
       );
     }

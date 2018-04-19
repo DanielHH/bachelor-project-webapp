@@ -1,9 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { LogEvent } from '../../../../datamodels/logEvent';
-import { Document } from '../../../../datamodels/document';
-
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { NgForm } from '@angular/forms';
+import { Document } from '../../../../datamodels/document';
+import { LogEvent } from '../../../../datamodels/logEvent';
 import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
@@ -12,7 +10,6 @@ import { lowerCase } from '../../../../services/utilities.service';
   styleUrls: ['./document-history-table.component.scss']
 })
 export class DocumentHistoryTableComponent implements OnInit {
-
   @Input() logEventList: LogEvent[];
   @Input() document: Document;
 
@@ -26,7 +23,7 @@ export class DocumentHistoryTableComponent implements OnInit {
   showReceipt = true;
   showOther = true;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -74,11 +71,18 @@ export class DocumentHistoryTableComponent implements OnInit {
     if (newOrder) {
       this.logEventList = _.orderBy(
         this.logEventList,
-        [logEvent => (logEvent[property] ? (lowerCase(logEvent[property]) as string) : (logEvent[property] as string))],
+        [
+          logEvent => {
+            if (logEvent[property]) {
+              return lowerCase(logEvent[property]) as string;
+            } else {
+              return logEvent[property.slice(0, -5)] ? (lowerCase(logEvent[property.slice(0, -5)].name) as string) : '';
+            }
+          }
+        ],
         [newOrder]
       );
     }
-
   }
 
   /**
@@ -87,8 +91,10 @@ export class DocumentHistoryTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 }

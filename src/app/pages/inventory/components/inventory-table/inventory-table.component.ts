@@ -1,16 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import * as _ from 'lodash';
+import { BaseItem } from '../../../../datamodels/baseItem';
 import { Card } from '../../../../datamodels/card';
 import { Document } from '../../../../datamodels/document';
-import { BaseItem } from '../../../../datamodels/baseItem';
-import * as _ from 'lodash';
-import { ModifyCardComponent } from '../../../cards/components/modify-card/modify-card.component';
-import { NgForm } from '@angular/forms';
-import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
+import { Verification } from '../../../../datamodels/verification';
 import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
 import { HttpService } from '../../../../services/http.service';
-import { Verification } from '../../../../datamodels/verification';
-import { InventoryItemComponent } from '../inventory-item/inventory-item.component';
 import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService, lowerCase } from '../../../../services/utilities.service';
+import { InventoryItemComponent } from '../inventory-item/inventory-item.component';
 
 @Component({
   selector: 'inventory-table',
@@ -136,7 +134,6 @@ export class InventoryTableComponent implements OnInit {
       this.showArchived,
       this.showGone
     );
-
     const verificationList = [];
     let verification: Verification;
 
