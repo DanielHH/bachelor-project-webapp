@@ -20,6 +20,7 @@ export class InventoryComponent implements OnInit {
     private utilitiesService: UtilitiesService
   ) {
     this.dataService.cardList.subscribe(cardList => {
+      console.log(cardList);
       this.cardList = cardList;
       this.setItemList();
     });

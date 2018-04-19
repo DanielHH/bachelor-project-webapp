@@ -1,5 +1,5 @@
 <!--Dropdown-->
-<div class="dropdown" dropdown #dropdown="bs-dropdown">
+<div *ngIf="user?.userType.id == 1" class="dropdown" dropdown #dropdown="bs-dropdown">
 
   <!--Trigger-->
   <button class="btn-menu" (click)="dropdown.toggle(); $event.stopPropagation()">
