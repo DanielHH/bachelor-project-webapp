@@ -108,7 +108,7 @@ export class BaseItem {
    */
   getLastVerifiedString(): string {
     if (this.item.lastVerificationDate) {
-      return this.utilitiesService.getDateString(this.item.lastVerificationDate, 'YYYY-MM-DD HH:MM:SS');
+      return this.utilitiesService.getDateString(this.item.lastVerificationDate, 'YYYY-MM-DD HH:mm:SS');
     } else {
       return 'Aldrig';
     }

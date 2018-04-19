@@ -168,6 +168,8 @@ export class ModifyCardComponent implements OnInit {
 
       this.httpService.httpPost<Card>('addNewCard/', {card: newCard, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
+          newCard.creationDate = new Date();
+          newCard.modifiedDate = new Date();
           this.cardList.unshift(res.data.card);
           // Update log event list
           this.utilitiesService.updateLogEventList(res.data.logEvent);
@@ -194,6 +196,7 @@ export class ModifyCardComponent implements OnInit {
 
       this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {
+          this.cardItem.modifiedDate = new Date();
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
 
