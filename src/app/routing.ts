@@ -4,7 +4,6 @@ import { HomeComponent } from './pages/home/home.component';
 import { DocumentsComponent } from './pages/documents/documents.component';
 import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { LogsComponent } from './pages/logs/logs.component';
-import { ExamplesComponent } from './pages/examples/examples.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { InventoryComponent } from './pages/inventory/inventory.component';
@@ -35,11 +34,6 @@ export const routes: Routes = [
     component: LogsComponent,
     data: { name: 'Loggar', validUserTypes: [1] },
     canActivate: [AuthGuard]
-  },
-  {
-    path: 'examples',
-    component: ExamplesComponent,
-    data: { name: 'Kodexempel', validUserTypes: [1] }
   },
   {
     path: 'cards',
