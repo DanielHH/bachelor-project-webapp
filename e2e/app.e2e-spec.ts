@@ -217,10 +217,11 @@ xdescribe('Sprint2', function() {
 */
 });
 
-xdescribe('Sprint3', function() {
+describe('Sprint3', function() {
 
   const cardsFromMenu = element(by.linkText('Kort'));
   const documentsFromMenu = element(by.linkText('Handlingar'));
+  const historyFromDropdown = element(by.linkText('Historik'));
 
   beforeEach(function() {
     browser.driver.manage().window().maximize();
@@ -230,6 +231,24 @@ xdescribe('Sprint3', function() {
     element(by.name('usernameInput')).sendKeys('pumadmin');
     element(by.name('passwordInput')).sendKeys('pum123');
     element.all(by.buttonText('Logga in')).click();
+  });
+
+  // 11
+  it('should work to click history in dropdown-menu for cards', function() {
+    cardsFromMenu.click();
+    element.all(by.className('btn-menu')).first().click();
+    historyFromDropdown.click();
+    browser.sleep(500);
+    expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/card-history');
+  });
+
+  // 12
+  it('should work to click history in dropdown-menu for documents', function() {
+    documentsFromMenu.click();
+    element.all(by.className('btn-menu')).first().click();
+    historyFromDropdown.click();
+    browser.sleep(500);
+    expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/document-history');
   });
 
   // 13 (Should pass once request-card component changes the button name "Kvittera ut" to "Bekräfta")
@@ -308,9 +327,7 @@ xdescribe('Sprint3', function() {
       expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_in"');
     });
 
-  // Test 17-22 manually tested
-
-  // Test 25,26,27 manually tested
+  // Test 17-27 manually tested
 });
 
 
@@ -321,7 +338,7 @@ xdescribe('Sprint3', function() {
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-describe('Sprint4', function() {
+xdescribe('Sprint4', function() {
 
   const logsFromMenu = element(by.linkText('Loggar'));
   const logoutFromMenu = element(by.linkText('Logga ut'));
