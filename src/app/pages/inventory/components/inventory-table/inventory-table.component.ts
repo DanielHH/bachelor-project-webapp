@@ -64,9 +64,11 @@ export class InventoryTableComponent implements OnInit {
     private modalService: ModalService,
     private dataService: DataService
   ) {
-    this.dataService.itemList.subscribe(baseItemList =>
-      this.baseItemList = baseItemList
-    );
+    this.dataService.itemList.subscribe(baseItemList => {
+      this.baseItemList = baseItemList;
+      this.updateSelectAll();
+    });
+
     this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
@@ -220,7 +222,6 @@ export class InventoryTableComponent implements OnInit {
 
   updateItemSelection() {
     setTimeout(() => {
-      console.log(this.selectAll);
       this.baseItemList.forEach(baseItem => {
         if (this.inventoryPipe.matchFilt(
             baseItem,
@@ -234,8 +235,18 @@ export class InventoryTableComponent implements OnInit {
           baseItem.isChecked = false;
         }
       });
+      this.baseItemList.slice();
       this.dataService.itemList.next(this.baseItemList);
     }, 100);
+  }
+
+  updateSelectAll() {
+    for (const baseItem of this.getFilteredList()) {
+      if (!baseItem.isChecked) {
+        this.selectAll = false;
+        break;
+      }
+    }
   }
 
   generateFilterArray() {

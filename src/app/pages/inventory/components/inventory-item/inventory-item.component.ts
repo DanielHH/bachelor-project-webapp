@@ -27,8 +27,6 @@ export class InventoryItemComponent implements OnInit {
   documentList: Document[];
   baseItemList: BaseItem[];
 
-  isChecked: boolean;
-
   constructor(
     private dataService: DataService,
     private routeDataService: RouteDataService,
@@ -80,8 +78,25 @@ export class InventoryItemComponent implements OnInit {
     return this.utilitiesService.getUserString(this.baseItem.getUser());
   }
 
-  updateSelected() {
-    this.baseItem.isChecked = !this.baseItem.isChecked;
-    this.dataService.itemList.next(this.baseItemList);
+  toggleSelected() {
+    setTimeout(() => {
+      if (this.baseItem.isCard()) {
+        for (const baseItem of this.baseItemList) {
+          if (baseItem.isCard() && baseItem.getItem().id === this.baseItem.item.id) {
+            baseItem.isChecked = !baseItem.isChecked;
+            break;
+          }
+        }
+      } else {
+        for (const baseItem of this.baseItemList) {
+          if (!baseItem.isCard() && baseItem.item.id === this.baseItem.item.id) {
+            baseItem.isChecked = !baseItem.isChecked;
+            break;
+          }
+        }
+      }
+      this.baseItemList.slice();
+      this.dataService.itemList.next(this.baseItemList);
+    } , 100);
   }
 }

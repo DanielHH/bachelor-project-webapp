@@ -60,7 +60,7 @@
       <div class="row table-header">
 
         <div class="col-1" (click)="$event.stopPropagation()">
-          <mat-checkbox disableRipple color="primary" [(ngModel)]="selectAll" (change)="updateItemSelection()"></mat-checkbox>
+          <mat-checkbox disableRipple color="primary" (checked)="selectAll" [(ngModel)]="selectAll" (change)="updateItemSelection()"></mat-checkbox>
         </div>
 
         <div class="col" (click)="sortTableList('status')">
