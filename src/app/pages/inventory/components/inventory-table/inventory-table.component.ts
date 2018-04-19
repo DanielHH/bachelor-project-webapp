@@ -243,11 +243,15 @@ export class InventoryTableComponent implements OnInit {
   }
 
   updateSelectAll() {
-    this.selectAll = true;
-    for (const baseItem of this.getFilteredList()) {
-      if (!baseItem.isChecked) {
-        this.selectAll = false;
-        break;
+    if (!this.getFilteredList().length) {
+      this.selectAll = false;
+    } else {
+      this.selectAll = true;
+      for (const baseItem of this.getFilteredList()) {
+        if (!baseItem.isChecked) {
+          this.selectAll = false;
+          break;
+        }
       }
     }
   }
