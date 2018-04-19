@@ -130,18 +130,18 @@ export class InventoryItemComponent implements OnInit {
           if (this.baseItem.isCard()) {
             this.httpService.httpPut<Card>('updateCard/', { cardItem: itemToUpdate }).then(cardRes => {
               if (cardRes.message === 'success') {
-                this.dataService.cardList.next(this.cardList);
                 // So we don't adjust for timezone twice for dates not received from server
                 itemToUpdate.lastVerificationDate = new Date();
                 itemToUpdate.modifiedDate = new Date();
+                this.dataService.cardList.next(this.cardList);
               }
             });
           } else {
             this.httpService.httpPut<Document>('updateDocument/', { documentItem: itemToUpdate }).then(documentRes => {
               if (documentRes.message === 'success') {
-                this.dataService.documentList.next(this.documentList);
                 itemToUpdate.lastVerificationDate = new Date();
                 itemToUpdate.modifiedDate = new Date();
+                this.dataService.documentList.next(this.documentList);
               }
             });
           }
