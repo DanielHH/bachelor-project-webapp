@@ -170,7 +170,7 @@ export class ModifyDocumentComponent implements OnInit {
       newDoc.user = new User();
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 6, newDoc, this.user);
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 6, newDoc, this.user, newDoc.documentNumber);
 
       this.httpService.httpPost<Document>('addNewDocument/', {document: newDoc, logEvent: logEvent}).then(res => {
         if (res.message === 'success') {

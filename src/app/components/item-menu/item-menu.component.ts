@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { RouteDataService } from '../../services/route-data.service';
-import { Card } from '../../datamodels/card';
-import { Document } from '../../datamodels/document';
+import { User } from '../../datamodels/user';
 import { HttpService } from '../../services/http.service';
-import * as moment from 'moment';
+import { RouteDataService } from '../../services/route-data.service';
 import { UtilitiesService } from '../../services/utilities.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-item-menu',
@@ -13,7 +12,6 @@ import { UtilitiesService } from '../../services/utilities.service';
   styleUrls: ['./item-menu.component.scss']
 })
 export class ItemMenuComponent implements OnInit {
-
   @Input() object: any; // Card, CardType, Document or DocumentType
 
   @Input() adminMenu = false;
@@ -30,12 +28,19 @@ export class ItemMenuComponent implements OnInit {
 
   @Output() editStatus = new EventEmitter<any>();
 
-  constructor(private routeDataService: RouteDataService, private router: Router,
-    private httpService: HttpService,
-    private utilitiesService: UtilitiesService) { }
+  user: User;
 
-  ngOnInit() {
+  constructor(
+    private routeDataService: RouteDataService,
+    private router: Router,
+    private httpService: HttpService,
+    private utilitiesService: UtilitiesService,
+    private authService: AuthService
+  ) {
+    this.authService.user.subscribe(user => (this.user = user));
   }
+
+  ngOnInit() {}
 
   /**
    * Change route and send route data, TODO: FIX THIS FOR TYPES AND USERS AS WELL?
@@ -46,7 +51,8 @@ export class ItemMenuComponent implements OnInit {
       this.router.navigate(['card-history']);
     }
 
-    if (this.object.documentType && this.object.location) { // document with a location, aka not a delivery
+    if (this.object.documentType && this.object.location) {
+      // document with a location, aka not a delivery
       this.routeDataService.document.next(this.object);
       this.router.navigate(['document-history']);
     }
@@ -54,7 +60,7 @@ export class ItemMenuComponent implements OnInit {
 
   /**
    * Set item or type to be outputted for editing.
-  */
+   */
   setEdit() {
     this.editObject.next();
   }
@@ -64,7 +70,8 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    if ( // If is item that has owner and is being restored, set to "utkvitterad"
+    if (
+      // If is item that has owner and is being restored, set to "utkvitterad"
       this.itemMenu &&
       this.object.user &&
       this.object.user.id &&
@@ -87,5 +94,4 @@ export class ItemMenuComponent implements OnInit {
       return this.object.status.id;
     }
   }
-
 }

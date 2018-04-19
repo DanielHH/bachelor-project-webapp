@@ -207,10 +207,15 @@ export class RequestCardComponent implements OnInit {
       receipt.endDate = null;
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 5, this.cardItem, this.user, this.cardItem.user.name);
+      const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.user.name;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 5, this.cardItem, this.user, logText);
 
       this.httpService
-        .httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.cardItem })
+        .httpPost<Receipt>('addNewReceipt/',
+        { receipt: receipt,
+          logEvent: logEvent,
+          card: this.cardItem
+        })
         .then(res => {
           if (res.message === 'success') {
             const newReceipt = res.data.receipt;
