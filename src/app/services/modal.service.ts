@@ -67,7 +67,7 @@ export class ModalService {
   /**
    * Detail inventory
    */
-  private _detailInventory = new BaseItem(null, this.dataService, null, new Card(), 'card');
+  private _detailInventory = new BaseItem(new Card(), 'card');
 
   /**
    * A subscriber to the detail inventory

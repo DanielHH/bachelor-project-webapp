@@ -95,8 +95,8 @@ export class UtilitiesService {
    */
   createNewLogEventForItem(itemTypeID: number, logTypeID: number, item: any, user?: User, logText?: string): LogEvent {
     const logEvent = new LogEvent();
-    logEvent.itemType = this.getItemTypeFromID(itemTypeID); // TODO: ENUM
-    logEvent.logType = this.getLogTypeFromID(logTypeID); // TODO: ENUM
+    logEvent.itemType = this.getItemTypeFromID(itemTypeID);
+    logEvent.logType = this.getLogTypeFromID(logTypeID);
     if (itemTypeID == 1) { // Av någon anledning funkar inte följande kod här: ' logEvent.itemType.name == 'Kort' '
       logEvent.card = item;
     } else {

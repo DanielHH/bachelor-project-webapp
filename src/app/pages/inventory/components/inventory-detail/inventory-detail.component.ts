@@ -58,7 +58,7 @@ export class InventoryDetailComponent implements OnInit {
     closeForm() {
       this.detailForm.resetForm();
 
-      this.baseItem = Object.assign({}, new BaseItem(this.utilitiesService, this.dataService, this.httpService, new Card(), 'card'));
+      this.baseItem = Object.assign({}, new BaseItem(new Card(), 'card'));
       this.modalService.detailInventory.next(this.baseItem);
 
       this.showModal = false;

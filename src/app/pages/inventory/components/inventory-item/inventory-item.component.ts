@@ -13,6 +13,7 @@ import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'inventory-item',
@@ -21,10 +22,12 @@ import { UtilitiesService } from '../../../../services/utilities.service';
 })
 export class InventoryItemComponent implements OnInit {
   @Input() baseItem: BaseItem;
-  isChecked: boolean;
 
   cardList: Card[];
   documentList: Document[];
+  baseItemList: BaseItem[];
+
+  isChecked: boolean;
 
   constructor(
     private dataService: DataService,
@@ -39,6 +42,9 @@ export class InventoryItemComponent implements OnInit {
     });
     this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
+    });
+    this.dataService.itemList.subscribe(baseItemList => {
+      this.baseItemList = baseItemList;
     });
   }
 
@@ -72,5 +78,10 @@ export class InventoryItemComponent implements OnInit {
 
   getUser() {
     return this.utilitiesService.getUserString(this.baseItem.getUser());
+  }
+
+  updateSelected() {
+    this.baseItem.isChecked = !this.baseItem.isChecked;
+    this.dataService.itemList.next(this.baseItemList);
   }
 }

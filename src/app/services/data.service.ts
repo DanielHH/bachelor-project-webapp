@@ -389,15 +389,15 @@ export class DataService {
   }
 
   setItemList() {
-    if (this._cardList && this._cardList.length && this._documentList && this._documentList.length) {
+    if (this._cardList && this._documentList) {
       this._itemList = [];
 
-      this._cardList.forEach(item => {
-        this._itemList.unshift(new BaseItem(null, this, this.httpService, new Card(), 'card'));
+      this._cardList.forEach(card => {
+        this._itemList.unshift(new BaseItem(card, 'card'));
       });
 
-      this._documentList.forEach(item => {
-        this._itemList.unshift(new BaseItem(null, this, this.httpService, new Document(), 'document'));
+      this._documentList.forEach(document => {
+        this._itemList.unshift(new BaseItem(document, 'document'));
       });
 
       this.itemList.next(this._itemList);
