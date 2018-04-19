@@ -2,7 +2,7 @@
 
   <div class="col-1">
     <div *ngIf="!receiptItem?.endDate">
-      <button type="button" class="status-btn btn btn-rounded btn-sm btn-success m-0 px-2 py-1 disabled mdbRippleRadius">
+      <button type="button" class="status-btn btn btn-rounded btn-sm btn-success m-0 px-2 py-1" disabled mdbRippleRadius>
         <span>Aktiv</span>
       </button>
     </div>
@@ -21,7 +21,8 @@
   <div class="col">{{this.receiptItem.user?.name}}</div>
   <div class="col">{{this.receiptItem.startDate | date: 'shortDate'}}</div>
   <div class="col">{{this.receiptItem.endDate | date: 'shortDate'}}
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 btn-success pull-right" mdbRippleRadius (click)="openPDF(); $event.stopPropagation()">
+    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 pull-right" [class.btn-success]="receiptItem?.url" [class.btn-danger]="!receiptItem?.url"
+      mdbRippleRadius (click)="receiptItem?.url ? openPDF() : genPDF(); $event.stopPropagation()">
       <span>PDF</span>
     </button>
   </div>

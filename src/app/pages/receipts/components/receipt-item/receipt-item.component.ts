@@ -1,14 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Receipt } from '../../../../datamodels/receipt';
-import { DataService } from '../../../../services/data.service';
-import { CardType } from '../../../../datamodels/cardType';
-import { Card } from '../../../../datamodels/card';
-import { Document } from '../../../../datamodels/document';
-import { User } from '../../../../datamodels/user';
-import { DocumentType } from '../../../../datamodels/documentType';
-import * as _ from 'lodash';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import * as moment from 'moment';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 
@@ -18,33 +9,30 @@ import { ModalService } from '../../../../services/modal.service';
   styleUrls: ['./receipt-item.component.scss']
 })
 export class ReceiptItemComponent implements OnInit {
-
   @Input() receiptItem: Receipt;
-
-  cardList: Card[] = [];
-  documentList: Document[] = [];
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
 
   itemTypeToDisplay: string;
   itemIDToDisplay: string;
 
   itemActive: boolean;
 
-  constructor(
-    public utilitiesService: UtilitiesService,
-    private modalService: ModalService
-  ) {}
+  itemType: string;
+
+  item: any;
+
+  constructor(private modalService: ModalService, private httpService: HttpService) {}
 
   ngOnInit() {
-
     if (this.receiptItem.card) {
       this.itemTypeToDisplay = this.receiptItem.card.cardType.name;
       this.itemIDToDisplay = this.receiptItem.card.cardNumber;
+      this.itemType = 'card';
+      this.item = this.receiptItem.card;
     } else if (this.receiptItem.document) {
       this.itemTypeToDisplay = this.receiptItem.document.documentType.name;
       this.itemIDToDisplay = this.receiptItem.document.documentNumber;
+      this.itemType = 'document';
+      this.item = this.receiptItem.document;
     }
 
     this.itemActive = this.receiptItem.endDate == null;
@@ -57,11 +45,17 @@ export class ReceiptItemComponent implements OnInit {
     this.modalService.detailReceipt.next(this.receiptItem);
   }
 
+  genPDF() {
+    this.httpService.httpPost<any>('genPDF', [this.itemType, this.item, this.receiptItem]).then(pdfRes => {
+      if (pdfRes.message === 'success') {
+        this.receiptItem.url = pdfRes.url;
+      }
+    });
+  }
 
   openPDF() {
     if (this.receiptItem.url) {
       window.open(this.receiptItem.url, '_blank');
     }
   }
-
 }
