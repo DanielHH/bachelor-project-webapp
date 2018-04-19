@@ -17,7 +17,7 @@ import { TypesComponent } from './pages/types/types.component';
 import { UsersComponent } from './pages/users/users.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, data: { name: 'Startsidan' } },
+  { path: '', component: HomeComponent, data: { name: 'SecTrack' } },
   {
     path: 'documents',
     component: DocumentsComponent,
