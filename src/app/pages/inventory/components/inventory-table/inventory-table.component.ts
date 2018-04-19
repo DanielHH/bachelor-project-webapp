@@ -87,10 +87,12 @@ export class InventoryTableComponent implements OnInit {
     this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
     });
+
   }
 
   ngOnInit() {
     this.sortTableListStart();
+    this.updateSelectAll();
   }
 
   /**
@@ -241,6 +243,7 @@ export class InventoryTableComponent implements OnInit {
   }
 
   updateSelectAll() {
+    this.selectAll = true;
     for (const baseItem of this.getFilteredList()) {
       if (!baseItem.isChecked) {
         this.selectAll = false;
