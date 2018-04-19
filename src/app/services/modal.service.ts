@@ -203,6 +203,9 @@ export class ModalService {
    */
   pdfSelectedList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this._pdfSelectedList);
 
+  /**
+   * List containing used filters
+   */
   private _filterList = [];
 
   /**
