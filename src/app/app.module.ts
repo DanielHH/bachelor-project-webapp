@@ -90,7 +90,6 @@ import { ModalService } from './services/modal.service';
 import { ModifyDeliveryComponent } from './pages/deliveries/components/modify-delivery/modify-delivery.component';
 import { PdfGenerationComponent } from './components/pdf-generation/pdf-generation.component';
 import { DeliveryDetailComponent } from './pages/deliveries/components/delivery-detail/delivery-detail.component';
-import { SelfVerificationComponent } from './pages/self-verification/self-verification.component';
 import { UsersComponent } from './pages/users/users.component';
 import { TypesComponent } from './pages/types/types.component';
 import { ModifyTypeComponent } from './pages/types/components/modify-type/modify-type.component';
@@ -169,7 +168,6 @@ import { PdfGenerationModalComponent } from './components/pdf-generation-modal/p
     ModifyDeliveryComponent,
     PdfGenerationComponent,
     DeliveryDetailComponent,
-    SelfVerificationComponent,
     UsersComponent,
     TypesComponent,
     ModifyTypeComponent,
