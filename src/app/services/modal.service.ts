@@ -10,6 +10,7 @@ import { User } from '../datamodels/user';
 import { BaseItem } from '../datamodels/baseItem';
 import { Receipt } from '../datamodels/receipt';
 import { LogEvent } from '../datamodels/logEvent';
+import { DataService } from './data.service';
 
 @Injectable()
 export class ModalService {
@@ -66,7 +67,7 @@ export class ModalService {
   /**
    * Detail inventory
    */
-  private _detailInventory = new BaseItem(null, new Card(), 'card');
+  private _detailInventory = new BaseItem(new Card(), 'card');
 
   /**
    * A subscriber to the detail inventory
@@ -203,6 +204,9 @@ export class ModalService {
    */
   pdfSelectedList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this._pdfSelectedList);
 
+  /**
+   * List containing used filters
+   */
   private _filterList = [];
 
   /**
@@ -210,5 +214,5 @@ export class ModalService {
    */
   filterList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this._filterList);
 
-  constructor() {}
+  constructor(private dataService: DataService) {}
 }

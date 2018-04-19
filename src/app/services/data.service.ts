@@ -19,6 +19,7 @@ import { AuthService } from '../auth/auth.service';
 import { BaseType } from '../datamodels/baseType';
 import { UtilitiesService } from './utilities.service';
 import { UserType } from '../datamodels/userType';
+import { BaseItem } from '../datamodels/baseItem';
 
 @Injectable()
 export class DataService {
@@ -155,6 +156,16 @@ export class DataService {
   logEventList: BehaviorSubject<LogEvent[]> = new BehaviorSubject<LogEvent[]>(this._logEventList);
 
   /**
+   * List with all cards and documents as BaseItems
+   */
+  _itemList: BaseItem[] = [];
+
+  /**
+   * A subscriber to the cards and documents list
+   */
+  itemList: BehaviorSubject<BaseItem[]> = new BehaviorSubject<BaseItem[]>(this._itemList);
+
+  /**
    * List with all card and document types
    */
   _typeList: BaseType[] = [];
@@ -176,7 +187,10 @@ export class DataService {
 
   userURL = '';
 
-  constructor(private httpService: HttpService, private authService: AuthService) {
+  constructor(
+    private httpService: HttpService,
+    private authService: AuthService
+  ) {
     this.authService.user.subscribe(user => {
       if (user && user.id) {
         if (user.userType.id == 1) {
@@ -189,6 +203,14 @@ export class DataService {
         this.userURL = '';
         this.resetAllData();
       }
+    });
+
+    this.cardList.subscribe(cardList => {
+      this.setItemList();
+    });
+
+    this.documentList.subscribe(documentList => {
+      this.setItemList();
     });
 
     this.cardTypeList.subscribe(cardTypeList => {
@@ -248,6 +270,9 @@ export class DataService {
 
     this._verificationList = null;
     this.verificationList.next(this._verificationList);
+
+    this._itemList = null;
+    this.itemList.next(this._itemList);
 
     this._typeList = null;
     this.typeList.next(this._typeList);
@@ -361,6 +386,22 @@ export class DataService {
       this._logTypeList = data;
       this.logTypeList.next(this._logTypeList);
     });
+  }
+
+  setItemList() {
+    if (this._cardList && this._documentList) {
+      this._itemList = [];
+
+      this._cardList.forEach(card => {
+        this._itemList.unshift(new BaseItem(card, 'card'));
+      });
+
+      this._documentList.forEach(document => {
+        this._itemList.unshift(new BaseItem(document, 'document'));
+      });
+
+      this.itemList.next(this._itemList);
+    }
   }
 
   setTypeList() {
