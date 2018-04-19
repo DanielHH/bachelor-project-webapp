@@ -33,7 +33,7 @@ export class ModifyTypeComponent implements OnInit {
   cardTypeList = [];
   documentTypeList = [];
 
-  baseItemToEdit: BaseType;
+  baseTypeToEdit: BaseType;
 
   @Input() modalTitle = '';
 
@@ -70,12 +70,12 @@ export class ModifyTypeComponent implements OnInit {
       this.documentTypeList = documentTypeList;
     });
 
-    this.modalService.editType.subscribe(baseItem => {
-      if (baseItem && baseItem.getType().id) {
-        this.baseItemToEdit = baseItem;
+    this.modalService.editType.subscribe(baseType => {
+      if (baseType && baseType.getType().id) {
+        this.baseTypeToEdit = baseType;
 
-        this.typeNameInput = baseItem.getType().name;
-        this.isCardType = baseItem.isCardType();
+        this.typeNameInput = baseType.getType().name;
+        this.isCardType = baseType.isCardType();
 
         this.modalType = 1;
         this.modalTitle = 'Ändra typ';
@@ -155,10 +155,11 @@ export class ModifyTypeComponent implements OnInit {
    */
   editType() {
     if (this.isValidInput()) {
-      this.setTypeFromForm(this.baseItemToEdit.getType());
+      const type = this.baseTypeToEdit.type;
+      this.setTypeFromForm(type);
 
       if (this.isCardType) {
-        this.httpService.httpPut<CardType>('updateCardType/', this.baseItemToEdit.getType()).then(res => {
+        this.httpService.httpPut<CardType>('updateCardType/', type).then(res => {
           if (res.message === 'success') {
             this.dataService.getCardTypeList();
 
@@ -166,7 +167,7 @@ export class ModifyTypeComponent implements OnInit {
           }
         });
       } else {
-        this.httpService.httpPut<DocumentType>('updateDocumentType/', this.baseItemToEdit.getType()).then(res => {
+        this.httpService.httpPut<DocumentType>('updateDocumentType/', type).then(res => {
           if (res.message === 'success') {
             this.dataService.getDocumentTypeList();
 
@@ -203,7 +204,7 @@ export class ModifyTypeComponent implements OnInit {
     this.isCardType = true;
     this.modifyForm.resetForm();
 
-    this.baseItemToEdit = Object.assign({}, new BaseType(new CardType(), 'cardType'));
+    this.baseTypeToEdit = Object.assign({}, new BaseType(new CardType(), 'cardType'));
 
     this.showModal = false;
     this.showModalChange.emit(false);

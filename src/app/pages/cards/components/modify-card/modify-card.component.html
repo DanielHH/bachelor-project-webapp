@@ -32,7 +32,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="cardNumberInput" name="cardNumberInput" [(ngModel)]="cardNumberInput" maxlength="128" placeholder="Kort-ID"
-            [formControl]="cardNumberControl" required>
+            [formControl]="cardNumberControl" [card]="cardItem" appNewCard required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidCardNumber()">done</mat-icon>
@@ -43,6 +43,8 @@
           </button>
           <!--Error-->
           <mat-error *ngIf="cardNumberControl.hasError('required')">Ange ett kort-ID</mat-error>
+          <mat-error *ngIf="!cardNumberControl.hasError('required') && cardNumberControl.hasError('newCard')">
+            Kort med angivet kort-ID existerar redan</mat-error>
         </mat-form-field>
       </div>
     </div>

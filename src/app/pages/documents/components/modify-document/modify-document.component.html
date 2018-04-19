@@ -35,7 +35,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput" maxlength="128" placeholder="Dokument-ID"
-            [formControl]="docNumberControl" required>
+            [formControl]="docNumberControl" [document]="documentItem" appNewDocument required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocNumber()">done</mat-icon>
@@ -46,6 +46,8 @@
           </button>
           <!--Error-->
           <mat-error *ngIf="docNumberControl.hasError('required')">Ange ett dokument-ID</mat-error>
+          <mat-error *ngIf="!docNumberControl.hasError('required') && docNumberControl.hasError('newDocument')">
+            Handling med angivet dokument-ID existerar redan</mat-error>
         </mat-form-field>
       </div>
     </div>

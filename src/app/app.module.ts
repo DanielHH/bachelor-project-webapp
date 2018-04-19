@@ -45,7 +45,9 @@ import {
   MatProgressSpinnerModule
 } from '@angular/material';
 import { CardTypeValidatorDirective } from './directives/card-type.directive';
+import { NewCardValidatorDirective } from './directives/new-card.directive';
 import { DocumentTypeValidatorDirective } from './directives/document-type.directive';
+import { NewDocumentValidatorDirective } from './directives/new-document.directive';
 import { TypeNameValidatorDirective } from './directives/type-name.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
 import { NewUsernameValidatorDirective } from './directives/new-username.directive';
@@ -145,7 +147,9 @@ import { PdfGenerationModalComponent } from './components/pdf-generation-modal/p
     UsernameValidatorDirective,
     NewUsernameValidatorDirective,
     CardTypeValidatorDirective,
+    NewCardValidatorDirective,
     DocumentTypeValidatorDirective,
+    NewDocumentValidatorDirective,
     TypeNameValidatorDirective,
     DateValidatorDirective,
     ConfirmPasswordValidatorDirective,

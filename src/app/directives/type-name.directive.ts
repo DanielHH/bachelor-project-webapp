@@ -12,6 +12,7 @@ import * as _ from 'lodash';
  export class TypeNameValidatorDirective implements Validator {
 
   @Input() isCardType: boolean;
+  @Input() type: any; // CardType or DocumentType
 
   cardTypes: CardType[] = [];
   docTypes: DocumentType[] = [];
@@ -36,11 +37,11 @@ import * as _ from 'lodash';
     } else {
       if (this.isCardType) {
         const cardTypeMatch = _.find(this.cardTypes, (cardType) => cardType.name === input);
-        isValid = !cardTypeMatch;
+        isValid = !cardTypeMatch || (this.type && cardTypeMatch.id === this.type.id);
         messageStr = 'Korttyp med angiven benämning existerar redan';
       } else {
         const docTypeMatch = _.find(this.docTypes, (docType) => docType.name === input);
-        isValid = !docTypeMatch;
+        isValid = !docTypeMatch || (this.type && docTypeMatch.id === this.type.id);
         messageStr = 'Dokumenttyp med angiven benämning existerar redan';
       }
     }
