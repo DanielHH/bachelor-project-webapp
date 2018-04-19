@@ -111,37 +111,37 @@ export class InventoryTableComponent implements OnInit {
       case 'status': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
-        orderFunc = (item: BaseItem) => item.getStatus().name;
+        orderFunc = (item: BaseItem) => lowerCase(item.getStatus().name);
         break;
       }
       case 'subType': {
         newOrder = this.sortTableListHelper(this.orderSubType);
         this.orderSubType = newOrder;
-        orderFunc = (item: BaseItem) => item.getSubType().name;
+        orderFunc = (item: BaseItem) => lowerCase(item.getSubType().name);
         break;
       }
       case 'number': {
         newOrder = this.sortTableListHelper(this.orderNumber);
         this.orderNumber = newOrder;
-        orderFunc = (item: BaseItem) => item.getNumber();
+        orderFunc = (item: BaseItem) => lowerCase(item.getNumber());
         break;
       }
       case 'user': {
         newOrder = this.sortTableListHelper(this.orderUser);
         this.orderUser = newOrder;
-        orderFunc = (item: BaseItem) => this.utilitiesService.getUserString(item.getUser());
+        orderFunc = (item: BaseItem) => lowerCase(this.utilitiesService.getUserString(item.getUser()));
         break;
       }
       case 'location': {
         newOrder = this.sortTableListHelper(this.orderLocation);
         this.orderLocation = newOrder;
-        orderFunc = (item: BaseItem) => item.getLocation();
+        orderFunc = (item: BaseItem) => lowerCase(item.getLocation());
         break;
       }
       case 'comment': {
         newOrder = this.sortTableListHelper(this.orderComment);
         this.orderComment = newOrder;
-        orderFunc = (item: BaseItem) => item.getComment();
+        orderFunc = (item: BaseItem) => lowerCase(item.getComment());
         break;
       }
     }
@@ -318,12 +318,18 @@ export class InventoryTableComponent implements OnInit {
         if (baseItem.isCard()) {
           this.httpService.httpPut<Card>('updateCard/', { cardItem: itemToUpdate }).then(cardRes => {
             if (cardRes.message === 'success') {
+              // So we don't adjust for timezone twice for dates not received from server
+              itemToUpdate.lastVerificationDate = new Date();
+              itemToUpdate.modifiedDate = new Date();
               this.dataService.cardList.next(this.cardList);
             }
           });
         } else {
           this.httpService.httpPut<Document>('updateDocument/', { documentItem: itemToUpdate }).then(documentRes => {
             if (documentRes.message === 'success') {
+              // So we don't adjust for timezone twice for dates not received from server
+              itemToUpdate.lastVerificationDate = new Date();
+              itemToUpdate.modifiedDate = new Date();
               this.dataService.documentList.next(this.documentList);
             }
           });
