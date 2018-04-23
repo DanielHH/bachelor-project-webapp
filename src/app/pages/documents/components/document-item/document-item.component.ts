@@ -1,15 +1,13 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../auth/auth.service';
 import { Document } from '../../../../datamodels/document';
-import * as moment from 'moment';
-import { DataService } from '../../../../services/data.service';
 import { DocumentType } from '../../../../datamodels/documentType';
 import { User } from '../../../../datamodels/user';
-import * as _ from 'lodash';
-import { Router } from '@angular/router';
+import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-document-item',
@@ -30,9 +28,9 @@ export class DocumentItemComponent implements OnInit {
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService,
-    private authService: AuthService) {
-
-    this.authService.user.subscribe((user) => {
+    private authService: AuthService
+  ) {
+    this.authService.user.subscribe(user => {
       this.user = user;
     });
 
@@ -49,7 +47,7 @@ export class DocumentItemComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   /**
    * Shows the modal for document details
@@ -85,12 +83,14 @@ export class DocumentItemComponent implements OnInit {
     const logText = this.documentItem.documentNumber + ' till ' + this.documentItem.status.name;
     const logEvent = this.utilitiesService.createNewLogEventForItem(2, 12, this.documentItem, this.user, logText);
 
-    this.httpService.httpPut<Document>('updateDocument/', {documentItem: this.documentItem, logEvent: logEvent}).then(res => {
-      if (res.message === 'success') {
-        this.dataService.documentList.next(this.documentList);
+    this.httpService
+      .httpPut<Document>('updateDocument/', { documentItem: this.documentItem, logEvent: logEvent })
+      .then(res => {
+        if (res.message === 'success') {
+          this.dataService.documentList.next(this.documentList);
 
-        this.utilitiesService.updateLogEventList(res.data.logEvent);
-      }
-    });
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
+        }
+      });
   }
 }

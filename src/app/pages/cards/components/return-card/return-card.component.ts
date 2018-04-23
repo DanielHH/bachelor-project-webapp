@@ -1,15 +1,15 @@
-import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { User } from '../../../../datamodels/user';
-import { ModalService } from '../../../../services/modal.service';
-import { DataService } from '../../../../services/data.service';
-import { Receipt } from '../../../../datamodels/receipt';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import * as _ from 'lodash';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { LogEvent } from '../../../../datamodels/logEvent';
 import { AuthService } from '../../../../auth/auth.service';
+import { Card } from '../../../../datamodels/card';
+import { LogEvent } from '../../../../datamodels/logEvent';
+import { Receipt } from '../../../../datamodels/receipt';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-return-card',
@@ -53,8 +53,7 @@ export class ReturnCardComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-
-    this.authService.user.subscribe((user) => {
+    this.authService.user.subscribe(user => {
       this.user = user;
     });
 
@@ -85,7 +84,6 @@ export class ReturnCardComponent implements OnInit {
         setTimeout(() => {
           this.commentInput = card.comment;
         }, 250);
-
       }
     });
   }
@@ -118,8 +116,7 @@ export class ReturnCardComponent implements OnInit {
       this.cardItem.user = new User();
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(1); // TODO: ENUM FOR STATUS, 1 = Returned
-      this.cardItem.comment =
-        this.commentInput != '' ? this.commentInput : null;
+      this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
       // Update receipt
@@ -169,5 +166,4 @@ export class ReturnCardComponent implements OnInit {
 
     this.showModal = false;
   }
-
 }

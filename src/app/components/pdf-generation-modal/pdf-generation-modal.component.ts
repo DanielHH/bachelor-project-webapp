@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from '../../services/http.service';
-import { DataService } from '../../services/data.service';
 import { ModalService } from '../../services/modal.service';
 
 @Component({

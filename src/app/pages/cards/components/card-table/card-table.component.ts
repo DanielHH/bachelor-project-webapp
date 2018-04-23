@@ -1,12 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { ModifyCardComponent } from '../modify-card/modify-card.component';
-import { NgForm } from '@angular/forms';
-import { ModalService } from '../../../../services/modal.service';
-import { HttpService } from '../../../../services/http.service';
+import { Card } from '../../../../datamodels/card';
 import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
-import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService, lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-card-table',
@@ -112,7 +110,7 @@ export class CardTableComponent implements OnInit {
             if (card[property]) {
               return lowerCase(card[property]) as string;
             } else {
-              return card[property.slice(0, -5)] ? lowerCase(card[property.slice(0, -5)].name) as string : '';
+              return card[property.slice(0, -5)] ? (lowerCase(card[property.slice(0, -5)].name) as string) : '';
             }
           }
         ],

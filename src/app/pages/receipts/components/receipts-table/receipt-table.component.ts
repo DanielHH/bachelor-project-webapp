@@ -1,10 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Receipt } from '../../../../datamodels/receipt';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { HttpService } from '../../../../services/http.service';
+import { Receipt } from '../../../../datamodels/receipt';
 import { MatchFilterReceiptPipe } from '../../../../pipes/match-filter-receipt.pipe';
-import { UtilitiesService, lowerCase } from '../../../../services/utilities.service';
+import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService, lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-receipt-table',
@@ -136,7 +136,6 @@ export class ReceiptTableComponent implements OnInit {
     this.generateFilterArray();
 
     this.modalService.pdfFilteredList.next(filteredList);
-
   }
 
   generateFilterArray() {

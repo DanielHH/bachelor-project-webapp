@@ -1,17 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import * as moment from 'moment';
-import { DataService } from '../../../../services/data.service';
-import { CardType } from '../../../../datamodels/cardType';
-import { User } from '../../../../datamodels/user';
-import * as _ from 'lodash';
-import { RouteDataService } from '../../../../services/route-data.service';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpService } from '../../../../services/http.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { ModalService } from '../../../../services/modal.service';
-import { LogEvent } from '../../../../datamodels/logEvent';
 import { AuthService } from '../../../../auth/auth.service';
+import { Card } from '../../../../datamodels/card';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-card-item',
@@ -24,7 +19,6 @@ export class CardItemComponent implements OnInit {
   user: User;
   cardList: Card[] = [];
 
-
   showRequestModal = false;
   showReturnModal = false;
 
@@ -34,9 +28,9 @@ export class CardItemComponent implements OnInit {
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService,
-    private authService: AuthService) {
-
-    this.authService.user.subscribe((user) => {
+    private authService: AuthService
+  ) {
+    this.authService.user.subscribe(user => {
       this.user = user;
     });
 
@@ -45,7 +39,7 @@ export class CardItemComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   /**
    * Show the modal for card details
@@ -67,8 +61,8 @@ export class CardItemComponent implements OnInit {
   }
 
   /**
-     * Set card to be outputted for editing
-    */
+   * Set card to be outputted for editing
+   */
   edit() {
     this.modalService.editCard.next(this.cardItem);
   }
@@ -81,7 +75,7 @@ export class CardItemComponent implements OnInit {
     const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.status.name;
     const logEvent = this.utilitiesService.createNewLogEventForItem(1, 12, this.cardItem, this.user, logText);
 
-    this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
+    this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
       if (res.message === 'success') {
         this.dataService.cardList.next(this.cardList);
 
@@ -90,4 +84,3 @@ export class CardItemComponent implements OnInit {
     });
   }
 }
-

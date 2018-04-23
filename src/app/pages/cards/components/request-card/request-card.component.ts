@@ -1,21 +1,16 @@
-import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Card } from '../../../../datamodels/card';
-import { Observable } from 'rxjs/Observable';
-import { DataService } from '../../../../services/data.service';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import * as _ from 'lodash';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { User } from '../../../../datamodels/user';
-import { ModalService } from '../../../../services/modal.service';
-import { Receipt } from '../../../../datamodels/receipt';
-import * as moment from 'moment';
-import { CardType } from '../../../../datamodels/cardType';
-import { LogEvent } from '../../../../datamodels/logEvent';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as _ from 'lodash';
 import { AuthService } from '../../../../auth/auth.service';
+import { Card } from '../../../../datamodels/card';
+import { LogEvent } from '../../../../datamodels/logEvent';
+import { Receipt } from '../../../../datamodels/receipt';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-request-card',
@@ -65,7 +60,7 @@ export class RequestCardComponent implements OnInit {
     private router: Router,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe((user) => {
+    this.authService.user.subscribe(user => {
       this.user = user;
     });
 
@@ -211,8 +206,8 @@ export class RequestCardComponent implements OnInit {
       const logEvent = this.utilitiesService.createNewLogEventForItem(1, 5, this.cardItem, this.user, logText);
 
       this.httpService
-        .httpPost<Receipt>('addNewReceipt/',
-        { receipt: receipt,
+        .httpPost<Receipt>('addNewReceipt/', {
+          receipt: receipt,
           logEvent: logEvent,
           card: this.cardItem
         })
@@ -279,7 +274,7 @@ export class RequestCardComponent implements OnInit {
 
   updateLists(logEvent: any, receipt: any) {
     // Update log event list
-  this.utilitiesService.updateLogEventList(logEvent);
+    this.utilitiesService.updateLogEventList(logEvent);
 
     // Update receipt list
     this.receipts.unshift(receipt);

@@ -1,21 +1,12 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Directive,
-  Inject,
-  ViewChild,
-  Output,
-  EventEmitter
-} from '@angular/core';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { ModalService } from '../../../../services/modal.service';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
+import { BaseType } from '../../../../datamodels/baseType';
 import { CardType } from '../../../../datamodels/cardType';
 import { DocumentType } from '../../../../datamodels/documentType';
-import { BaseType } from '../../../../datamodels/baseType';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-modify-type',
@@ -23,7 +14,6 @@ import { BaseType } from '../../../../datamodels/baseType';
   styleUrls: ['./modify-type.component.scss']
 })
 export class ModifyTypeComponent implements OnInit {
-
   typeNameInput = '';
   isCardType = true;
 
@@ -104,7 +94,7 @@ export class ModifyTypeComponent implements OnInit {
 
   /**
    * Toggle isCardType value
-  */
+   */
   toggleIsCardType() {
     this.isCardType = !this.isCardType;
     // Updates too fast I think, works with delay
@@ -182,10 +172,7 @@ export class ModifyTypeComponent implements OnInit {
    * Returns true if entered type name is valid, else false.
    */
   isValidTypeName() {
-    return (
-      !this.typeNameControl.hasError('required') &&
-      !this.typeNameControl.hasError('typeName')
-    );
+    return !this.typeNameControl.hasError('required') && !this.typeNameControl.hasError('typeName');
   }
 
   /**

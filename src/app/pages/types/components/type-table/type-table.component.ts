@@ -1,11 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import { Document } from '../../../../datamodels/document';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { ModifyTypeComponent } from '../modify-type/modify-type.component';
-import { NgForm } from '@angular/forms';
-import { CardType } from '../../../../datamodels/cardType';
-import { DocumentType } from '../../../../datamodels/documentType';
 import { BaseType } from '../../../../datamodels/baseType';
 import { ModalService } from '../../../../services/modal.service';
 
@@ -15,7 +9,6 @@ import { ModalService } from '../../../../services/modal.service';
   styleUrls: ['./type-table.component.scss']
 })
 export class TypeTableComponent implements OnInit {
-
   @Input() typeList: BaseType[];
 
   showModal = false;
@@ -36,7 +29,7 @@ export class TypeTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -82,7 +75,6 @@ export class TypeTableComponent implements OnInit {
     if (newOrder) {
       this.typeList = _.orderBy(this.typeList, [property], [newOrder]);
     }
-
   }
 
   /**
@@ -91,8 +83,10 @@ export class TypeTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -102,6 +96,4 @@ export class TypeTableComponent implements OnInit {
   openAddNewType() {
     this.modalService.editType.next(null);
   }
-
 }
-

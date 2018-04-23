@@ -1,12 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Card } from '../../datamodels/card';
-import { MatDialog } from '@angular/material';
-
-import { DataService } from '../../services/data.service';
-
+import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { NgForm } from '@angular/forms';
+import { Card } from '../../datamodels/card';
 import { LogEvent } from '../../datamodels/logEvent';
+import { DataService } from '../../services/data.service';
 import { RouteDataService } from '../../services/route-data.service';
 
 @Component({
@@ -15,7 +11,6 @@ import { RouteDataService } from '../../services/route-data.service';
   styleUrls: ['./cardhistory.component.scss']
 })
 export class CardHistoryComponent implements OnInit {
-
   logEventList: LogEvent[] = [];
   filteredLogEventList: LogEvent[] = [];
   card: Card;
@@ -45,7 +40,5 @@ export class CardHistoryComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

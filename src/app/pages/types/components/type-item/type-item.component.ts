@@ -1,18 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import { Document } from '../../../../datamodels/document';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BaseType } from '../../../../datamodels/baseType';
-import * as moment from 'moment';
-import { DataService } from '../../../../services/data.service';
 import { CardType } from '../../../../datamodels/cardType';
 import { DocumentType } from '../../../../datamodels/documentType';
-import { User } from '../../../../datamodels/user';
-import * as _ from 'lodash';
-import { RouteDataService } from '../../../../services/route-data.service';
-import { Router } from '@angular/router';
+import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-type-item',
@@ -32,17 +26,18 @@ export class TypeItemComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService) {
-      this.dataService.cardTypeList.subscribe(cardTypeList => {
-        this.cardTypeList = cardTypeList;
-      });
+    public utilitiesService: UtilitiesService
+  ) {
+    this.dataService.cardTypeList.subscribe(cardTypeList => {
+      this.cardTypeList = cardTypeList;
+    });
 
-      this.dataService.documentTypeList.subscribe(documentTypeList => {
-        this.documentTypeList = documentTypeList;
-      });
+    this.dataService.documentTypeList.subscribe(documentTypeList => {
+      this.documentTypeList = documentTypeList;
+    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   /**
    * Show the modal for type details
@@ -53,7 +48,7 @@ export class TypeItemComponent implements OnInit {
 
   /**
    * Set type to be outputted for editing
-  */
+   */
   edit() {
     this.modalService.editType.next(this.typeItem);
   }
@@ -77,4 +72,3 @@ export class TypeItemComponent implements OnInit {
     }
   }
 }
-
