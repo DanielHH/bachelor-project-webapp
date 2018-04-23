@@ -1,16 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
-import * as moment from 'moment';
-import { DataService } from '../services/data.service';
-import { lowerCase, UtilitiesService } from '../services/utilities.service';
 import { User } from '../datamodels/user';
+import { UtilitiesService, lowerCase } from '../services/utilities.service';
 
 @Pipe({
   name: 'matchFilterUser'
 })
 export class MatchFilterUserPipe implements PipeTransform {
-
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(private utilitiesService: UtilitiesService) {}
 
   transform(
     value: User[],
@@ -20,12 +17,12 @@ export class MatchFilterUserPipe implements PipeTransform {
     showActive: boolean,
     showInactive: boolean
   ): User[] {
-    return _.filter(value, (user) => {
+    return _.filter(value, user => {
       return this.matchFilt(user, input, showAdmins, showUsers, showActive, showInactive);
     });
   }
 
-   /**
+  /**
    * Match filterInput to the various displayed fields of card
    * @param card
    * @param filterInput
@@ -44,8 +41,8 @@ export class MatchFilterUserPipe implements PipeTransform {
     showInactive: boolean
   ) {
     if (
-      (!user) ||
-      (!user.id) ||
+      !user ||
+      !user.id ||
       (this.utilitiesService.isAdmin(user) && !showAdmins) ||
       (this.utilitiesService.isUser(user) && !showUsers) ||
       (user.status.id == 5 && !showActive) ||
@@ -57,12 +54,11 @@ export class MatchFilterUserPipe implements PipeTransform {
     filterInput = lowerCase(filterInput);
 
     return (
-      (_.includes(lowerCase(user.username), filterInput) === true) ||
-      (_.includes(lowerCase(user.name), filterInput) === true) ||
-      (_.includes(lowerCase(user.email), filterInput) === true) ||
-      (_.includes(lowerCase(user.creationDate), filterInput) === true) ||
-      (_.includes(lowerCase(user.modifiedDate), filterInput) === true)
+      _.includes(lowerCase(user.username), filterInput) === true ||
+      _.includes(lowerCase(user.name), filterInput) === true ||
+      _.includes(lowerCase(user.email), filterInput) === true ||
+      _.includes(lowerCase(user.creationDate), filterInput) === true ||
+      _.includes(lowerCase(user.modifiedDate), filterInput) === true
     );
   }
-
 }

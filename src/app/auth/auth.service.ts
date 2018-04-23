@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-import { tokenNotExpired } from 'angular2-jwt';
-import { HttpService } from '../services/http.service';
-
-import { Http, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import { User } from '../datamodels/user';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { HttpService } from '../services/http.service';
+
 
 @Injectable()
 export class AuthService {

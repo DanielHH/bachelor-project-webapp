@@ -86,20 +86,16 @@ input[type] {
 }
 
 .mat-radio-checked {
-
-
   .mat-radio-outer-circle {
     border-color: $secondary-color-dark !important;
   }
 
   .mat-radio-inner-circle {
     background-color: $secondary-color-dark !important;
-
   }
 }
 
 .mat-radio-ripple {
-
   .mat-ripple-element {
     background-color: rgba($secondary-color-dark, 0.1) !important;
   }

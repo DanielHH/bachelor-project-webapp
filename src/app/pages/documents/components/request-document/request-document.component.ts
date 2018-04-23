@@ -1,18 +1,13 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Document } from '../../../../datamodels/document';
-import { Observable } from 'rxjs/Observable';
-import { DataService } from '../../../../services/data.service';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import * as _ from 'lodash';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { User } from '../../../../datamodels/user';
-import { Receipt } from '../../../../datamodels/receipt';
-import { ModalService } from '../../../../services/modal.service';
-import * as moment from 'moment';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '../../../../auth/auth.service';
+import { Document } from '../../../../datamodels/document';
+import { Receipt } from '../../../../datamodels/receipt';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-request-document',
@@ -72,7 +67,7 @@ export class RequestDocumentComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe((user) => {
+    this.authService.user.subscribe(user => {
       this.user = user;
     });
 
@@ -115,7 +110,6 @@ export class RequestDocumentComponent implements OnInit {
     });
 
     this.authService.user.subscribe(user => (this.user = user));
-
   }
 
   ngOnInit() {}
@@ -190,23 +184,23 @@ export class RequestDocumentComponent implements OnInit {
 
       // Create new log event
       const logText = this.documentItem.documentNumber + ' till ' + this.documentItem.user.name;
-      const logEvent = this.utilitiesService.
-      createNewLogEventForItem(2, 5, this.documentItem, this.user, logText);
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 5, this.documentItem, this.user, logText);
 
       // Submit changes to database
-      this.httpService.httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.documentItem })
-      .then(res => {
-        if (res.message === 'success') {
-          const newReceipt = res.data.receipt;
+      this.httpService
+        .httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.documentItem })
+        .then(res => {
+          if (res.message === 'success') {
+            const newReceipt = res.data.receipt;
 
-          this.documentItem.activeReceipt = Number(newReceipt.id);
+            this.documentItem.activeReceipt = Number(newReceipt.id);
 
-          if (this.generatePDF) {
-            this.loading = true;
-            this.hideSubmit = true;
-            this.closeText = 'Stäng';
+            if (this.generatePDF) {
+              this.loading = true;
+              this.hideSubmit = true;
+              this.closeText = 'Stäng';
 
-            this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
+              this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
                 if (pdfRes.message === 'success') {
                   newReceipt.url = pdfRes.url;
                   newReceipt.url = pdfRes.url;
@@ -251,7 +245,7 @@ export class RequestDocumentComponent implements OnInit {
 
   updateLists(logEvent: any, receipt: any) {
     // Update log event list
-  this.utilitiesService.updateLogEventList(logEvent);
+    this.utilitiesService.updateLogEventList(logEvent);
 
     // Update receipt list
     this.receipts.unshift(receipt);
@@ -261,5 +255,4 @@ export class RequestDocumentComponent implements OnInit {
     // Update card list
     this.dataService.documentList.next(this.documents);
   }
-
 }

@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Card } from '../datamodels/card';
-import { Document } from '../datamodels/document';
 import { Delivery } from '../datamodels/delivery';
+import { Document } from '../datamodels/document';
 
 @Injectable()
 export class RouteDataService {
-
   /**
    * Route data card
    */
@@ -15,34 +14,27 @@ export class RouteDataService {
   /**
    * A subscriber to the route data card
    */
-  card: BehaviorSubject<Card> = new BehaviorSubject<Card>(
-    this._card
-  );
+  card: BehaviorSubject<Card> = new BehaviorSubject<Card>(this._card);
 
-   /**
+  /**
    * Route data document
    */
   private _document = new Document();
 
-   /**
+  /**
    * A subscriber to the route data document
    */
-  document: BehaviorSubject<Document> = new BehaviorSubject<Document>(
-    this._document
-  );
+  document: BehaviorSubject<Document> = new BehaviorSubject<Document>(this._document);
 
-   /**
+  /**
    * Route data document
    */
   private _delivery = new Delivery();
 
-   /**
+  /**
    * A subscriber to the route data document
    */
-  delivery: BehaviorSubject<Delivery> = new BehaviorSubject<Delivery>(
-    this._delivery
-  );
+  delivery: BehaviorSubject<Delivery> = new BehaviorSubject<Delivery>(this._delivery);
 
-  constructor() { }
-
+  constructor() {}
 }

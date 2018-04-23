@@ -1,14 +1,8 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
-import { HttpService } from '../../../../services/http.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { User } from '../../../../datamodels/user';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
-import { User } from '../../../../datamodels/user';
 
 @Component({
   selector: 'app-user-detail',
@@ -16,7 +10,6 @@ import { User } from '../../../../datamodels/user';
   styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
-
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -34,20 +27,15 @@ export class UserDetailComponent implements OnInit {
 
   userItem: User = null;
 
-  constructor(
-    private modalService: ModalService,
-    public utilitiesService: UtilitiesService
-  ) {
-    this.modalService.detailUser.subscribe((user) => {
+  constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
+    this.modalService.detailUser.subscribe(user => {
       if (user && user.id) {
         this.userItem = user;
         this._showModal = true;
       }
     });
-
   }
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Closes form.

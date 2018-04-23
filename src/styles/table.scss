@@ -72,19 +72,18 @@
 .hover {
   cursor: pointer;
   &.up-arrow::after {
-    content: "\f0de";
+    content: '\f0de';
     font-family: FontAwesome;
     font-size: 12px;
   }
   &.down-arrow::after {
-    content: "\f0dd";
+    content: '\f0dd';
     font-family: FontAwesome;
     font-size: 12px;
   }
   &.both-arrow::after {
-    content: "\f0dc";
+    content: '\f0dc';
     font-family: FontAwesome;
     font-size: 12px;
   }
-
 }

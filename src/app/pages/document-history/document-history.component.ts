@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
+import { Document } from '../../datamodels/document';
 import { LogEvent } from '../../datamodels/logEvent';
 import { DataService } from '../../services/data.service';
-import { Document } from '../../datamodels/document';
 import { RouteDataService } from '../../services/route-data.service';
 
-import * as _ from 'lodash';
-import { NgForm } from '@angular/forms';
 
-import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-document-history',
@@ -15,7 +13,6 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./document-history.component.scss']
 })
 export class DocumentHistoryComponent implements OnInit {
-
   logEventList: LogEvent[] = [];
   filteredLogEventList: LogEvent[] = [];
   document: Document;
@@ -44,7 +41,5 @@ export class DocumentHistoryComponent implements OnInit {
       }
     });
   }
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

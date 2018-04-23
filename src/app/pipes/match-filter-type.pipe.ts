@@ -1,19 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Card } from '../datamodels/card';
-import { Document } from '../datamodels/document';
 import * as _ from 'lodash';
-import * as moment from 'moment';
-import { DataService } from '../services/data.service';
 import { BaseType } from '../datamodels/baseType';
-import { DocumentType } from '../datamodels/documentType';
-import { lowerCase, UtilitiesService } from '../services/utilities.service';
+import { UtilitiesService, lowerCase } from '../services/utilities.service';
 
 @Pipe({
   name: 'matchFilterType'
 })
 export class MatchFilterTypePipe implements PipeTransform {
-
-  constructor(private utilitiesService: UtilitiesService) { }
+  constructor(private utilitiesService: UtilitiesService) {}
 
   transform(
     value: BaseType[],
@@ -23,12 +17,12 @@ export class MatchFilterTypePipe implements PipeTransform {
     showActive: boolean,
     showInactive: boolean
   ): BaseType[] {
-    return _.filter(value, (baseType) => {
+    return _.filter(value, baseType => {
       return this.matchFilt(baseType, input, showCardTypes, showDocumentTypes, showActive, showInactive);
     });
   }
 
-   /**
+  /**
    * Match filterInput to the various displayed fields of card
    * @param card
    * @param filterInput
@@ -47,8 +41,8 @@ export class MatchFilterTypePipe implements PipeTransform {
     showInactive: boolean
   ) {
     if (
-      (!baseType) ||
-      (!baseType.getType().id) ||
+      !baseType ||
+      !baseType.getType().id ||
       (baseType.isCardType() && !showCardTypes) ||
       (baseType.isDocumentType() && !showDocumentTypes) ||
       (baseType.getType().status.id == 5 && !showActive) ||
@@ -60,10 +54,9 @@ export class MatchFilterTypePipe implements PipeTransform {
     filterInput = lowerCase(filterInput);
 
     return (
-      (_.includes(lowerCase(baseType.getType().name), filterInput) === true) ||
-      (_.includes(lowerCase(baseType.getType().creationDate), filterInput) === true) ||
-      (_.includes(lowerCase(baseType.getType().modifiedDate), filterInput) === true)
+      _.includes(lowerCase(baseType.getType().name), filterInput) === true ||
+      _.includes(lowerCase(baseType.getType().creationDate), filterInput) === true ||
+      _.includes(lowerCase(baseType.getType().modifiedDate), filterInput) === true
     );
   }
-
 }

@@ -1,14 +1,8 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Document } from '../../../../datamodels/document';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
-import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-document-detail',
@@ -16,7 +10,6 @@ import * as moment from 'moment';
   styleUrls: ['./document-detail.component.scss']
 })
 export class DocumentDetailComponent implements OnInit {
-
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -34,20 +27,15 @@ export class DocumentDetailComponent implements OnInit {
 
   documentItem: Document = null;
 
-  constructor(
-    private modalService: ModalService,
-    public utilitiesService: UtilitiesService
-  ) {
-    this.modalService.detailDocument.subscribe((document) => {
+  constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
+    this.modalService.detailDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
         this._showModal = true;
       }
     });
-
   }
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
    * Closes form.

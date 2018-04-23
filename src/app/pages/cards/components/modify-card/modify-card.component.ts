@@ -1,31 +1,15 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Directive,
-  Inject,
-  ViewChild,
-  Output,
-  EventEmitter,
-  ElementRef,
-  NgZone
-} from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import 'rxjs/add/operator/share';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import * as moment from 'moment';
-import { DataService } from '../../../../services/data.service';
-import * as _ from 'lodash';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { ModalService } from '../../../../services/modal.service';
-import { User } from '../../../../datamodels/user';
-import { LogEvent } from '../../../../datamodels/logEvent';
-import { BaseType } from '../../../../datamodels/baseType';
 import { AuthService } from '../../../../auth/auth.service';
+import { BaseType } from '../../../../datamodels/baseType';
+import { Card } from '../../../../datamodels/card';
+import { LogEvent } from '../../../../datamodels/logEvent';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-modify-card',
@@ -55,7 +39,6 @@ export class ModifyCardComponent implements OnInit {
 
   user: User;
   cardItem: Card;
-
 
   logEvents: LogEvent[] = [];
 
@@ -87,7 +70,7 @@ export class ModifyCardComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe((user) => {
+    this.authService.user.subscribe(user => {
       this.user = user;
     });
     this.dataService.typeList.subscribe(baseTypes => {
@@ -123,7 +106,6 @@ export class ModifyCardComponent implements OnInit {
         setTimeout(() => {
           this.commentInput = card.comment;
         }, 250);
-
       } else {
         this.modalTitle = 'Lägg till nytt kort';
         this.modalType = 0;
@@ -166,7 +148,7 @@ export class ModifyCardComponent implements OnInit {
       // Create new log event
       const logEvent = this.utilitiesService.createNewLogEventForItem(1, 6, newCard, this.user, newCard.cardNumber);
 
-      this.httpService.httpPost<Card>('addNewCard/', {card: newCard, logEvent: logEvent}).then(res => {
+      this.httpService.httpPost<Card>('addNewCard/', { card: newCard, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
           newCard.creationDate = new Date();
           newCard.modifiedDate = new Date();
@@ -194,7 +176,7 @@ export class ModifyCardComponent implements OnInit {
       const logText = 'Uppgifter för ' + this.cardItem.cardNumber;
       const logEvent = this.utilitiesService.createNewLogEventForItem(1, 10, this.cardItem, this.user, logText);
 
-      this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
+      this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
           this.cardItem.modifiedDate = new Date();
           this.cardList = this.cardList.slice();

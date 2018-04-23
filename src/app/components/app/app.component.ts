@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../auth/auth.service';
-import { User } from '../../datamodels/user';
 import { registerLocaleData } from '@angular/common';
 import swedish from '@angular/common/locales/sv';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AuthService } from '../../auth/auth.service';
+import { User } from '../../datamodels/user';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-root',

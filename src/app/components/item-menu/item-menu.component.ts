@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth/auth.service';
 import { User } from '../../datamodels/user';
 import { HttpService } from '../../services/http.service';
 import { RouteDataService } from '../../services/route-data.service';
 import { UtilitiesService } from '../../services/utilities.service';
-import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-item-menu',

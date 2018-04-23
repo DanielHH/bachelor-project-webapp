@@ -1,14 +1,8 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location, DatePipe } from '@angular/common';
-import { FormControl, Validators, NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Card } from '../../../../datamodels/card';
-import { DataService } from '../../../../services/data.service';
-import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-card-detail',
@@ -16,7 +10,6 @@ import * as moment from 'moment';
   styleUrls: ['./card-detail.component.scss']
 })
 export class CardDetailComponent implements OnInit {
-
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -34,20 +27,16 @@ export class CardDetailComponent implements OnInit {
 
   cardItem: Card = null;
 
-  constructor(
-    private modalService: ModalService,
-    public utilitiesService: UtilitiesService
-  ) {
-    this.modalService.detailCard.subscribe((card) => {
+  constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
+    this.modalService.detailCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
         this._showModal = true;
       }
     });
-
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   hideDetail() {
     this.showModal = false;

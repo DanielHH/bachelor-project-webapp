@@ -1,19 +1,13 @@
-import { Component, OnInit, Input, Directive, Inject, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Document } from '../../../../datamodels/document';
-import { HttpService } from '../../../../services/http.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import * as moment from 'moment';
-import { MatDialogRef } from '@angular/material';
-import { DataService } from '../../../../services/data.service';
-import * as _ from 'lodash';
-import { ModalService } from '../../../../services/modal.service';
-import { User } from '../../../../datamodels/user';
-import { BaseType } from '../../../../datamodels/baseType';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '../../../../auth/auth.service';
+import { BaseType } from '../../../../datamodels/baseType';
+import { Document } from '../../../../datamodels/document';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-modify-document',
@@ -83,7 +77,7 @@ export class ModifyDocumentComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe((user) => {
+    this.authService.user.subscribe(user => {
       this.user = user;
     });
 
@@ -172,7 +166,7 @@ export class ModifyDocumentComponent implements OnInit {
       // Create new log event
       const logEvent = this.utilitiesService.createNewLogEventForItem(2, 6, newDoc, this.user, newDoc.documentNumber);
 
-      this.httpService.httpPost<Document>('addNewDocument/', {document: newDoc, logEvent: logEvent}).then(res => {
+      this.httpService.httpPost<Document>('addNewDocument/', { document: newDoc, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
           newDoc.creationDate = new Date();
           newDoc.modifiedDate = new Date();
@@ -201,18 +195,20 @@ export class ModifyDocumentComponent implements OnInit {
       const logText = 'Uppgifter för ' + this.documentItem.documentNumber;
       const logEvent = this.utilitiesService.createNewLogEventForItem(2, 10, this.documentItem, this.user, logText);
 
-      this.httpService.httpPut<Document>('updateDocument/', {documentItem: this.documentItem, logEvent: logEvent}).then(res => {
-        if (res.message === 'success') {
-          this.documentItem.modifiedDate = new Date();
-          this.documentList = this.documentList.slice();
-          this.dataService.documentList.next(this.documentList);
+      this.httpService
+        .httpPut<Document>('updateDocument/', { documentItem: this.documentItem, logEvent: logEvent })
+        .then(res => {
+          if (res.message === 'success') {
+            this.documentItem.modifiedDate = new Date();
+            this.documentList = this.documentList.slice();
+            this.dataService.documentList.next(this.documentList);
 
-          // Update log event list
-          this.utilitiesService.updateLogEventList(res.data.logEvent);
+            // Update log event list
+            this.utilitiesService.updateLogEventList(res.data.logEvent);
 
-          this.closeForm();
-        }
-      });
+            this.closeForm();
+          }
+        });
     }
   }
 

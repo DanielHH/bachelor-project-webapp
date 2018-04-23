@@ -1,14 +1,13 @@
-import { ItemType } from './itemType';
 import { Card } from './card';
 import { Document } from './document';
+import { ItemType } from './itemType';
 import { User } from './user';
 import { VerificationType } from './verificationType';
 
 /**
  * Verification data model
-*/
+ */
 export class Verification {
-
   /**
    * Database ID of the verification
    */
@@ -43,5 +42,4 @@ export class Verification {
    * Date of the verification
    */
   verificationDate: Date;
-
 }

@@ -1,19 +1,10 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Directive,
-  Inject,
-  ViewChild,
-  Output,
-  EventEmitter
-} from '@angular/core';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { ModalService } from '../../../../services/modal.service';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-modify-user',
@@ -21,7 +12,6 @@ import { User } from '../../../../datamodels/user';
   styleUrls: ['./modify-user.component.scss']
 })
 export class ModifyUserComponent implements OnInit {
-
   nameInput = '';
   emailInput = '';
   usernameInput = '';
@@ -86,12 +76,12 @@ export class ModifyUserComponent implements OnInit {
 
         this._showModal = true;
       } else {
-          this.userToEdit = null;
+        this.userToEdit = null;
 
-          this.modalType = 0;
-          this.modalTitle = 'Lägg till ny användare';
+        this.modalType = 0;
+        this.modalTitle = 'Lägg till ny användare';
 
-          this._showModal = true;
+        this._showModal = true;
       }
     });
   }
@@ -184,10 +174,7 @@ export class ModifyUserComponent implements OnInit {
    * Returns true if entered username is valid, else false.
    */
   isValidUsername() {
-    return (
-      !this.usernameControl.hasError('required') &&
-      !this.usernameControl.hasError('newUsername')
-    );
+    return !this.usernameControl.hasError('required') && !this.usernameControl.hasError('newUsername');
   }
 
   /**
@@ -210,12 +197,7 @@ export class ModifyUserComponent implements OnInit {
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
-    return (
-      this.isValidName() &&
-      this.isValidEmail() &&
-      this.isValidUsername() &&
-      this.isValidPassword()
-    );
+    return this.isValidName() && this.isValidEmail() && this.isValidUsername() && this.isValidPassword();
   }
 
   /**

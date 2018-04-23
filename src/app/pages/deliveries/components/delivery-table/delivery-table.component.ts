@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Delivery } from '../../../../datamodels/delivery';
-import { ModalService } from '../../../../services/modal.service';
 import { MatchFilterDeliveryPipe } from '../../../../pipes/match-filter-delivery.pipe';
 import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
 import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({

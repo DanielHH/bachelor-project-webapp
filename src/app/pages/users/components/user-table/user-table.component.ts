@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { NgForm } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
 import { ModalService } from '../../../../services/modal.service';
 
@@ -10,7 +9,6 @@ import { ModalService } from '../../../../services/modal.service';
   styleUrls: ['./user-table.component.scss']
 })
 export class UserTableComponent implements OnInit {
-
   @Input() userList: User[];
 
   showModal = false;
@@ -33,7 +31,7 @@ export class UserTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -89,7 +87,6 @@ export class UserTableComponent implements OnInit {
     if (newOrder) {
       this.userList = _.orderBy(this.userList, [property], [newOrder]);
     }
-
   }
 
   /**
@@ -98,8 +95,10 @@ export class UserTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -109,6 +108,4 @@ export class UserTableComponent implements OnInit {
   openAddNewUser() {
     this.modalService.editUser.next(null);
   }
-
 }
-

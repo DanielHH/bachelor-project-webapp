@@ -1,15 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Document } from '../../../../datamodels/document';
-import { User } from '../../../../datamodels/user';
-import { DataService } from '../../../../services/data.service';
-import { RouteDataService } from '../../../../services/route-data.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpService } from '../../../../services/http.service';
-import * as _ from 'lodash';
 import { Delivery } from '../../../../datamodels/delivery';
-import * as moment from 'moment';
-import { UtilitiesService } from '../../../../services/utilities.service';
+import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
+import { RouteDataService } from '../../../../services/route-data.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-delivery-item',
@@ -30,10 +25,9 @@ export class DeliveryItemComponent implements OnInit {
     private router: Router,
     private modalService: ModalService,
     private httpService: HttpService
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   route() {
     this.routeDataService.delivery.next(this.deliveryItem);
@@ -56,11 +50,11 @@ export class DeliveryItemComponent implements OnInit {
 
   /**
    * Sets the status of the delivery in the database
-  */
+   */
   editStatus() {
     this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
-      if (res.message === 'success') { }
+      if (res.message === 'success') {
+      }
     });
   }
-
 }

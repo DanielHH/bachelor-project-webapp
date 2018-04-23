@@ -1,15 +1,8 @@
-import { Document } from '../../../../datamodels/document';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
-import { HttpService } from '../../../../services/http.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Delivery } from '../../../../datamodels/delivery';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
-import { Delivery } from '../../../../datamodels/delivery';
 
 @Component({
   selector: 'app-delivery-detail',
@@ -17,7 +10,6 @@ import { Delivery } from '../../../../datamodels/delivery';
   styleUrls: ['./delivery-detail.component.scss']
 })
 export class DeliveryDetailComponent implements OnInit {
-
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -35,20 +27,15 @@ export class DeliveryDetailComponent implements OnInit {
 
   deliveryItem: Delivery = null;
 
-  constructor(
-    private modalService: ModalService,
-    public utilitiesService: UtilitiesService
-  ) {
-    this.modalService.detailDelivery.subscribe((delivery) => {
+  constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
+    this.modalService.detailDelivery.subscribe(delivery => {
       if (delivery && delivery.id) {
         this.deliveryItem = delivery;
         this._showModal = true;
       }
     });
-
   }
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   hideDetail() {
     this.showModal = false;
