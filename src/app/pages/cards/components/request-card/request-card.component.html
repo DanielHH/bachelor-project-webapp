@@ -128,12 +128,14 @@
               tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
+            <button type="button" mat-button class="size-medium" mat-icon-button matSuffix (click)="picker.open()" tabindex="-1">
+              <mat-icon>date_range</mat-icon>
+            </button>
             <!--DatePicker-->
             <mat-datepicker #picker></mat-datepicker>
             <!--Hidden input connected to the date picker-->
             <input id="startDateDatepickerInput" name="startDateDatepickerInput" [(ngModel)]="startDateDatepickerInput" [matDatepicker]="picker"
               (dateInput)="setStartDateFromDatepicker($event);" type="hidden">
-            <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
             <!--Errors-->
             <mat-error *ngIf="startDateControl.hasError('required')">
               Ange ett startdatum
