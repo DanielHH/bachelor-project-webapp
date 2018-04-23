@@ -18,9 +18,9 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
   @Input() modalTitle: string;
 
-  @Input() submitName = 'Save';
+  @Input() submitName = 'Spara';
 
-  @Input() closeName = 'Close';
+  @Input() closeName = 'Avbryt';
 
   @Output() showChange = new EventEmitter();
 
@@ -38,6 +38,9 @@ export class ModalComponent implements OnInit, AfterViewInit {
       this.modal.hide();
     }
   }
+
+  @Input() hideSubmit = false;
+  @Input() hideClose = false;
 
   constructor() {}
 

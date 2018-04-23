@@ -3,6 +3,10 @@ import { Card } from '../../../../datamodels/card';
 import * as _ from 'lodash';
 import { ModifyCardComponent } from '../modify-card/modify-card.component';
 import { NgForm } from '@angular/forms';
+import { ModalService } from '../../../../services/modal.service';
+import { HttpService } from '../../../../services/http.service';
+import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
+import { lowerCase, UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-card-table',
@@ -10,54 +14,65 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./card-table.component.scss']
 })
 export class CardTableComponent implements OnInit {
-
   @Input() cardList: Card[];
 
-  editCard: Card = null; // Card to be edited
+  showModal = false;
 
-  showAddNewModal = false;
-
-  showEditModal = false;
-
-  @ViewChild('addNewCardComponent') addNewCardComponent: ModifyCardComponent;
-
-  @ViewChild('editCardComponent') editCardComponent: ModifyCardComponent;
-
-  @ViewChild('addNewCardForm') addNewCardForm: NgForm;
-
-  @ViewChild('editCardForm') editCardForm: NgForm;
+  showPdfGenerationModal = false;
 
   filterInput = '';
 
+  orderStatus = '';
   orderCardType = '';
   orderCardNumber = '';
-  orderUserID = '';
+  orderUser = '';
   orderLocation = '';
   orderComment = '';
   orderDate = '';
 
-  constructor() { }
+  showIn = true;
+  showOut = true;
+  showArchived = false;
+  showGone = false;
+
+  modalTitle = '';
+
+  modalType = 0;
+
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private cardPipe: MatchFilterCardPipe,
+    private utilitiesService: UtilitiesService
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
   }
 
   /**
-   * Sorts table after modifiedDate ascending
+   * Sorts table after location descending
    */
   sortTableListStart() {
     this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
   }
 
   /**
-   * Sorts the table depending on the property of the Card
+   * Sorts the table depending on the properties of the items
    * @param property
    */
   sortTableList(property: string) {
     let newOrder = '';
 
     switch (property) {
-      case 'cardType': {
+      case 'status.id': {
+        newOrder = this.sortTableListHelper(this.orderStatus);
+        this.orderStatus = newOrder;
+        break;
+      }
+      case 'cardType.name': {
         newOrder = this.sortTableListHelper(this.orderCardType);
         this.orderCardType = newOrder;
         break;
@@ -67,9 +82,9 @@ export class CardTableComponent implements OnInit {
         this.orderCardNumber = newOrder;
         break;
       }
-      case 'userID': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user.name': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
         break;
       }
       case 'location': {
@@ -90,9 +105,20 @@ export class CardTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
+      this.cardList = _.orderBy(
+        this.cardList,
+        [
+          card => {
+            if (card[property]) {
+              return lowerCase(card[property]) as string;
+            } else {
+              return card[property.slice(0, -5)] ? lowerCase(card[property.slice(0, -5)].name) as string : '';
+            }
+          }
+        ],
+        [newOrder]
+      );
     }
-
   }
 
   /**
@@ -101,39 +127,58 @@ export class CardTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
   /**
-   * Set card to be edited. Called when edit option was clicked.
+   * Open add new card modal
    */
-  setEditCard(card: any) {
-    this.editCard = card;
-    this.showEditModal = true;
+  openAddNewCard() {
+    this.modalService.editCard.next(null);
   }
 
-  /**
-   * Triggers submission of new card to server.
-   */
-  submitNewCard() {
-    this.addNewCardComponent.addNewCard().then(() => {
-      this.showAddNewModal = false;
-      this.addNewCardForm.resetForm();
-    });
+  openPdfGenerationModal() {
+    const filteredList = this.cardPipe.transform(
+      this.cardList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
+
+    this.generateFilterArray();
+
+    this.modalService.pdfFilteredList.next(filteredList);
   }
 
-  /**
-   * Triggers submission of edited card to server.
-   */
-  submitEditCard() {
-    this.editCardComponent.editCard(this.editCard).then(() => {
-      this.showEditModal = false;
-      this.editCard = null;
-      this.editCardForm.resetForm();
-    });
-  }
+  generateFilterArray() {
+    const filters = [];
 
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showIn) {
+      filters.push('Tillgängliga');
+    }
+
+    if (this.showOut) {
+      filters.push('Utkvitterade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    this.modalService.filterList.next(filters);
+  }
 }
-

@@ -1,0 +1,31 @@
+<div class="row table-item" (click)="showDetailsModal()">
+  <div class="col-1">
+    <div *ngIf="deliveryItem?.status?.id == 1 || deliveryItem?.status?.id == 2">
+      <button type="button" class="status-btn btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="deliveryItem?.status?.id == 2"
+        [class.btn-success]="deliveryItem?.status?.id == 1" disabled mdbRippleRadius>
+        <span>Levererad</span>
+      </button>
+    </div>
+    <div *ngIf="deliveryItem?.status?.id == 3 || deliveryItem?.status?.id == 4">
+      <button type="button" class="status-btn btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <span *ngIf="deliveryItem?.status?.id == 3">Arkiverad</span>
+        <span *ngIf="deliveryItem?.status?.id == 4">Borttappad</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="col">
+    <i class="material-icons sm-icon">import_contacts</i>
+    {{deliveryItem?.documentType?.name}}
+  </div>
+  <div class="col">{{deliveryItem?.documentNumber}}</div>
+  <div class="col">{{deliveryItem.name}}</div>
+  <div class="col">{{deliveryItem?.receiver}}</div>
+  <div class="col">{{deliveryItem.sentDate | date: 'shortDate'}}</div>
+  <div class="col">
+    <div class="column-text">{{deliveryItem?.comment}}</div>
+    <div class="pull-right table-menu-fix">
+      <app-item-menu [object]="deliveryItem" (editObject)="edit()" (editStatus)="editStatus()" [itemMenu]="true" [showEditOption]="true"></app-item-menu>
+    </div>
+  </div>
+</div>

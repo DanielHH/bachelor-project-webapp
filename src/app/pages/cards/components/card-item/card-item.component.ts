@@ -8,6 +8,10 @@ import * as _ from 'lodash';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { Router } from '@angular/router';
 import { HttpService } from '../../../../services/http.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
+import { ModalService } from '../../../../services/modal.service';
+import { LogEvent } from '../../../../datamodels/logEvent';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-card-item',
@@ -16,95 +20,74 @@ import { HttpService } from '../../../../services/http.service';
 })
 export class CardItemComponent implements OnInit {
   @Input() cardItem: Card;
-  @Output() editItem = new EventEmitter<any>();
 
-  cardTypeList: CardType[] = [];
-  userList: User[] = [];
+  user: User;
+  cardList: Card[] = [];
+
 
   showRequestModal = false;
-
   showReturnModal = false;
 
-  constructor(private dataService: DataService, private routeDataService: RouteDataService, private router: Router, private httpService: HttpService) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
-      this.cardTypeList = cardTypeList;
+  constructor(
+    private dataService: DataService,
+    private router: Router,
+    private httpService: HttpService,
+    private modalService: ModalService,
+    public utilitiesService: UtilitiesService,
+    private authService: AuthService) {
+
+    this.authService.user.subscribe((user) => {
+      this.user = user;
     });
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
+
+    this.dataService.cardList.subscribe(cardList => {
+      this.cardList = cardList;
     });
   }
 
   ngOnInit() { }
 
   /**
-   * Change card status
+   * Show the modal for card details
    */
-  setCardStatus(status: number) {
-    this.cardItem.status = status;
-    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
-      if (res.message === 'success') {
-        this.showRequestModal = false;
-        this.showReturnModal = false;
-      }
-    });
-  }
-
-
-  /**
-   * Returns the name of the card type corresponding to the cardType
-   */
-  displayCardType() {
-    if (this.cardItem.cardType > 0) {
-      const cardTypeToDisplay = _.find(this.cardTypeList, cardType => cardType.id === this.cardItem.cardType);
-      if (cardTypeToDisplay) {
-        return cardTypeToDisplay.name;
-      }
-    }
-    return '';
-  }
-
-  /**
-   * Returns the name corresponding to the userID
-   */
-  displayUserName() {
-    if (this.cardItem.userID) {
-      return _.find(this.userList, user => user.id === this.cardItem.userID)
-        .name;
-    }
-    return '';
-  }
-
-  /**
-   * Returns a string representation of the expirationDate of the card
-   */
-  displayExpirationDate() {
-    return moment(this.cardItem.expirationDate).format('YYYY-MM-DD');
-  }
-
-  /**
-   * Change route and send route data
-   */
-  route() {
-    this.routeDataService.card.next(this.cardItem);
-    this.router.navigate(['card-detail']);
-  }
-
-  /**
-   * Set card to be outputted for editing
-  */
-  edit() {
-    this.editItem.next(this.cardItem);
+  showDetailsModal() {
+    this.modalService.detailCard.next(this.cardItem);
   }
 
   /**
    * Show modal based on status
+   * 1 == returned, 2 == available
    */
   showModal() {
-    if (this.cardItem.status == 1) {
-      this.showRequestModal = true;
-    }
-    else {
-      this.showReturnModal = true;
+    if (this.cardItem.status.id == 1) {
+      this.modalService.requestCard.next(this.cardItem);
+    } else {
+      this.modalService.returnCard.next(this.cardItem);
     }
   }
+
+  /**
+     * Set card to be outputted for editing
+    */
+  edit() {
+    this.modalService.editCard.next(this.cardItem);
+  }
+
+  /**
+   * Sets the status of the card in the database
+   */
+  editStatus() {
+    // Create new log event
+    const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.status.name;
+    const logEvent = this.utilitiesService.createNewLogEventForItem(1, 12, this.cardItem, this.user, logText);
+
+    this.httpService.httpPut<Card>('updateCard/', {cardItem: this.cardItem, logEvent: logEvent}).then(res => {
+      if (res.message === 'success') {
+        this.dataService.cardList.next(this.cardList);
+
+        this.utilitiesService.updateLogEventList(res.data.logEvent);
+      }
+    });
+  }
 }
+

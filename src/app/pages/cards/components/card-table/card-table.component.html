@@ -1,72 +1,95 @@
 <div class="card">
-  <div class="card-body">
-    <!-- Input field for filter -->
+  <div class="custom-table">
+    <!-- Row text filter input and add new button -->
     <div class="row">
-      <div class="col-4">
+
+      <!-- Input field for text filter -->
+      <div class="col-4 px-0 text-filter-input">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" type="text"
-          maxlength="128" placeholder="Filter by">
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
           <!--Clear-->
-          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button
-          aria-label="Clear" (click)="filterInput = ''"><mat-icon>close</mat-icon></button>
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
         </mat-form-field>
       </div>
-      <div class="col-6"></div>
-      <!-- Add new card button-->
-      <div class="col-2">
-        <button mat-raised-button (click)="showAddNewModal = true" color="primary">Add New Card</button>
+
+      <!-- PDF buttons and add new card button-->
+      <div class="col text-right">
+        <div class="mt-3">
+          <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
+            <span>Generera PDF</span>
+          </button>
+          <button class="table-button" mat-raised-button color="primary" (click)="openAddNewCard()">Lägg till nytt kort</button>
+        </div>
       </div>
     </div>
 
-    <!-- Header row -->
-    <div class="row">
-      <div class="col-1"></div>
-      <div class="col" (click)="sortTableList('cardType')">
-        <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'"
-        [class.both-arrow]="orderCardType == ''">Type </span>
-      </div>
-      <div class="col" (click)="sortTableList('cardNumber')">
-        <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'"
-        [class.both-arrow]="orderCardNumber == ''">Serial Number </span>
-      </div>
-      <div class="col" (click)="sortTableList('userID')">
-        <span class="hover" [class.up-arrow]="orderUserID == 'asc'" [class.down-arrow]="orderUserID == 'desc'"
-        [class.both-arrow]="orderUserID == ''">User ID </span>
-      </div>
-      <div class="col" (click)="sortTableList('location')">
-        <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
-        [class.both-arrow]="orderLocation == ''">Location </span>
-      </div>
-      <div class="col" (click)="sortTableList('comment')">
-        <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
-        [class.both-arrow]="orderComment == ''">Comment </span>
-      </div>
-      <div class="col" (click)="sortTableList('expirationDate')">
-        <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'"
-        [class.both-arrow]="orderDate == ''">Expiration date </span>
-      </div>
-      <div class="col-1"></div>
-    </div>
-    <hr>
+    <!-- Row filter per status -->
+    <div class="pb-1 filter-checkbox-row">
 
-    <!-- Add cards to the table   -->
-    <div *ngFor="let card of cardList | matchFilterCard:filterInput">
-        <app-card-item *ngIf="card.status == 1 || card.status == 2" [cardItem]="card"
-        (editItem)="setEditCard($event)"></app-card-item>
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+      </div>
+
+    </div>
+
+    <div class="table-container">
+      <!-- Header row -->
+      <div class="row table-header">
+        <div class="col-1" (click)="sortTableList('status.id')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        </div>
+        <div class="col" (click)="sortTableList('cardType.name')">
+          <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'" [class.both-arrow]="orderCardType == ''">Typ </span>
+        </div>
+        <div class="col" (click)="sortTableList('cardNumber')">
+          <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'" [class.both-arrow]="orderCardNumber == ''">Kort-ID </span>
+        </div>
+        <div class="col" (click)="sortTableList('user.name')">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
+        </div>
+        <div class="col" (click)="sortTableList('location')">
+          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
+        </div>
+        <div class="col" (click)="sortTableList('comment')">
+          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
+        </div>
+        <div class="col" (click)="sortTableList('expirationDate')">
+          <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'" [class.both-arrow]="orderDate == ''">Utgångsdatum </span>
+        </div>
+      </div>
+      <hr>
+      <div class="table-items scrollbar-table">
+        <!-- Add cards to the table -->
+        <div *ngFor="let card of cardList | matchFilterCard:filterInput:showIn:showOut:showArchived:showGone">
+          <app-card-item [cardItem]="card"></app-card-item>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Modals for adding new card or editing card -->
-<form #addNewCardForm="ngForm" (ngSubmit)="submitNewCard()">
-  <app-modal [(show)]="showAddNewModal" [modalTitle]="'Add new card'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-card #addNewCardComponent [cardList]="cardList"></app-modify-card>
-  </app-modal>
-</form>
+<app-modify-card [cardList]="cardList" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-card>
 
-<form #editCardForm="ngForm" (ngSubmit)="submitEditCard()">
-  <app-modal [(show)]="showEditModal" [modalTitle]="'Edit card'" [closeName]="'Discard'" [submitName]="'Submit'">
-    <app-modify-card #editCardComponent [cardList]="cardList" [card]="editCard"></app-modify-card>
-  </app-modal>
-</form>
+<app-request-card></app-request-card>
+
+<app-return-card></app-return-card>
+
+<app-card-detail></app-card-detail>
+
+<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från korttabell'"
+[pdfType]="'cards'"></app-pdf-generation-modal>

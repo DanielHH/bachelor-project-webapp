@@ -1,0 +1,87 @@
+<div class="card">
+  <div class="custom-table">
+    <!-- Row text filter input and add new button -->
+    <div class="row">
+
+      <!-- Input field for text filter -->
+      <div class="col-4 px-0 text-filter-input">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <!-- PDF buttons and add new card button-->
+      <div class="col text-right">
+        <div class="mt-3">
+          <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
+            <span>Generera PDF</span>
+          </button>
+          <button class="table-button" mat-raised-button color="primary" (click)="openAddNewDelivery()">Lägg till ny leverans</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row filter per status -->
+    <div class="pb-1 filter-checkbox-row">
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showActive" name="showActive" color="primary" class="pr-1" [(ngModel)]="showActive">Levererade</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+      </div>
+
+    </div>
+
+    <div class="table-container">
+      <!-- Header row -->
+      <div class="row table-header">
+        <div class="col-1" (click)="sortTableList('status.id')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        </div>
+        <div class="col" (click)="sortTableList('documentType.name')">
+          <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'" [class.both-arrow]="orderDocumentType == ''">Typ </span>
+        </div>
+        <div class="col" (click)="sortTableList('documentNumber')">
+          <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'" [class.both-arrow]="orderDocumentNumber == ''">Dokument-ID </span>
+        </div>
+        <div class="col" (click)="sortTableList('name')">
+          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Benämning </span>
+        </div>
+        <div class="col" (click)="sortTableList('receiver')">
+          <span class="hover" [class.up-arrow]="orderReceiver == 'asc'" [class.down-arrow]="orderReceiver == 'desc'" [class.both-arrow]="orderReceiver == ''">Mottagare </span>
+        </div>
+        <div class="col" (click)="sortTableList('sentDate')">
+          <span class="hover" [class.up-arrow]="orderSentDate == 'asc'" [class.down-arrow]="orderSentDate == 'desc'" [class.both-arrow]="orderSentDate == ''">Skickat </span>
+        </div>
+        <div class="col" (click)="sortTableList('comment')">
+          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
+        </div>
+      </div>
+      <hr>
+      <div class="table-items scrollbar-table">
+        <!-- Add cards to the table -->
+        <div *ngFor="let delivery of deliveryList | matchFilterDelivery:filterInput:showActive:showArchived:showGone">
+          <app-delivery-item [deliveryItem]="delivery"></app-delivery-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modify-delivery [deliveryList]="deliveryList" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-delivery>
+
+<app-delivery-detail></app-delivery-detail>
+
+<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från leveranstabell'"
+[pdfType]="'deliveries'"></app-pdf-generation-modal>

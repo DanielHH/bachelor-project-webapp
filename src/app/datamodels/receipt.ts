@@ -1,3 +1,9 @@
+import { ItemType } from './itemType';
+import { Card } from './card';
+import { User } from './user';
+import { Document } from './document';
+import { CardType } from './cardType';
+import { DocumentType } from './documentType';
 
 /**
  * Receipt data model
@@ -10,24 +16,24 @@ export class Receipt {
   id: number;
 
   /**
-   * ID of receipt item type
+   * Receipt item type
    */
-  itemTypeID: number;
+  itemType: ItemType;
 
   /**
-   * Card ID of receipt
+   * Card associated with receipt
    */
-  cardID?: number;
+  card?: Card;
 
   /**
-   * Document ID of receipt item type
+   * Document associated with receipt
    */
-  documentID?: number;
+  document?: Document;
 
   /**
-   * ID of current receipt holder
+   * Current receipt holder
    */
-  userID: number;
+  user: User;
 
   /**
    * Start date of the receipt
@@ -40,10 +46,36 @@ export class Receipt {
   endDate: Date;
 
   /**
-   * Comment
+   * PDF url
    */
-  comment: string;
+  url: string;
 
+  constructor(receipt?: Receipt) {
+    if (receipt && receipt.id) {
+      this.id = receipt.id;
+      this.itemType = receipt.itemType;
+      this.card = receipt.card;
+      this.document = receipt.document;
+      this.user = receipt.user;
+      this.startDate = receipt.startDate;
+      this.endDate = receipt.endDate;
+    }
+  }
 
+  getItem(): Card | Document {
+    return this.card ? this.card : this.document;
+  }
+
+  getSubType(): CardType | DocumentType {
+    return this.card ? this.card.cardType : this.document.documentType;
+  }
+
+  getUser(): User {
+    return this.card ? this.card.user : this.document.user;
+  }
+
+  getNumber(): string {
+    return this.card ? this.card.cardNumber : this.document.documentNumber;
+  }
 
 }

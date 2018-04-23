@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '../../datamodels/user';
+import { HttpService } from '../../services/http.service';
 import { RouteDataService } from '../../services/route-data.service';
-import { Card } from '../../datamodels/card';
-import { Document } from '../../datamodels/document';
+import { UtilitiesService } from '../../services/utilities.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-item-menu',
@@ -10,36 +12,86 @@ import { Document } from '../../datamodels/document';
   styleUrls: ['./item-menu.component.scss']
 })
 export class ItemMenuComponent implements OnInit {
+  @Input() object: any; // Card, CardType, Document or DocumentType
 
-  // Card or Document
-  @Input() item: any;
+  @Input() adminMenu = false;
 
-  @Output() editItem = new EventEmitter<any>();
+  @Input() isTypeItem = false;
 
-  constructor(private routeDataService: RouteDataService, private router: Router) { }
+  @Input() itemMenu = false;
 
-  ngOnInit() {
+  @Input() showHistoryOption = true;
+
+  @Input() showEditOption = false;
+
+  @Output() editObject = new EventEmitter<any>();
+
+  @Output() editStatus = new EventEmitter<any>();
+
+  user: User;
+
+  constructor(
+    private routeDataService: RouteDataService,
+    private router: Router,
+    private httpService: HttpService,
+    private utilitiesService: UtilitiesService,
+    private authService: AuthService
+  ) {
+    this.authService.user.subscribe(user => (this.user = user));
   }
 
+  ngOnInit() {}
+
   /**
-   * Change route and send route data
+   * Change route and send route data, TODO: FIX THIS FOR TYPES AND USERS AS WELL?
    */
   route() {
-    if (this.item.cardType) {
-      this.routeDataService.card.next(this.item);
-      this.router.navigate(['card-detail']);
+    if (this.object.cardType) {
+      this.routeDataService.card.next(this.object);
+      this.router.navigate(['card-history']);
     }
 
-    if (this.item.documentType) {
-      this.routeDataService.document.next(this.item);
-      this.router.navigate(['document-detail']);
+    if (this.object.documentType && this.object.location) {
+      // document with a location, aka not a delivery
+      this.routeDataService.document.next(this.object);
+      this.router.navigate(['document-history']);
     }
   }
 
   /**
-   * Set item to be outputted for editing.
-  */
-  edit() {
-    this.editItem.next();
+   * Set item or type to be outputted for editing.
+   */
+  setEdit() {
+    this.editObject.next();
+  }
+
+  /**
+   * Setter for item status
+   * @param value value to be set in the database
+   */
+  setStatus(value: number) {
+    if (
+      // If is item that has owner and is being restored, set to "utkvitterad"
+      this.itemMenu &&
+      this.object.user &&
+      this.object.user.id &&
+      value == 1
+    ) {
+      this.object.status = this.utilitiesService.getStatusFromID(2);
+    } else if (this.isTypeItem) {
+      this.object.getType().status = this.utilitiesService.getStatusFromID(value);
+    } else {
+      this.object.status = this.utilitiesService.getStatusFromID(value);
+    }
+
+    this.editStatus.emit();
+  }
+
+  getStatusID() {
+    if (this.isTypeItem) {
+      return this.object.getType().status.id;
+    } else {
+      return this.object.status.id;
+    }
   }
 }

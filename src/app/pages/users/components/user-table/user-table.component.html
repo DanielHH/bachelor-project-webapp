@@ -1,0 +1,93 @@
+<div class="card">
+  <div class="custom-table">
+    <!-- Row text filter input and add new button -->
+    <div class="row">
+
+      <!-- Input field for text filter -->
+      <div class="col-4 px-0 text-filter-input">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="col"></div>
+      <!-- Space -->
+
+      <!-- Add new user button-->
+      <div class="col-2">
+        <span class="add-new-button">
+          <button mat-raised-button (click)="openAddNewUser()" color="primary">Lägg till ny användare</button>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Row filter per status -->
+    <div class="pb-1 filter-checkbox-row">
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showAdmins" name="showAdmins" color="primary" class="pr-1" [(ngModel)]="showAdmins">Administratörer</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showUsers" name="showUsers" color="primary" class="pr-1" [(ngModel)]="showUsers">Användare</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showActive" name="showActive" color="primary" class="pr-1" [(ngModel)]="showActive">Aktiva</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showInactive" name="showInactive" color="primary" class="pr-1" [(ngModel)]="showInactive">Inaktiva</mat-checkbox>
+      </div>
+
+    </div>
+
+    <div class="table-container">
+      <!-- Header row -->
+      <div class="row table-header">
+
+        <div class="col-1" (click)="sortTableList('status.id')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('username')">
+          <span class="hover" [class.up-arrow]="orderUsername == 'asc'" [class.down-arrow]="orderUsername == 'desc'" [class.both-arrow]="orderUsername == ''">Användarnamn </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('name')">
+          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Namn </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('email')">
+          <span class="hover" [class.up-arrow]="orderEmail == 'asc'" [class.down-arrow]="orderEmail == 'desc'" [class.both-arrow]="orderEmail == ''">E-postadress </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('creationDate')">
+          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Skapad </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('modifiedDate')">
+          <span class="hover" [class.up-arrow]="orderModifiedDate == 'asc'" [class.down-arrow]="orderModifiedDate == 'desc'" [class.both-arrow]="orderModifiedDate == ''">Senast ändrad </span>
+        </div>
+
+      </div>
+      <hr>
+      <div class="table-items scrollbar-table">
+        <!-- Add cards to the table -->
+        <div *ngFor="let user of userList | matchFilterUser:filterInput:showAdmins:showUsers:showActive:showInactive">
+          <app-user-item [user]="user"></app-user-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modify-user [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-user>
+
+<app-user-detail></app-user-detail>

@@ -5,83 +5,61 @@ import * as moment from 'moment';
 import { DataService } from '../services/data.service';
 import { User } from '../datamodels/user';
 import { DocumentType } from '../datamodels/documentType';
-import { lowerCase } from '../services/utilities.service';
+import { lowerCase, UtilitiesService } from '../services/utilities.service';
 
 @Pipe({
   name: 'matchFilterDocument'
 })
 export class MatchFilterDocumentPipe implements PipeTransform {
 
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
+  constructor(private utilitiesService: UtilitiesService) { }
 
-  constructor(public dataService: DataService) {
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
-      this.documentTypeList = documentTypeList;
+  transform(value: Document[], input: string, showIn: boolean, showOut: boolean, showArchived: boolean, showGone: boolean): Document[] {
+    return _.filter(value, (document) => {
+      return this.matchFilt(document, input, showIn, showOut, showArchived, showGone);
     });
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
-  }
-
-
-  transform(value: Document[], input: string): Document[] {
-    if (input !== '') {
-      return _.filter(value, (document) => {
-        return this.matchFilt(document, input);
-      });
-    }
-    return value;
   }
 
    /**
-   * Match filterInput to the various displayed fields of document
-   * @param document
+   * Match filterInput to the various displayed fields of card
+   * @param card
    * @param filterInput
+   * @param showIn true if checkbox showIn checked
+   * @param showOut true if checkbox showOut checked
+   * @param showArchived true if checkbox showArchived checked
+   * @param showGone true if checkbox showGone checked
    * @returns True if match found
    */
-  matchFilt(document: Document, filterInput: string) {
-    filterInput = lowerCase(filterInput);
+  matchFilt(
+    document: Document,
+    filterInput: string,
+    showIn: boolean,
+    showOut: boolean,
+    showArchived: boolean,
+    showGone: boolean
+  ) {
 
-    if (_.includes(lowerCase(this.getDocumentType(document)), filterInput) === false
-    && (_.includes(lowerCase(document.documentNumber), filterInput) === false)
-    && (_.includes(lowerCase(document.name), filterInput) === false)
-    && (_.includes(lowerCase(this.getUserName(document)), filterInput) === false)
-    && (_.includes(lowerCase(document.location), filterInput) === false)
-    && (_.includes(lowerCase(document.comment), filterInput) === false) ) {
+    if (
+      (!document) ||
+      (!document.id) ||
+      (document.status.id == 1 && !showIn) ||
+      (document.status.id == 2 && !showOut) ||
+      (document.status.id == 3 && !showArchived) ||
+      (document.status.id == 4 && !showGone)
+    ) {
       return false;
     }
-    return true;
-  }
 
-   /**
-   * Gets the document type for a document
-   * @param document
-   * @returns The corresponding type of document
-   */
-  getDocumentType(document: Document) {
-    if (document.documentType > 0) {
-      const documentTypeToDisplay = _.find( this.documentTypeList, documentType => documentType.id === document.documentType);
-      if (documentTypeToDisplay) {
-        return documentTypeToDisplay.name;
-      }
-    }
-    return '';
-  }
+    filterInput = lowerCase(filterInput);
 
-  /**
-   * Gets the document holder for a document
-   * @param document
-   * @returns The Document holder of document
-   */
-  getUserName(document: Document) {
-    if (document.userID > 0) {
-      const userToDisplay = _.find( this.userList, user => user.id === document.userID);
-      if (userToDisplay) {
-        return userToDisplay.name;
-      }
-    }
-    return '';
+    return (
+      (_.includes(lowerCase(document.documentType.name), filterInput) === true) ||
+      (_.includes(lowerCase(document.documentNumber), filterInput) === true) ||
+      (_.includes(lowerCase(document.name), filterInput) === true) ||
+      (_.includes(lowerCase(this.utilitiesService.getUserString(document.user)), filterInput) === true) ||
+      (_.includes(lowerCase(document.location), filterInput) === true) ||
+      (_.includes(lowerCase(document.comment), filterInput) === true)
+    );
   }
 
 }

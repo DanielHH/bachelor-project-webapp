@@ -1,46 +1,32 @@
-<div class="row">
-    <div class="col-1">
-        <button type="button" class="btn btn-danger btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="cardItem.status == 2" [class.btn-success]="cardItem.status == 1"
-            (click)="showModal()" mdbRippleRadius>
-            <span *ngIf="cardItem.status == 1">Request</span>
-            <span *ngIf="cardItem.status == 2">Return</span>
-        </button>
+<div class="row table-item" (click)="showDetailsModal()">
+  <div class="col-1">
+    <div *ngIf="cardItem?.status?.id == 1 || cardItem?.status?.id == 2">
+      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="cardItem?.status?.id == 2" [class.btn-success]="cardItem?.status?.id == 1"
+        (click)="showModal(); $event.stopPropagation()" mdbRippleRadius>
+        <span *ngIf="cardItem?.status?.id == 1">Kvittera ut</span>
+        <span *ngIf="cardItem?.status?.id == 2">Kvittera in</span>
+      </button>
     </div>
-    <div class="col">{{displayCardType()}}</div>
-    <div class="col">
-        <span class="detail-link" (click)="route()">{{cardItem?.cardNumber}}</span>
+    <div *ngIf="cardItem?.status?.id == 3 || cardItem?.status?.id == 4">
+      <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <span *ngIf="cardItem?.status?.id == 3">Arkiverad</span>
+        <span *ngIf="cardItem?.status?.id == 4">Borttappad</span>
+      </button>
     </div>
-    <div class="col">{{displayUserName()}}</div>
-    <div class="col">{{cardItem?.location}}</div>
-    <div class="col">{{cardItem?.comment}}</div>
-    <div class="col">{{displayExpirationDate()}}</div>
-    <div class="col-1">
-        <app-item-menu [item]="cardItem" (editItem)="edit()"></app-item-menu>
+  </div>
+
+  <div class="col">
+    <i class="material-icons sm-icon">credit_card</i>
+    {{cardItem?.cardType?.name}}
+  </div>
+  <div class="col">{{cardItem?.cardNumber}}</div>
+  <div class="col">{{utilitiesService.getUserString(cardItem?.user)}}</div>
+  <div class="col">{{cardItem?.location}}</div>
+  <div class="col">{{cardItem?.comment}}</div>
+  <div class="col">
+    <div class="column-text">{{this.cardItem?.expirationDate | date: 'shortDate'}}</div>
+    <div class="pull-right table-menu-fix">
+      <app-item-menu [object]="cardItem" (editObject)="edit()" (editStatus)="editStatus()" [itemMenu]="true" [showEditOption]="true"></app-item-menu>
     </div>
+  </div>
 </div>
-
-<form #requestCardForm="ngForm" (ngSubmit)="setCardStatus(2)">
-    <app-modal [(show)]="showRequestModal" [modalTitle]="'Request card'" [submitName]="'Request'">
-        Are you sure you want to request the following card?
-        <br>
-        <br>
-        <ul>
-            <li>Card type: {{cardItem?.cardType}}</li>
-            <li>Card number: {{cardItem?.cardNumber}}</li>
-            <li>User ID: {{cardItem?.userID}}</li>
-        </ul>
-    </app-modal>
-</form>
-
-<form #returnCardForm="ngForm" (ngSubmit)="setCardStatus(1)">
-    <app-modal [(show)]="showReturnModal" [modalTitle]="'Return card'" [submitName]="'Return'">
-        Are you sure you want to return the following card?
-        <br>
-        <br>
-        <ul>
-            <li>Card type: {{cardItem?.cardType}}</li>
-            <li>Card number: {{cardItem?.cardNumber}}</li>
-            <li>User ID: {{cardItem?.userID}}</li>
-        </ul>
-    </app-modal>
-</form>

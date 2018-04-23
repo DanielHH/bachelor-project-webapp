@@ -1,19 +1,44 @@
 <!--Dropdown-->
-<div class="dropdown" dropdown>
+<div *ngIf="user?.userType.id == 1" class="dropdown" dropdown #dropdown="bs-dropdown">
 
-    <!--Trigger-->
-    <button dropdownToggle class="btn-menu waves-light" mdbRippleRadius>
-  <i class="material-icons">more_vert</i>
-</button>
+  <!--Trigger-->
+  <button class="btn-menu" (click)="dropdown.toggle(); $event.stopPropagation()">
+    <i class="material-icons">more_vert</i>
+  </button>
+  <div *ngIf="dropdown.isOpen" dropdownToggle></div>
 
-    <!--Menu-->
-    <div class="dropdown-menu">
-        <a class="dropdown-item" (click)="route()">Details</a>
-        <a class="dropdown-item" (click)="edit()">Edit</a>
-        <a class="dropdown-item" href="#">Archive</a>
-        <a class="dropdown-item">{{item.creationDate}}</a>
-        <a class="dropdown-item">{{item.modifiedDate}}</a>
-        <div class="divider dropdown-divider"></div>
-        <a class="dropdown-item">Close</a>
-    </div>
+  <!--Menu-->
+  <div class="dropdown-menu" (click)="$event.stopPropagation(); dropdown.toggle()">
+    <a class="dropdown-item" (click)="route()" *ngIf="showHistoryOption">
+      Historik
+    </a>
+
+    <a class="dropdown-item" (click)="setEdit()" *ngIf="showEditOption">
+      Ändra
+    </a>
+
+    <a class="dropdown-item" (click)="setStatus(3)" *ngIf="itemMenu && (object?.status?.id == 1 || object?.status?.id == 2 || object?.status?.id == 4)">
+      Arkivera
+    </a>
+
+    <a class="dropdown-item" (click)="setStatus(4)" *ngIf="itemMenu && (object?.status?.id == 1 || object?.status?.id == 2)">
+      Borttappat
+    </a>
+
+    <a class="dropdown-item" (click)="setStatus(1)" *ngIf="itemMenu && (object?.status?.id == 3 || object?.status?.id == 4)">
+      Återställ
+    </a>
+
+    <a class="dropdown-item" (click)="setStatus(6)" *ngIf="adminMenu && (getStatusID() === 5)">
+      Inaktivera
+    </a>
+
+    <a class="dropdown-item" (click)="setStatus(5)" *ngIf="adminMenu && (getStatusID() === 6)">
+      Aktivera
+    </a>
+
+    <div class="divider dropdown-divider"></div>
+
+    <a class="dropdown-item">Stäng</a>
+  </div>
 </div>

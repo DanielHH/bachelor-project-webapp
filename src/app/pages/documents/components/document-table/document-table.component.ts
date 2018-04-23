@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Document } from '../../../../datamodels/document';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { ModifyDocumentComponent } from '../modify-document/modify-document.component';
-import { NgForm } from '@angular/forms';
+import { Document } from '../../../../datamodels/document';
+import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-document-table',
@@ -10,33 +12,36 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./document-table.component.scss']
 })
 export class DocumentTableComponent implements OnInit {
-
   @Input() documentList: Document[];
 
-  editDocument: Document = null; // Document to be edited
-
-  showAddNewModal = false;
-
-  showEditModal = false;
-
-  @ViewChild('addNewDocumentComponent') addNewDocumentComponent: ModifyDocumentComponent;
-
-  @ViewChild('editDocumentComponent') editDocumentComponent: ModifyDocumentComponent;
-
-  @ViewChild('addNewDocumentForm') addNewDocumentForm: NgForm;
-
-  @ViewChild('editDocumentForm') editDocumentForm: NgForm;
+  showModal = false;
+  showPdfGenerationModal = false;
 
   filterInput = '';
 
+  orderStatus = '';
   orderDocumentType = '';
   orderDocumentNumber = '';
   orderName = '';
-  orderUserID = '';
+  orderUser = '';
   orderLocation = '';
   orderComment = '';
 
-  constructor() { }
+  showIn = true;
+  showOut = true;
+  showArchived = false;
+  showGone = false;
+  modalTitle = '';
+
+  modalType = 0;
+
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private documentPipe: MatchFilterDocumentPipe
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -57,7 +62,12 @@ export class DocumentTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'documentType': {
+      case 'status.id': {
+        newOrder = this.sortTableListHelper(this.orderStatus);
+        this.orderStatus = newOrder;
+        break;
+      }
+      case 'documentType.name': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
         break;
@@ -72,9 +82,9 @@ export class DocumentTableComponent implements OnInit {
         this.orderName = newOrder;
         break;
       }
-      case 'userID': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user.name': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
         break;
       }
       case 'location': {
@@ -90,11 +100,21 @@ export class DocumentTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.documentList = _.orderBy(this.documentList, [property], [newOrder]);
+      this.documentList = _.orderBy(
+        this.documentList,
+        [
+          document => {
+            if (document[property]) {
+              return lowerCase(document[property]) as string;
+            } else {
+              return document[property.slice(0, -5)] ? (lowerCase(document[property.slice(0, -5)].name) as string) : '';
+            }
+          }
+        ],
+        [newOrder]
+      );
     }
-
   }
-
 
   /**
    * Sets the order to sort by
@@ -102,39 +122,58 @@ export class DocumentTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
   /**
-   * Set document to be edited. Called when edit option was clicked.
+   * Set document to be edited and open edit modal
    */
-  setEditDocument(document: any) {
-    this.editDocument = document;
-    this.showEditModal = true;
+  openAddNewDocument() {
+    this.modalService.editDocument.next(null);
   }
 
-  /**
-   * Triggers submission of new document to server.
-   */
-  submitNewDocument() {
-    this.addNewDocumentComponent.addNewDocument().then(() => {
-      this.showAddNewModal = false;
-      this.addNewDocumentForm.resetForm();
-    });
+  openPdfGenerationModal() {
+    const filteredList = this.documentPipe.transform(
+      this.documentList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
+
+    this.generateFilterArray();
+
+    this.modalService.pdfFilteredList.next(filteredList);
   }
 
-  /**
-   * Triggers submission of edited document to server.
-   */
-  submitEditDocument() {
-    this.editDocumentComponent.editDocument(this.editDocument).then(() => {
-      this.showEditModal = false;
-      this.editDocument = null;
-      this.editDocumentForm.resetForm();
-    });
-  }
+  generateFilterArray() {
+    const filters = [];
 
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showIn) {
+      filters.push('Tillgängliga');
+    }
+
+    if (this.showOut) {
+      filters.push('Utkvitterade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    this.modalService.filterList.next(filters);
+  }
 }
-

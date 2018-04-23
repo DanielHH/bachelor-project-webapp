@@ -1,0 +1,53 @@
+<form #modifyForm="ngForm" (ngSubmit)="modalType ? editType() : addNewType()">
+  <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [closeName]="'Avbryt'" [submitName]="'Spara'">
+
+    <!-- Row type name -->
+    <div class="row">
+      <!-- Type name -->
+      <div class="col-0 col-md-3"></div>
+      <div class="col-12 col-md-6">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="typeNameInput" name="typeNameInput" [(ngModel)]="typeNameInput"
+          maxlength="128" placeholder="Benämning" [formControl]="typeNameControl"
+          [type]="baseTypeToEdit ? baseTypeToEdit.type : null" [isCardType]="isCardType" required appTypeName>
+          <!--Check and clear-->
+          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
+            <mat-icon [style.color]="'green'" *ngIf="isValidTypeName()">done</mat-icon>
+          </button>
+          <button mat-button class="size-medium" *ngIf="typeNameInput" matSuffix mat-icon-button aria-label="Clear" (click)="typeNameInput = ''"
+            tabindex="-1">
+            <mat-icon>close</mat-icon>
+          </button>
+          <!--Error-->
+          <mat-error *ngIf="typeNameControl.hasError('required')">Ange en benämning</mat-error>
+          <mat-error *ngIf="!typeNameControl.hasError('required') && typeNameControl.hasError('typeName')">
+            Typ med angiven benämning existerar redan</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-0 col-md-3"></div>
+    </div>
+
+    <!-- Row type kind (Card or document type) -->
+    <div *ngIf="modalType === 0" class="row">
+      <!-- Type name -->
+      <div class="col-0 col-md-2"></div>
+      <div class="col-12 col-md-8">
+        <mat-radio-group>
+          <div class="row radio-buttons">
+            <div class="col-0 col-md"></div>
+            <div class="col">
+              <mat-radio-button class="radio-button" [checked]="isCardType" (change)="toggleIsCardType()" value="cardType"><span class="ml-1">Korttyp</span></mat-radio-button>
+            </div>
+            <div class="col">
+              <mat-radio-button class="radio-button" [checked]="!isCardType" value="documentType" (change)="toggleIsCardType()"><span class="ml-1">Dokumenttyp</span></mat-radio-button>
+            </div>
+            <div class="col-0 col-md"></div>
+          </div>
+        </mat-radio-group>
+      </div>
+      <div class="col-0 col-md-2"></div>
+    </div>
+
+  </app-modal>
+</form>

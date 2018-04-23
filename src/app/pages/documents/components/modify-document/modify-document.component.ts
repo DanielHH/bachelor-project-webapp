@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Directive, Inject } from '@angular/core';
+import { Component, OnInit, Input, Directive, Inject, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Document } from '../../../../datamodels/document';
 import { HttpService } from '../../../../services/http.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
@@ -10,6 +10,10 @@ import * as moment from 'moment';
 import { MatDialogRef } from '@angular/material';
 import { DataService } from '../../../../services/data.service';
 import * as _ from 'lodash';
+import { ModalService } from '../../../../services/modal.service';
+import { User } from '../../../../datamodels/user';
+import { BaseType } from '../../../../datamodels/baseType';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-modify-document',
@@ -17,7 +21,6 @@ import * as _ from 'lodash';
   styleUrls: ['./modify-document.component.scss']
 })
 export class ModifyDocumentComponent implements OnInit {
-
   // Form variables
   docTypeInput = '';
   docNumberInput = '';
@@ -31,10 +34,7 @@ export class ModifyDocumentComponent implements OnInit {
   senderInput = '';
 
   locationInput = '';
-  commentInput = '';
-
-  addDocHolder: Boolean = false;
-  usernameInput = '';
+  commentInput = null;
 
   // Form Controls
   docTypeControl = new FormControl('', Validators.required);
@@ -50,68 +50,89 @@ export class ModifyDocumentComponent implements OnInit {
 
   locationControl = new FormControl('', Validators.required);
 
-  usernameControl = new FormControl('', Validators.required);
-
-  // Database data lists
-  docTypes = [];
-  users = [];
-
-  // Filtered lists
-  filteredDocTypes: Observable<any[]> = this.docTypeControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(docType => docType ? this.filterDocTypes(docType) : this.docTypes.slice())
-    );
-
-  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges
-    .pipe(
-      startWith(''),
-      map(val => this.filterUsers(val))
-    );
+  baseTypes: BaseType[] = []; // All card and document types
 
   @Input() documentList: Document[];
 
-  constructor(private httpService: HttpService,
-    public dataService: DataService,
-    private utilitiesService: UtilitiesService) {
+  @Input() modalTitle = '';
 
-    this.dataService.documentTypeList.subscribe(cardTypes => {
-      this.docTypes = cardTypes;
+  @Input() modalType: number;
+
+  @ViewChild('modifyForm') modifyForm: NgForm;
+
+  @Input() showModal = false;
+
+  get _showModal() {
+    return this.showModal;
+  }
+  set _showModal(value: any) {
+    if (!value) {
+      this.closeForm();
+    }
+    this.showModal = value;
+  }
+  user: User;
+  documentItem: Document;
+
+  @Output() showModalChange = new EventEmitter<any>();
+
+  constructor(
+    private httpService: HttpService,
+    private dataService: DataService,
+    private utilitiesService: UtilitiesService,
+    private modalService: ModalService,
+    private authService: AuthService
+  ) {
+    this.authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
+    this.dataService.typeList.subscribe(baseTypes => {
+      this.baseTypes = baseTypes;
+
       this.docTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
       });
     });
 
-    this.dataService.userList.subscribe(users => {
-      this.users = users;
-      this.usernameControl.updateValueAndValidity({
-        onlySelf: false,
-        emitEvent: true
-      });
+    this.modalService.editDocument.subscribe(document => {
+      if (document && document.id) {
+        this.documentItem = document;
+
+        this.docTypeInput = document.documentType.name;
+
+        this.docNumberInput = document.documentNumber;
+
+        this.registrationDateInput = utilitiesService.getDateString(document.registrationDate);
+        this.registrationDateDatepickerInput = this.registrationDateInput;
+        this.docDateInput = utilitiesService.getDateString(document.documentDate);
+        this.docDateDatepickerInput = this.docDateInput;
+
+        this.nameInput = document.name;
+        this.senderInput = document.sender;
+
+        this.locationInput = document.location;
+
+        this.modalType = 1;
+        this.modalTitle = 'Ändra handling';
+
+        this._showModal = true;
+
+        // Textarea size does not update correctly if there is no delay on assignment becuase the textarea scrollheight
+        // is 0 until after 200ms~ becuase of modal?
+        setTimeout(() => {
+          this.commentInput = document.comment;
+        }, 250);
+      } else {
+        this.modalTitle = 'Lägg till ny handling';
+        this.modalType = 0;
+        this._showModal = true;
+      }
     });
   }
 
-  ngOnInit() {
-  }
-
-  /**
-   * Filters list of docTypes based on docType input
-   * @param str docType input
-   */
-  filterDocTypes(str: string) {
-    return this.docTypes.filter(docType =>
-      str != null && docType.name.toLowerCase().indexOf(str.toLowerCase()) === 0);
-  }
-
-  /**
-   * Filters list of usernames based on username input
-   * @param str username input
-   */
-  filterUsers(str: string) {
-    return this.users.filter(user =>
-      str != null && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0);
-  }
+  ngOnInit() {}
 
   /**
    * Sets fields in document according to form
@@ -119,7 +140,7 @@ export class ModifyDocumentComponent implements OnInit {
    */
   setDocumentFromForm(document: Document) {
     if (this.isValidInput()) {
-      document.documentType = this.getDocTypeID(this.docTypeInput);
+      document.documentType = this.utilitiesService.getDocumentType(0, this.docTypeInput);
       document.documentNumber = this.docNumberInput;
 
       document.documentDate = new Date(this.docDateInput);
@@ -129,131 +150,75 @@ export class ModifyDocumentComponent implements OnInit {
       document.sender = this.senderInput;
 
       document.location = this.locationInput;
-      document.comment = this.commentInput;
-
-      if (this.addDocHolder && this.isValidUsername()) {
-        document.userID = this.getUserID(this.usernameInput);
-      } else {
-        document.userID = null;
-      }
-
+      document.comment = this.commentInput ? this.commentInput : null;
       document.modifiedDate = this.utilitiesService.getLocalDate();
     }
   }
 
   /**
    * Attempts to submit new document to database
-  */
-  addNewDocument(): Promise<any> {
-    return new Promise(resolve => {
-
-      if (this.isValidInput()) {
-        const newDoc = new Document();
-
-        this.setDocumentFromForm(newDoc);
-
-        newDoc.status = 1;
-        newDoc.creationDate = this.utilitiesService.getLocalDate();
-
-        this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
-          if (res.message === 'success') {
-            this.documentList.unshift(res.data);
-            //Trigger view refresh
-            this.documentList = this.documentList.slice();
-            this.dataService.documentList.next(this.documentList);
-
-            this.resetForm();
-            resolve();
-          }
-        });
-      }
-    });
-  }
-
-  /**
-   * Attempts to submit changes to a document to database
-  */
-  editDocument(document: any): Promise<any> {
-    return new Promise(resolve => {
-
-      if (this.isValidInput()) {
-        this.setDocumentFromForm(document);
-
-        this.httpService.httpPut<Document>('updateDocument/', document).then(res => {
-          if (res.message === 'success') {
-            this.dataService.documentList.next(this.documentList);
-            this.resetForm();
-            resolve();
-          }
-        });
-      }
-    });
-  }
-
-  /**
-   * Sets form to display given document.
    */
-  @Input('document') set document(document: Document) {
-    if (document) {
-      this.docTypeInput = this.getDocTypeName(document.documentType);
-      this.docNumberInput = document.documentNumber;
+  addNewDocument() {
+    if (this.isValidInput()) {
+      const newDoc = new Document();
 
-      this.registrationDateInput = moment(document.registrationDate).format('YYYY-MM-DD');
-      this.registrationDateDatepickerInput = this.registrationDateInput;
-      this.docDateInput = moment(document.documentDate).format('YYYY-MM-DD');
-      this.docDateDatepickerInput = this.docDateInput;
+      this.setDocumentFromForm(newDoc);
 
-      this.nameInput = document.name;
-      this.senderInput = document.sender;
+      newDoc.creationDate = this.utilitiesService.getLocalDate();
+      newDoc.modifiedDate = this.utilitiesService.getLocalDate();
+      newDoc.status = this.utilitiesService.getStatusFromID(1);
+      newDoc.user = new User();
 
-      this.locationInput = document.location;
-      this.commentInput = document.comment;
+      // Create new log event
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 6, newDoc, this.user, newDoc.documentNumber);
 
-      if (document.userID != null) {
-        this.usernameInput = this.getUsername(document.userID);
-        this.addDocHolder = true;
-      } else {
-        this.usernameInput = '';
-        this.addDocHolder = false;
-      }
+      this.httpService.httpPost<Document>('addNewDocument/', {document: newDoc, logEvent: logEvent}).then(res => {
+        if (res.message === 'success') {
+          newDoc.creationDate = new Date();
+          newDoc.modifiedDate = new Date();
+          this.documentList.unshift(res.data.document);
+          // Update log event list
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
+
+          // Trigger view refresh
+          this.documentList = this.documentList.slice();
+          this.dataService.documentList.next(this.documentList);
+
+          this.closeForm();
+        }
+      });
     }
   }
 
   /**
-   * Returns the id associated with docTypeName
-   * @param docTypeName Name of doc type
+   * Attempts to submit changes to a document to database
    */
-  getDocTypeID(docTypeName: String) {
-    return _.find(this.docTypes, (docType) => docType.name === docTypeName).id;
+  editDocument() {
+    if (this.isValidInput()) {
+      this.setDocumentFromForm(this.documentItem);
+
+      // Create new log event
+      const logText = 'Uppgifter för ' + this.documentItem.documentNumber;
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 10, this.documentItem, this.user, logText);
+
+      this.httpService.httpPut<Document>('updateDocument/', {documentItem: this.documentItem, logEvent: logEvent}).then(res => {
+        if (res.message === 'success') {
+          this.documentItem.modifiedDate = new Date();
+          this.documentList = this.documentList.slice();
+          this.dataService.documentList.next(this.documentList);
+
+          // Update log event list
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
+
+          this.closeForm();
+        }
+      });
+    }
   }
 
   /**
-   * Returns the name associated with docTypeID
-   * @param docTypeID ID of doc type
+   * Sets the registration date datePicker the date entered in the input field.
    */
-  getDocTypeName(docTypeID: number) {
-    return _.find(this.docTypes, (docType) => docType.id === docTypeID).name;
-  }
-
-  /**
-   * Returns user id of user with username
-   * @param username Username of user
-   */
-  getUserID(username: String) {
-    return _.find(this.users, (user) => user.username === username).id;
-  }
-
-  /**
-   * Returns user name of user with userID
-   * @param username UserID of user
-   */
-  getUsername(userID: number) {
-    return _.find(this.users, (user) => user.id === userID).username;
-  }
-
-  /**
-     * Sets the registration date datePicker the date entered in the input field.
-    */
   setRegistrationDateToDatePicker() {
     if (!this.registrationDateControl.hasError('required') && !this.registrationDateControl.hasError('dateFormat')) {
       this.registrationDateDatepickerInput = this.registrationDateInput; // Set date in Datepicker
@@ -266,13 +231,13 @@ export class ModifyDocumentComponent implements OnInit {
    */
   setRegistrationDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.registrationDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.registrationDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 
   /**
    * Sets the doc date datePicker the date entered in the input field.
-  */
+   */
   setDocDateToDatePicker() {
     if (!this.docDateControl.hasError('required') && !this.docDateControl.hasError('dateFormat')) {
       this.docDateDatepickerInput = this.docDateInput; // Set date in Datepicker
@@ -285,95 +250,97 @@ export class ModifyDocumentComponent implements OnInit {
    */
   setDocDateFromDatepicker(data: any) {
     if (data.value != null) {
-      this.docDateInput = moment(data.value).format('YYYY-MM-DD');
+      this.docDateInput = this.utilitiesService.getDateString(data.value);
     }
   }
 
   /**
    * Returns true if entered document type is valid, else false.
-  */
+   */
   isValidDocType() {
     return !this.docTypeControl.hasError('required') && !this.docTypeControl.hasError('docType');
   }
 
   /**
    * Returns true if entered document number is valid, else false.
-  */
+   */
   isValidDocNumber() {
     return !this.docNumberControl.hasError('required');
   }
 
   /**
    * Returns true if entered document name is valid, else false.
-  */
+   */
   isValidDocName() {
     return !this.nameControl.hasError('required');
   }
 
   /**
    * Returns true if entered sender is valid, else false.
-  */
+   */
   isValidSender() {
     return !this.senderControl.hasError('required');
   }
 
   /**
-   * Returns true if entered username is valid, else false.
-  */
-  isValidUsername() {
-    return !this.addDocHolder ||
-      (!this.usernameControl.hasError('required') && !this.usernameControl.hasError('username'));
-  }
-
-  /**
    * Returns true if entered location is valid, else false.
-  */
+   */
   isValidLocation() {
     return !this.locationControl.hasError('required');
   }
 
   /**
-     * Returns true if entered registration date is valid, else false.
-    */
+   * Returns true if entered registration date is valid, else false.
+   */
   isValidRegistrationDate() {
     return !this.registrationDateControl.hasError('required') && !this.registrationDateControl.hasError('dateFormat');
   }
 
   /**
    * Returns true if entered document date is valid, else false.
-  */
+   */
   isValidDocDate() {
     return !this.docDateControl.hasError('required') && !this.docDateControl.hasError('dateFormat');
   }
 
   /**
    * Returns true if everything in the form is valid, else false
-  */
+   */
   isValidInput() {
-    return this.isValidDocType() && this.isValidDocNumber() && this.isValidRegistrationDate() &&
-      this.isValidDocDate() && this.isValidDocName() && this.isValidSender() && this.isValidLocation() &&
-      this.isValidUsername();
+    return (
+      this.isValidDocType() &&
+      this.isValidDocNumber() &&
+      this.isValidRegistrationDate() &&
+      this.isValidDocDate() &&
+      this.isValidDocName() &&
+      this.isValidSender() &&
+      this.isValidLocation()
+    );
   }
 
   /**
-   * Resets form by resetting form controls and clearing inputs
+   * Closes form. Also resets it by resetting form controls and clearing inputs
    */
-  resetForm() {
+  closeForm() {
     this.docTypeControl.reset();
     this.docNumberControl.reset();
 
     this.registrationDateControl.reset();
-    this.registrationDatePickerControl = new FormControl();
+    this.registrationDatePickerControl.reset();
     this.docDateControl.reset();
-    this.docDatePickerControl = new FormControl();
+    this.docDatePickerControl.reset();
 
     this.nameControl.reset();
     this.senderControl.reset();
 
     this.locationControl.reset();
-    this.commentInput = '';
+    this.commentInput = null;
 
-    this.usernameControl.reset();
+    this.modifyForm.resetForm();
+
+    this.documentItem = Object.assign({}, new Document());
+
+    this.showModal = false;
+    this.showModalChange.emit(false);
   }
-
 }
