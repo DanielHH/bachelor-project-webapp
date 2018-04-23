@@ -1,11 +1,10 @@
-import { UserType } from './userType';
 import { StatusType } from './statusType';
+import { UserType } from './userType';
 
 /**
  * User data model
  */
 export class User {
-
   /**
    * Database ID of the user
    */
@@ -50,5 +49,4 @@ export class User {
    * Password when adding a new user
    */
   password?: string;
-
 }

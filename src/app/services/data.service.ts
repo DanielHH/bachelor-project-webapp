@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { AuthService } from '../auth/auth.service';
+import { BaseItem } from '../datamodels/baseItem';
+import { BaseType } from '../datamodels/baseType';
 import { Card } from '../datamodels/card';
-import { HttpService } from './http.service';
 import { CardType } from '../datamodels/cardType';
-import { Document } from '../datamodels/document';
 import { Delivery } from '../datamodels/delivery';
+import { Document } from '../datamodels/document';
 import { DocumentType } from '../datamodels/documentType';
-import { Receipt } from '../datamodels/receipt';
 import { ItemType } from '../datamodels/itemType';
-import { User } from '../datamodels/user';
-import { Verification } from '../datamodels/verification';
-import { VerificationType } from '../datamodels/verificationType';
-import { StatusType } from '../datamodels/statusType';
 import { LogEvent } from '../datamodels/logEvent';
 import { LogType } from '../datamodels/logType';
-import { AuthService } from '../auth/auth.service';
-import { BaseType } from '../datamodels/baseType';
-import { UtilitiesService } from './utilities.service';
+import { Receipt } from '../datamodels/receipt';
+import { StatusType } from '../datamodels/statusType';
+import { User } from '../datamodels/user';
 import { UserType } from '../datamodels/userType';
-import { BaseItem } from '../datamodels/baseItem';
+import { Verification } from '../datamodels/verification';
+import { VerificationType } from '../datamodels/verificationType';
+import { HttpService } from './http.service';
+
 
 @Injectable()
 export class DataService {
@@ -187,10 +186,7 @@ export class DataService {
 
   userURL = '';
 
-  constructor(
-    private httpService: HttpService,
-    private authService: AuthService
-  ) {
+  constructor(private httpService: HttpService, private authService: AuthService) {
     this.authService.user.subscribe(user => {
       if (user && user.id) {
         if (user.userType.id == 1) {

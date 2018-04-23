@@ -1,7 +1,6 @@
 import { CardType } from './cardType';
-import { User } from './user';
 import { StatusType } from './statusType';
-import { Verification } from './verification';
+import { User } from './user';
 
 /**
  * Card data model
@@ -76,5 +75,4 @@ export class Card {
    * Registrator
    */
   registrator?: string;
-
 }

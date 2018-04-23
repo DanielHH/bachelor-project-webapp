@@ -1,31 +1,30 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import { HttpService } from './http.service';
-import { Receipt } from '../datamodels/receipt';
+import * as moment from 'moment';
 import { Card } from '../datamodels/card';
 import { CardType } from '../datamodels/cardType';
 import { Document } from '../datamodels/document';
 import { DocumentType } from '../datamodels/documentType';
-import { User } from '../datamodels/user';
-import { DataService } from '../services/data.service';
-import { StatusType } from '../datamodels/statusType';
-import * as moment from 'moment';
 import { ItemType } from '../datamodels/itemType';
+import { LogEvent } from '../datamodels/logEvent';
 import { LogType } from '../datamodels/logType';
+import { StatusType } from '../datamodels/statusType';
+import { User } from '../datamodels/user';
 import { UserType } from '../datamodels/userType';
 import { VerificationType } from '../datamodels/verificationType';
-import { LogEvent } from '../datamodels/logEvent';
-
+import { DataService } from '../services/data.service';
+import { HttpService } from './http.service';
 
 /**
  * Function to make a string lowercase - lowerCase(ÅSA) returns åsa
-*/
+ */
 const reApos = /['\u2019]/g;
-export const lowerCase = (str) => _.reduce(
-  _.words(_.toString(str).replace(reApos, '')),
-  (result, word, index) => result + (index ? ' ' : '') + word.toLowerCase(),
-  ''
-);
+export const lowerCase = str =>
+  _.reduce(
+    _.words(_.toString(str).replace(reApos, '')),
+    (result, word, index) => result + (index ? ' ' : '') + word.toLowerCase(),
+    ''
+  );
 
 @Injectable()
 export class UtilitiesService {
@@ -49,15 +48,15 @@ export class UtilitiesService {
       this.documentTypeList = documentTypeList;
     });
 
-    this.dataService.cardTypeList.subscribe((cardTypeList) => {
+    this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
 
-    this.dataService.cardList.subscribe((cardList) => {
+    this.dataService.cardList.subscribe(cardList => {
       this.cardList = cardList;
     });
 
-    this.dataService.documentList.subscribe((documentList) => {
+    this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
     });
 
@@ -97,7 +96,8 @@ export class UtilitiesService {
     const logEvent = new LogEvent();
     logEvent.itemType = this.getItemTypeFromID(itemTypeID);
     logEvent.logType = this.getLogTypeFromID(logTypeID);
-    if (itemTypeID == 1) { // Av någon anledning funkar inte följande kod här: ' logEvent.itemType.name == 'Kort' '
+    if (itemTypeID == 1) {
+      // Av någon anledning funkar inte följande kod här: ' logEvent.itemType.name == 'Kort' '
       logEvent.card = item;
     } else {
       logEvent.document = item;
@@ -113,11 +113,11 @@ export class UtilitiesService {
   /**
    * Updates logEventList
    */
-   updateLogEventList(logEvent: any) {
+  updateLogEventList(logEvent: any) {
     this.logEventList.unshift(logEvent);
     this.logEventList = this.logEventList.slice();
     this.dataService.logEventList.next(this.logEventList);
-   }
+  }
 
   /**
    * Returns a Date object representing current local time
@@ -180,7 +180,7 @@ export class UtilitiesService {
     return _.find(this.cardTypeList, cardType => cardType.id == id || cardType.name == name);
   }
 
-    /**
+  /**
    * Returns the documentType associated with name or id
    * @param id ID of document type
    * @param name Name of document type
@@ -202,5 +202,4 @@ export class UtilitiesService {
   isUser(user: User) {
     return user.userType.id === 2;
   }
-
 }

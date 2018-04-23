@@ -1,15 +1,14 @@
-import { ItemType } from './itemType';
 import { Card } from './card';
-import { User } from './user';
-import { Document } from './document';
 import { CardType } from './cardType';
+import { Document } from './document';
 import { DocumentType } from './documentType';
+import { ItemType } from './itemType';
+import { User } from './user';
 
 /**
  * Receipt data model
-*/
+ */
 export class Receipt {
-
   /**
    * Database ID of the receipt
    */
@@ -77,5 +76,4 @@ export class Receipt {
   getNumber(): string {
     return this.card ? this.card.cardNumber : this.document.documentNumber;
   }
-
 }

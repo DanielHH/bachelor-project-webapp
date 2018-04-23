@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Card } from '../datamodels/card';
-import { Document } from '../datamodels/document';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Delivery } from '../datamodels/delivery';
-import { CardType } from '../datamodels/cardType';
-import { DocumentType } from '../datamodels/documentType';
-import { BaseType } from '../datamodels/baseType';
-import { User } from '../datamodels/user';
 import { BaseItem } from '../datamodels/baseItem';
-import { Receipt } from '../datamodels/receipt';
+import { BaseType } from '../datamodels/baseType';
+import { Card } from '../datamodels/card';
+import { CardType } from '../datamodels/cardType';
+import { Delivery } from '../datamodels/delivery';
+import { Document } from '../datamodels/document';
 import { LogEvent } from '../datamodels/logEvent';
+import { Receipt } from '../datamodels/receipt';
+import { User } from '../datamodels/user';
 import { DataService } from './data.service';
 
 @Injectable()
