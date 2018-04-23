@@ -113,12 +113,14 @@
             tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
+          <button type="button" mat-button class="size-medium" mat-icon-button matSuffix (click)="registrationDatepicker.open()" tabindex="-1">
+            <mat-icon>date_range</mat-icon>
+          </button>
           <!--DatePicker-->
           <mat-datepicker #registrationDatepicker></mat-datepicker>
           <!--Hidden input connected to the date picker-->
           <input id="registrationDateDatepickerInput" name="registrationDateDatepickerInput" [(ngModel)]="registrationDateDatepickerInput"
             [matDatepicker]="registrationDatepicker" (dateInput)="setRegistrationDateFromDatepicker($event);" type="hidden">
-          <mat-datepicker-toggle matSuffix class="size-big" [for]="registrationDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="registrationDateControl.hasError('required')">
             Ange ett registreringsdatum
@@ -143,12 +145,14 @@
             tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
+          <button type="button" mat-button class="size-medium" mat-icon-button matSuffix (click)="docDatepicker.open()" tabindex="-1">
+            <mat-icon>date_range</mat-icon>
+          </button>
           <!--DatePicker-->
           <mat-datepicker #docDatepicker></mat-datepicker>
           <!--Hidden input connected to the date picker-->
           <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="docDateDatepickerInput" [matDatepicker]="docDatepicker"
             (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
-          <mat-datepicker-toggle matSuffix [for]="docDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="docDateControl.hasError('required')">
             Ange ett handlingsdatum
