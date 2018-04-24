@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Receipt } from '../../../../datamodels/receipt';
 import { ModalService } from '../../../../services/modal.service';
@@ -9,7 +9,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './receipt-detail.component.html',
   styleUrls: ['./receipt-detail.component.scss']
 })
-export class ReceiptDetailComponent implements OnInit {
+export class ReceiptDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -30,8 +30,10 @@ export class ReceiptDetailComponent implements OnInit {
   typeToDisplay: string;
   idToDisplay: string;
 
+  modalServiceSubscriber: any;
+
   constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
-    this.modalService.detailReceipt.subscribe(receipt => {
+    this.modalServiceSubscriber = this.modalService.detailReceipt.subscribe(receipt => {
       if (receipt && receipt.id) {
         this.receiptItem = receipt;
 
@@ -47,7 +49,12 @@ export class ReceiptDetailComponent implements OnInit {
       }
     });
   }
+
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Closes form.

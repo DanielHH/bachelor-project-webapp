@@ -1,4 +1,4 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, OnDestroy } from '@angular/core';
 import { FormControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 import * as _ from 'lodash';
 import { DocumentType } from '../datamodels/documentType';
@@ -8,13 +8,15 @@ import { DataService } from '../services/data.service';
   selector: '[appDocumentType]',
   providers: [{ provide: NG_VALIDATORS, useExisting: DocumentTypeValidatorDirective, multi: true }]
 })
-export class DocumentTypeValidatorDirective implements Validator {
+export class DocumentTypeValidatorDirective implements Validator, OnDestroy {
   @Input() docType = null;
 
   docTypes: DocumentType[] = [];
 
+  dataServiceSubscriber: any;
+
   constructor(public dataService: DataService) {
-    this.dataService.documentTypeList.subscribe(docTypes => {
+    this.dataServiceSubscriber = this.dataService.documentTypeList.subscribe(docTypes => {
       this.docTypes = docTypes;
     });
   }
@@ -46,5 +48,9 @@ export class DocumentTypeValidatorDirective implements Validator {
       }
     };
     return isValid ? null : message;
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 }

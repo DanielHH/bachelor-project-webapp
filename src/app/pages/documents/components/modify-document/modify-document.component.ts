@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '../../../../auth/auth.service';
 import { BaseType } from '../../../../datamodels/baseType';
@@ -14,7 +14,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './modify-document.component.html',
   styleUrls: ['./modify-document.component.scss']
 })
-export class ModifyDocumentComponent implements OnInit {
+export class ModifyDocumentComponent implements OnInit, OnDestroy {
   // Form variables
   docTypeInput = '';
   docNumberInput = '';
@@ -65,8 +65,15 @@ export class ModifyDocumentComponent implements OnInit {
     }
     this.showModal = value;
   }
+
   user: User;
   documentItem: Document;
+
+  authServiceSubscriber: any;
+
+  dataServiceSubscriber: any;
+
+  modalServiceSubscriber: any;
 
   @Output() showModalChange = new EventEmitter<any>();
 
@@ -77,11 +84,11 @@ export class ModifyDocumentComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
 
-    this.dataService.typeList.subscribe(baseTypes => {
+    this.dataServiceSubscriber = this.dataService.typeList.subscribe(baseTypes => {
       this.baseTypes = baseTypes;
 
       this.docTypeControl.updateValueAndValidity({
@@ -90,7 +97,7 @@ export class ModifyDocumentComponent implements OnInit {
       });
     });
 
-    this.modalService.editDocument.subscribe(document => {
+    this.modalServiceSubscriber = this.modalService.editDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -127,6 +134,14 @@ export class ModifyDocumentComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Sets fields in document according to form

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BaseType } from '../../../../datamodels/baseType';
 import { CardType } from '../../../../datamodels/cardType';
@@ -10,7 +10,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './type-detail.component.html',
   styleUrls: ['./type-detail.component.scss']
 })
-export class TypeDetailComponent implements OnInit {
+export class TypeDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -34,8 +34,10 @@ export class TypeDetailComponent implements OnInit {
   modifiedDateString: string;
   statusString: string;
 
+  modalServiceSubscriber: any;
+
   constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
-    this.modalService.detailType.subscribe((baseType: BaseType) => {
+    this.modalServiceSubscriber = this.modalService.detailType.subscribe((baseType: BaseType) => {
       if (baseType && baseType.type && (baseType.type as CardType).id) {
         this.baseTypeItem = baseType;
         this.isCardType = baseType.isCardType();
@@ -51,7 +53,12 @@ export class TypeDetailComponent implements OnInit {
       }
     });
   }
+
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Closes form.

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { User } from '../datamodels/user';
@@ -6,11 +6,14 @@ import { AuthService } from './auth.service';
 
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate, OnDestroy {
+
   user: User;
 
+  authServiceSubscriber: any;
+
   constructor(private authService: AuthService, private router: Router) {
-    this.authService.user.subscribe(user => (this.user = user));
+    this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
   }
 
   canActivate(route: ActivatedRouteSnapshot) {
@@ -21,5 +24,9 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(['/']);
       return false;
     }
+  }
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
   }
 }

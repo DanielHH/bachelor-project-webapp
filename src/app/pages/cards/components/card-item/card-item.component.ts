@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../auth/auth.service';
 import { Card } from '../../../../datamodels/card';
 import { User } from '../../../../datamodels/user';
-import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
@@ -13,7 +12,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './card-item.component.html',
   styleUrls: ['./card-item.component.scss']
 })
-export class CardItemComponent implements OnInit {
+export class CardItemComponent implements OnInit, OnDestroy {
   @Input() cardItem: Card;
 
   user: User;
@@ -22,24 +21,25 @@ export class CardItemComponent implements OnInit {
   showRequestModal = false;
   showReturnModal = false;
 
+  authServiceSubscriber: any;
+
   constructor(
-    private dataService: DataService,
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
-    });
-
-    this.dataService.cardList.subscribe(cardList => {
-      this.cardList = cardList;
     });
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Show the modal for card details
@@ -77,8 +77,6 @@ export class CardItemComponent implements OnInit {
 
     this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
       if (res.message === 'success') {
-        this.dataService.cardList.next(this.cardList);
-
         this.utilitiesService.updateLogEventList(res.data.logEvent);
       }
     });

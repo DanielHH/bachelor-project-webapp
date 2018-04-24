@@ -1,4 +1,4 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, OnDestroy } from '@angular/core';
 import { FormControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 import * as _ from 'lodash';
 import { Document } from '../datamodels/document';
@@ -8,13 +8,15 @@ import { DataService } from '../services/data.service';
   selector: '[appNewDocument]',
   providers: [{ provide: NG_VALIDATORS, useExisting: NewDocumentValidatorDirective, multi: true }]
 })
-export class NewDocumentValidatorDirective implements Validator {
+export class NewDocumentValidatorDirective implements Validator, OnDestroy {
   @Input() document: Document = null;
 
   documents: Document[] = [];
 
+  dataServiceSubscriber: any;
+
   constructor(public dataService: DataService) {
-    this.dataService.documentList.subscribe(documents => {
+    this.dataServiceSubscriber = this.dataService.documentList.subscribe(documents => {
       this.documents = documents;
     });
   }
@@ -30,5 +32,9 @@ export class NewDocumentValidatorDirective implements Validator {
       }
     };
     return isValid ? null : message;
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 }

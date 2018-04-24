@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { BaseItem } from '../../../../datamodels/baseItem';
 import { Card } from '../../../../datamodels/card';
-import { CardType } from '../../../../datamodels/cardType';
 import { Document } from '../../../../datamodels/document';
-import { DocumentType } from '../../../../datamodels/documentType';
-import { User } from '../../../../datamodels/user';
 import { Verification } from '../../../../datamodels/verification';
 import { VerificationType } from '../../../../datamodels/verificationType';
 import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
@@ -19,7 +16,7 @@ import { UtilitiesService, lowerCase } from '../../../../services/utilities.serv
   templateUrl: './inventory-table.component.html',
   styleUrls: ['./inventory-table.component.scss']
 })
-export class InventoryTableComponent implements OnInit {
+export class InventoryTableComponent implements OnInit, OnDestroy {
   showPdfGenerationModal = false;
 
   dummyItem: Card = new Card();
@@ -45,13 +42,12 @@ export class InventoryTableComponent implements OnInit {
   selectAll = false;
 
   baseItemList: BaseItem[] = [];
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
   verificationList: Verification[];
-  cardList: Card[] = [];
-  documentList: Document[];
   itemList: BaseItem[];
+
+  dataServiceItemSubscriber: any;
+
+  dataServiceVerificationSubscriber: any;
 
   constructor(
     private inventoryPipe: MatchFilterInventoryPipe,
@@ -60,34 +56,25 @@ export class InventoryTableComponent implements OnInit {
     private modalService: ModalService,
     private dataService: DataService
   ) {
-    this.dataService.itemList.subscribe(baseItemList => {
+    this.dataServiceItemSubscriber = this.dataService.itemList.subscribe(baseItemList => {
       this.baseItemList = baseItemList;
       this.updateSelectAll();
     });
 
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
-      this.cardTypeList = cardTypeList;
-    });
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
-      this.documentTypeList = documentTypeList;
-    });
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
-    this.dataService.verificationList.subscribe(verificationList => {
+    this.dataServiceVerificationSubscriber = this.dataService.verificationList.subscribe(verificationList => {
       this.verificationList = verificationList;
-    });
-    this.dataService.cardList.subscribe(cardList => {
-      this.cardList = cardList;
-    });
-    this.dataService.documentList.subscribe(documentList => {
-      this.documentList = documentList;
     });
   }
 
   ngOnInit() {
     this.sortTableListStart();
     this.updateSelectAll();
+  }
+
+  ngOnDestroy() {
+    this.dataServiceItemSubscriber.unsubscribe();
+
+    this.dataServiceVerificationSubscriber.unsubscribe();
   }
 
   /**
@@ -326,7 +313,6 @@ export class InventoryTableComponent implements OnInit {
               // So we don't adjust for timezone twice for dates not received from server
               itemToUpdate.lastVerificationDate = new Date();
               itemToUpdate.modifiedDate = new Date();
-              this.dataService.cardList.next(this.cardList);
             }
           });
         } else {
@@ -335,7 +321,6 @@ export class InventoryTableComponent implements OnInit {
               // So we don't adjust for timezone twice for dates not received from server
               itemToUpdate.lastVerificationDate = new Date();
               itemToUpdate.modifiedDate = new Date();
-              this.dataService.documentList.next(this.documentList);
             }
           });
         }

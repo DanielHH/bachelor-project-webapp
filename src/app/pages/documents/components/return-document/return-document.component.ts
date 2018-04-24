@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 import { AuthService } from '../../../../auth/auth.service';
@@ -15,7 +15,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './return-document.component.html',
   styleUrls: ['./return-document.component.scss']
 })
-export class ReturnDocumentComponent implements OnInit {
+export class ReturnDocumentComponent implements OnInit, OnDestroy {
   @ViewChild('returnForm') returnForm: NgForm;
 
   showModal = false;
@@ -42,6 +42,14 @@ export class ReturnDocumentComponent implements OnInit {
   locationInput = '';
   commentInput = null;
 
+  authServiceSubscriber: any;
+
+  dataServiceReceiptSubscriber: any;
+
+  dataServiceDocumentSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -49,19 +57,19 @@ export class ReturnDocumentComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
 
-    this.dataService.receiptList.subscribe(receipts => {
+    this.dataServiceReceiptSubscriber = this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
-    this.dataService.documentList.subscribe(documents => {
+    this.dataServiceDocumentSubscriber = this.dataService.documentList.subscribe(documents => {
       this.documents = documents;
     });
 
-    this.modalService.returnDocument.subscribe(document => {
+    this.modalServiceSubscriber = this.modalService.returnDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
         this.commentInput = document.comment;
@@ -72,6 +80,16 @@ export class ReturnDocumentComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceReceiptSubscriber.unsubscribe();
+
+    this.dataServiceDocumentSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Returns receipts from id

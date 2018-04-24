@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '../../../../auth/auth.service';
 import { Document } from '../../../../datamodels/document';
@@ -14,7 +14,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './request-document.component.html',
   styleUrls: ['./request-document.component.scss']
 })
-export class RequestDocumentComponent implements OnInit {
+export class RequestDocumentComponent implements OnInit, OnDestroy {
   @ViewChild('requestForm') requestForm: NgForm;
 
   documentItem: Document = null; // Document that is requested
@@ -60,6 +60,16 @@ export class RequestDocumentComponent implements OnInit {
 
   pdfURL = '';
 
+  authServiceSubscriber: any;
+
+  dataServiceUserSubscriber: any;
+
+  dataServiceReceiptSubscriber: any;
+
+  dataServiceDocumentSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -67,12 +77,12 @@ export class RequestDocumentComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
 
     // User list subscriber
-    this.dataService.userList.subscribe(users => {
+    this.dataServiceUserSubscriber = this.dataService.userList.subscribe(users => {
       this.users = users;
       this.usernameControl.updateValueAndValidity({
         onlySelf: false,
@@ -81,17 +91,17 @@ export class RequestDocumentComponent implements OnInit {
     });
 
     // Receipt list subscriber
-    this.dataService.receiptList.subscribe(receipts => {
+    this.dataServiceReceiptSubscriber = this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
     // Document list subscriber
-    this.dataService.documentList.subscribe(documents => {
+    this.dataServiceDocumentSubscriber = this.dataService.documentList.subscribe(documents => {
       this.documents = documents;
     });
 
     // Request document subscriber
-    this.modalService.requestDocument.subscribe(document => {
+    this.modalServiceSubscriber = this.modalService.requestDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -108,11 +118,21 @@ export class RequestDocumentComponent implements OnInit {
         }, 250);
       }
     });
-
-    this.authService.user.subscribe(user => (this.user = user));
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceUserSubscriber.unsubscribe();
+
+    this.dataServiceReceiptSubscriber.unsubscribe();
+
+    this.dataServiceDocumentSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Sets the start date datePicker the date entered in the input field.

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Card } from '../../../../datamodels/card';
 import { ModalService } from '../../../../services/modal.service';
@@ -9,7 +9,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './card-detail.component.html',
   styleUrls: ['./card-detail.component.scss']
 })
-export class CardDetailComponent implements OnInit {
+export class CardDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -27,8 +27,10 @@ export class CardDetailComponent implements OnInit {
 
   cardItem: Card = null;
 
+  modalServiceSubscriber: any;
+
   constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
-    this.modalService.detailCard.subscribe(card => {
+    this.modalServiceSubscriber = this.modalService.detailCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
         this._showModal = true;
@@ -37,6 +39,10 @@ export class CardDetailComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   hideDetail() {
     this.showModal = false;

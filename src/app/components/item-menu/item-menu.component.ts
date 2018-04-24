@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../datamodels/user';
@@ -11,7 +11,7 @@ import { UtilitiesService } from '../../services/utilities.service';
   templateUrl: './item-menu.component.html',
   styleUrls: ['./item-menu.component.scss']
 })
-export class ItemMenuComponent implements OnInit {
+export class ItemMenuComponent implements OnInit, OnDestroy {
   @Input() object: any; // Card, CardType, Document or DocumentType
 
   @Input() adminMenu = false;
@@ -30,6 +30,8 @@ export class ItemMenuComponent implements OnInit {
 
   user: User;
 
+  authServiceSubscriber: any;
+
   constructor(
     private routeDataService: RouteDataService,
     private router: Router,
@@ -37,10 +39,14 @@ export class ItemMenuComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe(user => (this.user = user));
+    this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Change route and send route data, TODO: FIX THIS FOR TYPES AND USERS AS WELL?

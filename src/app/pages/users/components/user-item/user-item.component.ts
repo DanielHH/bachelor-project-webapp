@@ -24,11 +24,7 @@ export class UserItemComponent implements OnInit {
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService
-  ) {
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
-  }
+  ) {}
 
   ngOnInit() {}
 

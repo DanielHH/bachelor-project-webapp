@@ -1,4 +1,4 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, OnDestroy } from '@angular/core';
 import { FormControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 import * as _ from 'lodash';
 import { User } from '../datamodels/user';
@@ -8,13 +8,15 @@ import { DataService } from '../services/data.service';
   selector: '[appNewUsername]',
   providers: [{ provide: NG_VALIDATORS, useExisting: NewUsernameValidatorDirective, multi: true }]
 })
-export class NewUsernameValidatorDirective implements Validator {
+export class NewUsernameValidatorDirective implements Validator, OnDestroy {
   @Input() user: User = null;
 
   users: User[] = [];
 
+  dataServiceSubscriber: any;
+
   constructor(public dataService: DataService) {
-    this.dataService.userList.subscribe(users => {
+    this.dataServiceSubscriber = this.dataService.userList.subscribe(users => {
       this.users = users;
     });
   }
@@ -30,5 +32,9 @@ export class NewUsernameValidatorDirective implements Validator {
       }
     };
     return isValid ? null : message;
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 }

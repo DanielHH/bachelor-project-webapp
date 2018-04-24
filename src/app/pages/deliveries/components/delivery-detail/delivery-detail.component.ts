@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Delivery } from '../../../../datamodels/delivery';
 import { ModalService } from '../../../../services/modal.service';
@@ -9,7 +9,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './delivery-detail.component.html',
   styleUrls: ['./delivery-detail.component.scss']
 })
-export class DeliveryDetailComponent implements OnInit {
+export class DeliveryDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -27,8 +27,10 @@ export class DeliveryDetailComponent implements OnInit {
 
   deliveryItem: Delivery = null;
 
+  modalServiceSubscriber: any;
+
   constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
-    this.modalService.detailDelivery.subscribe(delivery => {
+    this.modalServiceSubscriber = this.modalService.detailDelivery.subscribe(delivery => {
       if (delivery && delivery.id) {
         this.deliveryItem = delivery;
         this._showModal = true;
@@ -36,6 +38,10 @@ export class DeliveryDetailComponent implements OnInit {
     });
   }
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   hideDetail() {
     this.showModal = false;

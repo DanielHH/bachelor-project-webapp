@@ -16,26 +16,14 @@ import { UtilitiesService } from '../../../../services/utilities.service';
 export class TypeItemComponent implements OnInit {
   @Input() typeItem: BaseType;
 
-  cardTypeList: CardType[] = [];
-  documentTypeList: DocumentType[] = [];
-
   isActive: boolean;
 
   constructor(
     private dataService: DataService,
-    private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService
-  ) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
-      this.cardTypeList = cardTypeList;
-    });
-
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
-      this.documentTypeList = documentTypeList;
-    });
-  }
+  ) {}
 
   ngOnInit() {}
 

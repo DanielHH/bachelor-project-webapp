@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Delivery } from '../../datamodels/delivery';
 import { DataService } from '../../services/data.service';
 
@@ -7,14 +7,20 @@ import { DataService } from '../../services/data.service';
   templateUrl: './deliveries.component.html',
   styleUrls: ['./deliveries.component.scss']
 })
-export class DeliveriesComponent implements OnInit {
+export class DeliveriesComponent implements OnInit, OnDestroy {
   deliveryList: Delivery[] = [];
 
+  dataServiceSubscriber: any;
+
   constructor(public dataService: DataService) {
-    this.dataService.deliveryList.subscribe(deliveryList => {
+    this.dataServiceSubscriber = this.dataService.deliveryList.subscribe(deliveryList => {
       this.deliveryList = deliveryList;
     });
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+  }
 }

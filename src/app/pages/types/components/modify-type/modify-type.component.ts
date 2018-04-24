@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { BaseType } from '../../../../datamodels/baseType';
 import { CardType } from '../../../../datamodels/cardType';
@@ -13,7 +13,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './modify-type.component.html',
   styleUrls: ['./modify-type.component.scss']
 })
-export class ModifyTypeComponent implements OnInit {
+export class ModifyTypeComponent implements OnInit, OnDestroy {
   typeNameInput = '';
   isCardType = true;
 
@@ -46,21 +46,27 @@ export class ModifyTypeComponent implements OnInit {
     this.showModal = value;
   }
 
+  dataServiceCardSubscriber: any;
+
+  dataServiceDocumentSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
+    this.dataServiceCardSubscriber = this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
 
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
+    this.dataServiceDocumentSubscriber = this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
 
-    this.modalService.editType.subscribe(baseType => {
+    this.modalServiceSubscriber = this.modalService.editType.subscribe(baseType => {
       if (baseType && baseType.getType().id) {
         this.baseTypeToEdit = baseType;
 
@@ -80,6 +86,14 @@ export class ModifyTypeComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceCardSubscriber.unsubscribe();
+
+    this.dataServiceDocumentSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Sets fields in type according to form
