@@ -19,7 +19,6 @@ import { Verification } from '../datamodels/verification';
 import { VerificationType } from '../datamodels/verificationType';
 import { HttpService } from './http.service';
 
-
 @Injectable()
 export class DataService {
   /**
@@ -200,22 +199,6 @@ export class DataService {
         this.resetAllData();
       }
     });
-
-    this.cardList.subscribe(cardList => {
-      this.setItemList();
-    });
-
-    this.documentList.subscribe(documentList => {
-      this.setItemList();
-    });
-
-    this.cardTypeList.subscribe(cardTypeList => {
-      this.setTypeList();
-    });
-
-    this.documentTypeList.subscribe(documentTypeList => {
-      this.setTypeList();
-    });
   }
 
   getAllData() {
@@ -302,6 +285,7 @@ export class DataService {
     this.httpService.httpGet<Card>('getCards' + this.userURL).then(data => {
       this._cardList = data;
       this.cardList.next(this._cardList);
+      this.setItemList();
     });
   }
 
@@ -309,7 +293,7 @@ export class DataService {
     this.httpService.httpGet<CardType>('getCardTypes').then(data => {
       this._cardTypeList = data;
       this.cardTypeList.next(this._cardTypeList);
-      this.getCardList();
+      this.setTypeList();
     });
   }
 
@@ -317,6 +301,7 @@ export class DataService {
     this.httpService.httpGet<Document>('getDocuments' + this.userURL).then(data => {
       this._documentList = data;
       this.documentList.next(this._documentList);
+      this.setItemList();
     });
   }
 
@@ -331,7 +316,7 @@ export class DataService {
     this.httpService.httpGet<DocumentType>('getDocumentTypes').then(data => {
       this._documentTypeList = data;
       this.documentTypeList.next(this._documentTypeList);
-      this.getDocumentList();
+      this.setTypeList();
     });
   }
 
@@ -389,11 +374,11 @@ export class DataService {
       this._itemList = [];
 
       this._cardList.forEach(card => {
-        this._itemList.unshift(new BaseItem(card, 'card'));
+        this._itemList.push(new BaseItem(card, 'card'));
       });
 
       this._documentList.forEach(document => {
-        this._itemList.unshift(new BaseItem(document, 'document'));
+        this._itemList.push(new BaseItem(document, 'document'));
       });
 
       this.itemList.next(this._itemList);

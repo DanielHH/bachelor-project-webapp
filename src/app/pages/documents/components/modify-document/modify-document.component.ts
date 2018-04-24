@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '../../../../auth/auth.service';
+import { BaseItem } from '../../../../datamodels/baseItem';
 import { BaseType } from '../../../../datamodels/baseType';
 import { Document } from '../../../../datamodels/document';
 import { User } from '../../../../datamodels/user';
@@ -73,9 +74,13 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
 
   dataServiceSubscriber: any;
 
+  dataServiceItemSubscriber: any;
+
   modalServiceSubscriber: any;
 
   @Output() showModalChange = new EventEmitter<any>();
+
+  itemList: BaseItem[];
 
   constructor(
     private httpService: HttpService,
@@ -96,6 +101,8 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
         emitEvent: true
       });
     });
+
+    this.dataServiceItemSubscriber = this.dataService.itemList.subscribe(itemList => (this.itemList = itemList));
 
     this.modalServiceSubscriber = this.modalService.editDocument.subscribe(document => {
       if (document && document.id) {
@@ -139,6 +146,8 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
     this.authServiceSubscriber.unsubscribe();
 
     this.dataServiceSubscriber.unsubscribe();
+
+    this.dataServiceItemSubscriber.unsubscribe();
 
     this.modalServiceSubscriber.unsubscribe();
   }
@@ -186,12 +195,17 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
           newDoc.creationDate = new Date();
           newDoc.modifiedDate = new Date();
           this.documentList.unshift(res.data.document);
+          this.itemList.unshift(new BaseItem(res.data.document, 'document'));
+
           // Update log event list
           this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           // Trigger view refresh
           this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
+
+          this.itemList = this.itemList.slice();
+          this.dataService.itemList.next(this.itemList);
 
           this.closeForm();
         }

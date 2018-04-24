@@ -30,7 +30,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   modalServiceSubscriber: any;
 
   constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
-    this.modalService.detailUser.subscribe(user => {
+    this.modalServiceSubscriber = this.modalService.detailUser.subscribe(user => {
       if (user && user.id) {
         this.userItem = user;
         this._showModal = true;

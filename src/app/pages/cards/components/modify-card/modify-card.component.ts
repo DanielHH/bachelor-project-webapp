@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import 'rxjs/add/operator/share';
 import { AuthService } from '../../../../auth/auth.service';
+import { BaseItem } from '../../../../datamodels/baseItem';
 import { BaseType } from '../../../../datamodels/baseType';
 import { Card } from '../../../../datamodels/card';
 import { LogEvent } from '../../../../datamodels/logEvent';
@@ -69,7 +70,11 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
 
   dataServiceLogEventSubscriber: any;
 
+  dataServiceItemSubscriber: any;
+
   modalServiceSubscriber: any;
+
+  itemList: BaseItem[];
 
   constructor(
     private httpService: HttpService,
@@ -90,6 +95,8 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
         emitEvent: true
       });
     });
+
+    this.dataServiceItemSubscriber = this.dataService.itemList.subscribe(itemList => (this.itemList = itemList));
 
     // Log event list subscriber
     this.dataServiceLogEventSubscriber = this.dataService.logEventList.subscribe(logEvents => {
@@ -133,6 +140,8 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
 
     this.dataServiceTypeSubscriber.unsubscribe();
 
+    this.dataServiceItemSubscriber.unsubscribe();
+
     this.modalServiceSubscriber.unsubscribe();
   }
 
@@ -173,12 +182,18 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
           newCard.creationDate = new Date();
           newCard.modifiedDate = new Date();
           this.cardList.unshift(res.data.card);
+          this.itemList.unshift(new BaseItem(res.data.card, 'card'));
+
           // Update log event list
           this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           // Trigger view refresh
           this.cardList = this.cardList.slice();
           this.dataService.cardList.next(this.cardList);
+
+          // Trigger view refresh
+          this.itemList = this.itemList.slice();
+          this.dataService.itemList.next(this.itemList);
 
           this.closeForm();
         }
