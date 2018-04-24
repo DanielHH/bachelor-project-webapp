@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { BaseType } from '../../../../datamodels/baseType';
 import { Delivery } from '../../../../datamodels/delivery';
@@ -12,7 +12,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './modify-delivery.component.html',
   styleUrls: ['./modify-delivery.component.scss']
 })
-export class ModifyDeliveryComponent implements OnInit {
+export class ModifyDeliveryComponent implements OnInit, OnDestroy {
   // Form variables
   documentTypeInput = '';
   documentNumberInput = '';
@@ -62,13 +62,17 @@ export class ModifyDeliveryComponent implements OnInit {
 
   @Output() showModalChange = new EventEmitter<any>();
 
+  modalServiceSubscriber: any;
+
+  dataServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.typeList.subscribe(baseTypes => {
+    this.dataServiceSubscriber = this.dataService.typeList.subscribe(baseTypes => {
       this.baseTypes = baseTypes;
       this.documentTypeControl.updateValueAndValidity({
         onlySelf: false,
@@ -76,7 +80,7 @@ export class ModifyDeliveryComponent implements OnInit {
       });
     });
 
-    this.modalService.editDelivery.subscribe(delivery => {
+    this.modalServiceSubscriber = this.modalService.editDelivery.subscribe(delivery => {
       this.deliveryItem = delivery;
 
       if (delivery && delivery.id) {
@@ -109,6 +113,12 @@ export class ModifyDeliveryComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Sets fields in document according to form

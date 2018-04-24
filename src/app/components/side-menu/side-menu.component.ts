@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../datamodels/user';
 
@@ -7,13 +7,15 @@ import { User } from '../../datamodels/user';
   templateUrl: './side-menu.component.html',
   styleUrls: ['./side-menu.component.scss']
 })
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent implements OnInit, OnDestroy {
   user: User;
 
   subMenu: any;
 
+  authServiceSubscriber: any;
+
   constructor(private authService: AuthService) {
-    this.authService.user.subscribe(user => (this.user = user));
+    this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
   }
 
   /**
@@ -24,4 +26,8 @@ export class SideMenuComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+  }
 }

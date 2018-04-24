@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
 import { DataService } from '../../../../services/data.service';
@@ -11,7 +11,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './modify-user.component.html',
   styleUrls: ['./modify-user.component.scss']
 })
-export class ModifyUserComponent implements OnInit {
+export class ModifyUserComponent implements OnInit, OnDestroy {
   nameInput = '';
   emailInput = '';
   usernameInput = '';
@@ -51,17 +51,21 @@ export class ModifyUserComponent implements OnInit {
     this.showModal = value;
   }
 
+  dataServiceSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.userList.subscribe(userList => {
+    this.dataServiceSubscriber = this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
 
-    this.modalService.editUser.subscribe(user => {
+    this.modalServiceSubscriber = this.modalService.editUser.subscribe(user => {
       if (user && user.id) {
         this.userToEdit = user;
 
@@ -87,6 +91,12 @@ export class ModifyUserComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Sets fields in user according to form

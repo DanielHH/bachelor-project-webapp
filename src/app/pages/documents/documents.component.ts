@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Document } from '../../datamodels/document';
 import { DataService } from '../../services/data.service';
 
@@ -7,14 +7,20 @@ import { DataService } from '../../services/data.service';
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.scss']
 })
-export class DocumentsComponent implements OnInit {
+export class DocumentsComponent implements OnInit, OnDestroy {
   documentList: Document[] = [];
 
+  dataServiceSubscriber: any;
+
   constructor(public dataService: DataService) {
-    this.dataService.documentList.subscribe(documentList => {
+    this.dataServiceSubscriber = this.dataService.documentList.subscribe(documentList => {
       this.documentList = documentList;
     });
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+  }
 }

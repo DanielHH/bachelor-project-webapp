@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import 'rxjs/add/operator/share';
 import { AuthService } from '../../../../auth/auth.service';
@@ -16,7 +16,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './modify-card.component.html',
   styleUrls: ['./modify-card.component.scss']
 })
-export class ModifyCardComponent implements OnInit {
+export class ModifyCardComponent implements OnInit, OnDestroy {
   // Form variables
   cardTypeInput = '';
   cardNumberInput = '';
@@ -63,6 +63,14 @@ export class ModifyCardComponent implements OnInit {
     this.showModal = value;
   }
 
+  authServiceSubscriber: any;
+
+  dataServiceTypeSubscriber: any;
+
+  dataServiceLogEventSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -70,10 +78,11 @@ export class ModifyCardComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
-    this.dataService.typeList.subscribe(baseTypes => {
+
+    this.dataServiceTypeSubscriber = this.dataService.typeList.subscribe(baseTypes => {
       this.baseTypes = baseTypes;
 
       this.cardTypeControl.updateValueAndValidity({
@@ -83,10 +92,11 @@ export class ModifyCardComponent implements OnInit {
     });
 
     // Log event list subscriber
-    this.dataService.logEventList.subscribe(logEvents => {
+    this.dataServiceLogEventSubscriber = this.dataService.logEventList.subscribe(logEvents => {
       this.logEvents = logEvents;
     });
-    this.modalService.editCard.subscribe(card => {
+
+    this.modalServiceSubscriber = this.modalService.editCard.subscribe(card => {
       this.cardItem = card;
 
       if (card && card.id) {
@@ -115,6 +125,16 @@ export class ModifyCardComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceLogEventSubscriber.unsubscribe();
+
+    this.dataServiceTypeSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Sets fields in card according to form

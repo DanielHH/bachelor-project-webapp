@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 import { AuthService } from '../../../../auth/auth.service';
@@ -16,7 +16,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './return-card.component.html',
   styleUrls: ['./return-card.component.scss']
 })
-export class ReturnCardComponent implements OnInit {
+export class ReturnCardComponent implements OnInit, OnDestroy {
   @ViewChild('returnForm') returnForm: NgForm;
 
   showModal = false;
@@ -46,6 +46,16 @@ export class ReturnCardComponent implements OnInit {
   locationInput = '';
   commentInput = '';
 
+  authServiceSubscriber: any;
+
+  dataServiceReceiptSubscriber: any;
+
+  dataServiceCardSubscriber: any;
+
+  dataServiceLogEventSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -53,27 +63,27 @@ export class ReturnCardComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
 
     // Receipt list subscriber
-    this.dataService.receiptList.subscribe(receipts => {
+    this.dataServiceReceiptSubscriber = this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
     // Card list subscriber
-    this.dataService.cardList.subscribe(cards => {
+    this.dataServiceCardSubscriber = this.dataService.cardList.subscribe(cards => {
       this.cards = cards;
     });
 
     // Log event list subscriber
-    this.dataService.logEventList.subscribe(logEvents => {
+    this.dataServiceLogEventSubscriber = this.dataService.logEventList.subscribe(logEvents => {
       this.logEvents = logEvents;
     });
 
     // Return card subscriber
-    this.modalService.returnCard.subscribe(card => {
+    this.modalServiceSubscriber = this.modalService.returnCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -89,6 +99,18 @@ export class ReturnCardComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceReceiptSubscriber.unsubscribe();
+
+    this.dataServiceCardSubscriber.unsubscribe();
+
+    this.dataServiceLogEventSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Returns receipts from id

@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Card } from '../datamodels/card';
 import { CardType } from '../datamodels/cardType';
-import { Document } from '../datamodels/document';
 import { DocumentType } from '../datamodels/documentType';
 import { ItemType } from '../datamodels/itemType';
 import { LogEvent } from '../datamodels/logEvent';
@@ -27,12 +25,9 @@ export const lowerCase = str =>
   );
 
 @Injectable()
-export class UtilitiesService {
-  cardList: Card[] = [];
-  documentList: Document[] = [];
+export class UtilitiesService implements OnDestroy {
   cardTypeList: CardType[] = [];
   documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
   statusTypeList: StatusType[] = [];
   itemTypeList: ItemType[] = [];
   logTypeList: LogType[] = [];
@@ -40,53 +35,74 @@ export class UtilitiesService {
   verificationTypeList: VerificationType[] = [];
   logEventList: LogEvent[] = [];
 
+  dataServiceCardTypeSubscriber: any;
+
+  dataServiceDocumentTypeSubscriber: any;
+
+  dataServiceStatusTypeSubscriber: any;
+
+  dataServiceItemTypeSubscriber: any;
+
+  dataServiceLogTypeSubscriber: any;
+
+  dataServiceUserTypeSubscriber: any;
+
+  dataServiceVerificationTypeSubscriber: any;
+
+  dataServiceLogEventSubscriber: any;
+
   constructor(private dataService: DataService, private httpService: HttpService) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
+    this.dataServiceCardTypeSubscriber = this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
+
+    this.dataServiceDocumentTypeSubscriber = this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
 
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
-      this.cardTypeList = cardTypeList;
-    });
-
-    this.dataService.cardList.subscribe(cardList => {
-      this.cardList = cardList;
-    });
-
-    this.dataService.documentList.subscribe(documentList => {
-      this.documentList = documentList;
-    });
-
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
-
-    this.dataService.statusTypeList.subscribe(statusTypeList => {
+    this.dataServiceStatusTypeSubscriber = this.dataService.statusTypeList.subscribe(statusTypeList => {
       this.statusTypeList = statusTypeList;
     });
 
-    this.dataService.itemTypeList.subscribe(itemTypeList => {
+    this.dataServiceItemTypeSubscriber = this.dataService.itemTypeList.subscribe(itemTypeList => {
       this.itemTypeList = itemTypeList;
     });
 
-    this.dataService.logTypeList.subscribe(logTypeList => {
+    this.dataServiceLogTypeSubscriber = this.dataService.logTypeList.subscribe(logTypeList => {
       this.logTypeList = logTypeList;
     });
 
-    this.dataService.userTypeList.subscribe(userTypeList => {
+    this.dataServiceUserTypeSubscriber = this.dataService.userTypeList.subscribe(userTypeList => {
       this.userTypeList = userTypeList;
     });
 
-    this.dataService.verificationTypeList.subscribe(verificationTypeList => {
-      this.verificationTypeList = verificationTypeList;
-    });
+    this.dataServiceVerificationTypeSubscriber = this.dataService.verificationTypeList.subscribe(
+      verificationTypeList => {
+        this.verificationTypeList = verificationTypeList;
+      }
+    );
 
-    this.dataService.logEventList.subscribe(logEventList => {
+    this.dataServiceLogEventSubscriber = this.dataService.logEventList.subscribe(logEventList => {
       this.logEventList = logEventList;
     });
+  }
+
+  ngOnDestroy() {
+    this.dataServiceCardTypeSubscriber.unsubscribe();
+
+    this.dataServiceDocumentTypeSubscriber.unsubscribe();
+
+    this.dataServiceStatusTypeSubscriber.unsubscribe();
+
+    this.dataServiceItemTypeSubscriber.unsubscribe();
+
+    this.dataServiceLogTypeSubscriber.unsubscribe();
+
+    this.dataServiceUserTypeSubscriber.unsubscribe();
+
+    this.dataServiceVerificationTypeSubscriber.unsubscribe();
+
+    this.dataServiceLogEventSubscriber.unsubscribe();
   }
 
   /**
@@ -146,10 +162,6 @@ export class UtilitiesService {
     } else {
       return '-';
     }
-  }
-
-  getUserFromID(id: number) {
-    return _.find(this.userList, user => user.id == id);
   }
 
   getStatusFromID(id: number) {

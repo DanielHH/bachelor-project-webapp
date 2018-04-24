@@ -25,7 +25,7 @@ export class DataService {
   /**
    * List with all users
    */
-  _userList: User[] = [];
+  private _userList: User[] = [];
 
   /**
    * A subscriber to the user list
@@ -35,7 +35,7 @@ export class DataService {
   /**
    * List with all cards
    */
-  _cardList: Card[] = [];
+  private _cardList: Card[] = [];
 
   /**
    * A subscriber to the card list
@@ -45,7 +45,7 @@ export class DataService {
   /**
    * List with all cards
    */
-  _cardTypeList: CardType[] = [];
+  private _cardTypeList: CardType[] = [];
 
   /**
    * A subscriber to the card list
@@ -55,7 +55,7 @@ export class DataService {
   /**
    * List with all documents
    */
-  _documentList: Document[] = [];
+  private _documentList: Document[] = [];
 
   /**
    * A subscriber to the document list
@@ -65,7 +65,7 @@ export class DataService {
   /**
    * List with all deliverys
    */
-  _deliveryList: Delivery[] = [];
+  private _deliveryList: Delivery[] = [];
 
   /**
    * A subscriber to the document list
@@ -75,7 +75,7 @@ export class DataService {
   /**
    * List with all document types
    */
-  _documentTypeList: DocumentType[] = [];
+  private _documentTypeList: DocumentType[] = [];
 
   /**
    * A subscriber to the document type list
@@ -85,7 +85,7 @@ export class DataService {
   /**
    * List with all receipts
    */
-  _receiptList: Receipt[] = [];
+  private _receiptList: Receipt[] = [];
 
   /**
    * A subscriber to the receipt list
@@ -95,7 +95,7 @@ export class DataService {
   /**
    * List with all item types
    */
-  _itemTypeList: ItemType[] = [];
+  private _itemTypeList: ItemType[] = [];
 
   /**
    * A subscriber to the item type list
@@ -105,7 +105,7 @@ export class DataService {
   /**
    * List with all log types
    */
-  _logTypeList: LogType[] = [];
+  private _logTypeList: LogType[] = [];
 
   /**
    * A subscriber to the log type list
@@ -115,7 +115,7 @@ export class DataService {
   /**
    * List with all verifications
    */
-  _verificationList: Verification[] = [];
+  private _verificationList: Verification[] = [];
 
   /**
    * A subscriber to the verification list
@@ -125,7 +125,7 @@ export class DataService {
   /**
    * List with all verification types
    */
-  _verificationTypeList: VerificationType[] = [];
+  private _verificationTypeList: VerificationType[] = [];
 
   /**
    * A subscriber to the verification type list
@@ -137,7 +137,7 @@ export class DataService {
   /**
    * List with all status types
    */
-  _statusTypeList: StatusType[] = [];
+  private _statusTypeList: StatusType[] = [];
 
   /**
    * A subscriber to the status type list
@@ -147,7 +147,7 @@ export class DataService {
   /**
    * List with all log events
    */
-  _logEventList: LogEvent[] = [];
+  private _logEventList: LogEvent[] = [];
 
   /**
    * A subscriber to the log event list
@@ -157,7 +157,7 @@ export class DataService {
   /**
    * List with all cards and documents as BaseItems
    */
-  _itemList: BaseItem[] = [];
+  private _itemList: BaseItem[] = [];
 
   /**
    * A subscriber to the cards and documents list
@@ -167,7 +167,7 @@ export class DataService {
   /**
    * List with all card and document types
    */
-  _typeList: BaseType[] = [];
+  private _typeList: BaseType[] = [];
 
   /**
    * A subscriber to the card and document type list
@@ -177,7 +177,7 @@ export class DataService {
   /**
    * List with all user types
    */
-  _userTypeList: UserType[] = [];
+  private _userTypeList: UserType[] = [];
 
   /**
    * A subscriber to the user type list

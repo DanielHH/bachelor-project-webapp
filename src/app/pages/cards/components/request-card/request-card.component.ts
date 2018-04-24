@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -17,7 +17,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './request-card.component.html',
   styleUrls: ['./request-card.component.scss']
 })
-export class RequestCardComponent implements OnInit {
+export class RequestCardComponent implements OnInit, OnDestroy {
   @ViewChild('requestForm') requestForm: NgForm;
 
   cardItem: Card = null; // Card that is requested
@@ -52,6 +52,28 @@ export class RequestCardComponent implements OnInit {
 
   generatePDF = true;
 
+  loading = false;
+
+  hideSubmit = false;
+
+  closeText = 'Avbryt';
+
+  pdfView = false;
+
+  pdfURL = '';
+
+  authServiceSubscriber: any;
+
+  dataServiceUserSubscriber: any;
+
+  dataServiceReceiptSubscriber: any;
+
+  dataServiceCardSubscriber: any;
+
+  dataServiceLogEventSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -60,12 +82,12 @@ export class RequestCardComponent implements OnInit {
     private router: Router,
     private authService: AuthService
   ) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
 
     // User list subscriber
-    this.dataService.userList.subscribe(users => {
+    this.dataServiceUserSubscriber = this.dataService.userList.subscribe(users => {
       this.users = users;
       this.usernameControl.updateValueAndValidity({
         onlySelf: false,
@@ -74,22 +96,22 @@ export class RequestCardComponent implements OnInit {
     });
 
     // Receipt list subscriber
-    this.dataService.receiptList.subscribe(receipts => {
+    this.dataServiceReceiptSubscriber = this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
     // Card list subscriber
-    this.dataService.cardList.subscribe(cards => {
+    this.dataServiceCardSubscriber = this.dataService.cardList.subscribe(cards => {
       this.cards = cards;
     });
 
     // LogEvent list subscriber
-    this.dataService.logEventList.subscribe(logEvents => {
+    this.dataServiceLogEventSubscriber = this.dataService.logEventList.subscribe(logEvents => {
       this.logEvents = logEvents;
     });
 
     // Request card subscriber
-    this.modalService.requestCard.subscribe(card => {
+    this.modalServiceSubscriber = this.modalService.requestCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -105,24 +127,23 @@ export class RequestCardComponent implements OnInit {
         }, 250);
       }
     });
-
-    // Log event list subscriber
-    this.dataService.logEventList.subscribe(logEvents => {
-      this.logEvents = logEvents;
-    });
   }
 
-  loading = false;
-
-  hideSubmit = false;
-
-  closeText = 'Avbryt';
-
-  pdfView = false;
-
-  pdfURL = '';
-
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceUserSubscriber.unsubscribe();
+
+    this.dataServiceReceiptSubscriber.unsubscribe();
+
+    this.dataServiceCardSubscriber.unsubscribe();
+
+    this.dataServiceLogEventSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Returns user id of user with username

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
 import { ModalService } from '../../../../services/modal.service';
@@ -9,7 +9,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss']
 })
-export class UserDetailComponent implements OnInit {
+export class UserDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -27,6 +27,8 @@ export class UserDetailComponent implements OnInit {
 
   userItem: User = null;
 
+  modalServiceSubscriber: any;
+
   constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
     this.modalService.detailUser.subscribe(user => {
       if (user && user.id) {
@@ -35,7 +37,12 @@ export class UserDetailComponent implements OnInit {
       }
     });
   }
+
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Closes form.

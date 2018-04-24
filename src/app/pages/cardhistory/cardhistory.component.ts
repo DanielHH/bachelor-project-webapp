@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { Card } from '../../datamodels/card';
 import { LogEvent } from '../../datamodels/logEvent';
@@ -10,13 +10,17 @@ import { RouteDataService } from '../../services/route-data.service';
   templateUrl: './cardhistory.component.html',
   styleUrls: ['./cardhistory.component.scss']
 })
-export class CardHistoryComponent implements OnInit {
+export class CardHistoryComponent implements OnInit, OnDestroy {
   logEventList: LogEvent[] = [];
   filteredLogEventList: LogEvent[] = [];
   card: Card;
 
+  dataServiceSubscriber: any;
+
+  routeDataServiceSubscriber: any;
+
   constructor(public dataService: DataService, private routeDataService: RouteDataService) {
-    this.routeDataService.card.subscribe(card => {
+    this.routeDataServiceSubscriber = this.routeDataService.card.subscribe(card => {
       this.card = card;
       if (this.logEventList) {
         this.filteredLogEventList = _.filter(this.logEventList, logEvent => {
@@ -27,7 +31,7 @@ export class CardHistoryComponent implements OnInit {
         });
       }
     });
-    this.dataService.logEventList.subscribe(logEventList => {
+    this.dataServiceSubscriber = this.dataService.logEventList.subscribe(logEventList => {
       this.logEventList = logEventList;
       if (this.card && this.card.id) {
         this.filteredLogEventList = _.filter(this.logEventList, logEvent => {
@@ -41,4 +45,10 @@ export class CardHistoryComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.routeDataServiceSubscriber.unsubscribe();
+
+    this.dataServiceSubscriber.unsubscribe();
+  }
 }

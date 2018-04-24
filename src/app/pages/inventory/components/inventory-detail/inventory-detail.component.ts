@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BaseItem } from '../../../../datamodels/baseItem';
 import { Card } from '../../../../datamodels/card';
@@ -12,7 +12,7 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './inventory-detail.component.html',
   styleUrls: ['./inventory-detail.component.scss']
 })
-export class InventoryDetailComponent implements OnInit {
+export class InventoryDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -30,20 +30,27 @@ export class InventoryDetailComponent implements OnInit {
 
   baseItem: BaseItem = null;
 
+  modalServiceSubscriber: any;
+
   constructor(
     private modalService: ModalService,
     public utilitiesService: UtilitiesService,
     private httpService: HttpService,
     private dataService: DataService
   ) {
-    this.modalService.detailInventory.subscribe(baseItem => {
+    this.modalServiceSubscriber = this.modalService.detailInventory.subscribe(baseItem => {
       if (baseItem && baseItem.item.id) {
         this.baseItem = baseItem;
         this._showModal = true;
       }
     });
   }
+
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Closes form.
