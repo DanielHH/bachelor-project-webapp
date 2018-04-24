@@ -50,7 +50,7 @@
     <div class="table-container">
       <!-- Header row -->
       <div class="row table-header">
-        <div class="col-1" (click)="sortTableList('status.id')">
+        <div class="col-1" (click)="sortTableList('status.name')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
         <div class="col" (click)="sortTableList('cardType.name')">
@@ -91,5 +91,4 @@
 
 <app-card-detail></app-card-detail>
 
-<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från korttabell'"
-[pdfType]="'cards'"></app-pdf-generation-modal>
+<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från korttabell'" [pdfType]="'cards'"></app-pdf-generation-modal>
