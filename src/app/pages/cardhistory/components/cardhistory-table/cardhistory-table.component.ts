@@ -98,6 +98,9 @@ export class CardhistoryTableComponent implements OnInit {
     }
   }
 
+  /**
+   * Show modal with card details
+   */
   openCardDetail() {
     this.modalService.detailCard.next(this.card);
   }
