@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { Document } from '../../../../datamodels/document';
 import { LogEvent } from '../../../../datamodels/logEvent';
 import { lowerCase } from '../../../../services/utilities.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-document-history-table',
@@ -23,7 +24,7 @@ export class DocumentHistoryTableComponent implements OnInit {
   showReceipt = true;
   showOther = true;
 
-  constructor() {}
+  constructor(private modalService: ModalService) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -96,5 +97,12 @@ export class DocumentHistoryTableComponent implements OnInit {
       default:
         return 'asc';
     }
+  }
+
+  /**
+   * Show modal with document details
+   */
+  openDocumentDetail() {
+    this.modalService.detailDocument.next(this.document);
   }
 }

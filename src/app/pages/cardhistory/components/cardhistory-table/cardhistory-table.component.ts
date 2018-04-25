@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { Card } from '../../../../datamodels/card';
 import { LogEvent } from '../../../../datamodels/logEvent';
 import { lowerCase } from '../../../../services/utilities.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-cardhistory-table',
@@ -23,7 +24,7 @@ export class CardhistoryTableComponent implements OnInit {
   showReceipt = true;
   showOther = true;
 
-  constructor() {}
+  constructor(private modalService: ModalService) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -95,5 +96,12 @@ export class CardhistoryTableComponent implements OnInit {
       default:
         return 'asc';
     }
+  }
+
+  /**
+   * Show modal with card details
+   */
+  openCardDetail() {
+    this.modalService.detailCard.next(this.card);
   }
 }
