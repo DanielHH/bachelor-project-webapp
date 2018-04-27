@@ -26,8 +26,7 @@ export class AuthService {
    */
   isAuthenticated(): boolean {
     const token = this.getToken();
-    // TODO: test if tokenNotExpired behaves as expected, replace placeholder code
-    return token === 'faked-jwt' && this.user.value && this.user.value.id != null; // && tokenNotExpired(token);
+    return token === 'faked-jwt' && this.user.value && this.user.value.id != null;
   }
 
   /**
@@ -55,7 +54,7 @@ export class AuthService {
     });
   }
   /**
-   * Log the user out by removing its auth-token.
+   * Log out by resetting the current user and removing the auth token.
    */
   logout(): void {
     this._user = new User();
