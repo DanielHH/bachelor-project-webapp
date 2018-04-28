@@ -109,7 +109,7 @@ export class BaseItem {
   getLastVerifiedString(): string {
     if (this.item.lastVerificationDate) {
       return this.item.lastVerificationDate
-        ? moment(this.item.lastVerificationDate).format('YYYY-MM-DD HH:mm:ss')
+        ? moment(this.item.lastVerificationDate).format('YYYY-MM-DD')
         : '-';
     } else {
       return 'Aldrig';
