@@ -16,22 +16,15 @@ export class AuthService {
    */
   user: BehaviorSubject<User> = new BehaviorSubject<User>(this._user);
 
-  getToken(): string {
-    return localStorage.getItem('token');
-  }
-
   /**
-   * Check if the current user is authenticated by looking for a non-expired
-   * JSON Web Token.
+   * Check authentication status by checking for a current user.
    */
   isAuthenticated(): boolean {
-    const token = this.getToken();
-    return token === 'faked-jwt' && this.user.value && this.user.value.id != null;
+    return this.user.value && this.user.value.id != null;
   }
 
   /**
-   * Attempt to log in the user by trading credentials for a JSON Web Token,
-   * which can be used to access protected resources.
+   * Attempt to log in the user with the given username and password.
    * @param username The username of the user.
    * @param password The password of the user.
    */
@@ -42,10 +35,6 @@ export class AuthService {
           this._user = res.data;
           this.user.next(this._user);
 
-          /**
-           * Change to correct token when implemented
-           */
-          localStorage.setItem('token', 'faked-jwt');
           resolve(true);
         } else {
           resolve(false);
@@ -53,13 +42,12 @@ export class AuthService {
       });
     });
   }
+
   /**
-   * Log out by resetting the current user and removing the auth token.
+   * Log out by resetting the current user
    */
   logout(): void {
     this._user = new User();
     this.user.next(this._user);
-    localStorage.removeItem('token');
-    // TODO: send message to backend? (revoke token?)
   }
 }
