@@ -25,7 +25,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthService } from './auth/auth.service';
-import { TokenInterceptor } from './auth/token.interceptor';
 import { AppComponent } from './components/app/app.component';
 import { ItemMenuComponent } from './components/item-menu/item-menu.component';
 import { LoginComponent } from './components/login/login.component';
@@ -215,11 +214,6 @@ import { UtilitiesService } from './services/utilities.service';
     HttpClient,
     RouteDataService,
     UtilitiesService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
     RouteDataService,
     UtilitiesService,
     MatchFilterCardPipe,
