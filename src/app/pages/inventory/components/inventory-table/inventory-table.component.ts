@@ -81,7 +81,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
    * Sort the table initially
    */
   sortTableListStart() {
-    this.baseItemList = _.orderBy(this.baseItemList, [(item: BaseItem) => item.getLastVerifiedString()], ['desc']);
+    this.sortTableList('verify');
   }
 
   /**
