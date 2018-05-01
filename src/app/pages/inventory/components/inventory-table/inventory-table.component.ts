@@ -78,10 +78,10 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Sorts table after subType ascending
+   * Sort the table initially
    */
   sortTableListStart() {
-    this.baseItemList = _.orderBy(this.baseItemList, [(item: BaseItem) => item.getLastVerifiedString()], ['desc']);
+    this.sortTableList('verify');
   }
 
   /**
@@ -125,7 +125,10 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
       case 'verify': {
         newOrder = this.sortTableListHelper(this.orderVerify);
         this.orderVerify = newOrder;
-        orderFunc = (item: BaseItem) => item.getItem().lastVerificationDate;
+        orderFunc = (item: BaseItem) =>
+          item.getItem().lastVerificationDate
+            ? item.getItem().lastVerificationDate
+            : '0000-00-00 00:00:00';
         break;
       }
     }

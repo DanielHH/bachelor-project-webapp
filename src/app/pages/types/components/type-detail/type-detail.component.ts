@@ -42,10 +42,10 @@ export class TypeDetailComponent implements OnInit, OnDestroy {
         this.baseTypeItem = baseType;
         this.isCardType = baseType.isCardType();
         this.typeNameString = baseType.getType().name;
-        this.createdDateString = utilitiesService.getDateString(baseType.getType().creationDate, 'YYYY-MM-DD HH:MM:SS');
+        this.createdDateString = utilitiesService.getDateString(baseType.getType().creationDate, 'YYYY-MM-DD HH:mm:ss');
         this.modifiedDateString = utilitiesService.getDateString(
           baseType.getType().modifiedDate,
-          'YYYY-MM-DD HH:MM:SS'
+          'YYYY-MM-DD HH:mm:ss'
         );
         this.statusString = baseType.getType().status.name;
 
