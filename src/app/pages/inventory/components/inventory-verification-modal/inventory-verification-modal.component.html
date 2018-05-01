@@ -1,77 +1,10 @@
-<form #modifyForm="ngForm" (ngSubmit)="modalType ? editUser() : addNewUser()" autocomplete="new-password">
+<form #modifyForm="ngForm" (ngSubmit)="verifyInventory()">
 
   <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [closeName]="'Avbryt'" [submitName]="'Verifiera'">
-
-    <!-- Row name & email -->
-    <div class="row">
-      <!-- Name -->
-      <div class="col-12 col-md-6">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="nameInput" name="nameInput" [(ngModel)]="nameInput" maxlength="128" placeholder="Namn"
-            [formControl]="nameControl" autocomplete="off" required>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidName()">done</mat-icon>
-          </button>
-          <button mat-button class="size-medium" *ngIf="nameInput" matSuffix mat-icon-button aria-label="Clear" (click)="nameInput = ''"
-            tabindex="-1">
-            <mat-icon>close</mat-icon>
-          </button>
-          <!--Error-->
-          <mat-error *ngIf="nameControl.hasError('required')">Ange ett namn</mat-error>
-        </mat-form-field>
-      </div>
-
-      <!-- Email -->
-      <div class="col-12 col-md-6">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="emailInput" name="emailInput" [(ngModel)]="emailInput" maxlength="128" placeholder="E-postadress"
-            [formControl]="emailControl" autocomplete="off" type="email" required>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidEmail()">done</mat-icon>
-          </button>
-          <button mat-button class="size-medium" *ngIf="emailInput" matSuffix mat-icon-button aria-label="Clear" (click)="emailInput = ''"
-            tabindex="-1">
-            <mat-icon>close</mat-icon>
-          </button>
-          <!--Error-->
-          <mat-error *ngIf="emailControl.hasError('required')">Ange en e-postadress</mat-error>
-        </mat-form-field>
+    <div class="row my-1">
+      <div class="col-12 wide-center">
+        <h5>Verifiera ({{numObjects}}) {{markedString}} objekt?</h5>
       </div>
     </div>
-
-    <!-- Row username & admin choice -->
-    <div class="row">
-      <!-- Username -->
-      <div class="col-12 col-md-6">
-        <mat-form-field>
-          <!--Input-->
-          <input matInput id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" maxlength="128" placeholder="Användarnamn"
-            [formControl]="usernameControl" autocomplete="off" [user]="userToEdit" required appNewUsername>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
-          </button>
-          <button mat-button class="size-medium" *ngIf="usernameInput" matSuffix mat-icon-button aria-label="Clear" (click)="usernameInput = ''"
-            tabindex="-1">
-            <mat-icon>close</mat-icon>
-          </button>
-          <!--Error-->
-          <mat-error *ngIf="usernameControl.hasError('required')">Ange ett användarnamn</mat-error>
-          <mat-error *ngIf="!usernameControl.hasError('required') && usernameControl.hasError('newUsername')">
-            Användare med angivet användarnamn existerar redan</mat-error>
-        </mat-form-field>
-      </div>
-
-      <!-- Admin checkbox -->
-      <div class="col-12 col-md-6 mt-4">
-        <mat-checkbox disableRipple id="isAdmin" name="isAdmin" color="primary" [(ngModel)]="isAdmin">Administratör</mat-checkbox>
-      </div>
-
-    </div>
-
   </app-modal>
 </form>

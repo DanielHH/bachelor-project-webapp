@@ -18,6 +18,7 @@ import { UtilitiesService, lowerCase } from '../../../../services/utilities.serv
 })
 export class InventoryTableComponent implements OnInit, OnDestroy {
   showPdfGenerationModal = false;
+  showVerifyConfirmationModal = false;
 
   dummyItem: Card = new Card();
 
@@ -162,13 +163,11 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   }
 
   openPdfGenerationModal() {
-    const filteredList = this.getFilteredList();
-
     const verificationList = [];
     const selectedVerificationList = [];
     let verification: Verification;
 
-    filteredList.forEach(baseItem => {
+    this.getFilteredList().forEach(baseItem => {
       verification = new Verification();
       if (baseItem.isCard()) {
         verification.card = baseItem.getItem() as Card;
@@ -193,6 +192,23 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
     this.modalService.pdfSelectedList.next(selectedVerificationList);
     this.modalService.pdfFilteredList.next(verificationList);
+  }
+
+  /**
+   * Show verify inventory confirmation modal
+   */
+  showVerifyModal() {
+    let numObjects = 0;
+
+    this.getFilteredList().forEach(baseItem => {
+      if (baseItem.isChecked) {
+        numObjects++;
+      }
+    });
+
+    if (numObjects) {
+      this.modalService.numVerifyObjects.next(numObjects);
+    }
   }
 
   /**

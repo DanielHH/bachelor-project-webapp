@@ -23,7 +23,7 @@
           <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
             <span>Generera PDF</span>
           </button>
-          <button class="table-button" mat-raised-button color="primary" (click)="sendVerify()">Verifiera</button>
+          <button class="table-button" mat-raised-button color="primary" (click)="showVerifyModal()">Verifiera</button>
         </div>
       </div>
 
@@ -102,3 +102,5 @@
 
 <app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från inventeringstabell'"
 [pdfType]="'inventory'"></app-pdf-generation-modal>
+
+<app-inventory-verification-modal [(showModal)]="showVerifyConfirmationModal" (verifyInventoryChange)="sendVerify()"></app-inventory-verification-modal>
