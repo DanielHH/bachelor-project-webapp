@@ -320,9 +320,15 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
         itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
 
+        let logTypeID: number;
+        if (verification.verificationType.id == 2) {
+          logTypeID = 13;
+        } else {
+          logTypeID = 14;
+        }
         const logText = baseItem.getNumber();
         const logEvent = this.utilitiesService.createNewLogEventForItem(
-          baseItem.getItemType().id, 13, baseItem.getItem(), this.user, logText);
+          baseItem.getItemType().id, logTypeID, baseItem.getItem(), this.user, logText);
         if (baseItem.isCard()) {
           this.httpService.httpPut<Card>('updateCard/', { cardItem: itemToUpdate, logEvent: logEvent }).then(cardRes => {
             if (cardRes.message === 'success') {
