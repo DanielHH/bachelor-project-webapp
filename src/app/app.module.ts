@@ -105,6 +105,7 @@ import { HttpService } from './services/http.service';
 import { ModalService } from './services/modal.service';
 import { RouteDataService } from './services/route-data.service';
 import { UtilitiesService } from './services/utilities.service';
+import { InventoryVerificationModalComponent } from './pages/inventory/components/inventory-verification-modal/inventory-verification-modal.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +181,8 @@ import { UtilitiesService } from './services/utilities.service';
     DocumentHistoryItemComponent,
     DocumentHistoryTableComponent,
     DocumentDetailComponent,
-    PdfGenerationModalComponent
+    PdfGenerationModalComponent,
+    InventoryVerificationModalComponent
   ],
   imports: [
     BrowserModule,
