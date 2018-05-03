@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as _ from 'lodash';
+import { AuthService } from '../../../../auth/auth.service';
 import { BaseItem } from '../../../../datamodels/baseItem';
 import { Card } from '../../../../datamodels/card';
 import { Document } from '../../../../datamodels/document';
+import { User } from '../../../../datamodels/user';
 import { Verification } from '../../../../datamodels/verification';
 import { VerificationType } from '../../../../datamodels/verificationType';
 import { MatchFilterInventoryPipe } from '../../../../pipes/match-filter-inventory.pipe';
@@ -10,8 +12,6 @@ import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService, lowerCase } from '../../../../services/utilities.service';
-import { User } from '../../../../datamodels/user';
-import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'inventory-table',
@@ -43,7 +43,6 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
   selectAll = false;
 
-  user: User;
   baseItemList: BaseItem[] = [];
   verificationList: Verification[];
   itemList: BaseItem[];
@@ -53,6 +52,8 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   dataServiceVerificationSubscriber: any;
 
   authServiceSubscriber: any;
+
+  user: User;
 
   constructor(
     private inventoryPipe: MatchFilterInventoryPipe,
@@ -74,6 +75,8 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     this.dataServiceVerificationSubscriber = this.dataService.verificationList.subscribe(verificationList => {
       this.verificationList = verificationList;
     });
+
+    this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
   }
 
   ngOnInit() {
@@ -85,6 +88,8 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     this.dataServiceItemSubscriber.unsubscribe();
 
     this.dataServiceVerificationSubscriber.unsubscribe();
+
+    this.authServiceSubscriber.unsubscribe();
   }
 
   /**
@@ -136,9 +141,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         newOrder = this.sortTableListHelper(this.orderVerify);
         this.orderVerify = newOrder;
         orderFunc = (item: BaseItem) =>
-          item.getItem().lastVerificationDate
-            ? item.getItem().lastVerificationDate
-            : '0000-00-00 00:00:00';
+          item.getItem().lastVerificationDate ? item.getItem().lastVerificationDate : '0000-00-00 00:00:00';
         break;
       }
     }
@@ -284,7 +287,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
    * Send a message to the backend updating when this item was last inventoried
    * to be the current time.
    */
-  verifyInventory(baseItem: BaseItem, selfVerification = false): void {
+  verifyInventory(baseItem: BaseItem): void {
     const itemToUpdate: Card | Document = baseItem.getItem();
 
     const verification = new Verification();
@@ -297,19 +300,18 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
       verification.card = null;
     }
 
-    if (baseItem.getUser() && baseItem.getUser().id !== 0) {
-      verification.user = baseItem.getUser();
-    } else {
-      verification.user = null;
-    }
+    verification.user = this.user;
 
     if (itemToUpdate.activeReceipt === 0) {
       itemToUpdate.activeReceipt = null;
     }
 
-    verification.verificationType = selfVerification
-      ? new VerificationType('Egenkontroll')
-      : new VerificationType('Inventering');
+    if (this.user.userType.id == 1) {
+      verification.verificationType = new VerificationType('Inventering');
+    } else {
+      verification.verificationType = new VerificationType('Egenkontroll');
+    }
+
     verification.itemType = baseItem.getItemType();
     verification.verificationDate = this.utilitiesService.getLocalDate();
 

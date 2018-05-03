@@ -6,7 +6,7 @@
       <mat-spinner></mat-spinner>
     </div>
     <div class="form-wrapper" [class.fade]="loading">
-      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" (keydown.enter)="login(loginForm)">
+      <form #loginForm="ngForm" (ngSubmit)="login(); $event.preventDefault()" (keydown.enter)="login(); $event.preventDefault()">
 
         <!-- Username input -->
         <mat-form-field>
