@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
@@ -132,6 +132,8 @@ export class RequestCardComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.requestCard.next(null);
+
     this.authServiceSubscriber.unsubscribe();
 
     this.dataServiceUserSubscriber.unsubscribe();

@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BaseItem } from '../../../../datamodels/baseItem';
 import { Card } from '../../../../datamodels/card';
 import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
+import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
@@ -36,7 +38,9 @@ export class InventoryDetailComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     public utilitiesService: UtilitiesService,
     private httpService: HttpService,
-    private dataService: DataService
+    private dataService: DataService,
+    private routeDataService: RouteDataService,
+    private router: Router
   ) {
     this.modalServiceSubscriber = this.modalService.detailInventory.subscribe(baseItem => {
       if (baseItem && baseItem.item.id) {
@@ -49,6 +53,8 @@ export class InventoryDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.detailInventory.next(null);
+
     this.modalServiceSubscriber.unsubscribe();
   }
 
@@ -62,5 +68,19 @@ export class InventoryDetailComponent implements OnInit, OnDestroy {
     this.modalService.detailInventory.next(this.baseItem);
 
     this.showModal = false;
+  }
+
+  /**
+   * Go to item history
+   */
+  routeHistory() {
+    if (this.baseItem.isCard()) {
+      this.routeDataService.card.next(this.baseItem.getItem());
+      this.router.navigate(['card-history']);
+    } else {
+      this.routeDataService.document.next(this.baseItem.getItem());
+      this.router.navigate(['document-history']);
+    }
+    this._showModal = false;
   }
 }

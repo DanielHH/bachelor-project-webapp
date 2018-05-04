@@ -24,7 +24,7 @@
               {{cardItem?.cardType?.name}}
             </div>
             <div class="col-12 col-md-4">
-              {{cardItem?.cardNumber}}
+              <span class="nav-span" (click)="routeHistory()">{{cardItem?.cardNumber}}</span>
             </div>
             <div class="col-12 col-md-4">
               {{cardItem?.location}}
@@ -79,10 +79,8 @@
               {{utilitiesService.getUserString(cardItem?.user)}}
             </div>
             <div class="col-0 col-md-4">
-              {{cardItem?.lastVerificationDate?
-              (cardItem?.lastVerificationDate ?
-              (cardItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig')
-              : 'Aldrig'}}
+              {{cardItem?.lastVerificationDate? (cardItem?.lastVerificationDate ? (cardItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss')
+              : 'Aldrig') : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->

@@ -41,6 +41,8 @@ export class LogDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.detailLogEvent.next(null);
+
     this.modalServiceSubscriber.unsubscribe();
   }
 

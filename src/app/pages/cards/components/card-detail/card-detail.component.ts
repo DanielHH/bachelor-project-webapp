@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Card } from '../../../../datamodels/card';
 import { ModalService } from '../../../../services/modal.service';
+import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
@@ -29,7 +31,12 @@ export class CardDetailComponent implements OnInit, OnDestroy {
 
   modalServiceSubscriber: any;
 
-  constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
+  constructor(
+    private modalService: ModalService,
+    public utilitiesService: UtilitiesService,
+    private routeDataService: RouteDataService,
+    private router: Router
+  ) {
     this.modalServiceSubscriber = this.modalService.detailCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
@@ -41,6 +48,8 @@ export class CardDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.detailCard.next(null);
+
     this.modalServiceSubscriber.unsubscribe();
   }
 
@@ -58,5 +67,14 @@ export class CardDetailComponent implements OnInit, OnDestroy {
     this.modalService.detailCard.next(this.cardItem);
 
     this.showModal = false;
+  }
+
+  /**
+   * Go to item history
+   */
+  routeHistory() {
+    this.routeDataService.card.next(this.cardItem);
+    this.router.navigate(['card-history']);
+    this._showModal = false;
   }
 }

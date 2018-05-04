@@ -1,6 +1,5 @@
 <form #detailForm="ngForm" (ngSubmit)="showModal = false">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
-  [submitName]="'Stäng'" [hideClose]="true">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'" [submitName]="'Stäng'" [hideClose]="true">
 
     <!-- Row card info -->
     <div class="row">
@@ -27,7 +26,7 @@
               {{typeToDisplay}}
             </div>
             <div class="col-12 col-md-4">
-              {{idToDisplay}}
+              <span class="nav-span" (click)="routeHistory()">{{idToDisplay}}</span>
             </div>
             <div class="col-12 col-md-4">
               {{utilitiesService.getUserString(receiptItem?.user)}}
