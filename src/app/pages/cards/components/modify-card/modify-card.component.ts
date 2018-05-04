@@ -134,6 +134,8 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.editCard.next(null);
+
     this.authServiceSubscriber.unsubscribe();
 
     this.dataServiceLogEventSubscriber.unsubscribe();

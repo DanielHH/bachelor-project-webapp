@@ -101,6 +101,8 @@ export class ReturnCardComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.returnCard.next(null);
+
     this.authServiceSubscriber.unsubscribe();
 
     this.dataServiceReceiptSubscriber.unsubscribe();

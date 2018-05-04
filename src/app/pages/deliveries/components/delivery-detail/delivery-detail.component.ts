@@ -40,6 +40,8 @@ export class DeliveryDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.detailDelivery.next(null);
+
     this.modalServiceSubscriber.unsubscribe();
   }
 

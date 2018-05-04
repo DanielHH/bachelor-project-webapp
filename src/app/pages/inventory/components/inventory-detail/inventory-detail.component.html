@@ -1,6 +1,5 @@
 <form #detailForm="ngForm" (ngSubmit)="showModal = false">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
-  [submitName]="'Stäng'" [hideClose]="true">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'" [submitName]="'Stäng'" [hideClose]="true">
 
     <!-- Row mat-card -->
     <div class="row">
@@ -28,7 +27,7 @@
               {{baseItem?.item?.id ? baseItem?.getSubType()?.name : ''}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.item?.id ? baseItem?.getNumber() : ''}}
+              <span class="nav-span" (click)="routeHistory()">{{baseItem?.item?.id ? baseItem?.getNumber() : ''}}</span>
             </div>
           </div>
           <!-- Row Space -->
@@ -54,15 +53,13 @@
               {{baseItem?.item?.id ? baseItem?.item.location : ''}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.item?.lastVerificationDate?
-                (baseItem?.item?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss')
-                : 'Aldrig'}}
+              {{baseItem?.item?.lastVerificationDate? (baseItem?.item?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->
-          <div  *ngIf="baseItem?.item?.comment" class="row py-1"></div>
+          <div *ngIf="baseItem?.item?.comment" class="row py-1"></div>
           <!-- Row -->
-          <div  *ngIf="baseItem?.item?.comment" class="row my-1">
+          <div *ngIf="baseItem?.item?.comment" class="row my-1">
             <div class="col-12">
               <b>Kommentar:</b>
             </div>

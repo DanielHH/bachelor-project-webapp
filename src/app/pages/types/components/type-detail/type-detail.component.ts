@@ -57,6 +57,8 @@ export class TypeDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.detailType.next(null);
+
     this.modalServiceSubscriber.unsubscribe();
   }
 
