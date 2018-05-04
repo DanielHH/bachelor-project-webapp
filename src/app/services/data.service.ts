@@ -265,6 +265,18 @@ export class DataService {
     this.getVerificationList();
 
     this.getCardList();
+
+    this.getItemTypeList();
+
+    this.getVerificationTypeList();
+
+    this.getLogTypeList();
+
+    this.getStatusTypeList();
+
+    this.getCardTypeList();
+
+    this.getDocumentTypeList();
   }
 
   getUserList() {
