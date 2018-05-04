@@ -127,9 +127,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         newOrder = this.sortTableListHelper(this.orderVerify);
         this.orderVerify = newOrder;
         orderFunc = (item: BaseItem) =>
-          item.getItem().lastVerificationDate
-            ? item.getItem().lastVerificationDate
-            : '0000-00-00 00:00:00';
+          item.getItem().lastVerificationDate ? item.getItem().lastVerificationDate : '0000-00-00 00:00:00';
         break;
       }
     }
@@ -167,7 +165,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     const selectedVerificationList = [];
     let verification: Verification;
 
-    this.getFilteredList().forEach(baseItem => {
+    _.forEach(this.getFilteredList(), baseItem => {
       verification = new Verification();
       if (baseItem.isCard()) {
         verification.card = baseItem.getItem() as Card;
@@ -200,7 +198,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   showVerifyModal() {
     let numObjects = 0;
 
-    this.getFilteredList().forEach(baseItem => {
+    _.forEach(this.getFilteredList(), baseItem => {
       if (baseItem.isChecked) {
         numObjects++;
       }
@@ -216,7 +214,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
    */
   sendVerify(): void {
     // TODO: should send a single post containing all verifications
-    this.getFilteredList().forEach(baseItem => {
+    _.forEach(this.getFilteredList(), baseItem => {
       if (baseItem.isChecked) {
         this.verifyInventory(baseItem);
       }
@@ -225,7 +223,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
   updateItemSelection() {
     setTimeout(() => {
-      this.baseItemList.forEach(baseItem => {
+      _.forEach(this.baseItemList, baseItem => {
         if (
           this.inventoryPipe.matchFilt(
             baseItem,
