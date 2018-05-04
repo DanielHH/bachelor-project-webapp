@@ -55,7 +55,7 @@ export class PdfGenerationModalComponent implements OnInit, OnDestroy {
     );
 
     this.filteredSubscription = this.modalService.pdfFilteredList.subscribe(filteredList => {
-      if (filteredList.length) {
+      if (filteredList && filteredList.length) {
         this.filteredList = filteredList;
         this.showModal = true;
 
@@ -78,6 +78,12 @@ export class PdfGenerationModalComponent implements OnInit, OnDestroy {
    * Need to unsubscribe, subscriptions are not destroyed when component is destroyed
    */
   ngOnDestroy() {
+    this.modalService.pdfFilteredList.next(null);
+
+    this.modalService.filterList.next(null);
+
+    this.modalService.pdfSelectedList.next(null);
+
     this.selectedSubscription.unsubscribe();
     this.filteredSubscription.unsubscribe();
     this.filterSubscription.unsubscribe();

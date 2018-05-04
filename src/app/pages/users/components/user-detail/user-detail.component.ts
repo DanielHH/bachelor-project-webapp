@@ -41,6 +41,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.detailUser.next(null);
+
     this.modalServiceSubscriber.unsubscribe();
   }
 

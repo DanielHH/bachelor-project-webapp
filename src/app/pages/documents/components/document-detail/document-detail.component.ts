@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Document } from '../../../../datamodels/document';
 import { ModalService } from '../../../../services/modal.service';
+import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
@@ -29,7 +31,12 @@ export class DocumentDetailComponent implements OnInit, OnDestroy {
 
   modalServiceSubscriber: any;
 
-  constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
+  constructor(
+    private modalService: ModalService,
+    public utilitiesService: UtilitiesService,
+    private routeDataService: RouteDataService,
+    private router: Router
+  ) {
     this.modalServiceSubscriber = this.modalService.detailDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
@@ -41,6 +48,8 @@ export class DocumentDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   ngOnDestroy() {
+    this.modalService.detailDocument.next(null);
+
     this.modalServiceSubscriber.unsubscribe();
   }
 
@@ -54,5 +63,14 @@ export class DocumentDetailComponent implements OnInit, OnDestroy {
     this.modalService.detailDocument.next(this.documentItem);
 
     this.showModal = false;
+  }
+
+  /**
+   * Go to item history
+   */
+  routeHistory() {
+    this.routeDataService.document.next(this.documentItem);
+    this.router.navigate(['document-history']);
+    this._showModal = false;
   }
 }

@@ -20,6 +20,7 @@ import { UtilitiesService, lowerCase } from '../../../../services/utilities.serv
 })
 export class InventoryTableComponent implements OnInit, OnDestroy {
   showPdfGenerationModal = false;
+  showVerifyConfirmationModal = false;
 
   dummyItem: Card = new Card();
 
@@ -175,13 +176,11 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   }
 
   openPdfGenerationModal() {
-    const filteredList = this.getFilteredList();
-
     const verificationList = [];
     const selectedVerificationList = [];
     let verification: Verification;
 
-    filteredList.forEach(baseItem => {
+    _.forEach(this.getFilteredList(), baseItem => {
       verification = new Verification();
       if (baseItem.isCard()) {
         verification.card = baseItem.getItem() as Card;
@@ -209,11 +208,28 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Show verify inventory confirmation modal
+   */
+  showVerifyModal() {
+    let numObjects = 0;
+
+    _.forEach(this.getFilteredList(), baseItem => {
+      if (baseItem.isChecked) {
+        numObjects++;
+      }
+    });
+
+    if (numObjects) {
+      this.modalService.numVerifyObjects.next(numObjects);
+    }
+  }
+
+  /**
    * Update verification date for all checked items.
    */
   sendVerify(): void {
     // TODO: should send a single post containing all verifications
-    this.getFilteredList().forEach(baseItem => {
+    _.forEach(this.getFilteredList(), baseItem => {
       if (baseItem.isChecked) {
         this.verifyInventory(baseItem);
       }
@@ -222,7 +238,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
   updateItemSelection() {
     setTimeout(() => {
-      this.baseItemList.forEach(baseItem => {
+      _.forEach(this.baseItemList, baseItem => {
         if (
           this.inventoryPipe.matchFilt(
             baseItem,
