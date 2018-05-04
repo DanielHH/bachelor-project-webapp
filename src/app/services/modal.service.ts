@@ -213,5 +213,15 @@ export class ModalService {
    */
   filterList: BehaviorSubject<any[]> = new BehaviorSubject<any[]>(this._filterList);
 
+  /**
+   * Number of objects to verify
+   */
+  private _numVerifyObjects = 0;
+
+  /**
+   * A subscriber to the number of objects to verify
+   */
+  numVerifyObjects: BehaviorSubject<any> = new BehaviorSubject<any>(this._numVerifyObjects);
+
   constructor(private dataService: DataService) {}
 }

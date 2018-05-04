@@ -18,6 +18,7 @@ import { UserType } from '../datamodels/userType';
 import { Verification } from '../datamodels/verification';
 import { VerificationType } from '../datamodels/verificationType';
 import { HttpService } from './http.service';
+import * as _ from 'lodash';
 
 @Injectable()
 export class DataService {
@@ -385,11 +386,11 @@ export class DataService {
     if (this._cardList && this._documentList) {
       this._itemList = [];
 
-      this._cardList.forEach(card => {
+      _.forEach(this._cardList, card => {
         this._itemList.push(new BaseItem(card, 'card'));
       });
 
-      this._documentList.forEach(document => {
+      _.forEach(this._documentList, document => {
         this._itemList.push(new BaseItem(document, 'document'));
       });
 
@@ -400,11 +401,11 @@ export class DataService {
   setTypeList() {
     this._typeList = [];
 
-    this._cardTypeList.forEach(type => {
+    _.forEach(this._cardTypeList, type => {
       this._typeList.unshift(new BaseType(type, 'cardType'));
     });
 
-    this._documentTypeList.forEach(type => {
+    _.forEach(this._documentTypeList, type => {
       this._typeList.unshift(new BaseType(type, 'documentType'));
     });
 
