@@ -125,7 +125,8 @@ export class ReturnDocumentComponent implements OnInit, OnDestroy {
 
       // Create new log event
       const logText = this.documentItem.documentNumber + ' från ' + this.latestUser.name;
-      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 4, this.documentItem, this.user, logText);
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(2, 1, this.documentItem, this.user, logText); // TODO: 2 = Document, 1 = Return
 
       this.httpService
         .httpPut<Receipt>('updateReceipt/', {

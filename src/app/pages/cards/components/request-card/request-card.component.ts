@@ -226,7 +226,8 @@ export class RequestCardComponent implements OnInit, OnDestroy {
 
       // Create new log event
       const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.user.name;
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 5, this.cardItem, this.user, logText);
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(1, 2, this.cardItem, this.user, logText); // TODO: 1 = Card, 2 = Request
 
       this.httpService
         .httpPost<Receipt>('addNewReceipt/', {

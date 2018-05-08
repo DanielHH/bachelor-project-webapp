@@ -204,7 +204,8 @@ export class RequestDocumentComponent implements OnInit, OnDestroy {
 
       // Create new log event
       const logText = this.documentItem.documentNumber + ' till ' + this.documentItem.user.name;
-      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 5, this.documentItem, this.user, logText);
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(2, 2, this.documentItem, this.user, logText); // TODO: 2 = Document, 2 = Request
 
       // Submit changes to database
       this.httpService

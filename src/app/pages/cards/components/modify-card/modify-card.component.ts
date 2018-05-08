@@ -177,7 +177,8 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
       newCard.user = new User();
 
       // Create new log event
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 6, newCard, this.user, newCard.cardNumber);
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(1, 3, newCard, this.user, newCard.cardNumber); // TODO: 1 = Card, 3 = Create
 
       this.httpService.httpPost<Card>('addNewCard/', { card: newCard, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
@@ -211,7 +212,8 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
       this.setCardFromForm(this.cardItem);
       // Create new log event
       const logText = 'Uppgifter för ' + this.cardItem.cardNumber;
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 10, this.cardItem, this.user, logText);
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(1, 4, this.cardItem, this.user, logText); // TODO: 1 = Card, 4 = Edit
 
       this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {

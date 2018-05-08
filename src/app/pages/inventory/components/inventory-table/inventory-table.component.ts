@@ -340,9 +340,9 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
         let logTypeID: number;
         if (verification.verificationType.id == 2) {
-          logTypeID = 13;
+          logTypeID = 6; // TODO: 6 = Inventory
         } else {
-          logTypeID = 14;
+          logTypeID = 7; // TODO: 7 = SelfCheck
         }
         const logEvent = this.utilitiesService.createNewLogEventForItem(
           baseItem.getItemType().id, logTypeID, baseItem.getItem(), this.user, baseItem.getNumber());
