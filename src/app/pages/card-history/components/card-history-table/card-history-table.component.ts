@@ -6,11 +6,11 @@ import { lowerCase } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
 
 @Component({
-  selector: 'app-cardhistory-table',
-  templateUrl: './cardhistory-table.component.html',
-  styleUrls: ['./cardhistory-table.component.scss']
+  selector: 'app-card-history-table',
+  templateUrl: './card-history-table.component.html',
+  styleUrls: ['./card-history-table.component.scss']
 })
-export class CardhistoryTableComponent implements OnInit {
+export class CardHistoryTableComponent implements OnInit {
   @Input() logEventList: LogEvent[];
   @Input() card: Card;
 

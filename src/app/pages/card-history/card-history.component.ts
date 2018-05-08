@@ -6,9 +6,9 @@ import { DataService } from '../../services/data.service';
 import { RouteDataService } from '../../services/route-data.service';
 
 @Component({
-  selector: 'app-cardhistory',
-  templateUrl: './cardhistory.component.html',
-  styleUrls: ['./cardhistory.component.scss']
+  selector: 'app-card-history',
+  templateUrl: './card-history.component.html',
+  styleUrls: ['./card-history.component.scss']
 })
 export class CardHistoryComponent implements OnInit, OnDestroy {
   logEventList: LogEvent[] = [];
