@@ -149,7 +149,8 @@ export class ReturnCardComponent implements OnInit, OnDestroy {
 
       // Create new log event
       const logText = this.cardItem.cardNumber + ' från ' + this.latestUser.name;
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, logText);
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(1, 1, this.cardItem, this.user, logText); // TODO: 1 = Card, 1 = Return
 
       // Submit changes to server
       this.httpService

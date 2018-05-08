@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardHistoryComponent } from './cardhistory.component';
+import { CardHistoryComponent } from './card-history.component';
 
 describe('CardHistoryComponent', () => {
   let component: CardHistoryComponent;

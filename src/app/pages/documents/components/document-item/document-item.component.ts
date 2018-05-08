@@ -69,7 +69,8 @@ export class DocumentItemComponent implements OnInit, OnDestroy {
   editStatus() {
     // Create new log event
     const logText = this.documentItem.documentNumber + ' till ' + this.documentItem.status.name;
-    const logEvent = this.utilitiesService.createNewLogEventForItem(2, 12, this.documentItem, this.user, logText);
+    const logEvent = this.utilitiesService.
+    createNewLogEventForItem(2, 5, this.documentItem, this.user, logText); // TODO: 2 = Document, 5 = EditStatus
 
     this.httpService
       .httpPut<Document>('updateDocument/', { documentItem: this.documentItem, logEvent: logEvent })

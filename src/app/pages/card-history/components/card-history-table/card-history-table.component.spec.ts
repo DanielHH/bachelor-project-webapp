@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardhistoryTableComponent } from './cardhistory-table.component';
+import { CardHistoryTableComponent } from './card-history-table.component';
 
 describe('LogTableComponent', () => {
-  let component: CardhistoryTableComponent;
-  let fixture: ComponentFixture<CardhistoryTableComponent>;
+  let component: CardHistoryTableComponent;
+  let fixture: ComponentFixture<CardHistoryTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CardhistoryTableComponent ]
+      declarations: [ CardHistoryTableComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CardhistoryTableComponent);
+    fixture = TestBed.createComponent(CardHistoryTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

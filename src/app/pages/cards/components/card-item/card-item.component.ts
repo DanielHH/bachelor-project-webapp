@@ -73,7 +73,8 @@ export class CardItemComponent implements OnInit, OnDestroy {
   editStatus() {
     // Create new log event
     const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.status.name;
-    const logEvent = this.utilitiesService.createNewLogEventForItem(1, 12, this.cardItem, this.user, logText);
+    const logEvent = this.utilitiesService.
+    createNewLogEventForItem(1, 5, this.cardItem, this.user, logText); // TODO: 1 = Card, 5 = StatusEdit
 
     this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
       if (res.message === 'success') {

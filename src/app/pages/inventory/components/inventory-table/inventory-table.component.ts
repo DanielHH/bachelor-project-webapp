@@ -64,6 +64,10 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     private authService: AuthService
   ) {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
+      this.user = user;
+    });
+
     this.dataServiceItemSubscriber = this.dataService.itemList.subscribe(baseItemList => {
       this.baseItemList = baseItemList;
       this.updateSelectAll();
@@ -334,17 +338,27 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
         itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
 
+        let logTypeID: number;
+        if (verification.verificationType.id == 2) {
+          logTypeID = 6; // TODO: 6 = Inventory
+        } else {
+          logTypeID = 7; // TODO: 7 = SelfCheck
+        }
+        const logEvent = this.utilitiesService.createNewLogEventForItem(
+          baseItem.getItemType().id, logTypeID, baseItem.getItem(), this.user, baseItem.getNumber());
         if (baseItem.isCard()) {
-          this.httpService.httpPut<Card>('updateCard/', { cardItem: itemToUpdate }).then(cardRes => {
+          this.httpService.httpPut<Card>('updateCard/', { cardItem: itemToUpdate, logEvent: logEvent }).then(cardRes => {
             if (cardRes.message === 'success') {
+              this.utilitiesService.updateLogEventList(cardRes.data.logEvent);
               // So we don't adjust for timezone twice for dates not received from server
               itemToUpdate.lastVerificationDate = new Date();
               itemToUpdate.modifiedDate = new Date();
             }
           });
         } else {
-          this.httpService.httpPut<Document>('updateDocument/', { documentItem: itemToUpdate }).then(documentRes => {
+          this.httpService.httpPut<Document>('updateDocument/', { documentItem: itemToUpdate, logEvent: logEvent }).then(documentRes => {
             if (documentRes.message === 'success') {
+              this.utilitiesService.updateLogEventList(documentRes.data.logEvent);
               // So we don't adjust for timezone twice for dates not received from server
               itemToUpdate.lastVerificationDate = new Date();
               itemToUpdate.modifiedDate = new Date();

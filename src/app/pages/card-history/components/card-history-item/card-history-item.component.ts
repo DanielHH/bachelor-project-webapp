@@ -5,11 +5,11 @@ import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
-  selector: 'app-cardhistory-item',
-  templateUrl: './cardhistory-item.component.html',
-  styleUrls: ['./cardhistory-item.component.scss']
+  selector: 'app-card-history-item',
+  templateUrl: './card-history-item.component.html',
+  styleUrls: ['./card-history-item.component.scss']
 })
-export class CardhistoryItemComponent implements OnInit, OnDestroy {
+export class CardHistoryItemComponent implements OnInit, OnDestroy {
   @Input() logEventItem: LogEvent;
 
   cardDetail: Card;
