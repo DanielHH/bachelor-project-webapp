@@ -1,7 +1,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
-import { CardHistoryComponent } from './pages/cardhistory/cardhistory.component';
+import { CardHistoryComponent } from './pages/card-history/card-history.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
 import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
