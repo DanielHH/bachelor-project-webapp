@@ -42,9 +42,9 @@ import { NewUsernameValidatorDirective } from './directives/new-username.directi
 import { PasswordValidatorDirective } from './directives/password.directive';
 import { TypeNameValidatorDirective } from './directives/type-name.directive';
 import { UsernameValidatorDirective } from './directives/username.directive';
-import { CardHistoryComponent } from './pages/cardhistory/cardhistory.component';
-import { CardhistoryItemComponent } from './pages/cardhistory/components/cardhistory-item/cardhistory-item.component';
-import { CardhistoryTableComponent } from './pages/cardhistory/components/cardhistory-table/cardhistory-table.component';
+import { CardHistoryComponent } from './pages/card-history/card-history.component';
+import { CardHistoryItemComponent } from './pages/card-history/components/card-history-item/card-history-item.component';
+import { CardHistoryTableComponent } from './pages/card-history/components/card-history-table/card-history-table.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
 import { CardItemComponent } from './pages/cards/components/card-item/card-item.component';
@@ -148,8 +148,8 @@ import { InventoryVerificationModalComponent } from './pages/inventory/component
     MatchFilterInventoryPipe,
     ReceiptItemComponent,
     CardHistoryComponent,
-    CardhistoryTableComponent,
-    CardhistoryItemComponent,
+    CardHistoryTableComponent,
+    CardHistoryItemComponent,
     InventoryComponent,
     InventoryTableComponent,
     InventoryItemComponent,
