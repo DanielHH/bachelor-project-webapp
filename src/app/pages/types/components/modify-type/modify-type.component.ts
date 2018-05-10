@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, NgForm, Validators } from '@angular/forms';
 import { BaseType } from '../../../../datamodels/baseType';
 import { CardType } from '../../../../datamodels/cardType';
@@ -168,6 +168,7 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
             this.dataService.getCardTypeList();
 
             this.closeForm();
+            this.dataService.getReceiptList();
           }
         });
       } else {
@@ -176,6 +177,7 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
             this.dataService.getDocumentTypeList();
 
             this.closeForm();
+            this.dataService.getReceiptList();
           }
         });
       }

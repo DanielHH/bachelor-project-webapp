@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../auth/auth.service';
 import { Receipt } from '../../../../datamodels/receipt';
+import { User } from '../../../../datamodels/user';
 import { ModalService } from '../../../../services/modal.service';
 import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
@@ -34,11 +36,16 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
 
   modalServiceSubscriber: any;
 
+  authServiceSubscriber: any;
+
+  user: User;
+
   constructor(
     private modalService: ModalService,
     public utilitiesService: UtilitiesService,
     private routeDataService: RouteDataService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.modalServiceSubscriber = this.modalService.detailReceipt.subscribe(receipt => {
       if (receipt && receipt.id) {
@@ -55,6 +62,8 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
         this._showModal = true;
       }
     });
+
+    this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
   }
 
   ngOnInit() {}
@@ -63,6 +72,8 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
     this.modalService.detailReceipt.next(null);
 
     this.modalServiceSubscriber.unsubscribe();
+
+    this.authServiceSubscriber.unsubscribe();
   }
 
   /**
