@@ -180,6 +180,7 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
           this.dataService.deliveryList.next(this.deliveryList);
 
           this.closeForm();
+          this.dataService.getReceiptList();
         }
       });
     }
