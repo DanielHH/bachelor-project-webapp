@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ModalService } from '../../../../services/modal.service';
+import { AuthService } from '../../../../auth/auth.service';
+import { User } from '../../../../datamodels/user';
 
 @Component({
   selector: 'app-inventory-verification-modal',
@@ -8,7 +10,7 @@ import { ModalService } from '../../../../services/modal.service';
 })
 export class InventoryVerificationModalComponent implements OnInit, OnDestroy {
 
-  modalTitle = 'Verifiera objekt';
+  modalTitle = '';
 
   numObjects = 0;
   markedString = 'markerat';
@@ -31,18 +33,27 @@ export class InventoryVerificationModalComponent implements OnInit, OnDestroy {
   }
 
   modalServiceSubscriber: any;
+  authServiceSubscriber: any;
+
+  user: User;
 
   constructor(
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
 
     this.modalServiceSubscriber = this.modalService.numVerifyObjects.subscribe(numObjects => {
       if (numObjects) {
         this.numObjects = numObjects;
         this.markedString = numObjects > 1 ? 'markerade' : 'markerat';
+        this.modalTitle = this.user && this.user.userType.id == 1 ? 'Inventering' : 'Egenkontroll';
 
         this._showModal = true;
       }
+    });
+
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
+      this.user = user;
     });
   }
 
@@ -50,6 +61,7 @@ export class InventoryVerificationModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.modalServiceSubscriber.unsubscribe();
+    this.authServiceSubscriber.unsubscribe();
   }
 
   /**
@@ -69,4 +81,12 @@ export class InventoryVerificationModalComponent implements OnInit, OnDestroy {
     this.showModal = false;
     this.showModalChange.emit(false);
   }
+
+  /**
+   * Returns the verification confirm string based of the user
+   */
+  getVerifyConfirmString() {
+    return this.user && this.user.userType.id == 1 ? 'Inventera' : 'Utför egenkontroll på';
+  }
+
 }

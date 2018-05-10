@@ -113,7 +113,7 @@ export class UtilitiesService implements OnDestroy {
     logEvent.itemType = this.getItemTypeFromID(itemTypeID);
     logEvent.logType = this.getLogTypeFromID(logTypeID);
     if (itemTypeID == 1) {
-      // Av någon anledning funkar inte följande kod här: ' logEvent.itemType.name == 'Kort' '
+      // For some reaason the following does not work here: ' logEvent.itemType.name == 'Kort' '
       logEvent.card = item;
     } else {
       logEvent.document = item;

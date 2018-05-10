@@ -46,8 +46,8 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   selectAll = false;
 
   baseItemList: BaseItem[] = [];
-  verificationList: Verification[];
-  itemList: BaseItem[];
+  verificationList: Verification[] = [];
+  itemList: BaseItem[] = [];
 
   dataServiceItemSubscriber: any;
 
@@ -212,6 +212,13 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
     this.modalService.pdfSelectedList.next(selectedVerificationList);
     this.modalService.pdfFilteredList.next(verificationList);
+  }
+
+  /**
+   * Returns the text for the verify button depending on the user
+   */
+  getVerifyButtonString() {
+    return this.user.userType.id == 1 ? 'Inventera' : 'Egenkontroll';
   }
 
   /**
