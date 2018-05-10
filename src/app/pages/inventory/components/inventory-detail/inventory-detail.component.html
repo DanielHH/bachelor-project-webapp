@@ -27,7 +27,7 @@
               {{baseItem?.item?.id ? baseItem?.getSubType()?.name : ''}}
             </div>
             <div class="col-12 col-md-4">
-              <span class="nav-span" (click)="routeHistory()">{{baseItem?.item?.id ? baseItem?.getNumber() : ''}}</span>
+              <span [class.nav-span]="user.userType.id == 1"  (click)="user.userType.id == 1 ? routeHistory() : false">{{baseItem?.item?.id ? baseItem?.getNumber() : ''}}</span>
             </div>
           </div>
           <!-- Row Space -->
