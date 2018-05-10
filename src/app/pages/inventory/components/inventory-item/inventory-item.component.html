@@ -1,21 +1,23 @@
 <div class="row table-item" (click)="showDetailsModal()">
-  <div class="col-1" (click)="$event.stopPropagation()">
+  <div class="col select-checkbox-col" (click)="$event.stopPropagation()">
     <mat-checkbox disableRipple color="primary" (change)="toggleSelected()" [checked]="baseItem.isChecked"></mat-checkbox>
   </div>
 
-  <div *ngIf="baseItem?.getItem().status?.id == 1 || baseItem?.getItem().status?.id == 2" class="col">
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="baseItem?.getItem().status?.id == 2"
-    [class.btn-success]="baseItem?.getItem().status?.id == 1"
-      (click)="$event.stopPropagation()" disabled mdbRippleRadius>
-      <span *ngIf="baseItem?.getItem().status?.id == 1">Tillgängling</span>
-      <span *ngIf="baseItem?.getItem().status?.id == 2">Utkvitterad</span>
-    </button>
-  </div>
-  <div *ngIf="baseItem?.getItem().status?.id == 3 || baseItem?.getItem().status?.id == 4" class="col">
-    <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
-      <span *ngIf="baseItem?.getItem().status?.id == 3">Arkiverad</span>
-      <span *ngIf="baseItem?.getItem().status?.id == 4">Borttappad</span>
-    </button>
+  <div class="col-1">
+    <div *ngIf="baseItem?.getItem().status?.id == 1 || baseItem?.getItem().status?.id == 2">
+      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="baseItem?.getItem().status?.id == 2"
+      [class.btn-success]="baseItem?.getItem().status?.id == 1"
+        (click)="$event.stopPropagation()" disabled mdbRippleRadius>
+        <span *ngIf="baseItem?.getItem().status?.id == 1">Tillgängling</span>
+        <span *ngIf="baseItem?.getItem().status?.id == 2">Utkvitterad</span>
+      </button>
+    </div>
+    <div *ngIf="baseItem?.getItem().status?.id == 3 || baseItem?.getItem().status?.id == 4" class="col">
+      <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <span *ngIf="baseItem?.getItem().status?.id == 3">Arkiverad</span>
+        <span *ngIf="baseItem?.getItem().status?.id == 4">Borttappad</span>
+      </button>
+    </div>
   </div>
 
   <div class="col">

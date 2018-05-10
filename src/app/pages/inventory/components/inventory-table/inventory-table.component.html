@@ -59,11 +59,11 @@
       <!-- Header row -->
       <div class="row table-header">
 
-        <div class="col-1" (click)="$event.stopPropagation()">
+        <div class="col select-checkbox-col" (click)="$event.stopPropagation()">
           <mat-checkbox disableRipple color="primary" (checked)="selectAll" [(ngModel)]="selectAll" (change)="selectionChanged()"></mat-checkbox>
         </div>
 
-        <div class="col" (click)="sortTableList('status')">
+        <div class="col-1" (click)="sortTableList('status')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
 
