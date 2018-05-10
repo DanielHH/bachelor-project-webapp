@@ -32,6 +32,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   orderUser = '';
   orderLocation = '';
   orderVerify = '';
+  orderSelfCheck = '';
   orderDate = '';
   orderItemType = '';
 
@@ -70,7 +71,6 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
     this.dataServiceItemSubscriber = this.dataService.itemList.subscribe(baseItemList => {
       this.baseItemList = baseItemList;
-      this.updateSelectAll();
     });
 
     this.dataServiceVerificationSubscriber = this.dataService.verificationList.subscribe(verificationList => {
@@ -143,6 +143,13 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         this.orderVerify = newOrder;
         orderFunc = (item: BaseItem) =>
           item.getItem().lastVerificationDate ? item.getItem().lastVerificationDate : '0000-00-00 00:00:00';
+        break;
+      }
+      case 'selfCheck': {
+        newOrder = this.sortTableListHelper(this.orderSelfCheck);
+        this.orderSelfCheck = newOrder;
+        orderFunc = (item: BaseItem) =>
+          item.getItem().lastSelfCheckDate ? item.getItem().lastSelfCheckDate : '0000-00-00 00:00:00';
         break;
       }
     }
@@ -236,41 +243,47 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateItemSelection() {
+  updateSelection() {
+    _.forEach(this.baseItemList, baseItem => {
+      if (
+        this.inventoryPipe.matchFilt(
+          baseItem,
+          this.filterInput,
+          this.showIn,
+          this.showOut,
+          this.showArchived,
+          this.showGone
+        )
+      ) {
+        baseItem.isChecked = this.selectAll;
+      } else {
+        baseItem.isChecked = false;
+      }
+    });
+    this.baseItemList.slice();
+    this.dataService.itemList.next(this.baseItemList);
+  }
+
+  selectionChanged() {
     setTimeout(() => {
-      _.forEach(this.baseItemList, baseItem => {
-        if (
-          this.inventoryPipe.matchFilt(
-            baseItem,
-            this.filterInput,
-            this.showIn,
-            this.showOut,
-            this.showArchived,
-            this.showGone
-          )
-        ) {
-          baseItem.isChecked = this.selectAll;
-        } else {
-          baseItem.isChecked = false;
-        }
-      });
-      this.baseItemList.slice();
-      this.dataService.itemList.next(this.baseItemList);
+      this.updateSelection();
     }, 100);
   }
 
   updateSelectAll() {
-    if (!this.getFilteredList().length) {
-      this.selectAll = false;
-    } else {
-      this.selectAll = true;
-      for (const baseItem of this.getFilteredList()) {
-        if (!baseItem.isChecked) {
-          this.selectAll = false;
-          break;
+    setTimeout(() => {
+      if (!this.getFilteredList().length) {
+        this.selectAll = false;
+      } else {
+        this.selectAll = true;
+        for (const baseItem of this.getFilteredList()) {
+          if (!baseItem.isChecked) {
+            this.selectAll = false;
+            break;
+          }
         }
       }
-    }
+    }, 100);
   }
 
   generateFilterArray() {
@@ -305,7 +318,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
    */
   verifyInventory(baseItem: BaseItem): void {
     const itemToUpdate: Card | Document = baseItem.getItem();
-
+    const isVerification = this.user.userType.id == 1;
     const verification = new Verification();
 
     if (baseItem.isCard()) {
@@ -322,7 +335,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
       itemToUpdate.activeReceipt = null;
     }
 
-    if (this.user.userType.id == 1) {
+    if (isVerification) {
       verification.verificationType = new VerificationType('Inventering');
     } else {
       verification.verificationType = new VerificationType('Egenkontroll');
@@ -334,25 +347,35 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     // Submit changes to database
     this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
       if (verificationRes.message === 'success') {
-        itemToUpdate.lastVerificationID = Number(verificationRes.data.id);
-        itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
-        itemToUpdate.modifiedDate = this.utilitiesService.getLocalDate();
-
         let logTypeID: number;
-        if (verification.verificationType.id == 2) {
-          logTypeID = 6; // TODO: 6 = Inventory
+        if (isVerification) {
+          logTypeID = 6;
+          itemToUpdate.lastVerificationID = Number(verificationRes.data.id);
+          itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
         } else {
-          logTypeID = 7; // TODO: 7 = SelfCheck
+          logTypeID = 7;
+          itemToUpdate.lastSelfCheckID = Number(verificationRes.data.id);
+          itemToUpdate.lastSelfCheckDate = this.utilitiesService.getLocalDate();
         }
+
         const logEvent = this.utilitiesService.createNewLogEventForItem(
-          baseItem.getItemType().id, logTypeID, baseItem.getItem(), this.user, baseItem.getNumber());
+          baseItem.getItemType().id,
+          logTypeID,
+          baseItem.getItem(),
+          this.user,
+          baseItem.getNumber()
+        );
+
         if (baseItem.isCard()) {
           this.httpService.httpPut<Card>('updateCard/', { cardItem: itemToUpdate, logEvent: logEvent }).then(cardRes => {
             if (cardRes.message === 'success') {
               this.utilitiesService.updateLogEventList(cardRes.data.logEvent);
               // So we don't adjust for timezone twice for dates not received from server
-              itemToUpdate.lastVerificationDate = new Date();
-              itemToUpdate.modifiedDate = new Date();
+              if (isVerification) {
+                itemToUpdate.lastVerificationDate = new Date();
+              } else {
+                itemToUpdate.lastSelfCheckDate = new Date();
+              }
             }
           });
         } else {
@@ -360,8 +383,11 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
             if (documentRes.message === 'success') {
               this.utilitiesService.updateLogEventList(documentRes.data.logEvent);
               // So we don't adjust for timezone twice for dates not received from server
-              itemToUpdate.lastVerificationDate = new Date();
-              itemToUpdate.modifiedDate = new Date();
+              if (isVerification) {
+                itemToUpdate.lastVerificationDate = new Date();
+              } else {
+                itemToUpdate.lastSelfCheckDate = new Date();
+              }
             }
           });
         }

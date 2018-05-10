@@ -9,7 +9,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på"
-          (change)="updateItemSelection()">
+          (input)="updateSelectAll()">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
             <mat-icon>close</mat-icon>
@@ -34,22 +34,22 @@
 
       <div class="mr-2">
         <mat-checkbox disableRipple id="showIn" name="showIn" color="primary" class="pr-1"
-        (change)="updateItemSelection()" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+        (change)="updateSelectAll()" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
       </div>
 
       <div class="mr-2">
         <mat-checkbox disableRipple id="showOut" name="showOut" color="primary" class="pr-1"
-        (change)="updateItemSelection()" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+        (change)="updateSelectAll()" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
       </div>
 
       <div class="mr-2">
         <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary"
-        (change)="updateItemSelection()" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        (change)="updateSelectAll()" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
       <div class="mr-2">
         <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1"
-        (change)="updateItemSelection()" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        (change)="updateSelectAll()" [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
     </div>
@@ -60,7 +60,7 @@
       <div class="row table-header">
 
         <div class="col-1" (click)="$event.stopPropagation()">
-          <mat-checkbox disableRipple color="primary" (checked)="selectAll" [(ngModel)]="selectAll" (change)="updateItemSelection()"></mat-checkbox>
+          <mat-checkbox disableRipple color="primary" (checked)="selectAll" [(ngModel)]="selectAll" (change)="selectionChanged()"></mat-checkbox>
         </div>
 
         <div class="col" (click)="sortTableList('status')">
@@ -81,6 +81,10 @@
 
         <div class="col" (click)="sortTableList('location')">
           <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring </span>
+        </div>
+
+        <div class="col" (click)="sortTableList('selfCheck')">
+          <span class="hover" [class.up-arrow]="orderSelfCheck == 'asc'" [class.down-arrow]="orderSelfCheck == 'desc'" [class.both-arrow]="orderVerify == ''">Senaste egenkontroll </span>
         </div>
 
         <div class="col" (click)="sortTableList('verify')">
