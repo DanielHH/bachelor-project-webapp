@@ -1,9 +1,25 @@
 <div class="row table-item" (click)="showDetailsModal()">
-  <div class="col-1" (click)="$event.stopPropagation()">
+  <div class="col select-checkbox-col" (click)="$event.stopPropagation()">
     <mat-checkbox disableRipple color="primary" (change)="toggleSelected()" [checked]="baseItem.isChecked"></mat-checkbox>
   </div>
 
-  <div class="col">{{baseItem?.getStatus()?.name}}</div>
+  <div class="col-1">
+    <div *ngIf="baseItem?.getItem().status?.id == 1 || baseItem?.getItem().status?.id == 2">
+      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="baseItem?.getItem().status?.id == 2"
+      [class.btn-success]="baseItem?.getItem().status?.id == 1"
+        (click)="$event.stopPropagation()" disabled mdbRippleRadius>
+        <span *ngIf="baseItem?.getItem().status?.id == 1">Tillgängling</span>
+        <span *ngIf="baseItem?.getItem().status?.id == 2">Utkvitterad</span>
+      </button>
+    </div>
+    <div *ngIf="baseItem?.getItem().status?.id == 3 || baseItem?.getItem().status?.id == 4" class="col">
+      <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <span *ngIf="baseItem?.getItem().status?.id == 3">Arkiverad</span>
+        <span *ngIf="baseItem?.getItem().status?.id == 4">Borttappad</span>
+      </button>
+    </div>
+  </div>
+
   <div class="col">
     <i *ngIf="baseItem?.getItemTypeString() == 'Kort'" class="material-icons sm-icon">credit_card</i>
     <i *ngIf="baseItem?.getItemTypeString() == 'Handling'" class="material-icons sm-icon">import_contacts</i>
@@ -12,6 +28,10 @@
   <div class="col">{{baseItem?.getNumber()}}</div>
   <div class="col">{{getUser()}}</div>
   <div class="col">{{baseItem?.getLocation()}}</div>
+
+  <div class="col">
+    <div class="column-text">{{baseItem?.getLastSelfCheckString()}}</div>
+  </div>
 
   <div class="col">
     <div class="column-text">{{baseItem?.getLastVerifiedString()}}</div>

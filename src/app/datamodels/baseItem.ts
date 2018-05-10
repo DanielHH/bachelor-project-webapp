@@ -117,6 +117,19 @@ export class BaseItem {
   }
 
   /**
+   * Returns string representation of last self check date
+   */
+  getLastSelfCheckString(): string {
+    if (this.item.lastSelfCheckDate) {
+      return this.item.lastSelfCheckDate
+        ? moment(this.item.lastSelfCheckDate).format('YYYY-MM-DD')
+        : '-';
+    } else {
+      return 'Aldrig';
+    }
+  }
+
+  /**
    * Get id of the type of this item.
    */
   getItemType(): ItemType {

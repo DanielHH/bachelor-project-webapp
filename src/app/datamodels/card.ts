@@ -72,6 +72,16 @@ export class Card {
   lastVerificationDate?: Date;
 
   /**
+   * ID of last self check
+   */
+  lastSelfCheckID?: number;
+
+  /**
+   * Date of last self check
+   */
+  lastSelfCheckDate?: Date;
+
+  /**
    * Registrator
    */
   registrator?: string;
