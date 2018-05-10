@@ -188,8 +188,8 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
       newDoc.user = new User();
 
       // Create new log event
-      const logEvent = this.utilitiesService.
-      createNewLogEventForItem(2, 3, newDoc, this.user, newDoc.documentNumber); // TODO: 2 = Document, 3 = Create
+      // TODO: 2 = Document, 3 = Create
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 3, newDoc, this.user, newDoc.documentNumber);
 
       this.httpService.httpPost<Document>('addNewDocument/', { document: newDoc, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
@@ -223,8 +223,9 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
 
       // Create new log event
       const logText = 'Uppgifter för ' + this.documentItem.documentNumber;
-      const logEvent = this.utilitiesService.
-      createNewLogEventForItem(2, 4, this.documentItem, this.user, logText); // TODO: 2 = Document, 4 = Edit
+
+      // TODO: 2 = Document, 4 = Edit
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 4, this.documentItem, this.user, logText);
 
       this.httpService
         .httpPut<Document>('updateDocument/', { documentItem: this.documentItem, logEvent: logEvent })
@@ -238,6 +239,8 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
             this.utilitiesService.updateLogEventList(res.data.logEvent);
 
             this.closeForm();
+
+            this.dataService.getReceiptList();
           }
         });
     }

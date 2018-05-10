@@ -153,6 +153,7 @@ export class ModifyUserComponent implements OnInit, OnDestroy {
           this.dataService.getUserList();
 
           this.closeForm();
+          this.dataService.getReceiptList();
         }
       });
     }
