@@ -27,11 +27,11 @@ export class UsernameValidatorDirective implements Validator, OnDestroy {
     if (input && input.id) {
       // User object
       userMatch = _.find(this.users, user => user.username === input.username);
-      isValid = userMatch && userMatch.status.id === 5;
+      isValid = userMatch && userMatch.status.id === 5 && userMatch.userType.id === 2;
     } else {
       // String input
       userMatch = _.find(this.users, user => user.username === input);
-      isValid = !input || (userMatch && userMatch.status.id === 5);
+      isValid = !input || (userMatch && userMatch.status.id === 5 && userMatch.userType.id === 2);
     }
 
     const message = {
