@@ -209,7 +209,7 @@ export class RequestDocumentComponent implements OnInit, OnDestroy {
 
       // Submit changes to database
       this.httpService
-        .httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent, card: this.documentItem })
+        .httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent})
         .then(res => {
           if (res.message === 'success') {
             const newReceipt = res.data.receipt;
@@ -223,7 +223,6 @@ export class RequestDocumentComponent implements OnInit, OnDestroy {
 
               this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
                 if (pdfRes.message === 'success') {
-                  newReceipt.url = pdfRes.url;
                   newReceipt.url = pdfRes.url;
                   this.loading = false;
                   this.pdfView = true;

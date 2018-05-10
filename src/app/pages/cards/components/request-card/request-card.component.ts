@@ -230,11 +230,7 @@ export class RequestCardComponent implements OnInit, OnDestroy {
       createNewLogEventForItem(1, 2, this.cardItem, this.user, logText); // TODO: 1 = Card, 2 = Request
 
       this.httpService
-        .httpPost<Receipt>('addNewReceipt/', {
-          receipt: receipt,
-          logEvent: logEvent,
-          card: this.cardItem
-        })
+        .httpPost<Receipt>('addNewReceipt/', {receipt: receipt, logEvent: logEvent})
         .then(res => {
           if (res.message === 'success') {
             const newReceipt = res.data.receipt;
