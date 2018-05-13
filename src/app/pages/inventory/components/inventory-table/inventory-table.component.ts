@@ -376,7 +376,9 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         if (baseItem.isCard()) {
           this.httpService.httpPut<Card>('updateCard/', { cardItem: itemToUpdate, logEvent: logEvent }).then(cardRes => {
             if (cardRes.message === 'success') {
-              this.utilitiesService.updateLogEventList(cardRes.data.logEvent);
+              if (this.user.userType.id == 1) {
+                this.utilitiesService.updateLogEventList(cardRes.data.logEvent);
+              }
               // So we don't adjust for timezone twice for dates not received from server
               if (isVerification) {
                 itemToUpdate.lastVerificationDate = new Date();
@@ -388,7 +390,9 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         } else {
           this.httpService.httpPut<Document>('updateDocument/', { documentItem: itemToUpdate, logEvent: logEvent }).then(documentRes => {
             if (documentRes.message === 'success') {
-              this.utilitiesService.updateLogEventList(documentRes.data.logEvent);
+              if (this.user.userType.id == 1) {
+                this.utilitiesService.updateLogEventList(documentRes.data.logEvent);
+              }
               // So we don't adjust for timezone twice for dates not received from server
               if (isVerification) {
                 itemToUpdate.lastVerificationDate = new Date();
