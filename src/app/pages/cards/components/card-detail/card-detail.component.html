@@ -24,7 +24,7 @@
               {{cardItem?.cardType?.name}}
             </div>
             <div class="col-12 col-md-4">
-              <span class="nav-span" (click)="routeHistory()">{{cardItem?.cardNumber}}</span>
+              <span [class.nav-span]="historyRoute" (click)="historyRoute ? routeHistory() : false">{{cardItem?.cardNumber}}</span>
             </div>
             <div class="col-12 col-md-4">
               {{cardItem?.location}}

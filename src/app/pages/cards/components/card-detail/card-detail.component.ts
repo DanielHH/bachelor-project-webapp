@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Card } from '../../../../datamodels/card';
@@ -30,6 +30,8 @@ export class CardDetailComponent implements OnInit, OnDestroy {
   cardItem: Card = null;
 
   modalServiceSubscriber: any;
+
+  @Input() historyRoute = true;
 
   constructor(
     private modalService: ModalService,
