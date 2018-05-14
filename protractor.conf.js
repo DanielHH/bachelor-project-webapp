@@ -8,15 +8,23 @@ exports.config = {
   specs: [
     './e2e/**/*.e2e-spec.ts'
   ],
+
   capabilities: {
     'browserName': 'chrome'
   },
+
+  /*multiCapabilities: [{
+    'browserName': 'chrome',
+  }, {
+    'browserName': 'firefox',
+  }],*/
+
   directConnect: true,
-  baseUrl: 'http://localhost:4200/',
+  baseUrl: '',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
+    defaultTimeoutInterval: 300000,
     print: function() {}
   },
   onPrepare() {
