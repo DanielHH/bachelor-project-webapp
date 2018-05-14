@@ -1,7 +1,7 @@
 import { AppPage } from './app.po';
 import { browser, by, element, ExpectedConditions, Button } from 'protractor';
 
-xdescribe('Sprint2', function() {
+describe('Sprint2', function() {
 
   const documentsFromMenu = element(by.linkText('Handlingar'));
   const cardsFromMenu = element(by.linkText('Kort'));
