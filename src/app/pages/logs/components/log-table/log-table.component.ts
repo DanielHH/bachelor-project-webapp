@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { lowerCase } from 'lodash';
 import { LogEvent } from '../../../../datamodels/logEvent';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-log-table',
