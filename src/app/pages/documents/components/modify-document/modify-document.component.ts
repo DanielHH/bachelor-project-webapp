@@ -1,24 +1,21 @@
-import { Component, OnInit, Input, Directive, Inject, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
+import { AuthService } from '../../../../auth/auth.service';
+import { BaseItem } from '../../../../datamodels/baseItem';
+import { BaseType } from '../../../../datamodels/baseType';
 import { Document } from '../../../../datamodels/document';
-import { HttpService } from '../../../../services/http.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import * as moment from 'moment';
-import { MatDialogRef } from '@angular/material';
-import { DataService } from '../../../../services/data.service';
-import * as _ from 'lodash';
-import { ModalService } from '../../../../services/modal.service';
 import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-modify-document',
   templateUrl: './modify-document.component.html',
   styleUrls: ['./modify-document.component.scss']
 })
-export class ModifyDocumentComponent implements OnInit {
+export class ModifyDocumentComponent implements OnInit, OnDestroy {
   // Form variables
   docTypeInput = '';
   docNumberInput = '';
@@ -48,14 +45,7 @@ export class ModifyDocumentComponent implements OnInit {
 
   locationControl = new FormControl('', Validators.required);
 
-  // Database data lists
-  docTypes = [];
-
-  // Filtered lists
-  filteredDocTypes: Observable<any[]> = this.docTypeControl.valueChanges.pipe(
-    startWith(''),
-    map(docType => (docType ? this.filterDocTypes(docType) : this.docTypes.slice()))
-  );
+  baseTypes: BaseType[] = []; // All card and document types
 
   @Input() documentList: Document[];
 
@@ -77,25 +67,44 @@ export class ModifyDocumentComponent implements OnInit {
     this.showModal = value;
   }
 
+  user: User;
   documentItem: Document;
 
+  authServiceSubscriber: any;
+
+  dataServiceSubscriber: any;
+
+  dataServiceItemSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   @Output() showModalChange = new EventEmitter<any>();
+
+  itemList: BaseItem[];
 
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
-    this.dataService.documentTypeList.subscribe(docTypes => {
-      this.docTypes = docTypes;
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
+      this.user = user;
+    });
+
+    this.dataServiceSubscriber = this.dataService.typeList.subscribe(baseTypes => {
+      this.baseTypes = baseTypes;
+
       this.docTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
       });
     });
 
-    this.modalService.editDocument.subscribe(document => {
+    this.dataServiceItemSubscriber = this.dataService.itemList.subscribe(itemList => (this.itemList = itemList));
+
+    this.modalServiceSubscriber = this.modalService.editDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -123,18 +132,24 @@ export class ModifyDocumentComponent implements OnInit {
         setTimeout(() => {
           this.commentInput = document.comment;
         }, 250);
+      } else {
+        this.modalTitle = 'Lägg till ny handling';
+        this.modalType = 0;
+        this._showModal = true;
       }
     });
   }
 
   ngOnInit() {}
 
-  /**
-   * Filters list of docTypes based on docType input
-   * @param str docType input
-   */
-  filterDocTypes(str: string) {
-    return this.docTypes.filter(docType => str != null && docType.name.toLowerCase().indexOf(str.toLowerCase()) === 0);
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceSubscriber.unsubscribe();
+
+    this.dataServiceItemSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
   }
 
   /**
@@ -153,7 +168,8 @@ export class ModifyDocumentComponent implements OnInit {
       document.sender = this.senderInput;
 
       document.location = this.locationInput;
-      document.comment = this.commentInput;
+      document.comment = this.commentInput ? this.commentInput : null;
+      document.modifiedDate = this.utilitiesService.getLocalDate();
     }
   }
 
@@ -171,14 +187,28 @@ export class ModifyDocumentComponent implements OnInit {
       newDoc.status = this.utilitiesService.getStatusFromID(1);
       newDoc.user = new User();
 
-      this.httpService.httpPost<Document>('addNewDocument/', newDoc).then(res => {
+      // Create new log event
+      // TODO: 2 = Document, 3 = Create
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 3, newDoc, this.user, newDoc.documentNumber);
+
+      this.httpService.httpPost<Document>('addNewDocument/', { document: newDoc, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
-          this.documentList.unshift(res.data);
+          newDoc.creationDate = new Date();
+          newDoc.modifiedDate = new Date();
+          this.documentList.unshift(res.data.document);
+          this.itemList.unshift(new BaseItem(res.data.document, 'document'));
+
+          // Update log event list
+          this.utilitiesService.updateLogEventList(res.data.logEvent);
+
           // Trigger view refresh
           this.documentList = this.documentList.slice();
           this.dataService.documentList.next(this.documentList);
 
-          this.showModal = false;
+          this.itemList = this.itemList.slice();
+          this.dataService.itemList.next(this.itemList);
+
+          this.closeForm();
         }
       });
     }
@@ -191,14 +221,28 @@ export class ModifyDocumentComponent implements OnInit {
     if (this.isValidInput()) {
       this.setDocumentFromForm(this.documentItem);
 
-      this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(res => {
-        if (res.message === 'success') {
-          this.documentList = this.documentList.slice();
-          this.dataService.documentList.next(this.documentList);
+      // Create new log event
+      const logText = 'Uppgifter för ' + this.documentItem.documentNumber;
 
-          this.closeForm();
-        }
-      });
+      // TODO: 2 = Document, 4 = Edit
+      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 4, this.documentItem, this.user, logText);
+
+      this.httpService
+        .httpPut<Document>('updateDocument/', { documentItem: this.documentItem, logEvent: logEvent })
+        .then(res => {
+          if (res.message === 'success') {
+            this.documentItem.modifiedDate = new Date();
+            this.documentList = this.documentList.slice();
+            this.dataService.documentList.next(this.documentList);
+
+            // Update log event list
+            this.utilitiesService.updateLogEventList(res.data.logEvent);
+
+            this.closeForm();
+
+            this.dataService.getReceiptList();
+          }
+        });
     }
   }
 

@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { LogEvent } from '../../../../datamodels/logEvent';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
+import { lowerCase } from 'lodash';
+import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
   selector: 'app-log-table',
@@ -8,7 +9,6 @@ import * as _ from 'lodash';
   styleUrls: ['./log-table.component.scss']
 })
 export class LogTableComponent implements OnInit {
-
   @Input() logEventList: LogEvent[];
 
   filterInput = '';
@@ -19,9 +19,9 @@ export class LogTableComponent implements OnInit {
   orderLogUser = '';
 
   showReceipt = true;
-  showRest = true;
+  showOther = true;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -67,9 +67,20 @@ export class LogTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.logEventList = _.orderBy(this.logEventList, [property], [newOrder]);
+      this.logEventList = _.orderBy(
+        this.logEventList,
+        [
+          logEvent => {
+            if (logEvent[property]) {
+              return lowerCase(logEvent[property]) as string;
+            } else {
+              return logEvent[property.slice(0, -5)] ? (lowerCase(logEvent[property.slice(0, -5)].name) as string) : '';
+            }
+          }
+        ],
+        [newOrder]
+      );
     }
-
   }
 
   /**
@@ -78,9 +89,10 @@ export class LogTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
-
 }

@@ -8,45 +8,62 @@
       <div class="col-4 px-0 text-filter-input">
         <mat-form-field>
           <!--Input-->
-          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på"
+          (input)="updateSelectAll()">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
       </div>
-      <div class="col"></div>
-      <!-- Space -->
+
+      <!-- PDF buttons -->
+      <div class="col text-right">
+        <div class="mt-3">
+          <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
+            <span>Generera PDF</span>
+          </button>
+          <button class="table-button" mat-raised-button color="primary" (click)="showVerifyModal()">{{getVerifyButtonString()}}</button>
+        </div>
+      </div>
+
     </div>
 
     <!-- Row filter per status -->
     <div class="pb-1 filter-checkbox-row">
 
       <div class="mr-2">
-        <mat-checkbox id="showIn" name="showIn" color="primary" class="pr-1" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+        <mat-checkbox disableRipple id="showIn" name="showIn" color="primary" class="pr-1"
+        (change)="updateSelectAll()" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showOut" name="showOut" color="primary" class="pr-1" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+        <mat-checkbox disableRipple id="showOut" name="showOut" color="primary" class="pr-1"
+        (change)="updateSelectAll()" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showArchived" name="showArchived" color="primary" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary"
+        (change)="updateSelectAll()" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox id="showGone" name="showGone" color="primary" class="pr-1" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1"
+        (change)="updateSelectAll()" [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
     </div>
+
 
     <div class="table-container">
       <!-- Header row -->
       <div class="row table-header">
 
-        <div class="col-1"></div>
+        <div class="col select-checkbox-col" (click)="$event.stopPropagation()">
+          <mat-checkbox disableRipple color="primary" (checked)="selectAll" [(ngModel)]="selectAll" (change)="selectionChanged()"></mat-checkbox>
+        </div>
 
-        <div class="col" (click)="sortTableList('status')">
+        <div class="col-1" (click)="sortTableList('status')">
           <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
 
@@ -66,21 +83,28 @@
           <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring </span>
         </div>
 
-        <div class="col" (click)="sortTableList('comment')">
-          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
+        <div class="col" (click)="sortTableList('selfCheck')">
+          <span class="hover" [class.up-arrow]="orderSelfCheck == 'asc'" [class.down-arrow]="orderSelfCheck == 'desc'" [class.both-arrow]="orderVerify == ''">Senaste egenkontroll </span>
         </div>
 
-        <div class="col" (click)="sortTableList('verifyDate')">
-          <span class="hover" [class.up-arrow]="orderVerifyDate == 'asc'" [class.down-arrow]="orderVerifyDate == 'desc'" [class.both-arrow]="orderVerifyDate == ''">Verifierad </span>
+        <div class="col" (click)="sortTableList('verify')">
+          <span class="hover" [class.up-arrow]="orderVerify == 'asc'" [class.down-arrow]="orderVerify == 'desc'" [class.both-arrow]="orderVerify == ''">Senaste inventering </span>
         </div>
 
       </div>
       <hr>
       <div class="table-items scrollbar-table">
-        <div *ngFor="let item of baseItemList">
-          <inventory-item *ngIf="passesFilter(item)" [baseItem]="item"> </inventory-item>
+        <div *ngFor="let item of baseItemList | matchFilterInventory:filterInput:showIn:showOut:showArchived:showGone">
+          <inventory-item [baseItem]="item" (checkedChanged)="updateSelectAll()"> </inventory-item>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<app-inventory-detail></app-inventory-detail>
+
+<app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från inventeringstabell'"
+[pdfType]="'inventory'"></app-pdf-generation-modal>
+
+<app-inventory-verification-modal [(showModal)]="showVerifyConfirmationModal" (verifyInventoryChange)="sendVerify()"></app-inventory-verification-modal>

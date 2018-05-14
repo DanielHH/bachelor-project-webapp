@@ -1,22 +1,17 @@
+import { Component, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Document } from '../../../../datamodels/document';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
-import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
+import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-document-detail',
   templateUrl: './document-detail.component.html',
   styleUrls: ['./document-detail.component.scss']
 })
-export class DocumentDetailComponent implements OnInit {
-
+export class DocumentDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -34,23 +29,30 @@ export class DocumentDetailComponent implements OnInit {
 
   documentItem: Document = null;
 
+  modalServiceSubscriber: any;
+
+  @Input() historyRoute = true;
+
   constructor(
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService
+    public utilitiesService: UtilitiesService,
+    private routeDataService: RouteDataService,
+    private router: Router
   ) {
-    this.modalService.detailDocument.subscribe((document) => {
+    this.modalServiceSubscriber = this.modalService.detailDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
         this._showModal = true;
       }
     });
-
-  }
-  ngOnInit() {
   }
 
-  hideDetail() {
-    this.showModal = false;
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalService.detailDocument.next(null);
+
+    this.modalServiceSubscriber.unsubscribe();
   }
 
   /**
@@ -65,27 +67,12 @@ export class DocumentDetailComponent implements OnInit {
     this.showModal = false;
   }
 
-  displayRegistrationDate() {
-    if (this.documentItem) {
-      return moment(this.documentItem.registrationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayDocumentDate() {
-    if (this.documentItem) {
-      return moment(this.documentItem.documentDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayCreationDate() {
-    if (this.documentItem) {
-      return moment(this.documentItem.creationDate).format('YYYY-MM-DD');
-    }
-  }
-
-  displayModifiedDate() {
-    if (this.documentItem) {
-      return moment(this.documentItem.modifiedDate).format('YYYY-MM-DD');
-    }
+  /**
+   * Go to item history
+   */
+  routeHistory() {
+    this.routeDataService.document.next(this.documentItem);
+    this.router.navigate(['document-history']);
+    this._showModal = false;
   }
 }

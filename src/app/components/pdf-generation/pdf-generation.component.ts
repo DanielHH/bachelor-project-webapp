@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { HttpService } from '../../services/http.service';
 
@@ -8,7 +8,6 @@ import { HttpService } from '../../services/http.service';
   styleUrls: ['./pdf-generation.component.scss']
 })
 export class PdfGenerationComponent implements OnInit {
-
   @Input() loading = false;
 
   @Input() pdfView = false;
@@ -17,10 +16,9 @@ export class PdfGenerationComponent implements OnInit {
 
   pdfName = '';
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   getNameFromPath() {
     if (this.pdfURL) {
@@ -39,5 +37,4 @@ export class PdfGenerationComponent implements OnInit {
       window.open(this.pdfURL, '_blank');
     }
   }
-
 }

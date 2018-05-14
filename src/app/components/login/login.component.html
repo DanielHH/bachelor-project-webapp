@@ -6,17 +6,14 @@
       <mat-spinner></mat-spinner>
     </div>
     <div class="form-wrapper" [class.fade]="loading">
-      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" (keydown.enter)="login(loginForm)">
+      <form #loginForm="ngForm" (ngSubmit)="login(); $event.preventDefault()" (keydown.enter)="login(); $event.preventDefault()">
 
         <!-- Username input -->
         <mat-form-field>
           <!--Input-->
           <input type="text" matInput name="usernameInput" [(ngModel)]="username" maxlength="128" placeholder="Användarnamn" [formControl]="usernameControl"
             (ngModelChange)="error = ''" required>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
-          </button>
+          <!--Clear-->
           <button mat-button class="size-medium" *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username = ''"
             tabindex="-1">
             <mat-icon>close</mat-icon>
@@ -30,10 +27,7 @@
           <!--Input-->
           <input type="password" matInput name="passwordInput" [(ngModel)]="password" maxlength="128" placeholder="Lösenord" [formControl]="passwordControl"
             (ngModelChange)="error = ''" required>
-          <!--Check and clear-->
-          <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
-            <mat-icon [style.color]="'green'" *ngIf="isValidPassword()">done</mat-icon>
-          </button>
+          <!--Clear-->
           <button mat-button class="size-medium" *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password = ''"
             tabindex="-1">
             <mat-icon>close</mat-icon>

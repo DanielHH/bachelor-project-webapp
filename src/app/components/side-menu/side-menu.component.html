@@ -1,11 +1,11 @@
 <div class="menu-container">
   <nav class="fixed-container navbar navbar-dark primary-color-dark">
     <div class="nav-title">
-      <span class="navbar-brand border-light">SecTrack</span>
+      <span class="navbar-brand border-light side-menu-title">SecTrack</span>
     </div>
     <ul class="navbar-nav">
       <li *ngIf="user.userType.id == 2" class="nav-item" routerLinkActive="active">
-        <a class="nav-link" routerLink="/self-verification">Egenkontroll</a>
+        <a class="nav-link" routerLink="/inventory">Egenkontroll</a>
       </li>
       <li *ngIf="user.userType.id == 1" class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/cards">Kort</a>
@@ -26,6 +26,24 @@
         <a class="nav-link" routerLink="/logs">Loggar</a>
       </li>
       <li class="nav-item">
+        <a *ngIf="user.userType.id == 1" class="nav-link collapsable" [class.menu-showing]="subMenu?.isExpanded" (click)="subMenu.toggle()">
+          <i class="fa fa-cog" aria-hidden="true"></i> Administrationsverktyg
+        </a>
+
+        <div class="nav-title menu-divider" [class.show-divider]="subMenu?.isExpanded"></div>
+
+        <div [mdbCollapse]="true" #subMenu="bs-collapse">
+          <ul class="navbar-nav sub-menu">
+            <li class="nav-item" routerLinkActive="active">
+              <a class="nav-link" routerLink="/types">Typer</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+              <a class="nav-link" routerLink="/users">Användare</a>
+            </li>
+          </ul>
+        </div>
+        <div class="nav-title" [class.mt-2]="subMenu?.isExpanded"></div>
+        <a class="nav-link nav-text">{{user.name}}</a>
         <a class="nav-link" (click)="logout()" routerLink="/">
           <i class="fa fa-sign-out" aria-hidden="true"></i> Logga ut
         </a>

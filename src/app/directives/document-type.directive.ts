@@ -1,32 +1,56 @@
-import { Directive } from '@angular/core';
-import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
-import { DataService } from '../services/data.service';
-import { DocumentType } from '../datamodels/documentType';
+import { Directive, Input, OnDestroy } from '@angular/core';
+import { FormControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 import * as _ from 'lodash';
+import { DocumentType } from '../datamodels/documentType';
+import { DataService } from '../services/data.service';
 
 @Directive({
   selector: '[appDocumentType]',
-  providers: [{provide: NG_VALIDATORS, useExisting: DocumentTypeValidatorDirective, multi: true}]
- })
- export class DocumentTypeValidatorDirective implements Validator {
+  providers: [{ provide: NG_VALIDATORS, useExisting: DocumentTypeValidatorDirective, multi: true }]
+})
+export class DocumentTypeValidatorDirective implements Validator, OnDestroy {
+  @Input() docType = null;
 
   docTypes: DocumentType[] = [];
 
+  dataServiceSubscriber: any;
+
   constructor(public dataService: DataService) {
-    this.dataService.documentTypeList.subscribe( (docTypes) => {
+    this.dataServiceSubscriber = this.dataService.documentTypeList.subscribe(docTypes => {
       this.docTypes = docTypes;
     });
   }
 
   validate(c: FormControl): ValidationErrors {
-    const input = String(c.value);
+    const input = c.value;
+    let docTypeMatch;
 
-    const isValid = !input || _.find(this.docTypes, (docType) => docType.name === input);
+    let isValid;
+    if (!input) {
+      isValid = true;
+    } else {
+      if (input.id) {
+        // DocumentType object
+        docTypeMatch = _.find(this.docTypes, docType => docType.name === input.name);
+      } else {
+        // String input
+        docTypeMatch = _.find(this.docTypes, docType => docType.name === input);
+      }
+
+      isValid =
+        (docTypeMatch && docTypeMatch.status.id === 5) ||
+        (docTypeMatch && this.docType && docTypeMatch.id == this.docType.id);
+    }
+
     const message = {
-      'docType': {
-        'message': 'Ogiltig typ'
+      docType: {
+        message: 'Ogiltig typ'
       }
     };
     return isValid ? null : message;
   }
- }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+  }
+}

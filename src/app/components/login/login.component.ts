@@ -1,16 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../datamodels/user';
-import { FormControl, Validators, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loading = false;
   error = '';
   user: User;
@@ -25,13 +24,19 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('loginForm') loginForm: NgForm;
 
+  authServiceSubscriber: any;
+
   constructor(private router: Router, private authService: AuthService) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Attempts to log a user in

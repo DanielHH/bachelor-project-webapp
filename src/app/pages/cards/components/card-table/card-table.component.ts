@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
-import { ModifyCardComponent } from '../modify-card/modify-card.component';
-import { NgForm } from '@angular/forms';
+import { Card } from '../../../../datamodels/card';
+import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService, lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-card-table',
@@ -10,19 +12,18 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./card-table.component.scss']
 })
 export class CardTableComponent implements OnInit {
-
   @Input() cardList: Card[];
 
-  cardItem = new Card(); // Dummy
-
   showModal = false;
+
+  showPdfGenerationModal = false;
 
   filterInput = '';
 
   orderStatus = '';
   orderCardType = '';
   orderCardNumber = '';
-  orderUserID = '';
+  orderUser = '';
   orderLocation = '';
   orderComment = '';
   orderDate = '';
@@ -36,7 +37,14 @@ export class CardTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() { }
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private cardPipe: MatchFilterCardPipe,
+    private utilitiesService: UtilitiesService
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -57,12 +65,12 @@ export class CardTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status.id': {
+      case 'status.name': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'cardType': {
+      case 'cardType.name': {
         newOrder = this.sortTableListHelper(this.orderCardType);
         this.orderCardType = newOrder;
         break;
@@ -72,9 +80,9 @@ export class CardTableComponent implements OnInit {
         this.orderCardNumber = newOrder;
         break;
       }
-      case 'user.id': {
-        newOrder = this.sortTableListHelper(this.orderUserID);
-        this.orderUserID = newOrder;
+      case 'user.name': {
+        newOrder = this.sortTableListHelper(this.orderUser);
+        this.orderUser = newOrder;
         break;
       }
       case 'location': {
@@ -95,9 +103,20 @@ export class CardTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.cardList = _.orderBy(this.cardList, [property], [newOrder]);
+      this.cardList = _.orderBy(
+        this.cardList,
+        [
+          card => {
+            if (card[property]) {
+              return lowerCase(card[property]) as string;
+            } else {
+              return card[property.slice(0, -5)] ? (lowerCase(card[property.slice(0, -5)].name) as string) : '';
+            }
+          }
+        ],
+        [newOrder]
+      );
     }
-
   }
 
   /**
@@ -106,8 +125,10 @@ export class CardTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -115,10 +136,47 @@ export class CardTableComponent implements OnInit {
    * Open add new card modal
    */
   openAddNewCard() {
-    this.modalTitle = 'Lägg till nytt kort';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editCard.next(null);
   }
 
-}
+  openPdfGenerationModal() {
+    const filteredList = this.cardPipe.transform(
+      this.cardList,
+      this.filterInput,
+      this.showIn,
+      this.showOut,
+      this.showArchived,
+      this.showGone
+    );
 
+    this.generateFilterArray();
+
+    this.modalService.pdfFilteredList.next(filteredList);
+  }
+
+  generateFilterArray() {
+    const filters = [];
+
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showIn) {
+      filters.push('Tillgängliga');
+    }
+
+    if (this.showOut) {
+      filters.push('Utkvitterade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    this.modalService.filterList.next(filters);
+  }
+}

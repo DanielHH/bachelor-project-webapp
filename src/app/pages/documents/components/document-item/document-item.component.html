@@ -16,18 +16,17 @@
   </div>
 
   <div class="col">
-    <i class="material-icons">import_contacts</i>
+    <i class="material-icons sm-icon">import_contacts</i>
     {{documentItem?.documentType?.name}}
   </div>
-  <!--<div class="col-narrow table-col">{{documentItem?.documentType?.name}}</div>-->
   <div class="col">{{documentItem?.documentNumber}}</div>
   <div class="col">{{documentItem.name}}</div>
-  <div class="col">{{documentItem?.user?.name}}</div>
+  <div class="col">{{utilitiesService.getUserString(documentItem?.user)}}</div>
   <div class="col">{{documentItem?.location}}</div>
   <div class="col">
     <div class="column-text">{{documentItem?.comment}}</div>
     <div class="pull-right table-menu-fix">
-      <app-item-menu [item]="documentItem" (editItem)="edit()" (editStatus)="editStatus()" [showDetailsOption]="true" [showEditOption]="true"></app-item-menu>
+      <app-item-menu [object]="documentItem" (editObject)="edit()" (editStatus)="editStatus()" [itemMenu]="true" [showEditOption]="true"></app-item-menu>
     </div>
   </div>
 

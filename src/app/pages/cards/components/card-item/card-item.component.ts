@@ -1,41 +1,45 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import * as moment from 'moment';
-import { DataService } from '../../../../services/data.service';
-import { CardType } from '../../../../datamodels/cardType';
-import { User } from '../../../../datamodels/user';
-import * as _ from 'lodash';
-import { RouteDataService } from '../../../../services/route-data.service';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../auth/auth.service';
+import { Card } from '../../../../datamodels/card';
+import { User } from '../../../../datamodels/user';
 import { HttpService } from '../../../../services/http.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
 import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-card-item',
   templateUrl: './card-item.component.html',
   styleUrls: ['./card-item.component.scss']
 })
-export class CardItemComponent implements OnInit {
+export class CardItemComponent implements OnInit, OnDestroy {
   @Input() cardItem: Card;
 
+  user: User;
   cardList: Card[] = [];
 
   showRequestModal = false;
   showReturnModal = false;
 
+  authServiceSubscriber: any;
+
   constructor(
-    private dataService: DataService,
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService) {
-      this.dataService.cardList.subscribe(cardList => {
-        this.cardList = cardList;
-      });
+    public utilitiesService: UtilitiesService,
+    private authService: AuthService
+  ) {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
+      this.user = user;
+    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Show the modal for card details
@@ -57,8 +61,8 @@ export class CardItemComponent implements OnInit {
   }
 
   /**
-     * Set card to be outputted for editing
-    */
+   * Set card to be outputted for editing
+   */
   edit() {
     this.modalService.editCard.next(this.cardItem);
   }
@@ -67,11 +71,15 @@ export class CardItemComponent implements OnInit {
    * Sets the status of the card in the database
    */
   editStatus() {
-    this.httpService.httpPut<Card>('updateCard/', this.cardItem).then(res => {
+    // Create new log event
+    const logText = this.cardItem.cardNumber + ' till ' + this.cardItem.status.name;
+    const logEvent = this.utilitiesService.
+    createNewLogEventForItem(1, 5, this.cardItem, this.user, logText); // TODO: 1 = Card, 5 = StatusEdit
+
+    this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
       if (res.message === 'success') {
-        this.dataService.cardList.next(this.cardList);
+        this.utilitiesService.updateLogEventList(res.data.logEvent);
       }
     });
   }
 }
-

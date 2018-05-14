@@ -1,20 +1,18 @@
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
+import { BaseType } from '../../../../datamodels/baseType';
 import { Delivery } from '../../../../datamodels/delivery';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import { HttpService } from '../../../../services/http.service';
 import { DataService } from '../../../../services/data.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
+import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-modify-delivery',
   templateUrl: './modify-delivery.component.html',
   styleUrls: ['./modify-delivery.component.scss']
 })
-export class ModifyDeliveryComponent implements OnInit {
+export class ModifyDeliveryComponent implements OnInit, OnDestroy {
   // Form variables
   documentTypeInput = '';
   documentNumberInput = '';
@@ -38,14 +36,7 @@ export class ModifyDeliveryComponent implements OnInit {
   sentDateControl = new FormControl('', Validators.required);
   sentDatePickerControl = new FormControl();
 
-  // Database data lists
-  documentTypes = [];
-
-  // Filtered lists
-  filteredDocumentTypes: Observable<any[]> = this.documentTypeControl.valueChanges.pipe(
-    startWith(''),
-    map(documentType => (documentType ? this.filterDocTypes(documentType) : this.documentTypes.slice()))
-  );
+  baseTypes: BaseType[] = []; // All card and document types
 
   @Input() deliveryList: Delivery[];
 
@@ -71,24 +62,28 @@ export class ModifyDeliveryComponent implements OnInit {
 
   @Output() showModalChange = new EventEmitter<any>();
 
+  modalServiceSubscriber: any;
+
+  dataServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.documentTypeList.subscribe(documentTypes => {
-      this.documentTypes = documentTypes;
+    this.dataServiceSubscriber = this.dataService.typeList.subscribe(baseTypes => {
+      this.baseTypes = baseTypes;
       this.documentTypeControl.updateValueAndValidity({
         onlySelf: false,
         emitEvent: true
       });
     });
 
-    this.modalService.editDelivery.subscribe(delivery => {
-      if (delivery && delivery.id) {
-        this.deliveryItem = delivery;
+    this.modalServiceSubscriber = this.modalService.editDelivery.subscribe(delivery => {
+      this.deliveryItem = delivery;
 
+      if (delivery && delivery.id) {
         this.documentTypeInput = delivery.documentType.name;
         this.documentNumberInput = delivery.documentNumber;
         this.documentNameInput = delivery.name;
@@ -109,20 +104,20 @@ export class ModifyDeliveryComponent implements OnInit {
         setTimeout(() => {
           this.commentInput = delivery.comment;
         }, 250);
+      } else {
+        this.modalTitle = 'Lägg till ny leverans';
+        this.modalType = 0;
+        this._showModal = true;
       }
     });
   }
 
   ngOnInit() {}
 
-  /**
-   * Filters list of docTypes based on docType input
-   * @param str docType input
-   */
-  filterDocTypes(str: string) {
-    return this.documentTypes.filter(
-      documentType => str != null && documentType.name.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
   }
 
   /**
@@ -139,12 +134,12 @@ export class ModifyDeliveryComponent implements OnInit {
       delivery.documentDate = new Date(this.documentDateInput);
       delivery.sentDate = new Date(this.sentDateInput);
 
-      delivery.comment = this.commentInput;
+      delivery.comment = this.commentInput ? this.commentInput : null;
     }
   }
 
   /**
-   * Attempts to submit new document to database
+   * Attempts to submit new delivery to database
    */
   addNewDelivery() {
     if (this.isValidInput()) {
@@ -156,8 +151,10 @@ export class ModifyDeliveryComponent implements OnInit {
       newDelivery.modifiedDate = this.utilitiesService.getLocalDate();
       newDelivery.status = this.utilitiesService.getStatusFromID(1);
 
-      this.httpService.httpPost<Document>('addNewDelivery/', newDelivery).then(res => {
+      this.httpService.httpPost<Delivery>('addNewDelivery/', newDelivery).then(res => {
         if (res.message === 'success') {
+          newDelivery.creationDate = new Date();
+          newDelivery.modifiedDate = new Date();
           this.deliveryList.unshift(res.data);
           // Trigger view refresh
           this.deliveryList = this.deliveryList.slice();
@@ -178,10 +175,12 @@ export class ModifyDeliveryComponent implements OnInit {
 
       this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
         if (res.message === 'success') {
+          this.deliveryItem.modifiedDate = new Date();
           this.deliveryList = this.deliveryList.slice();
           this.dataService.deliveryList.next(this.deliveryList);
 
           this.closeForm();
+          this.dataService.getReceiptList();
         }
       });
     }
@@ -289,6 +288,8 @@ export class ModifyDeliveryComponent implements OnInit {
     this.documentNumberControl.reset();
     this.documentNameControl.reset();
     this.receiverControl.reset();
+    this.documentDateControl.reset();
+    this.documentDatePickerControl.reset();
     this.sentDateControl.reset();
     this.sentDatePickerControl.reset();
 

@@ -9,8 +9,8 @@
         <mat-form-field>
           <!--Input-->
           <input id="docTypeInput" name="docTypeInput" [(ngModel)]="docTypeInput" maxlength="128" [style.color]="isValidDocType() ? 'black' : 'gray'"
-            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl" maxlength="10"
-            appDocumentType required>
+            placeholder="Typ" aria-label="Number" matInput [matAutocomplete]="docTypes" [formControl]="docTypeControl"
+            [docType]="documentItem ? documentItem.documentType : null" appDocumentType required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocType()">done</mat-icon>
@@ -21,8 +21,8 @@
           </button>
           <!--Dropdown-->
           <mat-autocomplete #docTypes="matAutocomplete">
-            <mat-option *ngFor="let docType of filteredDocTypes | async" [value]="docType.name">
-              {{ docType.name }}
+            <mat-option *ngFor="let baseType of baseTypes | matchFilterType:docTypeInput:false:true:true:false" [value]="baseType.type.name">
+              {{ baseType.type.name }}
             </mat-option>
           </mat-autocomplete>
           <!--Error-->
@@ -35,7 +35,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="docNumberInput" name="docNumberInput" [(ngModel)]="docNumberInput" maxlength="128" placeholder="Dokument-ID"
-            [formControl]="docNumberControl" required>
+            [formControl]="docNumberControl" [document]="documentItem" appNewDocument required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocNumber()">done</mat-icon>
@@ -46,6 +46,8 @@
           </button>
           <!--Error-->
           <mat-error *ngIf="docNumberControl.hasError('required')">Ange ett dokument-ID</mat-error>
+          <mat-error *ngIf="!docNumberControl.hasError('required') && docNumberControl.hasError('newDocument')">
+            Handling med angivet dokument-ID existerar redan</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -111,12 +113,14 @@
             tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
+          <button type="button" mat-button class="size-medium" mat-icon-button matSuffix (click)="registrationDatepicker.open()" tabindex="-1">
+            <mat-icon>date_range</mat-icon>
+          </button>
           <!--DatePicker-->
           <mat-datepicker #registrationDatepicker></mat-datepicker>
           <!--Hidden input connected to the date picker-->
           <input id="registrationDateDatepickerInput" name="registrationDateDatepickerInput" [(ngModel)]="registrationDateDatepickerInput"
             [matDatepicker]="registrationDatepicker" (dateInput)="setRegistrationDateFromDatepicker($event);" type="hidden">
-          <mat-datepicker-toggle matSuffix class="size-big" [for]="registrationDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="registrationDateControl.hasError('required')">
             Ange ett registreringsdatum
@@ -141,12 +145,14 @@
             tabindex="-1">
             <mat-icon>close</mat-icon>
           </button>
+          <button type="button" mat-button class="size-medium" mat-icon-button matSuffix (click)="docDatepicker.open()" tabindex="-1">
+            <mat-icon>date_range</mat-icon>
+          </button>
           <!--DatePicker-->
           <mat-datepicker #docDatepicker></mat-datepicker>
           <!--Hidden input connected to the date picker-->
           <input id="docDateDatepickerInput" name="docDateDatepickerInput" [(ngModel)]="docDateDatepickerInput" [matDatepicker]="docDatepicker"
             (dateInput)="setDocDateFromDatepicker($event);" type="hidden">
-          <mat-datepicker-toggle matSuffix [for]="docDatepicker"></mat-datepicker-toggle>
           <!--Errors-->
           <mat-error *ngIf="docDateControl.hasError('required')">
             Ange ett handlingsdatum

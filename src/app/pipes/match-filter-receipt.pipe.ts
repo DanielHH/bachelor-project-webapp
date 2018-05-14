@@ -1,22 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Receipt } from '../datamodels/receipt';
-import { Card } from '../datamodels/card';
-import { CardType } from '../datamodels/cardType';
-import { Document } from '../datamodels/document';
-import { DocumentType } from '../datamodels/documentType';
-import { User } from '../datamodels/user';
-import { DataService } from '../services/data.service';
 import * as _ from 'lodash';
-import { lowerCase, UtilitiesService } from '../services/utilities.service';
-import * as moment from 'moment';
+import { Receipt } from '../datamodels/receipt';
+import { UtilitiesService, lowerCase } from '../services/utilities.service';
 
 @Pipe({
   name: 'matchFilterReceipt'
 })
 export class MatchFilterReceiptPipe implements PipeTransform {
-
-  constructor(private utilitiesService: UtilitiesService) {
-  }
+  constructor(private utilitiesService: UtilitiesService) {}
 
   transform(
     value: Receipt[],
@@ -26,12 +17,12 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     showActive: boolean,
     showInactive: boolean
   ): Receipt[] {
-    return _.filter(value, (receipt) => {
+    return _.filter(value, receipt => {
       return this.matchFilt(receipt, input, showCard, showDocument, showActive, showInactive);
-  });
+    });
   }
 
-    /**
+  /**
    * Match filterInput to the various displayed fields of receipts
    * @param card
    * @param filterInput
@@ -50,8 +41,8 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     showInactive: boolean
   ) {
     if (
-      (receipt == null) ||
-      (!receipt.id) ||
+      receipt == null ||
+      !receipt.id ||
       (receipt.endDate == null && !showActive) ||
       (receipt.endDate != null && !showInactive) ||
       (receipt.itemType.id == 1 && !showCard) ||
@@ -76,12 +67,11 @@ export class MatchFilterReceiptPipe implements PipeTransform {
     }
 
     return (
-      (_.includes(lowerCase(itemTypeToDisplay), filterInput) === true) ||
-      (_.includes(lowerCase(itemIDToDisplay), filterInput) === true) ||
-      (_.includes(lowerCase(receipt.user.name), filterInput) === true) ||
-      (_.includes(lowerCase(startDate), filterInput) === true) ||
-      (_.includes(lowerCase(endDate), filterInput) === true)
+      _.includes(lowerCase(itemTypeToDisplay), filterInput) === true ||
+      _.includes(lowerCase(itemIDToDisplay), filterInput) === true ||
+      _.includes(lowerCase(this.utilitiesService.getUserString(receipt.user)), filterInput) === true ||
+      _.includes(lowerCase(startDate), filterInput) === true ||
+      _.includes(lowerCase(endDate), filterInput) === true
     );
   }
-
 }

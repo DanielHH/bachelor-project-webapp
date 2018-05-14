@@ -2,7 +2,6 @@
  * ItemType data model
  */
 export class ItemType {
-
   /**
    * Database ID of the item type
    */
@@ -24,5 +23,4 @@ export class ItemType {
       console.error('Invalid itemType name: ' + name + '!');
     }
   }
-
 }

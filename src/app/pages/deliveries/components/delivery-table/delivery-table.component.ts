@@ -1,6 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import { Delivery } from '../../../../datamodels/delivery';
+import { MatchFilterDeliveryPipe } from '../../../../pipes/match-filter-delivery.pipe';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-delivery-table',
@@ -8,7 +12,6 @@ import { Delivery } from '../../../../datamodels/delivery';
   styleUrls: ['./delivery-table.component.scss']
 })
 export class DeliveryTableComponent implements OnInit {
-
   @Input() deliveryList: Delivery[];
 
   editDelivery: Delivery = null; // delivery document to be edited
@@ -16,6 +19,7 @@ export class DeliveryTableComponent implements OnInit {
   dummyItem = new Delivery();
 
   showModal = false;
+  showPdfGenerationModal = false;
 
   filterInput = '';
 
@@ -35,7 +39,13 @@ export class DeliveryTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor() {}
+  url = '';
+
+  constructor(
+    private modalService: ModalService,
+    private httpService: HttpService,
+    private deliveryPipe: MatchFilterDeliveryPipe
+  ) {}
 
   ngOnInit() {
     this.sortTableListStart();
@@ -56,12 +66,12 @@ export class DeliveryTableComponent implements OnInit {
     let newOrder = '';
 
     switch (property) {
-      case 'status': {
+      case 'status.name': {
         newOrder = this.sortTableListHelper(this.orderStatus);
         this.orderStatus = newOrder;
         break;
       }
-      case 'documentType': {
+      case 'documentType.name': {
         newOrder = this.sortTableListHelper(this.orderDocumentType);
         this.orderDocumentType = newOrder;
         break;
@@ -94,9 +104,20 @@ export class DeliveryTableComponent implements OnInit {
     }
 
     if (newOrder) {
-      this.deliveryList = _.orderBy(this.deliveryList, [property], [newOrder]);
+      this.deliveryList = _.orderBy(
+        this.deliveryList,
+        [
+          delivery => {
+            if (delivery[property]) {
+              return lowerCase(delivery[property]) as string;
+            } else {
+              return delivery[property.slice(0, -5)] ? (lowerCase(delivery[property.slice(0, -5)].name) as string) : '';
+            }
+          }
+        ],
+        [newOrder]
+      );
     }
-
   }
 
   /**
@@ -105,8 +126,10 @@ export class DeliveryTableComponent implements OnInit {
    */
   sortTableListHelper(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -114,11 +137,42 @@ export class DeliveryTableComponent implements OnInit {
    * Set document to be edited and open edit modal
    */
   openAddNewDelivery() {
-    this.editDelivery = Object.assign({}, new Delivery());
-    this.modalTitle = 'Lägg till ny leverans';
-    this.modalType = 0;
-    this.showModal = true;
+    this.modalService.editDelivery.next(null);
   }
 
-}
+  openPdfGenerationModal() {
+    const filteredList = this.deliveryPipe.transform(
+      this.deliveryList,
+      this.filterInput,
+      this.showActive,
+      this.showArchived,
+      this.showGone
+    );
 
+    this.generateFilterArray();
+
+    this.modalService.pdfFilteredList.next(filteredList);
+  }
+
+  generateFilterArray() {
+    const filters = [];
+
+    if (this.filterInput) {
+      filters.push(this.filterInput);
+    }
+
+    if (this.showActive) {
+      filters.push('Levererade');
+    }
+
+    if (this.showArchived) {
+      filters.push('Arkiverade');
+    }
+
+    if (this.showGone) {
+      filters.push('Borttappade');
+    }
+
+    this.modalService.filterList.next(filters);
+  }
+}

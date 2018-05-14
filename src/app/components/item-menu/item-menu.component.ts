@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { RouteDataService } from '../../services/route-data.service';
-import { Card } from '../../datamodels/card';
-import { Document } from '../../datamodels/document';
+import { AuthService } from '../../auth/auth.service';
+import { User } from '../../datamodels/user';
 import { HttpService } from '../../services/http.service';
-import * as moment from 'moment';
+import { RouteDataService } from '../../services/route-data.service';
 import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
@@ -12,45 +11,64 @@ import { UtilitiesService } from '../../services/utilities.service';
   templateUrl: './item-menu.component.html',
   styleUrls: ['./item-menu.component.scss']
 })
-export class ItemMenuComponent implements OnInit {
+export class ItemMenuComponent implements OnInit, OnDestroy {
+  @Input() object: any; // Card, CardType, Document or DocumentType
 
-  @Input() item: any; // Card or Document
+  @Input() adminMenu = false;
 
-  @Input() showDetailsOption = false;
+  @Input() isTypeItem = false;
+
+  @Input() itemMenu = false;
+
+  @Input() showHistoryOption = true;
 
   @Input() showEditOption = false;
 
-  @Output() editItem = new EventEmitter<any>();
+  @Output() editObject = new EventEmitter<any>();
 
   @Output() editStatus = new EventEmitter<any>();
 
-  constructor(private routeDataService: RouteDataService, private router: Router,
-    private httpService: HttpService,
-    private utilitiesService: UtilitiesService) { }
+  user: User;
 
-  ngOnInit() {
+  authServiceSubscriber: any;
+
+  constructor(
+    private routeDataService: RouteDataService,
+    private router: Router,
+    private httpService: HttpService,
+    private utilitiesService: UtilitiesService,
+    private authService: AuthService
+  ) {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
+  }
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
   }
 
   /**
-   * Change route and send route data
+   * Change route and send route data, TODO: FIX THIS FOR TYPES AND USERS AS WELL?
    */
   route() {
-    if (this.item.cardType) {
-      this.routeDataService.card.next(this.item);
-      this.router.navigate(['card-detail']);
+    if (this.object.cardType) {
+      this.routeDataService.card.next(this.object);
+      this.router.navigate(['card-history']);
     }
 
-    if (this.item.documentType && this.item.location) { // document with a location, aka not a delivery
-      this.routeDataService.document.next(this.item);
-      this.router.navigate(['document-detail']);
+    if (this.object.documentType && this.object.location) {
+      // document with a location, aka not a delivery
+      this.routeDataService.document.next(this.object);
+      this.router.navigate(['document-history']);
     }
   }
 
   /**
-   * Set item to be outputted for editing.
-  */
-  edit() {
-    this.editItem.next();
+   * Set item or type to be outputted for editing.
+   */
+  setEdit() {
+    this.editObject.next();
   }
 
   /**
@@ -58,13 +76,28 @@ export class ItemMenuComponent implements OnInit {
    * @param value value to be set in the database
    */
   setStatus(value: number) {
-    if (this.item.user && this.item.user.id && value == 1) { // If has owner and is restored
-      this.item.status = this.utilitiesService.getStatusFromID(2);
+    if (
+      // If is item that has owner and is being restored, set to "utkvitterad"
+      this.itemMenu &&
+      this.object.user &&
+      this.object.user.id &&
+      value == 1
+    ) {
+      this.object.status = this.utilitiesService.getStatusFromID(2);
+    } else if (this.isTypeItem) {
+      this.object.getType().status = this.utilitiesService.getStatusFromID(value);
     } else {
-      this.item.status = this.utilitiesService.getStatusFromID(value);
+      this.object.status = this.utilitiesService.getStatusFromID(value);
     }
 
     this.editStatus.emit();
   }
 
+  getStatusID() {
+    if (this.isTypeItem) {
+      return this.object.getType().status.id;
+    } else {
+      return this.object.status.id;
+    }
+  }
 }

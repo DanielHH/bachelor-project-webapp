@@ -1,134 +1,135 @@
-<form #detailForm="ngForm" (ngSubmit)="hideDetail()">
-    <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'"
-    [submitName]="'Stäng'" [hideClose]="true">
+<form #detailForm="ngForm" (ngSubmit)="showModal = false">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'" [submitName]="'Stäng'" [hideClose]="true">
 
-      <!-- Row card info -->
-      <div class="row">
-        <div class="col-0 col-md-1"></div>
-        <div class="col-0 col-md-10 wide-center">
-          <mat-card [style.background]="'#E8EAF6'">
-            <!-- Row -->
-            <div class="row my-1">
-              <div class="col-0 col-md-4">
-                <b>Typ:</b>
-              </div>
-              <div class="col-0 col-md-4">
-                <b>Dokument-ID:</b>
-              </div>
-              <div class="col-0 col-md-4">
-                <b>Benämning:</b>
-              </div>
+    <!-- Row card info -->
+    <div class="row">
+      <div class="col-0 col-md-1"></div>
+      <div class="col-0 col-md-10 wide-center">
+        <mat-card [style.background]="'#E8EAF6'">
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              <b>Typ:</b>
             </div>
-            <!-- Row -->
-            <div class="row my-1">
-              <div class="col-0 col-md-4">
-                {{documentItem?.documentType?.name}}
-              </div>
-              <div class="col-0 col-md-4">
-                {{documentItem?.documentNumber}}
-              </div>
-              <div class="col-0 col-md-4">
-                {{documentItem?.name}}
-              </div>
+            <div class="col-0 col-md-4">
+              <b>Dokument-ID:</b>
             </div>
-            <!-- Row Space -->
-            <div class="row py-1"></div>
-            <!-- Row -->
-            <div class="row my-1">
-              <div class="col-0 col-md-4">
-                <b>Avsändare:</b>
-              </div>
-              <div class="col-0 col-md-4">
-                <b>Förvaringsplats:</b>
-              </div>
-              <div class="col-0 col-md-4">
-                <b>Daterad:</b>
-              </div>
+            <div class="col-0 col-md-4">
+              <b>Benämning:</b>
             </div>
-            <!-- Row -->
-            <div class="row my-1">
-              <div class="col-0 col-md-4">
-                {{documentItem?.sender}}
-              </div>
-              <div class="col-0 col-md-4">
-                {{documentItem?.location}}
-              </div>
-              <div class="col-0 col-md-4">
-                {{displayDocumentDate()}}
-              </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              {{documentItem?.documentType?.name}}
             </div>
-            <!-- Row Space -->
-            <div class="row py-1"></div>
-            <!-- Row -->
-            <div class="row my-1">
-              <div class="col-0 col-md-4">
-                <b>Registrerad:</b>
-              </div>
-              <div class="col-0 col-md-4">
-                <b>Skapad:</b>
-              </div>
-              <div class="col-0 col-md-4">
-                <b>Ändrad:</b>
-              </div>
+            <div class="col-0 col-md-4">
+              <span [class.nav-span]="historyRoute" (click)="historyRoute ? routeHistory() : false">{{documentItem?.documentNumber}}</span>
             </div>
-            <!-- Row -->
-            <div class="row my-1">
-              <div class="col-0 col-md-4">
-                {{displayRegistrationDate()}}
-              </div>
-              <div class="col-0 col-md-4">
-                {{displayCreationDate()}}
-              </div>
-              <div class="col-0 col-md-4">
-                {{displayModifiedDate()}}
-              </div>
+            <div class="col-0 col-md-4">
+              {{documentItem?.name}}
             </div>
-            <!-- Row Space -->
-            <div class="row py-1"></div>
-            <!-- Row -->
-            <div class="row my-1">
-              <div class="col-0 col-md-4">
-                <b>Status:</b>
-              </div>
-              <div class="col-0 col-md-4">
-                <b>Användare:</b>
-              </div>
-              <div class="col-0 col-md-4">
-                <b>Senast inventerad:</b>
-              </div>
+          </div>
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              <b>Avsändare:</b>
             </div>
-            <!-- Row -->
-            <div class="row my-1">
-              <div class="col-0 col-md-4">
-                {{documentItem?.status?.name}}
-              </div>
-              <div class="col-0 col-md-4">
-                {{utilitiesService.getUserString(documentItem?.user)}}
-              </div>
-              <div class="col-0 col-md-4">
-                {{utilitiesService.getDateString(documentItem?.lastVerificationDate)}}
-              </div>
+            <div class="col-0 col-md-4">
+              <b>Förvaringsplats:</b>
             </div>
-            <!-- Row Space -->
-            <div class="row py-1"></div>
-            <!-- Row -->
-            <div *ngIf="documentItem?.comment" class="row my-1">
-              <div class="col-0 col-md-12">
-                <b>Kommentar:</b>
-              </div>
+            <div class="col-0 col-md-4">
+              <b>Daterad:</b>
             </div>
-            <!-- Row -->
-            <div *ngIf="documentItem?.comment" class="row my-1">
-              <div class="col-0 col-md-12">
-                {{documentItem?.comment}}
-              </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              {{documentItem?.sender}}
             </div>
-            <!-- Row Space -->
-            <div class="row py-1"></div>
-          </mat-card>
-        </div>
-        <div class="col-0 col-md-1"></div>
+            <div class="col-0 col-md-4">
+              {{documentItem?.location}}
+            </div>
+            <div class="col-0 col-md-4">
+              {{this.documentItem?.documentDate | date: 'shortDate'}}
+            </div>
+          </div>
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              <b>Registrerad:</b>
+            </div>
+            <div class="col-0 col-md-4">
+              <b>Skapad:</b>
+            </div>
+            <div class="col-0 col-md-4">
+              <b>Ändrad:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              {{this.documentItem?.registrationDate | date: 'shortDate'}}
+            </div>
+            <div class="col-0 col-md-4">
+              {{this.documentItem?.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+            </div>
+            <div class="col-0 col-md-4">
+              {{this.documentItem?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+            </div>
+          </div>
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              <b>Status:</b>
+            </div>
+            <div class="col-0 col-md-4">
+              <b>Användare:</b>
+            </div>
+            <div class="col-0 col-md-4">
+              <b>Senast inventerad:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div class="row my-1">
+            <div class="col-0 col-md-4">
+              {{documentItem?.status?.name}}
+            </div>
+            <div class="col-0 col-md-4">
+              {{utilitiesService.getUserString(documentItem?.user)}}
+            </div>
+            <div class="col-0 col-md-4">
+              {{this.documentItem?.lastVerificationDate? (this.documentItem?.lastVerificationDate ? (this.documentItem?.lastVerificationDate
+              | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig') : 'Aldrig'}}
+            </div>
+          </div>
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+          <!-- Row -->
+          <div *ngIf="documentItem?.comment" class="row my-1">
+            <div class="col-0 col-md-12">
+              <b>Kommentar:</b>
+            </div>
+          </div>
+          <!-- Row -->
+          <div *ngIf="documentItem?.comment" class="row my-1">
+            <div class="col-0 col-md-12">
+              {{documentItem?.comment}}
+            </div>
+          </div>
+          <!-- Row Space -->
+          <div class="row py-1"></div>
+        </mat-card>
       </div>
+      <div class="col-0 col-md-1"></div>
+    </div>
+    <div class="col-0 col-md-1"></div>
 
-    </app-modal>
-  </form>
+  </app-modal>
+</form>

@@ -64,7 +64,7 @@
             <div class="row my-1">
               <div class="col-0 col-md-1"></div>
               <div class="col-0 col-md-5">
-                {{displayExpirationDate()}}
+                {{utilitiesService.getDateString(cardItem?.expirationDate)}}
               </div>
               <div class="col-0 col-md-5">
                 {{cardItem?.location}}
@@ -100,9 +100,8 @@
               </button>
               <!--Dropdown-->
               <mat-autocomplete #userIDs="matAutocomplete" [displayWith]="displayUser">
-                <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
-                  {{ user.username + '
-                  < ' + user.name + '>' }}
+                <mat-option *ngFor="let user of users | matchFilterUser:usernameInput:false:true:true:false" [value]="user">
+                  {{utilitiesService.getUserString(user)}}
                 </mat-option>
               </mat-autocomplete>
               <!--Error-->
@@ -129,12 +128,14 @@
               tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
+            <button type="button" mat-button class="size-medium" mat-icon-button matSuffix (click)="picker.open()" tabindex="-1">
+              <mat-icon>date_range</mat-icon>
+            </button>
             <!--DatePicker-->
             <mat-datepicker #picker></mat-datepicker>
             <!--Hidden input connected to the date picker-->
             <input id="startDateDatepickerInput" name="startDateDatepickerInput" [(ngModel)]="startDateDatepickerInput" [matDatepicker]="picker"
               (dateInput)="setStartDateFromDatepicker($event);" type="hidden">
-            <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
             <!--Errors-->
             <mat-error *ngIf="startDateControl.hasError('required')">
               Ange ett startdatum
@@ -190,11 +191,11 @@
         <div class="col-0 col-md-1"></div>
       </div>
 
-
+      <!-- Generate PDF choice -->
       <div class="row py-3">
         <div class="col-0 col-md-4"></div>
         <div class="col-12 col-md-4 wide-center">
-          <mat-checkbox id="generatePDF" name="generatePDF" color="primary" [(ngModel)]="generatePDF">Generera kvittens (PDF)</mat-checkbox>
+          <mat-checkbox disableRipple id="generatePDF" name="generatePDF" color="primary" [(ngModel)]="generatePDF">Generera kvittens (PDF)</mat-checkbox>
         </div>
         <div class="col-0 col-md-4"></div>
       </div>

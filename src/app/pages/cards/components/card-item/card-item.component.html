@@ -16,17 +16,17 @@
   </div>
 
   <div class="col">
-    <i class="material-icons">credit_card</i>
+    <i class="material-icons sm-icon">credit_card</i>
     {{cardItem?.cardType?.name}}
   </div>
   <div class="col">{{cardItem?.cardNumber}}</div>
-  <div class="col">{{cardItem?.user?.name}}</div>
+  <div class="col">{{utilitiesService.getUserString(cardItem?.user)}}</div>
   <div class="col">{{cardItem?.location}}</div>
   <div class="col">{{cardItem?.comment}}</div>
   <div class="col">
-    <div class="column-text">{{utilitiesService.getDateString(this.cardItem?.expirationDate)}}</div>
+    <div class="column-text">{{this.cardItem?.expirationDate | date: 'shortDate'}}</div>
     <div class="pull-right table-menu-fix">
-      <app-item-menu [item]="cardItem" (editItem)="edit()" (editStatus)="editStatus()" [showDetailsOption]="true" [showEditOption]="true"></app-item-menu>
+      <app-item-menu [object]="cardItem" (editObject)="edit()" (editStatus)="editStatus()" [itemMenu]="true" [showEditOption]="true"></app-item-menu>
     </div>
   </div>
 </div>

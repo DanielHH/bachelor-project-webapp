@@ -1,31 +1,42 @@
-<div class="row table-item">
-  <div class="col-1" *ngIf="baseItem?.getStatus()?.id == 1 || baseItem?.getStatus()?.id == 2">
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" (click)="verifyInventory()" [class.btn-success]="true"
-      mdbRippleRadius>
-      <span>Verifiera</span>
-    </button>
-  </div>
-  <div class="col-1" *ngIf="baseItem?.getStatus()?.id == 3 || baseItem?.getStatus()?.id == 4">
-    <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
-      <span>Verifiera</span>
-    </button>
+<div class="row table-item" (click)="showDetailsModal()">
+  <div class="col select-checkbox-col" (click)="$event.stopPropagation()">
+    <mat-checkbox disableRipple color="primary" (change)="toggleSelected()" [checked]="baseItem.isChecked"></mat-checkbox>
   </div>
 
-  <div class="col">{{baseItem?.getStatus()?.name}}</div>
+  <div class="col-1">
+    <div *ngIf="baseItem?.getItem().status?.id == 1 || baseItem?.getItem().status?.id == 2">
+      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="baseItem?.getItem().status?.id == 2"
+      [class.btn-success]="baseItem?.getItem().status?.id == 1"
+        (click)="$event.stopPropagation()" disabled mdbRippleRadius>
+        <span *ngIf="baseItem?.getItem().status?.id == 1">Tillgängling</span>
+        <span *ngIf="baseItem?.getItem().status?.id == 2">Utkvitterad</span>
+      </button>
+    </div>
+    <div *ngIf="baseItem?.getItem().status?.id == 3 || baseItem?.getItem().status?.id == 4" class="col">
+      <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+        <span *ngIf="baseItem?.getItem().status?.id == 3">Arkiverad</span>
+        <span *ngIf="baseItem?.getItem().status?.id == 4">Borttappad</span>
+      </button>
+    </div>
+  </div>
+
   <div class="col">
-    <i *ngIf="this.baseItem?.getItemTypeString() == 'Kort'" class="material-icons">credit_card</i>
-    <i *ngIf="this.baseItem?.getItemTypeString() == 'Handling'" class="material-icons">import_contacts</i>
+    <i *ngIf="baseItem?.getItemTypeString() == 'Kort'" class="material-icons sm-icon">credit_card</i>
+    <i *ngIf="baseItem?.getItemTypeString() == 'Handling'" class="material-icons sm-icon">import_contacts</i>
     {{baseItem?.getSubType()?.name}}
   </div>
   <div class="col">{{baseItem?.getNumber()}}</div>
-  <div class="col">{{baseItem?.getUser()?.name}}</div>
+  <div class="col">{{getUser()}}</div>
   <div class="col">{{baseItem?.getLocation()}}</div>
-  <div class="col">{{baseItem?.getComment()}}</div>
+
+  <div class="col">
+    <div class="column-text">{{baseItem?.getLastSelfCheckString()}}</div>
+  </div>
+
   <div class="col">
     <div class="column-text">{{baseItem?.getLastVerifiedString()}}</div>
     <div class="pull-right table-menu-fix">
-      <app-item-menu [item]="baseItem?.item" (editStatus)="editStatus()"></app-item-menu>
+      <app-item-menu [object]="baseItem?.item" (editStatus)="editStatus()" [itemMenu]="true"></app-item-menu>
     </div>
-
   </div>
 </div>

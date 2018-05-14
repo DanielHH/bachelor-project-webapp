@@ -2,7 +2,6 @@
  * UserType data model
  */
 export class UserType {
-
   /**
    * Database ID of the user type
    */
@@ -12,5 +11,4 @@ export class UserType {
    * Name of the user type
    */
   name: string;
-
 }

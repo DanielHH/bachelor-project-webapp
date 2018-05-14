@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  EventEmitter,
-  Output,
-  AfterViewInit
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -18,9 +10,9 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
   @Input() modalTitle: string;
 
-  @Input() submitName = 'Save';
+  @Input() submitName = 'Spara';
 
-  @Input() closeName = 'Close';
+  @Input() closeName = 'Avbryt';
 
   @Output() showChange = new EventEmitter();
 

@@ -1,24 +1,20 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild } from '@angular/core';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
+import { AuthService } from '../../../../auth/auth.service';
 import { Document } from '../../../../datamodels/document';
-import { Observable } from 'rxjs/Observable';
-import { DataService } from '../../../../services/data.service';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import * as _ from 'lodash';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { User } from '../../../../datamodels/user';
 import { Receipt } from '../../../../datamodels/receipt';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
-import * as moment from 'moment';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-request-document',
   templateUrl: './request-document.component.html',
   styleUrls: ['./request-document.component.scss']
 })
-export class RequestDocumentComponent implements OnInit {
+export class RequestDocumentComponent implements OnInit, OnDestroy {
   @ViewChild('requestForm') requestForm: NgForm;
 
   documentItem: Document = null; // Document that is requested
@@ -37,6 +33,7 @@ export class RequestDocumentComponent implements OnInit {
     this.showModal = value;
   }
 
+  user: User;
   users = [];
   documents: Document[] = [];
   receipts: Receipt[] = [];
@@ -53,11 +50,6 @@ export class RequestDocumentComponent implements OnInit {
 
   generatePDF = true;
 
-  filteredUsers: Observable<any[]> = this.usernameControl.valueChanges.pipe(
-    startWith(''),
-    map(user => (user ? this.filterUsers(user) : this.users ? this.users.slice() : []))
-  );
-
   loading = false;
 
   hideSubmit = false;
@@ -68,14 +60,29 @@ export class RequestDocumentComponent implements OnInit {
 
   pdfURL = '';
 
+  authServiceSubscriber: any;
+
+  dataServiceUserSubscriber: any;
+
+  dataServiceReceiptSubscriber: any;
+
+  dataServiceDocumentSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
-    private utilitiesService: UtilitiesService,
-    private modalService: ModalService
+    public utilitiesService: UtilitiesService,
+    private modalService: ModalService,
+    private authService: AuthService
   ) {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
+      this.user = user;
+    });
+
     // User list subscriber
-    this.dataService.userList.subscribe(users => {
+    this.dataServiceUserSubscriber = this.dataService.userList.subscribe(users => {
       this.users = users;
       this.usernameControl.updateValueAndValidity({
         onlySelf: false,
@@ -84,17 +91,17 @@ export class RequestDocumentComponent implements OnInit {
     });
 
     // Receipt list subscriber
-    this.dataService.receiptList.subscribe(receipts => {
+    this.dataServiceReceiptSubscriber = this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
     // Document list subscriber
-    this.dataService.documentList.subscribe(documents => {
+    this.dataServiceDocumentSubscriber = this.dataService.documentList.subscribe(documents => {
       this.documents = documents;
     });
 
     // Request document subscriber
-    this.modalService.requestDocument.subscribe(document => {
+    this.modalServiceSubscriber = this.modalService.requestDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
 
@@ -115,14 +122,16 @@ export class RequestDocumentComponent implements OnInit {
 
   ngOnInit() {}
 
-  /**
-   * Filters list of usernames based on username input
-   * @param str username input
-   */
-  filterUsers(str: string) {
-    return this.users.filter(
-      user => str && typeof str === 'string' && user.username.toLowerCase().indexOf(str.toLowerCase()) === 0
-    );
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceUserSubscriber.unsubscribe();
+
+    this.dataServiceReceiptSubscriber.unsubscribe();
+
+    this.dataServiceDocumentSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
   }
 
   /**
@@ -179,60 +188,54 @@ export class RequestDocumentComponent implements OnInit {
     if (this.isValidInput()) {
       this.documentItem.user = this.usernameInput;
       this.documentItem.location = this.locationInput;
-      this.documentItem.status = this.utilitiesService.getStatusFromID(2); // TODO: ENUM FOR STATUS, 2 = Requested
-
-      // Set document information
+      this.documentItem.status = this.utilitiesService.getStatusFromID(2);
       this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.documentItem.comment = this.commentInput;
+      this.documentItem.registrator = this.user.name;
 
       // Create new receipt
       const receipt = new Receipt();
-      receipt.itemType = this.utilitiesService.getItemTypeFromID(2); // TODO: ENUM, 2 means document
+      receipt.itemType = this.utilitiesService.getItemTypeFromID(2);
       receipt.document = this.documentItem;
       receipt.card = null;
       receipt.user = this.documentItem.user;
       receipt.startDate = this.utilitiesService.getLocalDate();
       receipt.endDate = null;
 
+      // Create new log event
+      const logText = this.documentItem.documentNumber + ' till ' + this.documentItem.user.name;
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(2, 2, this.documentItem, this.user, logText); // TODO: 2 = Document, 2 = Request
+
       // Submit changes to database
-      this.httpService.httpPost<Receipt>('addNewReceipt/', receipt).then(receiptRes => {
-        if (receiptRes.message === 'success') {
-          const newReceipt = receiptRes.data;
+      this.httpService
+        .httpPost<Receipt>('addNewReceipt/', { receipt: receipt, logEvent: logEvent})
+        .then(res => {
+          if (res.message === 'success') {
+            const newReceipt = res.data.receipt;
 
-          this.documentItem.activeReceipt = Number(newReceipt.id);
+            this.documentItem.activeReceipt = Number(newReceipt.id);
 
-          this.httpService.httpPut<Document>('updateDocument/', this.documentItem).then(documentRes => {
-            if (documentRes.message === 'success') {
-              if (this.generatePDF) {
-                this.loading = true;
-                this.hideSubmit = true;
-                this.closeText = 'Stäng';
+            if (this.generatePDF) {
+              this.loading = true;
+              this.hideSubmit = true;
+              this.closeText = 'Stäng';
 
-                this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
-                  if (pdfRes.message === 'success') {
-                    newReceipt.url = pdfRes.url;
-                    newReceipt.url = pdfRes.url;
-                    this.loading = false;
-                    this.pdfView = true;
-                    this.pdfURL = newReceipt.url;
-                    this.hideSubmit = true;
-                    this.closeText = 'Avbryt';
-                  }
-                });
-              }
-              // Update receipt list
-              this.receipts.unshift(newReceipt);
-              this.receipts = this.receipts.slice();
-              this.dataService.receiptList.next(this.receipts);
-
-              // Update document list
-              this.dataService.documentList.next(this.documents);
-              if (!this.generatePDF) {
-                this.closeForm();
-              }
+              this.httpService.httpPost<any>('genPDF', ['document', this.documentItem, newReceipt]).then(pdfRes => {
+                if (pdfRes.message === 'success') {
+                  newReceipt.url = pdfRes.url;
+                  this.loading = false;
+                  this.pdfView = true;
+                  this.pdfURL = newReceipt.url;
+                  this.hideSubmit = true;
+                }
+              });
+            } else {
+              this.updateLists(res.data.logEvent, newReceipt);
+              this.closeForm();
             }
-          });
-        }
-      });
+          }
+        });
     }
   }
 
@@ -260,9 +263,16 @@ export class RequestDocumentComponent implements OnInit {
     return user ? user.username : '';
   }
 
-  getDateString(str: Date) {
-    if (str) {
-      return this.utilitiesService.getDateString(str);
-    }
+  updateLists(logEvent: any, receipt: any) {
+    // Update log event list
+    this.utilitiesService.updateLogEventList(logEvent);
+
+    // Update receipt list
+    this.receipts.unshift(receipt);
+    this.receipts = this.receipts.slice();
+    this.dataService.receiptList.next(this.receipts);
+
+    // Update card list
+    this.dataService.documentList.next(this.documents);
   }
 }

@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="custom-table">
+    <!-- Row text filter input and add new button -->
+    <div class="row">
+
+      <!-- Input field for text filter -->
+      <div class="col-4 px-0 text-filter-input">
+        <mat-form-field>
+          <!--Input-->
+          <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på">
+          <!--Clear-->
+          <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <!-- Show card details button-->
+      <div class="col text-right">
+        <div class="mt-3">
+          <button class="table-button" mat-raised-button color="primary" (click)="openCardDetail()">Visa kortdetaljer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row filter per status -->
+    <div class="pb-1 filter-checkbox-row">
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showReceipt" name="showReceipt" color="primary" class="pr-1" [(ngModel)]="showReceipt">Kvittenser</mat-checkbox>
+      </div>
+
+      <div class="mr-2">
+        <mat-checkbox disableRipple id="showOther" name="showOther" color="primary" class="pr-1" [(ngModel)]="showOther">Övrigt</mat-checkbox>
+      </div>
+
+
+    </div>
+
+
+    <!-- Header row -->
+    <div class="table-container">
+      <div class="row table-header">
+
+        <div class="col-2" (click)="sortTableList('logType')">
+          <span class="hover" [class.up-arrow]="orderLogType == 'asc'" [class.down-arrow]="orderLogType == 'desc'" [class.both-arrow]="orderLogType == ''">Typ </span>
+        </div>
+        <div class="col" (click)="sortTableList('logText')">
+          <span class="hover" [class.up-arrow]="orderLogText == 'asc'" [class.down-arrow]="orderLogText == 'desc'" [class.both-arrow]="orderLogText == ''">Händelse </span>
+        </div>
+        <div class="col" (click)="sortTableList('user')">
+          <span class="hover" [class.up-arrow]="orderLogUser == 'asc'" [class.down-arrow]="orderLogUser == 'desc'" [class.both-arrow]="orderLogUser == ''">Utförd av </span>
+        </div>
+        <div class="col-2" (click)="sortTableList('logDate')">
+          <span class="hover" [class.up-arrow]="orderLogDate == 'asc'" [class.down-arrow]="orderLogDate == 'desc'" [class.both-arrow]="orderLogDate == ''">Datum </span>
+        </div>
+      </div>
+      <hr>
+      <div class="table-items scrollbar-table">
+        <!-- Add log events to the table" -->
+        <div *ngFor="let logEvent of logEventList | matchFilterLog:filterInput:showReceipt:showOther" >
+          <app-log-item [logEventItem]="logEvent"></app-log-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-log-detail></app-log-detail>
+
+<app-card-detail [historyRoute]="false"></app-card-detail>

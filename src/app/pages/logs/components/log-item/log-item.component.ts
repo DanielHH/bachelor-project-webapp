@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LogEvent } from '../../../../datamodels/logEvent';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-log-item',
@@ -7,12 +9,16 @@ import { LogEvent } from '../../../../datamodels/logEvent';
   styleUrls: ['./log-item.component.scss']
 })
 export class LogItemComponent implements OnInit {
+  @Input() logEventItem: LogEvent;
 
-  @Input() logItem: LogEvent;
+  constructor(public utilitiesService: UtilitiesService, private modalService: ModalService) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  /**
+   * Show the modal for user details
+   */
+  showDetailsModal() {
+    this.modalService.detailLogEvent.next(this.logEventItem);
   }
-
 }

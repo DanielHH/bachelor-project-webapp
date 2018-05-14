@@ -8,6 +8,11 @@
     display: inline-flex;
     justify-content: flex-start;
     width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .select-checkbox-col {
+    max-width: 40px !important;
   }
 
   .table-container {
@@ -54,13 +59,35 @@
         background-color: rgba(208, 214, 212, 0.479);
         cursor: pointer;
       }
-
     }
   }
+}
+
+.table-button {
+  min-width: 170px !important;
 }
 
 @media (max-height: 800px) {
   .custom-table {
     height: 94vh;
+  }
+}
+
+.hover {
+  cursor: pointer;
+  &.up-arrow::after {
+    content: '\f0de';
+    font-family: FontAwesome;
+    font-size: 12px;
+  }
+  &.down-arrow::after {
+    content: '\f0dd';
+    font-family: FontAwesome;
+    font-size: 12px;
+  }
+  &.both-arrow::after {
+    content: '\f0dc';
+    font-family: FontAwesome;
+    font-size: 12px;
   }
 }

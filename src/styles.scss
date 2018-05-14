@@ -4,6 +4,7 @@
 
 @import 'styles/scrollbar';
 @import 'styles/table';
+@import 'styles/text';
 
 .mat-form-field-label-wrapper {
   overflow: visible !important;
@@ -22,19 +23,9 @@ input {
   z-index: 2000;
 }
 
-.add-new-button {
-  position: absolute !important;
-  margin-top: 23px !important;
-  right: 40px !important;
-}
-
+.radio-buttons,
 .wide-center {
   width: 100% !important;
-  text-align: center !important;
-}
-
-.title-center {
-  flex: 1 1 auto !important;
   text-align: center !important;
 }
 
@@ -45,6 +36,9 @@ input {
   width: 22px !important;
 }
 
+.nav-text,
+.side-menu-title,
+.radio-button,
 .form-check-label,
 .table-header,
 .mat-checkbox {
@@ -63,38 +57,6 @@ input {
   margin-left: 15px;
   min-width: 496px;
   max-width: 496px;
-}
-
-.filter-checkbox,
-.narrow-filter-checkbox {
-  display: inline-flex;
-  justify-content: flex-start;
-  margin-left: 5px;
-}
-
-.filter-checkbox {
-  min-width: 115px;
-  max-width: 115px;
-}
-
-.small-filter-checkbox {
-  min-width: 65px;
-  max-width: 65px;
-}
-
-.medium-filter-checkbox {
-  min-width: 75px;
-  max-width: 75px;
-}
-
-.hidden {
-  display: none !important;
-}
-
-.status-button {
-  position: relative;
-  text-align: left;
-  margin-right: 10px;
 }
 
 .generating-pdf {
@@ -122,4 +84,24 @@ input[type] {
   .mat-form-field {
     padding: 8px 16px !important;
   }
+}
+
+.mat-radio-checked {
+  .mat-radio-outer-circle {
+    border-color: $secondary-color-dark !important;
+  }
+
+  .mat-radio-inner-circle {
+    background-color: $secondary-color-dark !important;
+  }
+}
+
+.mat-radio-ripple {
+  .mat-ripple-element {
+    background-color: rgba($secondary-color-dark, 0.1) !important;
+  }
+}
+
+.mat-checkbox-layout {
+  margin-bottom: 0 !important;
 }

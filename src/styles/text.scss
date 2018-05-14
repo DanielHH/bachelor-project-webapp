@@ -1,0 +1,22 @@
+@import 'utilities/variables';
+
+.sm-icon {
+  font-size: $small-icon-size !important;
+  margin-right: 8px !important;
+}
+
+.nav-span {
+  display: inline-block;
+
+  cursor: pointer;
+
+  text-decoration: underline;
+  color: $info-color;
+
+  -webkit-transition: 0.35s;
+  transition: 0.35s;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
