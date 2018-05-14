@@ -24,7 +24,7 @@
               {{documentItem?.documentType?.name}}
             </div>
             <div class="col-0 col-md-4">
-              <span class="nav-span" (click)="routeHistory()">{{documentItem?.documentNumber}}</span>
+              <span [class.nav-span]="historyRoute" (click)="historyRoute ? routeHistory() : false">{{documentItem?.documentNumber}}</span>
             </div>
             <div class="col-0 col-md-4">
               {{documentItem?.name}}
