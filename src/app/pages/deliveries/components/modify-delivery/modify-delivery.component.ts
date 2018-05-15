@@ -225,6 +225,14 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Returns true if entered document ID is valid, else false.
+   */
+  isValidDocumentID() {
+    return !this.documentNumberControl.hasError('required') && !this.documentNumberControl.hasError('newDelivery');
+  }
+
+
+  /**
    * Returns true if entered document type is valid, else false.
    */
   isValidDocumentType() {
@@ -271,6 +279,7 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
    */
   isValidInput() {
     return (
+      this.isValidDocumentID() &&
       this.isValidDocumentType() &&
       this.isValidDocumentNumber() &&
       this.isValidDocumentDate() &&

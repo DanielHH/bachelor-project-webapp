@@ -253,6 +253,13 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Returns true if entered card ID is valid, else false.
+   */
+  isValidCardID() {
+    return !this.cardNumberControl.hasError('required') && !this.cardNumberControl.hasError('newCard');
+  }
+
+  /**
    * Returns true if entered card type is valid, else false.
    */
   isValidCardType() {
@@ -284,7 +291,13 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
-    return this.isValidCardType() && this.isValidCardNumber() && this.isValidLocation() && this.isValidExpirationDate();
+    return (
+      this.isValidCardID() &&
+      this.isValidCardType() &&
+      this.isValidCardNumber() &&
+      this.isValidLocation() &&
+      this.isValidExpirationDate()
+    );
   }
 
   /**

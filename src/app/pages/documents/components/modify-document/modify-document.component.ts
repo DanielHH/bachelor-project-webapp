@@ -285,6 +285,13 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Returns true if entered document ID is valid, else false.
+   */
+  isValidDocID() {
+    return !this.docNumberControl.hasError('required') && !this.docNumberControl.hasError('newDocument');
+  }
+
+  /**
    * Returns true if entered document type is valid, else false.
    */
   isValidDocType() {
@@ -338,6 +345,7 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
    */
   isValidInput() {
     return (
+      this.isValidDocID() &&
       this.isValidDocType() &&
       this.isValidDocNumber() &&
       this.isValidRegistrationDate() &&

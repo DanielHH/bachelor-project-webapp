@@ -46,7 +46,7 @@
           </button>
           <!--Error-->
           <mat-error *ngIf="docNumberControl.hasError('required')">Ange ett dokument-ID</mat-error>
-          <mat-error *ngIf="!docNumberControl.hasError('required') && docNumberControl.hasError('newDocument')">
+          <mat-error *ngIf="!isValidDocID()">
             Handling med angivet dokument-ID existerar redan</mat-error>
         </mat-form-field>
       </div>
