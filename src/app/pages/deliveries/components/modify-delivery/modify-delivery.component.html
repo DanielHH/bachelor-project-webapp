@@ -35,7 +35,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="documentNumberInput" name="documentNumberInput" [(ngModel)]="documentNumberInput" maxlength="128" placeholder="Dokument-ID"
-            [formControl]="documentNumberControl" required>
+            [formControl]="documentNumberControl" [delivery]="deliveryItem"  appNewDelivery required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
             <mat-icon [style.color]="'green'" *ngIf="isValidDocumentNumber()">done</mat-icon>
@@ -46,6 +46,8 @@
           </button>
           <!--Error-->
           <mat-error *ngIf="documentNumberControl.hasError('required')">Ange ett dokument-ID</mat-error>
+          <mat-error *ngIf="!documentNumberControl.hasError('required') && documentNumberControl.hasError('newDelivery')">
+            Leverans med angivet dokument-ID existerar redan</mat-error>
         </mat-form-field>
       </div>
     </div>

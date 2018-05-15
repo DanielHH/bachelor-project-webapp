@@ -107,6 +107,7 @@ import { UtilitiesService } from './services/utilities.service';
 import {
   InventoryVerificationModalComponent
 } from './pages/inventory/components/inventory-verification-modal/inventory-verification-modal.component';
+import { NewDeliveryValidatorDirective } from './directives/new-delivery.directive';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import {
     NewUsernameValidatorDirective,
     CardTypeValidatorDirective,
     NewCardValidatorDirective,
+    NewDeliveryValidatorDirective,
     DocumentTypeValidatorDirective,
     NewDocumentValidatorDirective,
     TypeNameValidatorDirective,
