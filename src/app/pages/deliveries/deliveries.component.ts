@@ -7,20 +7,9 @@ import { DataService } from '../../services/data.service';
   templateUrl: './deliveries.component.html',
   styleUrls: ['./deliveries.component.scss']
 })
-export class DeliveriesComponent implements OnInit, OnDestroy {
-  deliveryList: Delivery[] = [];
+export class DeliveriesComponent implements OnInit {
 
-  dataServiceSubscriber: any;
-
-  constructor(public dataService: DataService) {
-    this.dataServiceSubscriber = this.dataService.deliveryList.subscribe(deliveryList => {
-      this.deliveryList = deliveryList;
-    });
-  }
+  constructor() {}
 
   ngOnInit() {}
-
-  ngOnDestroy() {
-    this.dataServiceSubscriber.unsubscribe();
-  }
 }

@@ -187,7 +187,6 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
       this.setDocumentFromForm(newDoc);
 
       newDoc.creationDate = this.utilitiesService.getLocalDate();
-      newDoc.modifiedDate = this.utilitiesService.getLocalDate();
       newDoc.status = this.utilitiesService.getStatusFromID(1);
       newDoc.user = new User();
 
@@ -222,16 +221,11 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
         .httpPut<Document>('updateDocument/', { documentItem: this.documentItem, logEvent: logEvent })
         .then(res => {
           if (res.message === 'success') {
-            this.documentItem.modifiedDate = new Date();
-            this.documentList = this.documentList.slice();
-            this.dataService.documentList.next(this.documentList);
-
-            // Update log event list
+            this.dataService.getDocumentList();
+            this.dataService.getReceiptList();
             this.utilitiesService.updateLogEventList(res.data.logEvent);
 
             this.closeForm();
-
-            this.dataService.getReceiptList();
           }
         });
     }
