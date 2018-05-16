@@ -176,27 +176,13 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
       newCard.status = this.utilitiesService.getStatusFromID(1);
       newCard.user = new User();
 
-      // Create new log event
-      // TODO: 1 = Card, 3 = Create
+      // Create new log event 1 = Card, 3 = Create
       const logEvent = this.utilitiesService.createNewLogEventForItem(1, 3, newCard, this.user, newCard.cardNumber);
 
       this.httpService.httpPost<Card>('addNewCard/', { card: newCard, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
-          newCard.creationDate = new Date();
-          newCard.modifiedDate = new Date();
-          this.cardList.unshift(res.data.card);
-          this.itemList.unshift(new BaseItem(res.data.card, 'card'));
-
-          // Update log event list
+          this.dataService.getCardList();
           this.utilitiesService.updateLogEventList(res.data.logEvent);
-
-          // Trigger view refresh
-          this.cardList = this.cardList.slice();
-          this.dataService.cardList.next(this.cardList);
-
-          // Trigger view refresh
-          this.itemList = this.itemList.slice();
-          this.dataService.itemList.next(this.itemList);
 
           this.closeForm();
         }
@@ -213,21 +199,17 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
       // Create new log event
       const logText = 'Uppgifter för ' + this.cardItem.cardNumber;
 
-      // TODO: 1 = Card, 4 = Edit
+      // 1 = Card, 4 = Edit
       const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, logText);
 
       this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
-          this.cardItem.modifiedDate = new Date();
-          this.cardList = this.cardList.slice();
-          this.dataService.cardList.next(this.cardList);
+          this.dataService.getCardList();
+          this.dataService.getReceiptList();
 
-          // Update log event list
           this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           this.closeForm();
-
-          this.dataService.getReceiptList();
         }
       });
     }

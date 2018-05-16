@@ -135,6 +135,7 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
       delivery.sentDate = new Date(this.sentDateInput);
 
       delivery.comment = this.commentInput ? this.commentInput : null;
+      delivery.modifiedDate = this.utilitiesService.getLocalDate();
     }
   }
 
@@ -148,19 +149,13 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
       this.setDeliveryFromForm(newDelivery);
 
       newDelivery.creationDate = this.utilitiesService.getLocalDate();
-      newDelivery.modifiedDate = this.utilitiesService.getLocalDate();
       newDelivery.status = this.utilitiesService.getStatusFromID(1);
 
       this.httpService.httpPost<Delivery>('addNewDelivery/', newDelivery).then(res => {
         if (res.message === 'success') {
-          newDelivery.creationDate = new Date();
-          newDelivery.modifiedDate = new Date();
-          this.deliveryList.unshift(res.data);
-          // Trigger view refresh
-          this.deliveryList = this.deliveryList.slice();
-          this.dataService.deliveryList.next(this.deliveryList);
+          this.dataService.getDeliveryList();
 
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }
@@ -175,12 +170,9 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
 
       this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
         if (res.message === 'success') {
-          this.deliveryItem.modifiedDate = new Date();
-          this.deliveryList = this.deliveryList.slice();
-          this.dataService.deliveryList.next(this.deliveryList);
+          this.dataService.getDeliveryList();
 
           this.closeForm();
-          this.dataService.getReceiptList();
         }
       });
     }

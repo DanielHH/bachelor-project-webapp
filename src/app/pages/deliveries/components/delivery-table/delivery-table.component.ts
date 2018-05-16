@@ -1,18 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { Delivery } from '../../../../datamodels/delivery';
 import { MatchFilterDeliveryPipe } from '../../../../pipes/match-filter-delivery.pipe';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { lowerCase } from '../../../../services/utilities.service';
+import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-delivery-table',
   templateUrl: './delivery-table.component.html',
   styleUrls: ['./delivery-table.component.scss']
 })
-export class DeliveryTableComponent implements OnInit {
-  @Input() deliveryList: Delivery[];
+export class DeliveryTableComponent implements OnInit, OnDestroy {
+  deliveryList: Delivery[] = [];
 
   editDelivery: Delivery = null; // delivery document to be edited
 
@@ -20,6 +21,9 @@ export class DeliveryTableComponent implements OnInit {
 
   showModal = false;
   showPdfGenerationModal = false;
+
+  order = 'desc';
+  sortProperty = 'modifiedDate';
 
   filterInput = '';
 
@@ -41,90 +45,102 @@ export class DeliveryTableComponent implements OnInit {
 
   url = '';
 
+  dataServiceSubscriber: any;
+
   constructor(
     private modalService: ModalService,
     private httpService: HttpService,
-    private deliveryPipe: MatchFilterDeliveryPipe
-  ) {}
+    private deliveryPipe: MatchFilterDeliveryPipe,
+    private dataService: DataService
+  ) {
+    this.dataServiceSubscriber = this.dataService.deliveryList.subscribe(deliveryList => {
+      this.deliveryList = deliveryList;
+      this.orderTableList();
+    });
+  }
 
   ngOnInit() {
-    this.sortTableListStart();
+    this.orderTableList();
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 
   /**
-   * Sorts table after modifiedDate ascending
-   */
-  sortTableListStart() {
-    this.deliveryList = _.orderBy(this.deliveryList, ['modifiedDate'], ['desc']);
-  }
-
-  /**
-   * Sorts the table depending on the property of the Card
+   * Update order and order property
    * @param property
    */
-  sortTableList(property: string) {
-    let newOrder = '';
+  updateOrder(property: string) {
+    this.sortProperty = property;
 
     switch (property) {
       case 'status.name': {
-        newOrder = this.sortTableListHelper(this.orderStatus);
-        this.orderStatus = newOrder;
+        this.order = this.getNewOrder(this.orderStatus);
+        this.orderStatus = this.order;
         break;
       }
       case 'documentType.name': {
-        newOrder = this.sortTableListHelper(this.orderDocumentType);
-        this.orderDocumentType = newOrder;
+        this.order = this.getNewOrder(this.orderDocumentType);
+        this.orderDocumentType = this.order;
         break;
       }
       case 'documentNumber': {
-        newOrder = this.sortTableListHelper(this.orderDocumentNumber);
-        this.orderDocumentNumber = newOrder;
+        this.order = this.getNewOrder(this.orderDocumentNumber);
+        this.orderDocumentNumber = this.order;
         break;
       }
       case 'name': {
-        newOrder = this.sortTableListHelper(this.orderName);
-        this.orderName = newOrder;
+        this.order = this.getNewOrder(this.orderName);
+        this.orderName = this.order;
         break;
       }
       case 'receiver': {
-        newOrder = this.sortTableListHelper(this.orderReceiver);
-        this.orderReceiver = newOrder;
+        this.order = this.getNewOrder(this.orderReceiver);
+        this.orderReceiver = this.order;
         break;
       }
       case 'sentDate': {
-        newOrder = this.sortTableListHelper(this.orderSentDate);
-        this.orderSentDate = newOrder;
+        this.order = this.getNewOrder(this.orderSentDate);
+        this.orderSentDate = this.order;
         break;
       }
       case 'comment': {
-        newOrder = this.sortTableListHelper(this.orderComment);
-        this.orderComment = newOrder;
+        this.order = this.getNewOrder(this.orderComment);
+        this.orderComment = this.order;
         break;
       }
     }
 
-    if (newOrder) {
+  }
+
+  /**
+   * Orders delivery list based on set order and order property
+   */
+  orderTableList() {
+    if (this.order) {
       this.deliveryList = _.orderBy(
         this.deliveryList,
         [
           delivery => {
-            if (delivery[property]) {
-              return lowerCase(delivery[property]) as string;
+            if (delivery[this.sortProperty]) {
+              return lowerCase(delivery[this.sortProperty]) as string;
             } else {
-              return delivery[property.slice(0, -5)] ? (lowerCase(delivery[property.slice(0, -5)].name) as string) : '';
+              return delivery[this.sortProperty.slice(0, -5)] ?
+              (lowerCase(delivery[this.sortProperty.slice(0, -5)].name) as string) : '';
             }
           }
         ],
-        [newOrder]
+        [this.order]
       );
     }
   }
 
   /**
-   * Sets the order to sort by
+   * Returns new order given old one
    * @param order
    */
-  sortTableListHelper(order: string) {
+  getNewOrder(order: string) {
     switch (order) {
       case 'asc':
         return 'desc';
