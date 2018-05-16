@@ -100,4 +100,56 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
       return this.object.status.id;
     }
   }
+
+  /**
+   * Returns true if the archive option should be shown in the menu.
+   * The archive option is only visible if the menu is for an item
+   * that can be archived the item is available.
+   */
+  showArchiveOption() {
+    const isAvailable = this.object.status.id == 1;
+    return this.itemMenu && isAvailable;
+  }
+
+  /**
+   * Returns true if the lost option should be shown in the menu.
+   * The lost option is only visible if the menu is for an object
+   * that can be lost and that object is available or requested.
+   */
+  showLostOption() {
+    const isAvailable = this.object.status.id == 1;
+    const isRequested = this.object.status.id == 2;
+    return this.itemMenu && (isAvailable || isRequested);
+  }
+
+  /**
+   * Returns true if the restore option should be shown in the menu.
+   * The restore option is only visible if the menu is for an object
+   * that is archived or lost.
+   */
+  showRestoreOption() {
+    const isArchived = this.object.status.id == 3;
+    const isLost = this.object.status.id == 4;
+    return this.itemMenu && (isArchived || isLost);
+  }
+
+  /**
+   * Returns true if the activate option should be shown in the menu.
+   * The activate option is only visible if the menu is for an object
+   * that can be active or inactive, and that object is inactive.
+   */
+  showActivateOption() {
+    const isInactive = this.getStatusID() === 6;
+    return this.adminMenu && isInactive;
+  }
+
+  /**
+   * Returns true if the inactivate option should be shown in the menu.
+   * The inactivate option is only visible if the menu is for an object
+   * that can be active or inactive, and that object is active.
+   */
+  showInactivateOption() {
+    const isActive = this.getStatusID() === 5;
+    return this.adminMenu && isActive;
+  }
 }
