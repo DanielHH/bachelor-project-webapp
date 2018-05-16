@@ -173,7 +173,6 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
       this.setCardFromForm(newCard);
 
       newCard.creationDate = this.utilitiesService.getLocalDate();
-      newCard.modifiedDate = this.utilitiesService.getLocalDate();
       newCard.status = this.utilitiesService.getStatusFromID(1);
       newCard.user = new User();
 
@@ -200,21 +199,17 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
       // Create new log event
       const logText = 'Uppgifter för ' + this.cardItem.cardNumber;
 
-      // TODO: 1 = Card, 4 = Edit
+      // 1 = Card, 4 = Edit
       const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, logText);
 
       this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
-          this.cardItem.modifiedDate = new Date();
-          this.cardList = this.cardList.slice();
-          this.dataService.cardList.next(this.cardList);
+          this.dataService.getCardList();
+          this.dataService.getReceiptList();
 
-          // Update log event list
           this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           this.closeForm();
-
-          this.dataService.getReceiptList();
         }
       });
     }
