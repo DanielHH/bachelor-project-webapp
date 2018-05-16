@@ -12,11 +12,15 @@ export class PasswordValidatorDirective implements Validator {
     const input = c.value;
 
     const isValid =
+      true;
+      /* Use the following code to implement password requirements
+         (Without this uncommented code, there are no requirements)
       !input ||
       (input.length >= 5 &&
         this.containsSpecialCharacter(input) &&
         this.containsNumber(input) &&
         !this.containsSpace(input));
+      */
 
     const message = {
       password: {
