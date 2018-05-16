@@ -3,11 +3,12 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import { User } from '../datamodels/user';
 import { HttpService } from '../services/http.service';
+import { Router } from '@angular/router';
 
 
 @Injectable()
 export class AuthService {
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService, private router: Router) {}
 
   _user: User;
 
@@ -34,7 +35,7 @@ export class AuthService {
         if (res.message === 'success') {
           this._user = res.data;
           this.user.next(this._user);
-
+          this.router.navigate(['/cards']);
           resolve(true);
         } else {
           resolve(false);

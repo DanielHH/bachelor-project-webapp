@@ -1,22 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { Card } from '../../../../datamodels/card';
 import { MatchFilterCardPipe } from '../../../../pipes/match-filter-card.pipe';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService, lowerCase } from '../../../../services/utilities.service';
+import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-card-table',
   templateUrl: './card-table.component.html',
   styleUrls: ['./card-table.component.scss']
 })
-export class CardTableComponent implements OnInit {
-  @Input() cardList: Card[];
+export class CardTableComponent implements OnInit, OnDestroy {
 
   showModal = false;
 
   showPdfGenerationModal = false;
+
+  order = 'desc';
+  sortProperty = 'modifiedDate';
 
   filterInput = '';
 
@@ -39,91 +42,104 @@ export class CardTableComponent implements OnInit {
 
   url = '';
 
+  dataServiceSubscriber: any;
+
+  cardList: Card[] = [];
+
   constructor(
     private modalService: ModalService,
     private httpService: HttpService,
     private cardPipe: MatchFilterCardPipe,
-    private utilitiesService: UtilitiesService
-  ) {}
+    private utilitiesService: UtilitiesService,
+    private dataService: DataService
+  ) {
+    this.dataServiceSubscriber = this.dataService.cardList.subscribe(cardList => {
+      this.cardList = cardList;
+      this.orderTableList();
+    });
+  }
 
   ngOnInit() {
-    this.sortTableListStart();
+    this.orderTableList();
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 
   /**
-   * Sorts table after location descending
-   */
-  sortTableListStart() {
-    this.cardList = _.orderBy(this.cardList, ['modifiedDate'], ['desc']);
-  }
-
-  /**
-   * Sorts the table depending on the properties of the items
+   * Update order and order property
    * @param property
    */
-  sortTableList(property: string) {
-    let newOrder = '';
+  updateOrder(property: string) {
+    this.sortProperty = property;
 
     switch (property) {
       case 'status.name': {
-        newOrder = this.sortTableListHelper(this.orderStatus);
-        this.orderStatus = newOrder;
+        this.order = this.getNewOrder(this.orderStatus);
+        this.orderStatus = this.order;
         break;
       }
       case 'cardType.name': {
-        newOrder = this.sortTableListHelper(this.orderCardType);
-        this.orderCardType = newOrder;
+        this.order = this.getNewOrder(this.orderCardType);
+        this.orderCardType = this.order;
         break;
       }
       case 'cardNumber': {
-        newOrder = this.sortTableListHelper(this.orderCardNumber);
-        this.orderCardNumber = newOrder;
+        this.order = this.getNewOrder(this.orderCardNumber);
+        this.orderCardNumber = this.order;
         break;
       }
       case 'user.name': {
-        newOrder = this.sortTableListHelper(this.orderUser);
-        this.orderUser = newOrder;
+        this.order = this.getNewOrder(this.orderUser);
+        this.orderUser = this.order;
         break;
       }
       case 'location': {
-        newOrder = this.sortTableListHelper(this.orderLocation);
-        this.orderLocation = newOrder;
+        this.order = this.getNewOrder(this.orderLocation);
+        this.orderLocation = this.order;
         break;
       }
       case 'comment': {
-        newOrder = this.sortTableListHelper(this.orderComment);
-        this.orderComment = newOrder;
+        this.order = this.getNewOrder(this.orderComment);
+        this.orderComment = this.order;
         break;
       }
       case 'expirationDate': {
-        newOrder = this.sortTableListHelper(this.orderDate);
-        this.orderDate = newOrder;
+        this.order = this.getNewOrder(this.orderDate);
+        this.orderDate = this.order;
         break;
       }
     }
+  }
 
-    if (newOrder) {
+  /**
+   * Orders card list based on set order and order property
+   */
+  orderTableList() {
+    if (this.order) {
       this.cardList = _.orderBy(
         this.cardList,
         [
           card => {
-            if (card[property]) {
-              return lowerCase(card[property]) as string;
+            if (card[this.sortProperty]) {
+              return lowerCase(card[this.sortProperty]) as string;
             } else {
-              return card[property.slice(0, -5)] ? (lowerCase(card[property.slice(0, -5)].name) as string) : '';
+              return card[this.sortProperty.slice(0, -5)] ?
+              (lowerCase(card[this.sortProperty.slice(0, -5)].name) as string) : '';
             }
           }
         ],
-        [newOrder]
+        [this.order]
       );
     }
   }
 
   /**
-   * Sets the order to sort by
+   * Returns new order given old one
    * @param order
    */
-  sortTableListHelper(order: string) {
+  getNewOrder(order: string) {
     switch (order) {
       case 'asc':
         return 'desc';

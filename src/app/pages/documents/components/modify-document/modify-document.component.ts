@@ -47,7 +47,7 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
 
   baseTypes: BaseType[] = []; // All card and document types
 
-  @Input() documentList: Document[];
+  documentList: Document[] = [];
 
   @Input() modalTitle = '';
 
@@ -91,6 +91,10 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
   ) {
     this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
+    });
+
+    this.dataServiceSubscriber = this.dataService.documentList.subscribe(documentList => {
+      this.documentList = documentList;
     });
 
     this.dataServiceSubscriber = this.dataService.typeList.subscribe(baseTypes => {
@@ -187,26 +191,13 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
       newDoc.status = this.utilitiesService.getStatusFromID(1);
       newDoc.user = new User();
 
-      // Create new log event
-      // TODO: 2 = Document, 3 = Create
+      // Create new log event 2 = Document, 3 = Create
       const logEvent = this.utilitiesService.createNewLogEventForItem(2, 3, newDoc, this.user, newDoc.documentNumber);
 
       this.httpService.httpPost<Document>('addNewDocument/', { document: newDoc, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
-          newDoc.creationDate = new Date();
-          newDoc.modifiedDate = new Date();
-          this.documentList.unshift(res.data.document);
-          this.itemList.unshift(new BaseItem(res.data.document, 'document'));
-
-          // Update log event list
+          this.dataService.getDocumentList();
           this.utilitiesService.updateLogEventList(res.data.logEvent);
-
-          // Trigger view refresh
-          this.documentList = this.documentList.slice();
-          this.dataService.documentList.next(this.documentList);
-
-          this.itemList = this.itemList.slice();
-          this.dataService.itemList.next(this.itemList);
 
           this.closeForm();
         }

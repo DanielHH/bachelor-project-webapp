@@ -50,26 +50,33 @@
     <div class="table-container">
       <!-- Header row -->
       <div class="row table-header">
-        <div class="col-1" (click)="sortTableList('status.name')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        <div class="col-1" (click)="updateOrder('status.name'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+          [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col" (click)="sortTableList('cardType.name')">
-          <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'" [class.both-arrow]="orderCardType == ''">Typ </span>
+        <div class="col" (click)="updateOrder('cardType.name'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderCardType == 'asc'" [class.down-arrow]="orderCardType == 'desc'"
+          [class.both-arrow]="orderCardType == ''">Typ </span>
         </div>
-        <div class="col" (click)="sortTableList('cardNumber')">
-          <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'" [class.both-arrow]="orderCardNumber == ''">Kort-ID </span>
+        <div class="col" (click)="updateOrder('cardNumber'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderCardNumber == 'asc'" [class.down-arrow]="orderCardNumber == 'desc'"
+          [class.both-arrow]="orderCardNumber == ''">Kort-ID </span>
         </div>
-        <div class="col" (click)="sortTableList('user.name')">
-          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
+        <div class="col" (click)="updateOrder('user.name'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'"
+          [class.both-arrow]="orderUser == ''">Användare </span>
         </div>
-        <div class="col" (click)="sortTableList('location')">
-          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
+        <div class="col" (click)="updateOrder('location'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
+          [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
         </div>
-        <div class="col" (click)="sortTableList('comment')">
-          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
+        <div class="col" (click)="updateOrder('comment'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
+          [class.both-arrow]="orderComment == ''">Kommentar </span>
         </div>
-        <div class="col" (click)="sortTableList('expirationDate')">
-          <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'" [class.both-arrow]="orderDate == ''">Utgångsdatum </span>
+        <div class="col" (click)="updateOrder('expirationDate'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderDate == 'asc'" [class.down-arrow]="orderDate == 'desc'"
+          [class.both-arrow]="orderDate == ''">Utgångsdatum </span>
         </div>
       </div>
       <hr>

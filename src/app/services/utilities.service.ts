@@ -119,7 +119,7 @@ export class UtilitiesService implements OnDestroy {
       logEvent.document = item;
     }
     logEvent.user = user;
-    logEvent.logDate = this.getLocalDate();
+    logEvent.logDate = new Date();
     if (logText) {
       logEvent.logText = logText;
     }
