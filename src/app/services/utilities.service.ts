@@ -119,7 +119,7 @@ export class UtilitiesService implements OnDestroy {
       logEvent.document = item;
     }
     logEvent.user = user;
-    logEvent.logDate = new Date();
+    logEvent.logDate = this.getLocalDate();
     if (logText) {
       logEvent.logText = logText;
     }
@@ -130,6 +130,7 @@ export class UtilitiesService implements OnDestroy {
    * Updates logEventList
    */
   updateLogEventList(logEvent: any) {
+    logEvent.logDate = moment.utc(logEvent.logDate).format('YYYY-MM-DD HH:mm:ss');
     this.logEventList.unshift(logEvent);
     this.logEventList = this.logEventList.slice();
     this.dataService.logEventList.next(this.logEventList);
