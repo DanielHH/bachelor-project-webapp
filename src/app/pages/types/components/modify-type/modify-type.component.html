@@ -9,7 +9,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="typeNameInput" name="typeNameInput" [(ngModel)]="typeNameInput"
-          maxlength="128" placeholder="Benämning" [formControl]="typeNameControl"
+          maxlength="32" placeholder="Benämning" [formControl]="typeNameControl"
           [type]="baseTypeToEdit ? baseTypeToEdit.type : null" [isCardType]="isCardType" required appTypeName>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
