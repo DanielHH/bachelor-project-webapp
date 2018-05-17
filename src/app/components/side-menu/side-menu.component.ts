@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../datamodels/user';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -14,7 +15,8 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
   authServiceSubscriber: any;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+    public dataService: DataService) {
     this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
   }
 
