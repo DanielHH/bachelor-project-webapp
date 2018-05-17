@@ -107,7 +107,7 @@
               <!--Input-->
               <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" [style.color]="isValidUsername() ? 'black' : 'gray'"
                 placeholder="Användarnamn" aria-label="Number" matInput [matAutocomplete]="userIDs" [formControl]="usernameControl"
-                spellcheck="false" maxlength="128" appUsername required>
+                spellcheck="false" maxlength="32" appUsername required>
               <!--Check and clear-->
               <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
                 <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
@@ -174,7 +174,7 @@
         <div class="col-10">
           <mat-form-field>
             <!--Input-->
-            <input matInput name="locationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Ny förvaringsplats" [formControl]="locationControl"
+            <input matInput name="locationInput" [(ngModel)]="locationInput" maxlength="32" placeholder="Ny förvaringsplats" [formControl]="locationControl"
               required>
             <!--Check and clear-->
             <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
