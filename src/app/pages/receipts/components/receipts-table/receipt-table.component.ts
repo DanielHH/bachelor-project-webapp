@@ -16,7 +16,6 @@ export class ReceiptTableComponent implements OnInit, OnDestroy {
 
   showPdfGenerationModal = false;
 
-  order = 'desc';
   sortProperty = 'startDate';
 
   filterInput = '';
@@ -25,7 +24,7 @@ export class ReceiptTableComponent implements OnInit, OnDestroy {
   orderType = '';
   orderNumber = '';
   orderUser = '';
-  orderStartDate = '';
+  orderStartDate = 'desc';
   orderEndDate = '';
 
   showCard = true;
@@ -48,12 +47,12 @@ export class ReceiptTableComponent implements OnInit, OnDestroy {
   ) {
     this.dataServiceSubscriber = this.dataService.receiptList.subscribe(receiptList => {
       this.receiptList = receiptList;
-      this.orderTableList();
+      this.orderTableList(this.sortProperty);
     });
   }
 
   ngOnInit() {
-    this.orderTableList();
+    this.orderTableList(this.sortProperty);
   }
 
   ngOnDestroy() {
@@ -61,71 +60,80 @@ export class ReceiptTableComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Update order and order property
+   * Order table list based on order and order property
    * @param property
    */
-  updateOrder(property: string) {
+  orderTableList(property: string) {
     this.sortProperty = property;
+    let order = '';
 
     let orderFunc = (item: Receipt) => '';
     switch (property) {
       case 'status':
-        this.order = this.getNewOrder(this.orderStatus);
-        this.orderStatus = this.order;
+        order = this.orderStatus;
         orderFunc = (item: Receipt) => lowerCase(new Receipt(item).endDate ? 'Inaktiv' : 'Aktiv');
         break;
       case 'type': {
-        this.order = this.getNewOrder(this.orderType);
-        this.orderType = this.order;
+        order = this.orderType;
         orderFunc = (item: Receipt) => lowerCase(new Receipt(item).getSubType().name);
         break;
       }
       case 'number': {
-        this.order = this.getNewOrder(this.orderNumber);
-        this.orderNumber = this.order;
+        order = this.orderNumber;
         orderFunc = (item: Receipt) => lowerCase(new Receipt(item).getNumber());
         break;
       }
       case 'user': {
-        this.order = this.getNewOrder(this.orderUser);
-        this.orderUser = this.order;
+        order = this.orderUser;
         orderFunc = (item: Receipt) => lowerCase(this.utilitiesService.getUserString(new Receipt(item).getUser()));
         break;
       }
       case 'startDate': {
-        this.order = this.getNewOrder(this.orderStartDate);
-        this.orderStartDate = this.order;
+        order = this.orderStartDate;
         orderFunc = (item: Receipt) => lowerCase(this.utilitiesService.getDateString(new Receipt(item).startDate));
         break;
       }
       case 'endDate': {
-        this.order = this.getNewOrder(this.orderEndDate);
-        this.orderEndDate = this.order;
+        order = this.orderEndDate;
         orderFunc = (item: Receipt) => lowerCase(this.utilitiesService.getDateString(new Receipt(item).endDate));
         break;
       }
     }
+    if (order) {
+      this.receiptList = _.orderBy(this.receiptList, [orderFunc], [order]);
+    }
   }
 
   /**
-   * Orders receipt list based on set order and order property
+   * Sets the order of property to next one, ascending or descending
+   * @param property whose order is to be changed
    */
-  orderTableList() {
-    if (this.order) {
-      this.receiptList = _.orderBy(
-        this.receiptList,
-        [
-          receipt => {
-            if (receipt[this.sortProperty]) {
-              return lowerCase(receipt[this.sortProperty]) as string;
-            } else {
-              return receipt[this.sortProperty.slice(0, -5)] ?
-              (lowerCase(receipt[this.sortProperty.slice(0, -5)].name) as string) : '';
-            }
-          }
-        ],
-        [this.order]
-      );
+  setNextOrder(property: String) {
+    switch (property) {
+      case 'status': {
+        this.orderStatus = this.getNewOrder(this.orderStatus);
+        break;
+      }
+      case 'type': {
+        this.orderType = this.getNewOrder(this.orderType);
+        break;
+      }
+      case 'number': {
+        this.orderNumber = this.getNewOrder(this.orderNumber);
+        break;
+      }
+      case 'user': {
+        this.orderUser = this.getNewOrder(this.orderUser);
+        break;
+      }
+      case 'startDate': {
+        this.orderStartDate = this.getNewOrder(this.orderStartDate);
+        break;
+      }
+      case 'endDate': {
+        this.orderEndDate = this.getNewOrder(this.orderEndDate);
+        break;
+      }
     }
   }
 

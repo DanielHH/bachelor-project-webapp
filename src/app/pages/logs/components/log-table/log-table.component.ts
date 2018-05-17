@@ -48,7 +48,6 @@ export class LogTableComponent implements OnInit, OnDestroy {
    * @param property
    */
   updateOrder(property: string) {
-    this.sortProperty = property;
 
     switch (property) {
       case 'logDate': {
@@ -74,6 +73,8 @@ export class LogTableComponent implements OnInit, OnDestroy {
         break;
       }
     }
+
+    this.sortProperty = property;
   }
 
   /**
