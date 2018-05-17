@@ -2,7 +2,7 @@
   <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'" [submitName]="'Stäng'" [hideClose]="true">
 
     <!-- Row card info -->
-    <div class="row">
+    <div class="row overflow-break">
       <div class="col-0 col-md-1"></div>
       <div class="col-12 col-md-10 wide-center">
         <mat-card [style.background]="'#E8EAF6'">
@@ -67,7 +67,9 @@
               <b>Ändrad:</b>
             </div>
             <div class="col-12 col-md-4">
-              <span *ngIf="deliveryItem?.comment"><b>Kommentar:</b></span>
+              <span *ngIf="deliveryItem?.comment">
+                <b>Kommentar:</b>
+              </span>
             </div>
           </div>
           <!-- Row -->
