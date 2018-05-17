@@ -58,4 +58,5 @@ export class ReceiptItemComponent implements OnInit {
       window.open(this.receiptItem.url, '_blank');
     }
   }
+
 }

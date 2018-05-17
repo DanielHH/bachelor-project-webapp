@@ -117,16 +117,16 @@ export class ReturnDocumentComponent implements OnInit, OnDestroy {
       this.documentItem.user = new User();
       this.documentItem.location = this.locationInput;
       this.documentItem.comment = this.commentInput != '' ? this.commentInput : null;
-      this.documentItem.status = this.utilitiesService.getStatusFromID(1); // TODO: ENUM FOR STATUS, 1 = Returned
+      this.documentItem.status = this.utilitiesService.getStatusFromID(1); // 1 = Returned
       this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
 
-      const activeReceipt = this.getReceipt(this.documentItem.activeReceipt);
+      const activeReceipt = this.getReceipt(this.documentItem.activeReceiptID);
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
       // Create new log event
       const logText = this.documentItem.documentNumber + ' från ' + this.latestUser.name;
       const logEvent = this.utilitiesService.
-      createNewLogEventForItem(2, 1, this.documentItem, this.user, logText); // TODO: 2 = Document, 1 = Return
+      createNewLogEventForItem(2, 1, this.documentItem, this.user, logText); // 2 = Document, 1 = Return
 
       this.httpService
         .httpPut<Receipt>('updateReceipt/', {
@@ -136,7 +136,7 @@ export class ReturnDocumentComponent implements OnInit, OnDestroy {
         })
         .then(res => {
           if (res.message === 'success') {
-            this.documentItem.activeReceipt = null;
+            this.documentItem.activeReceiptID = null;
             // Update log event list
             this.utilitiesService.updateLogEventList(res.data.logEvent);
 
@@ -147,7 +147,7 @@ export class ReturnDocumentComponent implements OnInit, OnDestroy {
             // Update document list
             this.dataService.documentList.next(this.documents);
 
-            this.showModal = false;
+            this.closeForm();
           }
         });
     }
