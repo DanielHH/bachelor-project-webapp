@@ -338,8 +338,8 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
     verification.user = this.user;
 
-    if (itemToUpdate.activeReceipt === 0) {
-      itemToUpdate.activeReceipt = null;
+    if (itemToUpdate.activeReceiptID === 0) {
+      itemToUpdate.activeReceiptID = null;
     }
 
     if (isVerification) {

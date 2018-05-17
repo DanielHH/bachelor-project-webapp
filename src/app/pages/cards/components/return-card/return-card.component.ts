@@ -139,18 +139,18 @@ export class ReturnCardComponent implements OnInit, OnDestroy {
       // Set card information
       this.cardItem.user = new User();
       this.cardItem.location = this.locationInput;
-      this.cardItem.status = this.utilitiesService.getStatusFromID(1); // TODO: ENUM FOR STATUS, 1 = Returned
+      this.cardItem.status = this.utilitiesService.getStatusFromID(1); // 1 = Returned
       this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
 
       // Update receipt
-      const activeReceipt = this.getReceipt(this.cardItem.activeReceipt);
+      const activeReceipt = this.getReceipt(this.cardItem.activeReceiptID);
       activeReceipt.endDate = this.utilitiesService.getLocalDate();
 
       // Create new log event
       const logText = this.cardItem.cardNumber + ' från ' + this.latestUser.name;
       const logEvent = this.utilitiesService.
-      createNewLogEventForItem(1, 1, this.cardItem, this.user, logText); // TODO: 1 = Card, 1 = Return
+      createNewLogEventForItem(1, 1, this.cardItem, this.user, logText); // 1 = Card, 1 = Return
 
       // Submit changes to server
       this.httpService
@@ -161,7 +161,7 @@ export class ReturnCardComponent implements OnInit, OnDestroy {
         })
         .then(res => {
           if (res.message === 'success') {
-            this.cardItem.activeReceipt = null;
+            this.cardItem.activeReceiptID = null;
             // Update log event list
             this.utilitiesService.updateLogEventList(res.data.logEvent);
 

@@ -199,7 +199,7 @@ export class RequestDocumentComponent implements OnInit, OnDestroy {
       receipt.document = this.documentItem;
       receipt.card = null;
       receipt.user = this.documentItem.user;
-      receipt.startDate = this.utilitiesService.getLocalDate();
+      receipt.startDate = new Date(this.startDateInput);
       receipt.endDate = null;
 
       // Create new log event
@@ -214,7 +214,7 @@ export class RequestDocumentComponent implements OnInit, OnDestroy {
           if (res.message === 'success') {
             const newReceipt = res.data.receipt;
 
-            this.documentItem.activeReceipt = Number(newReceipt.id);
+            this.documentItem.activeReceiptID = Number(newReceipt.id);
 
             if (this.generatePDF) {
               this.loading = true;
@@ -228,6 +228,7 @@ export class RequestDocumentComponent implements OnInit, OnDestroy {
                   this.pdfView = true;
                   this.pdfURL = newReceipt.url;
                   this.hideSubmit = true;
+                  this.updateLists(res.data.logEvent, newReceipt);
                 }
               });
             } else {
