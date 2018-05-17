@@ -26,12 +26,14 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
   filterInput = '';
 
+  sortProperty = 'verify';
+
   orderStatus = '';
   orderSubType = '';
   orderNumber = '';
   orderUser = '';
   orderLocation = '';
-  orderVerify = '';
+  orderVerify = 'desc';
   orderSelfCheck = '';
   orderDate = '';
   orderItemType = '';
@@ -47,7 +49,6 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
   baseItemList: BaseItem[] = [];
   verificationList: Verification[] = [];
-  itemList: BaseItem[] = [];
 
   dataServiceItemSubscriber: any;
 
@@ -71,17 +72,21 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
 
     this.dataServiceItemSubscriber = this.dataService.itemList.subscribe(baseItemList => {
       this.baseItemList = baseItemList;
+      this.orderTableList(this.sortProperty);
+      this.updateSelectAll();
     });
 
     this.dataServiceVerificationSubscriber = this.dataService.verificationList.subscribe(verificationList => {
       this.verificationList = verificationList;
+      this.orderTableList(this.sortProperty);
+      this.updateSelectAll();
     });
 
     this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
   }
 
   ngOnInit() {
-    this.sortTableListStart();
+    this.orderTableList(this.sortProperty);
     this.updateSelectAll();
   }
 
@@ -94,75 +99,101 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Sort the table initially
-   */
-  sortTableListStart() {
-    this.sortTableList('verify');
-  }
-
-  /**
-   * Sorts the table depending on the property of the BaseItem
+   * Order table list based on order and order property
    * @param property
    */
-  sortTableList(property: string) {
-    let newOrder = '';
+  orderTableList(property: string) {
+    this.sortProperty = property;
+    let order = '';
+
     let orderFunc = (item: BaseItem) => '';
     switch (property) {
       case 'status': {
-        newOrder = this.sortTableListHelper(this.orderStatus);
-        this.orderStatus = newOrder;
+        order = this.orderStatus;
         orderFunc = (item: BaseItem) => lowerCase(item.getStatus().name);
         break;
       }
       case 'subType': {
-        newOrder = this.sortTableListHelper(this.orderSubType);
-        this.orderSubType = newOrder;
+        order = this.orderSubType;
         orderFunc = (item: BaseItem) => lowerCase(item.getSubType().name);
         break;
       }
       case 'number': {
-        newOrder = this.sortTableListHelper(this.orderNumber);
-        this.orderNumber = newOrder;
+        order = this.orderNumber;
         orderFunc = (item: BaseItem) => lowerCase(item.getNumber());
         break;
       }
       case 'user': {
-        newOrder = this.sortTableListHelper(this.orderUser);
-        this.orderUser = newOrder;
+        order = this.orderUser;
         orderFunc = (item: BaseItem) => lowerCase(this.utilitiesService.getUserString(item.getUser()));
         break;
       }
       case 'location': {
-        newOrder = this.sortTableListHelper(this.orderLocation);
-        this.orderLocation = newOrder;
+        order = this.orderLocation;
         orderFunc = (item: BaseItem) => lowerCase(item.getLocation());
         break;
       }
       case 'verify': {
-        newOrder = this.sortTableListHelper(this.orderVerify);
-        this.orderVerify = newOrder;
+        order = this.orderVerify;
         orderFunc = (item: BaseItem) =>
           item.getItem().lastVerificationDate ? item.getItem().lastVerificationDate : '0000-00-00 00:00:00';
         break;
       }
       case 'selfCheck': {
-        newOrder = this.sortTableListHelper(this.orderSelfCheck);
-        this.orderSelfCheck = newOrder;
+        order = this.orderSelfCheck;
         orderFunc = (item: BaseItem) =>
           item.getItem().lastSelfCheckDate ? item.getItem().lastSelfCheckDate : '0000-00-00 00:00:00';
         break;
       }
     }
-    if (newOrder) {
-      this.baseItemList = _.orderBy(this.baseItemList, [orderFunc], [newOrder]);
+    if (order) {
+      this.baseItemList = _.orderBy(this.baseItemList, [orderFunc], [order]);
     }
   }
 
   /**
-   * Sets the order to sort by
+   * Sets the order of property to next one, ascending or descending
+   * @param property whose order is to be changed
+   */
+  setNextOrder(property: String) {
+    switch (property) {
+      case 'status': {
+        this.orderStatus = this.getNewOrder(this.orderStatus);
+        break;
+      }
+      case 'subType': {
+        this.orderSubType = this.getNewOrder(this.orderSubType);
+        break;
+      }
+      case 'number': {
+        this.orderNumber = this.getNewOrder(this.orderNumber);
+        break;
+      }
+      case 'user': {
+        this.orderUser = this.getNewOrder(this.orderUser);
+        break;
+      }
+      case 'location': {
+        this.orderLocation = this.getNewOrder(this.orderLocation);
+        break;
+      }
+      case 'verify': {
+        this.orderVerify = this.getNewOrder(this.orderVerify);
+        break;
+      }
+      case 'selfCheck': {
+        this.orderSelfCheck = this.getNewOrder(this.orderSelfCheck);
+        break;
+      }
+    }
+  }
+
+
+  /**
+   * Returns new order given old one
    * @param order
    */
-  sortTableListHelper(order: string) {
+  getNewOrder(order: string) {
     switch (order) {
       case 'asc':
         return 'desc';
@@ -379,12 +410,6 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
               if (this.user.userType.id == 1) {
                 this.utilitiesService.updateLogEventList(cardRes.data.logEvent);
               }
-              // So we don't adjust for timezone twice for dates not received from server
-              if (isVerification) {
-                itemToUpdate.lastVerificationDate = new Date();
-              } else {
-                itemToUpdate.lastSelfCheckDate = new Date();
-              }
             }
           });
         } else {
@@ -393,15 +418,12 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
               if (this.user.userType.id == 1) {
                 this.utilitiesService.updateLogEventList(documentRes.data.logEvent);
               }
-              // So we don't adjust for timezone twice for dates not received from server
-              if (isVerification) {
-                itemToUpdate.lastVerificationDate = new Date();
-              } else {
-                itemToUpdate.lastSelfCheckDate = new Date();
-              }
             }
           });
         }
+
+        // Set BaseItem list
+        this.dataService.setItemList();
 
         // Update verification list
         this.verificationList.unshift(verificationRes.data);
