@@ -26,7 +26,8 @@
   <div class="col">
     <div class="column-text">{{this.cardItem?.expirationDate | date: 'shortDate'}}</div>
     <div class="table-menu-fix">
-      <app-item-menu [object]="cardItem" (editObject)="edit()" (editStatus)="editStatus()" [itemMenu]="true" [showEditOption]="true"></app-item-menu>
+      <app-item-menu [object]="cardItem" (editObject)="edit()" (editStatus)="editStatus()"
+      [itemMenu]="true" [showEditOption]="true"></app-item-menu>
     </div>
   </div>
 </div>
