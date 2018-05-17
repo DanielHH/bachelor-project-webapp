@@ -2,6 +2,13 @@
   <nav class="fixed-container navbar navbar-dark primary-color-dark">
     <div class="nav-title">
       <span class="navbar-brand border-light side-menu-title">SecTrack</span>
+
+      <span class="pull-right">
+        <button class="btn-menu waves-light" mdbRippleRadius (click)="dataService.getAllData()">
+           <i class="material-icons">refresh</i>
+       </button>
+      </span>
+
     </div>
     <ul class="navbar-nav">
       <li *ngIf="user.userType.id == 2" class="nav-item" routerLinkActive="active">
