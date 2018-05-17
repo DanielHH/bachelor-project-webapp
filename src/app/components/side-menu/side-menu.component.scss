@@ -69,3 +69,14 @@
     pointer-events: none !important;
   }
 }
+
+// Hiding button around an object
+.btn-menu {
+  background-color: transparent !important;
+  color: white !important;
+  border-color: transparent !important;
+  padding: 0;
+   :hover {
+      cursor: pointer;
+  }
+}
