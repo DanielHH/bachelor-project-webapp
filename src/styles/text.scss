@@ -20,3 +20,16 @@
     opacity: 0.5;
   }
 }
+
+.overflow-text {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.overflow-break {
+  div {
+    overflow-wrap: break-word;
+  }
+}

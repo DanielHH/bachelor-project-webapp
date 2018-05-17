@@ -2,7 +2,7 @@
   <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera in kort'" [closeName]="'Avbryt'" [submitName]="'Bekräfta'">
 
     <!-- Row card info -->
-    <div class="row">
+    <div class="row overflow-break">
       <div class="col-0 col-md-1"></div>
       <div class="col-12 col-md-10 wide-center">
         <mat-card [style.background]="'#E8EAF6'">
@@ -124,7 +124,7 @@
       <div class="col-12 col-md-10">
         <mat-form-field>
           <!--Input-->
-          <textarea matInput name="commentInput" [(ngModel)]="commentInput" maxlength="128" placeholder="Kommentar" matTextareaAutosize
+          <textarea matInput name="commentInput" [(ngModel)]="commentInput" maxlength="32" placeholder="Kommentar" matTextareaAutosize
             matAutosizeMaxRows="5"></textarea>
           <!--Clear-->
           <button mat-button class="size-medium textarea-button" *ngIf="commentInput" matSuffix mat-icon-button aria-label="Clear"

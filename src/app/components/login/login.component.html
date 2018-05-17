@@ -11,7 +11,7 @@
         <!-- Username input -->
         <mat-form-field>
           <!--Input-->
-          <input type="text" matInput name="usernameInput" [(ngModel)]="username" maxlength="128" placeholder="Användarnamn" [formControl]="usernameControl"
+          <input type="text" matInput name="usernameInput" [(ngModel)]="username" maxlength="32" placeholder="Användarnamn" [formControl]="usernameControl"
             (ngModelChange)="error = ''" required>
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username = ''"

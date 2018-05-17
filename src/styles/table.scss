@@ -41,6 +41,8 @@
         }
 
         .col:last-child {
+          display: inline-flex;
+          justify-content: space-between;
           .column-text {
             max-width: 65% !important;
             display: inline-block;

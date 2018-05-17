@@ -3,7 +3,7 @@
   [closeName]="'Avbryt'" [submitName]="'Bekräfta'">
 
     <!-- Row document info -->
-    <div class="row">
+    <div class="row overflow-break">
       <div class="col-0 col-md-1"></div>
       <div class="col-0 col-md-10 wide-center">
         <mat-card [style.background]="'#E8EAF6'">
@@ -113,7 +113,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput name="locationInput" [(ngModel)]="locationInput"
-          maxlength="128" placeholder="Ny förvaringsplats"
+          maxlength="32" placeholder="Ny förvaringsplats"
             [formControl]="locationControl" required>
           <!--Check and clear-->
           <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
@@ -132,7 +132,7 @@
       <div class="col-12 col-md-5 wide-center">
         <mat-form-field>
           <!--Input-->
-          <input matInput name="commentInput" [(ngModel)]="commentInput" maxlength="128" placeholder="Kommentar">
+          <input matInput name="commentInput" [(ngModel)]="commentInput" maxlength="32" placeholder="Kommentar">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="commentInput" matSuffix mat-icon-button
           aria-label="Clear" (click)="commentInput = ''" tabindex="-1">
