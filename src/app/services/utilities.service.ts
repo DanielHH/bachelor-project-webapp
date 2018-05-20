@@ -106,7 +106,12 @@ export class UtilitiesService implements OnDestroy {
   }
 
   /**
-   * Fills in variables for new log event
+   * Fills in variables for new log event and returns it
+   * @param itemTypeID specifies whether it is a card or a document
+   * @param logTypeID specifies which log type it is
+   * @param item item which the log event is for
+   * @param user The user involved in this log event
+   * @param logText relevant log text
    */
   createNewLogEventForItem(itemTypeID: number, logTypeID: number, item: any, user?: User, logText?: string): LogEvent {
     const logEvent = new LogEvent();
