@@ -19,6 +19,9 @@ export class CardHistoryComponent implements OnInit, OnDestroy {
 
   routeDataServiceSubscriber: any;
 
+  /**
+   * This constructor retrieves the loghistory of the specified card.
+   */
   constructor(public dataService: DataService, private routeDataService: RouteDataService) {
     this.routeDataServiceSubscriber = this.routeDataService.card.subscribe(card => {
       this.card = card;
