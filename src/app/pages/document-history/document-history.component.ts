@@ -19,6 +19,9 @@ export class DocumentHistoryComponent implements OnInit, OnDestroy {
 
   dataServiceSubscriber: any;
 
+    /**
+   * This constructor retrieves the loghistory of the specified document.
+   */
   constructor(public dataService: DataService, private routeDataService: RouteDataService) {
     this.routeDataServiceSubscriber = this.routeDataService.document.subscribe(document => {
       this.document = document;
