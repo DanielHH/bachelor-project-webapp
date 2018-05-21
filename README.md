@@ -1,3 +1,16 @@
+
+
+# Overview
+SecTrack is a web application for tracing information. This documentation describes how the system is built and what is required to continue the development. The system consists of three parts, a MariaDB database, a back-end server developed in NodeJS and a front-end web application developed in Angular. Both back-end and front-end are written in TypeScript. An overview of the system can be seen in figure 1.
+
+
+
+
+
+
+
+
+
 # PUMApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.7.
