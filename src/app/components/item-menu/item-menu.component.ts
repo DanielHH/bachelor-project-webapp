@@ -93,6 +93,9 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
     this.editStatus.emit();
   }
 
+  /**
+   * Returns the status ID for the object
+   */
   getStatusID() {
     if (this.isTypeItem) {
       return this.object.getType().status.id;

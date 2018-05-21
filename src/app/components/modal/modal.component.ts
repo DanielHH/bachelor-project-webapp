@@ -42,6 +42,10 @@ export class ModalComponent implements OnInit, AfterViewInit {
     this.modalInit = true;
   }
 
+  /**
+   * Set modal to show
+   * @param value boolean to show or hide modal
+   */
   setShow(value: boolean) {
     this.show = value;
     this.showChange.emit(this.show);
