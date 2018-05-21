@@ -168,6 +168,10 @@ export class ReturnDocumentComponent implements OnInit, OnDestroy {
     this.showModal = false;
   }
 
+  /**
+   * Get a string format of a Date object
+   * @param str Date object
+   */
   getDateString(str: Date) {
     if (str) {
       return this.utilitiesService.getDateString(str);
