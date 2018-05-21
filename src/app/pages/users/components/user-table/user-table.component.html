@@ -27,19 +27,23 @@
     <div class="pb-1 filter-checkbox-row">
 
       <div class="mr-2">
-        <mat-checkbox disableRipple id="showAdmins" name="showAdmins" color="primary" class="pr-1" [(ngModel)]="showAdmins">Administratörer</mat-checkbox>
+        <mat-checkbox disableRipple id="showAdmins" name="showAdmins" color="primary" class="pr-1"
+        [(ngModel)]="showAdmins">Administratörer</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox disableRipple id="showUsers" name="showUsers" color="primary" class="pr-1" [(ngModel)]="showUsers">Användare</mat-checkbox>
+        <mat-checkbox disableRipple id="showUsers" name="showUsers" color="primary" class="pr-1"
+        [(ngModel)]="showUsers">Användare</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox disableRipple id="showActive" name="showActive" color="primary" class="pr-1" [(ngModel)]="showActive">Aktiva</mat-checkbox>
+        <mat-checkbox disableRipple id="showActive" name="showActive" color="primary" class="pr-1"
+        [(ngModel)]="showActive">Aktiva</mat-checkbox>
       </div>
 
       <div class="mr-2">
-        <mat-checkbox disableRipple id="showInactive" name="showInactive" color="primary" class="pr-1" [(ngModel)]="showInactive">Inaktiva</mat-checkbox>
+        <mat-checkbox disableRipple id="showInactive" name="showInactive" color="primary" class="pr-1"
+        [(ngModel)]="showInactive">Inaktiva</mat-checkbox>
       </div>
 
     </div>
@@ -48,28 +52,40 @@
       <!-- Header row -->
       <div class="row table-header">
 
-        <div class="col-1" (click)="sortTableList('status.id')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        <div class="col-1" (click)="updateOrder('status.id'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'"
+          [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">
+          Status </span>
         </div>
 
-        <div class="col" (click)="sortTableList('username')">
-          <span class="hover" [class.up-arrow]="orderUsername == 'asc'" [class.down-arrow]="orderUsername == 'desc'" [class.both-arrow]="orderUsername == ''">Användarnamn </span>
+        <div class="col" (click)="updateOrder('username'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderUsername == 'asc'"
+          [class.down-arrow]="orderUsername == 'desc'" [class.both-arrow]="orderUsername == ''">
+          Användarnamn </span>
         </div>
 
-        <div class="col" (click)="sortTableList('name')">
-          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Namn </span>
+        <div class="col" (click)="updateOrder('name'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderName == 'asc'"
+          [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">
+          Namn </span>
         </div>
 
-        <div class="col" (click)="sortTableList('email')">
-          <span class="hover" [class.up-arrow]="orderEmail == 'asc'" [class.down-arrow]="orderEmail == 'desc'" [class.both-arrow]="orderEmail == ''">E-postadress </span>
+        <div class="col" (click)="updateOrder('email'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderEmail == 'asc'"
+          [class.down-arrow]="orderEmail == 'desc'" [class.both-arrow]="orderEmail == ''">
+          E-postadress </span>
         </div>
 
-        <div class="col" (click)="sortTableList('creationDate')">
-          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'" [class.down-arrow]="orderCreationDate == 'desc'" [class.both-arrow]="orderCreationDate == ''">Skapad </span>
+        <div class="col" (click)="updateOrder('creationDate'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderCreationDate == 'asc'"
+          [class.down-arrow]="orderCreationDate == 'desc'"
+          [class.both-arrow]="orderCreationDate == ''">Skapad </span>
         </div>
 
-        <div class="col" (click)="sortTableList('modifiedDate')">
-          <span class="hover" [class.up-arrow]="orderModifiedDate == 'asc'" [class.down-arrow]="orderModifiedDate == 'desc'" [class.both-arrow]="orderModifiedDate == ''">Senast ändrad </span>
+        <div class="col" (click)="updateOrder('modifiedDate'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderModifiedDate == 'asc'"
+          [class.down-arrow]="orderModifiedDate == 'desc'"
+          [class.both-arrow]="orderModifiedDate == ''">Senast ändrad </span>
         </div>
 
       </div>
