@@ -42,13 +42,21 @@ Figure 4 : ![alt text](https://lh3.google.com/u/0/d/1k5gloJMu_WeWazRM8bfGNN_9-dx
 The front-end code is written in TypeScript using the Angular framework. The editor Visual Studio Code was used during the development which allowed for live compilation of the application. The components are structured per page in the application, so for example the page showing the cards table that can be seen in figure 5 consists of a card table component, a component for card items that can be stored in that table and a component that is used to modify those items. There are also more general components such as the modal component that is used as the base component for all modal components.
 
 Download npm from https://www.npmjs.com/ or linux command `apt-get install npm`
+
 Download NodeJS from https://nodejs.org/en/ or linux command `apt-get install nodejs`
+
 Go to project folder
+
 Type the following commands in the console
+
 `npm install -g typescript /* this will install typescript globally */`
+
 `npm install -g @angular/cli /* this will install angular globally */`
+
 `npm install -g tslint /* this will install tslint globally */`
+
 `npm install /* this will install all required packages listed in package.json */`
+
 `ng serve /* this will run the local dev server, optional ‘-o’ to open the browser automatically */`
 
 Figure 5 : ![alt text](https://lh3.google.com/u/0/d/1kUb3SdHvFmESNORxvrfZLB-AJlLMjnrj=w1387-h887-iv1 "Front-end")
