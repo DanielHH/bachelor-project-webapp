@@ -39,6 +39,10 @@ Figure 4 : ![alt text](https://lh3.google.com/u/0/d/1k5gloJMu_WeWazRM8bfGNN_9-dx
 
 # Front-end
 
+The project  files for the front-end can be found here:
+https://gitlab.ida.liu.se/pum-ninjas/PUMApp
+
+
 The front-end code is written in TypeScript using the Angular framework. The editor Visual Studio Code was used during the development which allowed for live compilation of the application. The components are structured per page in the application, so for example the page showing the cards table that can be seen in figure 5 consists of a card table component, a component for card items that can be stored in that table and a component that is used to modify those items. There are also more general components such as the modal component that is used as the base component for all modal components.
 
 Download npm from https://www.npmjs.com/ or linux command `apt-get install npm`
@@ -60,6 +64,10 @@ ng serve /* this will run the local dev server, optional ‘-o’ to open the br
 Figure 5 : ![alt text](https://lh3.google.com/u/0/d/1kUb3SdHvFmESNORxvrfZLB-AJlLMjnrj=w1387-h887-iv1 "Front-end")
 
 # Back-end
+
+The project  files for the back-end can be found here:
+https://gitlab.ida.liu.se/pum-ninjas/PUMApi
+
 
 The back-end code is written in TypeScript using the Express.js framework. The editor Visual Studio Code was used during the development which allowed for compilation of the application. The main file is the main.ts file which starts the express server. Server.ts configures the server settings and opens the connection to the SQL server. GET, POST and PUT requests can be found in the http-requests folder.  The sql-utilities folder contains the SQL helper functions and pdf-utilities contains the PDF generation functions. The PDF templates can be found in the pdf-templates folder. The datamodels can be found in the datamodels folder and the data transfer objects can be found in the DTO folder. The database configuration can be found in database-config.ts and the database queries can be found in database-queries.ts.Fini
 
