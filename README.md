@@ -2,6 +2,7 @@
 
 # Overview
 SecTrack is a web application for tracing information. This documentation describes how the system is built and what is required to continue the development. The system consists of three parts, a MariaDB database, a back-end server developed in NodeJS and a front-end web application developed in Angular. Both back-end and front-end are written in TypeScript. An overview of the system can be seen in figure 1.
+
 Figure 1 : ![alt text](https://lh3.google.com/u/0/d/1D4kF6hNqWpzCb9xjS1wDb8OisWVYUl8c=w1920-h887-iv1 "Overview")
 
 # Purpose of the system
@@ -16,10 +17,15 @@ To run the back-end server you either need to run it directly using a package ma
 The software needed to continue the development of the application is listed below. See front-end and back-end sections for instructions on how to install it.
 
 Visual Studio Code (or equivalent) - https://code.visualstudio.com/
+
 Npm - https://www.npmjs.com/
+
 AngularCLI - https://cli.angular.io/
+
 TypeScript - https://www.typescriptlang.org/
+
 NodeJS - https://nodejs.org/en/
+
 PM2, ts-node or another package manager that can run typescript-files - http://pm2.keymetrics.io/ or https://github.com/TypeStrong/ts-node
 
 # Database structure
