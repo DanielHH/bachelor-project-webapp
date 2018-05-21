@@ -49,21 +49,19 @@ Go to project folder
 
 Type the following commands in the console
 
-```npm install -g typescript /* this will install typescript globally */```
-
-```npm install -g @angular/cli /* this will install angular globally */```
-
-```npm install -g tslint /* this will install tslint globally */```
-
-```npm install /* this will install all required packages listed in package.json */```
-
-```ng serve /* this will run the local dev server, optional ‘-o’ to open the browser automatically */```
+```
+npm install -g typescript /* this will install typescript globally */
+npm install -g @angular/cli /* this will install angular globally */
+npm install -g tslint /* this will install tslint globally */
+npm install /* this will install all required packages listed in package.json */
+ng serve /* this will run the local dev server, optional ‘-o’ to open the browser automatically */
+```
 
 Figure 5 : ![alt text](https://lh3.google.com/u/0/d/1kUb3SdHvFmESNORxvrfZLB-AJlLMjnrj=w1387-h887-iv1 "Front-end")
 
 # Back-end
 
-The back-end code is written in TypeScript using the Express.js framework. The editor Visual Studio Code was used during the development which allowed for compilation of the application. The main file is the main.ts file which starts the express server. Server.ts configures the server settings and opens the connection to the SQL server. GET, POST and PUT requests can be found in the http-requests folder.  The sql-utilities folder contains the SQL helper functions and pdf-utilities contains the PDF generation functions. The PDF templates can be found in the pdf-templates folder. The datamodels can be found in the datamodels folder and the data transfer objects can be found in the DTO folder. The database configuration can be found in database-config.ts and the database queries can be found in database-queries.ts.
+The back-end code is written in TypeScript using the Express.js framework. The editor Visual Studio Code was used during the development which allowed for compilation of the application. The main file is the main.ts file which starts the express server. Server.ts configures the server settings and opens the connection to the SQL server. GET, POST and PUT requests can be found in the http-requests folder.  The sql-utilities folder contains the SQL helper functions and pdf-utilities contains the PDF generation functions. The PDF templates can be found in the pdf-templates folder. The datamodels can be found in the datamodels folder and the data transfer objects can be found in the DTO folder. The database configuration can be found in database-config.ts and the database queries can be found in database-queries.ts.Fini
 
 Download npm from https://www.npmjs.com/ or linux command `apt-get install npm`
 
@@ -73,24 +71,21 @@ Go to project folder
 
 Type the following commands in the console
 
-```npm install -g typescript /* this will install typescript globally */```
-
-```npm install -g ts-node /* this will install ts-node globally */```
-
-```npm install /* this will install all required packages listed in package.json */``` 
+```
+npm install -g typescript /* this will install typescript globally */
+npm install -g ts-node /* this will install ts-node globally */
+npm install /* this will install all required packages listed in package.json */
+``` 
 
 Before starting the server you need to create a file named “database-config.ts” in the project folder and fill it this the following code:
 
-```export const dbconfig = {```
-
-```host: “ADDRESS TO DATABASE”,```
-
-```username: "USERNAME",```
-
-```password: "PASSWORD!",```
-
-```db: "DATABASE NAME"```
-
-```};```
+```
+export const dbconfig = {
+host: “ADDRESS TO DATABASE”,
+username: "USERNAME",
+password: "PASSWORD!",
+db: "DATABASE NAME"
+};
+```
 
 `ts-node main.ts /* this will run the main.ts file which will start the back-end server */`
