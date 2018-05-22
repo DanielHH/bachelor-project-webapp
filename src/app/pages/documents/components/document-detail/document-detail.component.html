@@ -54,7 +54,7 @@
               {{documentItem?.location}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.documentItem?.documentDate | date: 'shortDate'}}
+              {{this.utilitiesService.getDateString(this.documentItem?.documentDate)}}
             </div>
           </div>
           <!-- Row Space -->
@@ -74,13 +74,13 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-0 col-md-4">
-              {{this.documentItem?.registrationDate | date: 'shortDate'}}
+              {{this.utilitiesService.getDateString(this.documentItem?.registrationDate)}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.documentItem?.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+              {{this.utilitiesService.getDateString(this.documentItem?.creationDate, 'YYYY-MM-DD HH:mm:ss')}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.documentItem?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+              {{this.utilitiesService.getDateString(this.documentItem?.modifiedDate , 'YYYY-MM-DD HH:mm:ss')}}
             </div>
           </div>
           <!-- Row Space -->
@@ -106,8 +106,8 @@
               {{utilitiesService.getUserString(documentItem?.user)}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.documentItem?.lastVerificationDate? (this.documentItem?.lastVerificationDate ? (this.documentItem?.lastVerificationDate
-              | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig') : 'Aldrig'}}
+              {{this.documentItem?.lastVerificationDate ? (this.utilitiesService.getDateString(this.documentItem?.lastVerificationDate,
+              'YYYY-MM-DD HH:mm:ss')) : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->

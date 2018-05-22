@@ -173,7 +173,7 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
 
       document.location = this.locationInput;
       document.comment = this.commentInput ? this.commentInput : null;
-      document.modifiedDate = this.utilitiesService.getLocalDate();
+      document.modifiedDate = new Date();
     }
   }
 
@@ -186,7 +186,7 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
 
       this.setDocumentFromForm(newDoc);
 
-      newDoc.creationDate = this.utilitiesService.getLocalDate();
+      newDoc.creationDate = new Date();
       newDoc.status = this.utilitiesService.getStatusFromID(1);
       newDoc.user = new User();
 

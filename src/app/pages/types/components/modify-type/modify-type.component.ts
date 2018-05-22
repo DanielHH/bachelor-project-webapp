@@ -102,7 +102,7 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
   setTypeFromForm(type: any) {
     if (this.isValidInput()) {
       type.name = this.typeNameInput;
-      type.modifiedDate = this.utilitiesService.getLocalDate();
+      type.modifiedDate = new Date();
     }
   }
 
@@ -131,7 +131,7 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
 
       this.setTypeFromForm(newType);
 
-      newType.creationDate = this.utilitiesService.getLocalDate();
+      newType.creationDate = new Date();
       newType.status = this.utilitiesService.getStatusFromID(5); // Status = active
 
       if (this.isCardType) {

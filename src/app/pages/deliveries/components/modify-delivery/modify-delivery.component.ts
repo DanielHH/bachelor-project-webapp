@@ -135,7 +135,7 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
       delivery.sentDate = new Date(this.sentDateInput);
 
       delivery.comment = this.commentInput ? this.commentInput : null;
-      delivery.modifiedDate = this.utilitiesService.getLocalDate();
+      delivery.modifiedDate = new Date();
     }
   }
 
@@ -148,7 +148,7 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
 
       this.setDeliveryFromForm(newDelivery);
 
-      newDelivery.creationDate = this.utilitiesService.getLocalDate();
+      newDelivery.creationDate = new Date();
       newDelivery.status = this.utilitiesService.getStatusFromID(1);
 
       this.httpService.httpPost<Delivery>('addNewDelivery/', newDelivery).then(res => {

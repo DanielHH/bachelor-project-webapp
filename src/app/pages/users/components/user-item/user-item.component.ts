@@ -6,6 +6,8 @@ import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
 
+import * as moment from 'moment-timezone';
+
 @Component({
   selector: 'app-user-item',
   templateUrl: './user-item.component.html',

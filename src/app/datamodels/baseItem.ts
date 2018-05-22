@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { Card } from './card';
 import { CardType } from './cardType';
 import { Document } from './document';
@@ -107,6 +107,10 @@ export class BaseItem {
    * Returns string representation of last verified date
    */
   getLastVerifiedString(): string {
+    moment.locale('sv');
+
+    moment.tz('Europe/Stockholm');
+
     if (this.item.lastVerificationDate) {
       return this.item.lastVerificationDate
         ? moment(this.item.lastVerificationDate).format('YYYY-MM-DD')
@@ -120,6 +124,10 @@ export class BaseItem {
    * Returns string representation of last self check date
    */
   getLastSelfCheckString(): string {
+    moment.locale('sv');
+
+    moment.tz('Europe/Stockholm');
+
     if (this.item.lastSelfCheckDate) {
       return this.item.lastSelfCheckDate
         ? moment(this.item.lastSelfCheckDate).format('YYYY-MM-DD')

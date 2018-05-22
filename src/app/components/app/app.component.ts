@@ -1,5 +1,3 @@
-import { registerLocaleData } from '@angular/common';
-import swedish from '@angular/common/locales/sv';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -45,8 +43,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    /* Needed by the DatePipe used to format dates and times */
-    registerLocaleData(swedish);
   }
 
   ngOnDestroy() {

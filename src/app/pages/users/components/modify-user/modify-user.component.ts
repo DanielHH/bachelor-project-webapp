@@ -111,7 +111,7 @@ export class ModifyUserComponent implements OnInit, OnDestroy {
       const userTypeID = this.isAdmin ? Number(1) : Number(2);
       user.userType = this.utilitiesService.getUserTypeFromID(userTypeID);
 
-      user.modifiedDate = this.utilitiesService.getLocalDate();
+      user.modifiedDate = new Date();
 
       if (this.modalType === 0 || this.changePassword) {
         user.password = btoa(this.passwordInput);
@@ -128,7 +128,7 @@ export class ModifyUserComponent implements OnInit, OnDestroy {
 
       this.setUserFromForm(newUser);
 
-      newUser.creationDate = this.utilitiesService.getLocalDate();
+      newUser.creationDate = new Date();
       newUser.status = this.utilitiesService.getStatusFromID(5); // Status = active
 
       this.httpService.httpPost<User>('addNewUser/', newUser).then(res => {
@@ -150,8 +150,6 @@ export class ModifyUserComponent implements OnInit, OnDestroy {
   editUser() {
     if (this.isValidInput()) {
       this.setUserFromForm(this.userToEdit);
-
-      this.userToEdit.modifiedDate = new Date();
 
       this.httpService.httpPut<User>('updateUser/', this.userToEdit).then(res => {
         if (res.message === 'success') {

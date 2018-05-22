@@ -380,7 +380,7 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
     }
 
     verification.itemType = baseItem.getItemType();
-    verification.verificationDate = this.utilitiesService.getLocalDate();
+    verification.verificationDate = new Date();
 
     // Submit changes to database
     this.httpService.httpPost<Verification>('addNewVerification/', verification).then(verificationRes => {
@@ -389,11 +389,11 @@ export class InventoryTableComponent implements OnInit, OnDestroy {
         if (isVerification) {
           logTypeID = 6;
           itemToUpdate.lastVerificationID = Number(verificationRes.data.id);
-          itemToUpdate.lastVerificationDate = this.utilitiesService.getLocalDate();
+          itemToUpdate.lastVerificationDate = new Date();
         } else {
           logTypeID = 7;
           itemToUpdate.lastSelfCheckID = Number(verificationRes.data.id);
-          itemToUpdate.lastSelfCheckDate = this.utilitiesService.getLocalDate();
+          itemToUpdate.lastSelfCheckDate = new Date();
         }
 
         const logEvent = this.utilitiesService.createNewLogEventForItem(

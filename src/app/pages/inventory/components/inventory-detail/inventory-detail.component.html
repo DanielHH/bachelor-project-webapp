@@ -21,16 +21,16 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-                <i *ngIf="baseItem?.itemType == 'card'" class="material-icons sm-icon">credit_card</i>
-                <i *ngIf="baseItem?.itemType == 'document'" class="material-icons sm-icon">import_contacts</i>
-                {{baseItem?.item?.id ? baseItem?.getSubType()?.name : ''}}
-              </div>
+              <i *ngIf="baseItem?.itemType == 'card'" class="material-icons sm-icon">credit_card</i>
+              <i *ngIf="baseItem?.itemType == 'document'" class="material-icons sm-icon">import_contacts</i>
+              {{baseItem?.item?.id ? baseItem?.getSubType()?.name : ''}}
+            </div>
             <div class="col-12 col-md-4">
-              <span [class.nav-span]="user.userType.id == 1"  (click)="user.userType.id == 1 ? routeHistory() : false">
+              <span [class.nav-span]="user.userType.id == 1" (click)="user.userType.id == 1 ? routeHistory() : false">
                 {{baseItem?.item?.id ? baseItem?.getNumber() : ''}}</span>
             </div>
             <div class="col-12 col-md-4">
-                {{baseItem?.item?.id ? utilitiesService.getUserString(baseItem?.getItem()?.user) : ''}}
+              {{baseItem?.item?.id ? utilitiesService.getUserString(baseItem?.getItem()?.user) : ''}}
             </div>
           </div>
           <!-- Row Space -->
@@ -53,10 +53,12 @@
               {{baseItem?.item?.id ? baseItem?.item.location : ''}}
             </div>
             <div class="col-12 col-md-4">
-                {{baseItem?.item?.lastVerificationDate? (baseItem?.item?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig'}}
+              {{baseItem?.item?.lastVerificationDate? (this.utilitiesService.getDateString(baseItem?.item?.lastVerificationDate, 'YYYY-MM-DD
+              HH:mm:ss')) : 'Aldrig'}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.item?.lastSelfCheckDate? (baseItem?.item?.lastSelfCheckDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig'}}
+              {{baseItem?.item?.lastSelfCheckDate? (this.utilitiesService.getDateString(baseItem?.item?.lastSelfCheckDate, 'YYYY-MM-DD
+              HH:mm:ss')) : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->

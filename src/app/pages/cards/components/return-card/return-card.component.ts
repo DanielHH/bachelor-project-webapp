@@ -141,11 +141,11 @@ export class ReturnCardComponent implements OnInit, OnDestroy {
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(1); // 1 = Returned
       this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
-      this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.cardItem.modifiedDate = new Date();
 
       // Update receipt
       const activeReceipt = this.getReceipt(this.cardItem.activeReceiptID);
-      activeReceipt.endDate = this.utilitiesService.getLocalDate();
+      activeReceipt.endDate = new Date();
 
       // Create new log event
       const logText = this.cardItem.cardNumber + ' från ' + this.latestUser.name;

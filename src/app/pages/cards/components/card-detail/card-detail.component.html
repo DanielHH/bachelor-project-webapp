@@ -48,13 +48,13 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-0 col-md-4">
-              {{this.cardItem?.creationDate ? (this.cardItem?.creationDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+              {{this.cardItem?.creationDate ? (this.utilitiesService.getDateString(this.cardItem?.creationDate, 'YYYY-MM-DD HH:mm:ss')) : '-'}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.cardItem?.modifiedDate ? (this.cardItem?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+              {{this.cardItem?.modifiedDate ? (this.utilitiesService.getDateString(this.cardItem?.modifiedDate, 'YYYY-MM-DD HH:mm:ss')) : '-'}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.cardItem?.expirationDate | date: 'shortDate'}}
+              {{this.utilitiesService.getDateString(this.cardItem?.expirationDate)}}
             </div>
           </div>
           <!-- Row Space -->
@@ -80,8 +80,8 @@
               {{utilitiesService.getUserString(cardItem?.user)}}
             </div>
             <div class="col-0 col-md-4">
-              {{cardItem?.lastVerificationDate? (cardItem?.lastVerificationDate ? (cardItem?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss')
-              : 'Aldrig') : 'Aldrig'}}
+              {{cardItem?.lastVerificationDate ? (this.utilitiesService.getDateString(cardItem?.lastVerificationDate, 'YYYY-MM-DD HH:mm:ss'))
+              : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->

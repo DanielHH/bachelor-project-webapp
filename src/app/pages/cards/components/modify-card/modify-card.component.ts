@@ -159,7 +159,7 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
       card.expirationDate = new Date(this.expirationDateInput);
       card.comment = this.commentInput ? this.commentInput : null;
 
-      card.modifiedDate = this.utilitiesService.getLocalDate();
+      card.modifiedDate = new Date();
     }
   }
 
@@ -172,7 +172,7 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
 
       this.setCardFromForm(newCard);
 
-      newCard.creationDate = this.utilitiesService.getLocalDate();
+      newCard.creationDate = new Date();
       newCard.status = this.utilitiesService.getStatusFromID(1);
       newCard.user = new User();
 
