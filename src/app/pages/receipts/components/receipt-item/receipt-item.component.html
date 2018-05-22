@@ -2,12 +2,12 @@
 
   <div class="col-1">
     <div *ngIf="!receiptItem?.endDate">
-      <button type="button" class="status-btn btn btn-rounded btn-sm btn-success m-0 px-2 py-1" disabled mdbRippleRadius>
+      <button type="button" class="status-btn btn btn-rounded btn-sm btn-success m-0 px-2 py-1 status-button" disabled mdbRippleRadius>
         <span>Aktiv</span>
       </button>
     </div>
     <div *ngIf="receiptItem?.endDate">
-      <button type="button" class="status-btn btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
+      <button type="button" class="status-btn btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1 status-button" mdbRippleRadius disabled>
         <span>Inaktiv</span>
       </button>
     </div>
