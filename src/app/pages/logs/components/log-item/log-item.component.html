@@ -1,5 +1,9 @@
 <div class="row table-item" (click)="showDetailsModal()">
-  <div class="col-2">{{logEventItem?.logType?.name}}</div>
+  <div class="col-2">
+    <button type="button" class="status-btn btn btn-rounded btn-blue-grey btn-sm m-0 px-2 py-1 status-button" mdbRippleRadius disabled>
+      <span>{{logEventItem?.logType?.name}}</span>
+    </button>
+  </div>
   <div class="col">{{logEventItem?.logText}}</div>
   <div class="col">{{utilitiesService.getUserString(logEventItem?.user)}}</div>
   <div class="col-2">{{this.utilitiesService.getDateString(logEventItem?.logDate, 'YYYY-MM-DD HH:mm:ss')}}</div>
