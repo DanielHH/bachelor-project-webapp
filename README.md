@@ -1,5 +1,4 @@
 
-
 # Overview
 SecTrack is a web application for tracing information. This documentation describes how the system is built and what is required to continue the development. The system consists of three parts, a MariaDB database, a back-end server developed in NodeJS and a front-end web application developed in Angular. Both back-end and front-end are written in TypeScript. An overview of the system can be seen in figure 1.
 
@@ -11,7 +10,7 @@ SecTrack can be used by companies to track assets by storing entries in a databa
 # Building the Project
 To build the front-end project you need to have angular-cli installed. The command to build the front-end project is “ng build” and when it has finished building (this can take quite some time) you can find the web application in the new folder named “dist”, here you can find the whole application and you can then move it to a web server.
 
-To run the back-end server you either need to run it directly using a package manager that can handle typescript files. PM2 works great for this purpose but ts-node can also be used. If you want to build the project into javascript files you can stand in the source folder and use the command “tsc”.
+To run the back-end server you either need to run it directly using a package manager that can handle typescript files. PM2 works great for this purpose but ts-node can also be used. If you want to build the project into javascript files you need to use the command “tsc” in the source folder.
 
 # Software requirements
 The software needed to continue the development of the application is listed below. See front-end and back-end sections for instructions on how to install it.
@@ -69,7 +68,7 @@ The project  files for the back-end can be found here:
 https://gitlab.ida.liu.se/pum-ninjas/PUMApi
 
 
-The back-end code is written in TypeScript using the Express.js framework. The editor Visual Studio Code was used during the development which allowed for compilation of the application. The main file is the main.ts file which starts the express server. Server.ts configures the server settings and opens the connection to the SQL server. GET, POST and PUT requests can be found in the http-requests folder.  The sql-utilities folder contains the SQL helper functions and pdf-utilities contains the PDF generation functions. The PDF templates can be found in the pdf-templates folder. The datamodels can be found in the datamodels folder and the data transfer objects can be found in the DTO folder. The database configuration can be found in database-config.ts and the database queries can be found in database-queries.ts.Fini
+The back-end code is written in TypeScript using the Express.js framework. The editor Visual Studio Code was used during the development which allowed for compilation of the application. The main file is the main.ts file which starts the express server. Server.ts configures the server settings and opens the connection to the SQL server. GET, POST and PUT requests can be found in the http-requests folder.  The sql-utilities folder contains the SQL helper functions and pdf-utilities contains the PDF generation functions. The PDF templates can be found in the pdf-templates folder. The datamodels can be found in the datamodels folder and the data transfer objects can be found in the DTO folder. The database configuration can be found in database-config.ts and the database queries can be found in database-queries.ts.
 
 Download npm from https://www.npmjs.com/ or linux command `apt-get install npm`
 
