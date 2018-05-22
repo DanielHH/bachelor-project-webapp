@@ -8,7 +8,7 @@
   <div *ngIf="dropdown.isOpen" dropdownToggle></div>
 
   <!--Menu-->
-  <div class="dropdown-menu" (click)="$event.stopPropagation(); dropdown.toggle()">
+  <div *ngIf="this.getObjectID" class="dropdown-menu" (click)="$event.stopPropagation(); dropdown.toggle()">
     <a class="dropdown-item" (click)="route()" *ngIf="showHistoryOption">
       Historik
     </a>
