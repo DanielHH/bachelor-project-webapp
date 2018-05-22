@@ -159,7 +159,6 @@ export class ModifyUserComponent implements OnInit, OnDestroy {
 
           this.userList = this.userList.slice();
           this.dataService.userList.next(this.userList);
-          console.log(this.userList);
 
           this.closeForm();
           this.dataService.getReceiptList();
