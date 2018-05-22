@@ -1,7 +1,7 @@
 <div class="row table-item" (click)="showDetailsModal()">
   <div class="col-1">
     <div *ngIf="deliveryItem?.status?.id == 1 || deliveryItem?.status?.id == 2">
-      <button type="button" class="status-btn btn btn-rounded btn-sm m-0 px-2 py-1" [class.btn-danger]="deliveryItem?.status?.id == 2"
+      <button type="button" class="status-btn btn btn-rounded btn-sm m-0 px-2 py-1 status-button" [class.btn-danger]="deliveryItem?.status?.id == 2"
         [class.btn-success]="deliveryItem?.status?.id == 1" disabled mdbRippleRadius>
         <span>Levererad</span>
       </button>
