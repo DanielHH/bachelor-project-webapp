@@ -7,7 +7,8 @@
       </button>
     </div>
     <div *ngIf="receiptItem?.endDate">
-      <button type="button" class="status-btn btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1 status-button" mdbRippleRadius disabled>
+      <button type="button" class="status-btn btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1 status-button" mdbRippleRadius
+        disabled>
         <span>Inaktiv</span>
       </button>
     </div>
@@ -19,15 +20,15 @@
   </div>
   <div class="col">{{itemIDToDisplay}}</div>
   <div class="col">{{this.receiptItem.user?.name}}</div>
-  <div class="col">{{this.receiptItem.startDate | date: 'shortDate'}}</div>
+  <div class="col">{{this.utilitiesService.getDateString(this.receiptItem?.startDate)}}</div>
   <div class="col">
-    <div class="column-text">{{this.receiptItem.endDate | date: 'shortDate'}}</div>
+    <div class="column-text">{{this.utilitiesService.getDateString(this.receiptItem?.endDate)}}</div>
     <div class="table-menu-fix">
       <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 pull-right" [class.btn-success]="receiptItem?.url" [class.btn-danger]="!receiptItem?.url"
-      mdbRippleRadius (click)="receiptItem?.url ? openPDF() : genPDF(); $event.stopPropagation()">
-      <span>PDF</span>
-    </button>
-  </div>
+        mdbRippleRadius (click)="receiptItem?.url ? openPDF() : genPDF(); $event.stopPropagation()">
+        <span>PDF</span>
+      </button>
+    </div>
   </div>
 
 </div>

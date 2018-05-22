@@ -21,11 +21,11 @@
   </div>
 
   <div class="col">
-    <div class="column-text">{{typeItem?.getType()?.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+    <div class="column-text">{{this.utilitiesService.getDateString(typeItem?.getType()?.creationDate, 'YYYY-MM-DD HH:mm:ss')}}</div>
   </div>
 
   <div class="col">
-    <div class="column-text">{{typeItem?.getType()?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
+    <div class="column-text">{{this.utilitiesService.getDateString(typeItem?.getType()?.modifiedDate, 'YYYY-MM-DD HH:mm:ss')}}</div>
     <div class="table-menu-fix">
       <app-item-menu [object]="typeItem" (editObject)="edit()" (editStatus)="editStatus()" [isTypeItem]="true" [adminMenu]="true"
         [showEditOption]="true" [showHistoryOption]="false"></app-item-menu>

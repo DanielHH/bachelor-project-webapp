@@ -102,7 +102,7 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
   setTypeFromForm(type: any) {
     if (this.isValidInput()) {
       type.name = this.typeNameInput;
-      type.modifiedDate = this.utilitiesService.getLocalDate();
+      type.modifiedDate = new Date();
     }
   }
 
@@ -131,13 +131,13 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
 
       this.setTypeFromForm(newType);
 
-      newType.creationDate = this.utilitiesService.getLocalDate();
+      newType.creationDate = new Date();
       newType.status = this.utilitiesService.getStatusFromID(5); // Status = active
 
       if (this.isCardType) {
         this.httpService.httpPost<CardType>('addNewCardType/', newType).then(res => {
           if (res.message === 'success') {
-            this.cardTypeList.unshift(res.body.data);
+            this.cardTypeList.unshift(res.data);
 
             this.cardTypeList = this.cardTypeList.slice();
             this.dataService.cardTypeList.next(this.cardTypeList);
@@ -150,7 +150,7 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
       } else {
         this.httpService.httpPost<DocumentType>('addNewDocumentType/', newType).then(res => {
           if (res.message === 'success') {
-            this.documentTypeList.unshift(res.body.data);
+            this.documentTypeList.unshift(res.data);
 
             this.documentTypeList = this.documentTypeList.slice();
             this.dataService.documentTypeList.next(this.documentTypeList);
@@ -175,6 +175,8 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
       if (this.isCardType) {
         this.httpService.httpPut<CardType>('updateCardType/', type).then(res => {
           if (res.message === 'success') {
+            this.baseTypeToEdit.type.modifiedDate = res.data.modifiedDate;
+
             this.cardTypeList = this.cardTypeList.slice();
             this.dataService.cardTypeList.next(this.cardTypeList);
 
@@ -188,6 +190,8 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
       } else {
         this.httpService.httpPut<DocumentType>('updateDocumentType/', type).then(res => {
           if (res.message === 'success') {
+            this.baseTypeToEdit.type.modifiedDate = res.data.modifiedDate;
+
             this.documentTypeList = this.documentTypeList.slice();
             this.dataService.documentTypeList.next(this.documentTypeList);
 

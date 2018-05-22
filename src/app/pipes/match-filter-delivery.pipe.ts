@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { Delivery } from '../datamodels/delivery';
 import { DataService } from '../services/data.service';
 import { UtilitiesService, lowerCase } from '../services/utilities.service';
@@ -45,7 +45,7 @@ export class MatchFilterDeliveryPipe implements PipeTransform {
       return false;
     }
 
-    const sentDate = moment(delivery.sentDate).format('YYYY-MM-DD');
+    const sentDate = this.utilitiesService.getDateString(delivery.sentDate);
     filterInput = lowerCase(filterInput);
 
     if (

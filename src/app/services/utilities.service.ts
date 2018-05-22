@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { CardType } from '../datamodels/cardType';
 import { DocumentType } from '../datamodels/documentType';
 import { ItemType } from '../datamodels/itemType';
@@ -85,6 +85,10 @@ export class UtilitiesService implements OnDestroy {
     this.dataServiceLogEventSubscriber = this.dataService.logEventList.subscribe(logEventList => {
       this.logEventList = logEventList;
     });
+
+    moment.locale('sv');
+
+    moment.tz('Europe/Stockholm');
   }
 
   ngOnDestroy() {
@@ -124,7 +128,7 @@ export class UtilitiesService implements OnDestroy {
       logEvent.document = item;
     }
     logEvent.user = user;
-    logEvent.logDate = this.getLocalDate();
+    logEvent.logDate = new Date();
     if (logText) {
       logEvent.logText = logText;
     }
@@ -135,19 +139,10 @@ export class UtilitiesService implements OnDestroy {
    * Updates logEventList
    */
   updateLogEventList(logEvent: any) {
-    logEvent.logDate = moment.utc(logEvent.logDate).format('YYYY-MM-DD HH:mm:ss');
+    logEvent.logDate = moment(logEvent.logDate).format('YYYY-MM-DD HH:mm:ss');
     this.logEventList.unshift(logEvent);
     this.logEventList = this.logEventList.slice();
     this.dataService.logEventList.next(this.logEventList);
-  }
-
-  /**
-   * Returns a Date object representing current local time
-   */
-  getLocalDate(): Date {
-    const localDate = new Date();
-    localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
-    return localDate;
   }
 
   /**

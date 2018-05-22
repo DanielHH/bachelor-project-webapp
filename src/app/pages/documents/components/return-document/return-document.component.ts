@@ -118,10 +118,10 @@ export class ReturnDocumentComponent implements OnInit, OnDestroy {
       this.documentItem.location = this.locationInput;
       this.documentItem.comment = this.commentInput != '' ? this.commentInput : null;
       this.documentItem.status = this.utilitiesService.getStatusFromID(1); // 1 = Returned
-      this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.documentItem.modifiedDate = new Date();
 
       const activeReceipt = this.getReceipt(this.documentItem.activeReceiptID);
-      activeReceipt.endDate = this.utilitiesService.getLocalDate();
+      activeReceipt.endDate = new Date();
 
       // Create new log event
       const logText = this.documentItem.documentNumber + ' från ' + this.latestUser.name;

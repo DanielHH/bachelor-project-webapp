@@ -1,8 +1,8 @@
 <div class="row table-item" (click)="showDetailsModal()">
   <div class="col-1">
     <div *ngIf="cardItem?.status?.id == 1 || cardItem?.status?.id == 2">
-      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 status-button" [class.btn-danger]="cardItem?.status?.id == 2" [class.btn-success]="cardItem?.status?.id == 1"
-        (click)="showModal(); $event.stopPropagation()" mdbRippleRadius>
+      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 status-button" [class.btn-danger]="cardItem?.status?.id == 2"
+        [class.btn-success]="cardItem?.status?.id == 1" (click)="showModal(); $event.stopPropagation()" mdbRippleRadius>
         <span *ngIf="cardItem?.status?.id == 1">Kvittera ut</span>
         <span *ngIf="cardItem?.status?.id == 2">Kvittera in</span>
       </button>
@@ -24,10 +24,9 @@
   <div class="col">{{cardItem?.location}}</div>
   <div class="col">{{cardItem?.comment}}</div>
   <div class="col">
-    <div class="column-text">{{this.cardItem?.expirationDate | date: 'shortDate'}}</div>
+    <div class="column-text">{{this.utilitiesService.getDateString(this.cardItem?.expirationDate)}}</div>
     <div class="table-menu-fix">
-      <app-item-menu [object]="cardItem" (editObject)="edit()" (editStatus)="editStatus()"
-      [itemMenu]="true" [showEditOption]="true"></app-item-menu>
+      <app-item-menu [object]="cardItem" (editObject)="edit()" (editStatus)="editStatus()" [itemMenu]="true" [showEditOption]="true"></app-item-menu>
     </div>
   </div>
 </div>

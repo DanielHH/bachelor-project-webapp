@@ -105,7 +105,7 @@ export class RequestDocumentComponent implements OnInit, OnDestroy {
       if (document && document.id) {
         this.documentItem = document;
 
-        this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
+        this.startDateInput = utilitiesService.getDateString(new Date());
         this.startDateDatepickerInput = this.startDateInput;
         this.generatePDF = true;
 
@@ -189,7 +189,7 @@ export class RequestDocumentComponent implements OnInit, OnDestroy {
       this.documentItem.user = this.usernameInput;
       this.documentItem.location = this.locationInput;
       this.documentItem.status = this.utilitiesService.getStatusFromID(2);
-      this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.documentItem.modifiedDate = new Date();
       this.documentItem.comment = this.commentInput;
       this.documentItem.registrator = this.user.name;
 

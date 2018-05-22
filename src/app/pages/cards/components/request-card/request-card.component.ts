@@ -115,7 +115,7 @@ export class RequestCardComponent implements OnInit, OnDestroy {
       if (card && card.id) {
         this.cardItem = card;
 
-        this.startDateInput = utilitiesService.getDateString(utilitiesService.getLocalDate());
+        this.startDateInput = utilitiesService.getDateString(new Date());
         this.startDateDatepickerInput = this.startDateInput;
         this.generatePDF = true;
 
@@ -212,7 +212,7 @@ export class RequestCardComponent implements OnInit, OnDestroy {
       this.cardItem.location = this.locationInput;
       this.cardItem.status = this.utilitiesService.getStatusFromID(2); // 2 = Requested
       this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
-      this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.cardItem.modifiedDate = new Date();
       this.cardItem.registrator = this.user.name;
 
       // Create new receipt

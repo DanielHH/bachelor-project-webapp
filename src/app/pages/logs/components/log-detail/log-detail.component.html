@@ -27,7 +27,7 @@
               {{utilitiesService.getUserString(logEventItem?.user)}}
             </div>
             <div class="col-12 col-md-4">
-              {{logEventItem?.logDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+              {{this.utilitiesService.getDateString(logEventItem?.logDate, 'YYYY-MM-DD HH:mm:ss')}}
             </div>
           </div>
 
