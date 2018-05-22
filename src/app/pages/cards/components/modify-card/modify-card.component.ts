@@ -181,7 +181,17 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
 
       this.httpService.httpPost<Card>('addNewCard/', { card: newCard, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
-          this.dataService.getCardList();
+          this.cardList.unshift(res.data.card);
+          this.itemList.unshift(new BaseItem(res.data.card, 'card'));
+
+          // Trigger view refresh
+          this.cardList = this.cardList.slice();
+          this.dataService.cardList.next(this.cardList);
+
+          // Trigger view refresh
+          this.itemList = this.itemList.slice();
+          this.dataService.itemList.next(this.itemList);
+          // Update log event list
           this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           this.closeForm();
@@ -204,7 +214,14 @@ export class ModifyCardComponent implements OnInit, OnDestroy {
 
       this.httpService.httpPut<Card>('updateCard/', { cardItem: this.cardItem, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
-          this.dataService.getCardList();
+          // Trigger view refresh
+          this.cardList = this.cardList.slice();
+          this.dataService.cardList.next(this.cardList);
+
+          // Trigger view refresh
+          this.itemList = this.itemList.slice();
+          this.dataService.itemList.next(this.itemList);
+
           this.dataService.getReceiptList();
 
           this.utilitiesService.updateLogEventList(res.data.logEvent);

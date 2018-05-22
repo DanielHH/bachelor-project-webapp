@@ -153,7 +153,10 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
 
       this.httpService.httpPost<Delivery>('addNewDelivery/', newDelivery).then(res => {
         if (res.message === 'success') {
-          this.dataService.getDeliveryList();
+          this.deliveryList.unshift(res.data);
+          // Trigger view refresh
+          this.deliveryList = this.deliveryList.slice();
+          this.dataService.deliveryList.next(this.deliveryList);
 
           this.closeForm();
         }
@@ -170,7 +173,9 @@ export class ModifyDeliveryComponent implements OnInit, OnDestroy {
 
       this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
         if (res.message === 'success') {
-          this.dataService.getDeliveryList();
+          // Trigger view refresh
+          this.deliveryList = this.deliveryList.slice();
+          this.dataService.deliveryList.next(this.deliveryList);
 
           this.closeForm();
         }

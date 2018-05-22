@@ -28,13 +28,14 @@
   </div>
 
   <div class="col">
-    <div class="column-text">{{user?.creationDate}}</div>
+    <div class="column-text">{{user?.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
   </div>
 
   <div class="col">
-    <div class="column-text">{{user?.modifiedDate}}</div>
+    <div class="column-text">{{user?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
     <div class="table-menu-fix">
-      <app-item-menu [object]="user" (editObject)="edit()" (editStatus)="editStatus()" [adminMenu]="true" [showEditOption]="true" [showHistoryOption]="false"></app-item-menu>
+      <app-item-menu [object]="user" (editObject)="edit()" (editStatus)="editStatus()" [adminMenu]="true" [showEditOption]="true"
+        [showHistoryOption]="false"></app-item-menu>
     </div>
   </div>
 </div>

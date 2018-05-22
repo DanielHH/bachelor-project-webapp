@@ -16,6 +16,12 @@
     .nav-title {
       border-bottom: 1px solid white;
       width: 100%;
+      display: flex;
+      justify-content: space-between;
+      .align-button {
+        display: flex;
+        margin-top: 6px;
+      }
     }
 
     ul {
