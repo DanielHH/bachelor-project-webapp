@@ -106,7 +106,12 @@ export class UtilitiesService implements OnDestroy {
   }
 
   /**
-   * Fills in variables for new log event
+   * Fills in variables for new log event and returns it
+   * @param itemTypeID specifies whether it is a card or a document
+   * @param logTypeID specifies which log type it is
+   * @param item item which the log event is for
+   * @param user The user involved in this log event
+   * @param logText relevant log text
    */
   createNewLogEventForItem(itemTypeID: number, logTypeID: number, item: any, user?: User, logText?: string): LogEvent {
     const logEvent = new LogEvent();
@@ -119,7 +124,7 @@ export class UtilitiesService implements OnDestroy {
       logEvent.document = item;
     }
     logEvent.user = user;
-    logEvent.logDate = new Date();
+    logEvent.logDate = this.getLocalDate();
     if (logText) {
       logEvent.logText = logText;
     }
@@ -130,6 +135,7 @@ export class UtilitiesService implements OnDestroy {
    * Updates logEventList
    */
   updateLogEventList(logEvent: any) {
+    logEvent.logDate = moment.utc(logEvent.logDate).format('YYYY-MM-DD HH:mm:ss');
     this.logEventList.unshift(logEvent);
     this.logEventList = this.logEventList.slice();
     this.dataService.logEventList.next(this.logEventList);

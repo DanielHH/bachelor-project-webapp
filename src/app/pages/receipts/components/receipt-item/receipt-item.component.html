@@ -20,11 +20,14 @@
   <div class="col">{{itemIDToDisplay}}</div>
   <div class="col">{{this.receiptItem.user?.name}}</div>
   <div class="col">{{this.receiptItem.startDate | date: 'shortDate'}}</div>
-  <div class="col">{{this.receiptItem.endDate | date: 'shortDate'}}
-    <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 pull-right" [class.btn-success]="receiptItem?.url" [class.btn-danger]="!receiptItem?.url"
+  <div class="col">
+    <div class="column-text">{{this.receiptItem.endDate | date: 'shortDate'}}</div>
+    <div class="table-menu-fix">
+      <button type="button" class="btn btn-rounded btn-sm m-0 px-2 py-1 pull-right" [class.btn-success]="receiptItem?.url" [class.btn-danger]="!receiptItem?.url"
       mdbRippleRadius (click)="receiptItem?.url ? openPDF() : genPDF(); $event.stopPropagation()">
       <span>PDF</span>
     </button>
+  </div>
   </div>
 
 </div>

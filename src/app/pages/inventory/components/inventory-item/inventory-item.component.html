@@ -12,7 +12,7 @@
         <span *ngIf="baseItem?.getItem().status?.id == 2">Utkvitterad</span>
       </button>
     </div>
-    <div *ngIf="baseItem?.getItem().status?.id == 3 || baseItem?.getItem().status?.id == 4" class="col">
+    <div *ngIf="baseItem?.getItem().status?.id == 3 || baseItem?.getItem().status?.id == 4">
       <button type="button" class="btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1" mdbRippleRadius disabled>
         <span *ngIf="baseItem?.getItem().status?.id == 3">Arkiverad</span>
         <span *ngIf="baseItem?.getItem().status?.id == 4">Borttappad</span>

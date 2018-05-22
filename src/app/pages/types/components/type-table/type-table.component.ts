@@ -1,17 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { BaseType } from '../../../../datamodels/baseType';
 import { ModalService } from '../../../../services/modal.service';
+import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-type-table',
   templateUrl: './type-table.component.html',
   styleUrls: ['./type-table.component.scss']
 })
-export class TypeTableComponent implements OnInit {
-  @Input() typeList: BaseType[];
-
+export class TypeTableComponent implements OnInit, OnDestroy {
   showModal = false;
+
+  order = 'desc';
+  sortProperty = 'modifiedDate';
 
   filterInput = '';
 
@@ -29,51 +31,62 @@ export class TypeTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor(private modalService: ModalService) {}
+  dataServiceSubscriber: any;
+
+  typeList: BaseType[] = [];
+
+  constructor(private modalService: ModalService, private dataService: DataService) {
+    this.dataServiceSubscriber = this.dataService.typeList.subscribe(typeList => {
+      this.typeList = typeList;
+      this.orderTableList();
+    });
+  }
 
   ngOnInit() {
-    this.sortTableListStart();
+    this.orderTableList();
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 
   /**
-   * Sorts table after location descending
-   */
-  sortTableListStart() {
-    this.typeList = _.orderBy(this.typeList, ['modifiedDate'], ['desc']);
-  }
-
-  /**
-   * Sorts the table depending on the properties of the items
+   * Update order and order property
    * @param property
    */
-  sortTableList(property: string) {
-    let newOrder = '';
+  updateOrder(property: string) {
+    this.sortProperty = property;
 
     switch (property) {
       case 'type.status.id': {
-        newOrder = this.sortTableListHelper(this.orderStatus);
-        this.orderStatus = newOrder;
+        this.order = this.getNewOrder(this.orderStatus);
+        this.orderStatus = this.order;
         break;
       }
       case 'type.name': {
-        newOrder = this.sortTableListHelper(this.orderName);
-        this.orderName = newOrder;
+        this.order = this.getNewOrder(this.orderName);
+        this.orderName = this.order;
         break;
       }
       case 'type.creationDate': {
-        newOrder = this.sortTableListHelper(this.orderCreationDate);
-        this.orderCreationDate = newOrder;
+        this.order = this.getNewOrder(this.orderCreationDate);
+        this.orderCreationDate = this.order;
         break;
       }
       case 'type.modifiedDate': {
-        newOrder = this.sortTableListHelper(this.orderModifiedDate);
-        this.orderModifiedDate = newOrder;
+        this.order = this.getNewOrder(this.orderModifiedDate);
+        this.orderModifiedDate = this.order;
         break;
       }
     }
+  }
 
-    if (newOrder) {
-      this.typeList = _.orderBy(this.typeList, [property], [newOrder]);
+  /**
+   * Orders card list based on set order and order property
+   */
+  orderTableList() {
+    if (this.order) {
+      this.typeList = _.orderBy(this.typeList, [this.sortProperty], [this.order]);
     }
   }
 
@@ -81,7 +94,7 @@ export class TypeTableComponent implements OnInit {
    * Sets the order to sort by
    * @param order
    */
-  sortTableListHelper(order: string) {
+  getNewOrder(order: string) {
     switch (order) {
       case 'asc':
         return 'desc';

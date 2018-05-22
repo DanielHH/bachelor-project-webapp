@@ -93,6 +93,9 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
     this.editStatus.emit();
   }
 
+  /**
+   * Returns the status ID for the object
+   */
   getStatusID() {
     if (this.isTypeItem) {
       return this.object.getType().status.id;
@@ -107,7 +110,7 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that can be archived the item is available.
    */
   showArchiveOption() {
-    const isAvailable = this.object.status.id == 1;
+    const isAvailable = this.object.id && this.object.status.id == 1;
     return this.itemMenu && isAvailable;
   }
 
@@ -117,8 +120,8 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that can be lost and that object is available or requested.
    */
   showLostOption() {
-    const isAvailable = this.object.status.id == 1;
-    const isRequested = this.object.status.id == 2;
+    const isAvailable = this.object.id && this.object.status.id == 1;
+    const isRequested = this.object.id && this.object.status.id == 2;
     return this.itemMenu && (isAvailable || isRequested);
   }
 
@@ -128,8 +131,8 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that is archived or lost.
    */
   showRestoreOption() {
-    const isArchived = this.object.status.id == 3;
-    const isLost = this.object.status.id == 4;
+    const isArchived = this.object.id && this.object.status.id == 3;
+    const isLost = this.object.id && this.object.status.id == 4;
     return this.itemMenu && (isArchived || isLost);
   }
 
@@ -139,7 +142,7 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that can be active or inactive, and that object is inactive.
    */
   showActivateOption() {
-    const isInactive = this.getStatusID() === 6;
+    const isInactive = this.object.id && this.getStatusID() === 6;
     return this.adminMenu && isInactive;
   }
 
@@ -149,7 +152,7 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that can be active or inactive, and that object is active.
    */
   showInactivateOption() {
-    const isActive = this.getStatusID() === 5;
+    const isActive = this.object.id && this.getStatusID() === 5;
     return this.adminMenu && isActive;
   }
 }

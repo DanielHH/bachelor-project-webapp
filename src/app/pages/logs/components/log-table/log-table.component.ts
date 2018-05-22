@@ -1,17 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { LogEvent } from '../../../../datamodels/logEvent';
 import { lowerCase } from '../../../../services/utilities.service';
+import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-log-table',
   templateUrl: './log-table.component.html',
   styleUrls: ['./log-table.component.scss']
 })
-export class LogTableComponent implements OnInit {
-  @Input() logEventList: LogEvent[];
+export class LogTableComponent implements OnInit, OnDestroy {
 
   filterInput = '';
+
+  order = 'desc';
+  sortProperty = 'logDate';
 
   orderLogDate = '';
   orderLogType = '';
@@ -21,73 +24,85 @@ export class LogTableComponent implements OnInit {
   showReceipt = true;
   showOther = true;
 
-  constructor() {}
+  dataServiceSubscriber: any;
+
+  logEventList: LogEvent[] = [];
+
+  constructor(private dataService: DataService) {
+    this.dataServiceSubscriber = this.dataService.logEventList.subscribe(logEventList => {
+      this.logEventList = logEventList;
+      this.orderTableList();
+    });
+  }
 
   ngOnInit() {
-    this.sortTableListStart();
+    this.orderTableList();
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 
   /**
-   * Sorts table after modifiedDate ascending
-   */
-  sortTableListStart() {
-    this.logEventList = _.orderBy(this.logEventList, ['logDate'], ['desc']);
-  }
-
-  /**
-   * Sorts the table depending on the property of the log
+   * Update order and order property
    * @param property
    */
-  sortTableList(property: string) {
-    let newOrder = '';
+  updateOrder(property: string) {
 
     switch (property) {
       case 'logDate': {
-        newOrder = this.sortTableListHelper(this.orderLogDate);
-        this.orderLogDate = newOrder;
+        this.order = this.getNewOrder(this.orderLogDate);
+        this.orderLogDate = this.order;
         break;
       }
       case 'logType': {
-        newOrder = this.sortTableListHelper(this.orderLogType);
-        this.orderLogType = newOrder;
+        this.order = this.getNewOrder(this.orderLogType);
+        this.orderLogType = this.order;
         property = 'logType.name';
         break;
       }
       case 'logText': {
-        newOrder = this.sortTableListHelper(this.orderLogText);
-        this.orderLogText = newOrder;
+        this.order = this.getNewOrder(this.orderLogText);
+        this.orderLogText = this.order;
         break;
       }
       case 'user': {
-        newOrder = this.sortTableListHelper(this.orderLogUser);
-        this.orderLogUser = newOrder;
+        this.order = this.getNewOrder(this.orderLogUser);
+        this.orderLogUser = this.order;
         property = 'user.name';
         break;
       }
     }
 
-    if (newOrder) {
+    this.sortProperty = property;
+  }
+
+  /**
+   * Orders receipt list based on set order and order property
+   */
+  orderTableList() {
+    if (this.order) {
       this.logEventList = _.orderBy(
         this.logEventList,
         [
           logEvent => {
-            if (logEvent[property]) {
-              return lowerCase(logEvent[property]) as string;
+            if (logEvent[this.sortProperty]) {
+              return lowerCase(logEvent[this.sortProperty]) as string;
             } else {
-              return logEvent[property.slice(0, -5)] ? (lowerCase(logEvent[property.slice(0, -5)].name) as string) : '';
+              return logEvent[this.sortProperty.slice(0, -5)] ? (lowerCase(logEvent[this.sortProperty.slice(0, -5)].name) as string) : '';
             }
           }
         ],
-        [newOrder]
+        [this.order]
       );
     }
   }
 
   /**
-   * Sets the order to sort by
+   * Returns new order given old one
    * @param order
    */
-  sortTableListHelper(order: string) {
+  getNewOrder(order: string) {
     switch (order) {
       case 'asc':
         return 'desc';

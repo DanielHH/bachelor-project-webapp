@@ -63,32 +63,39 @@
           <mat-checkbox disableRipple color="primary" (checked)="selectAll" [(ngModel)]="selectAll" (change)="selectionChanged()"></mat-checkbox>
         </div>
 
-        <div class="col-1" (click)="sortTableList('status')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        <div class="col-1" (click)="setNextOrder('status');orderTableList('status')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+          [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
 
-        <div class="col" (click)="sortTableList('subType')">
-          <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Typ </span>
+        <div class="col" (click)="setNextOrder('subType');orderTableList('subType')">
+          <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'"
+          [class.both-arrow]="orderSubType == ''">Typ </span>
         </div>
 
-        <div class="col" (click)="sortTableList('number')">
-          <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">ID </span>
+        <div class="col" (click)="setNextOrder('number');orderTableList('number')">
+          <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'"
+          [class.both-arrow]="orderNumber == ''">ID </span>
         </div>
 
-        <div class="col" (click)="sortTableList('user')">
-          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
+        <div class="col" (click)="setNextOrder('user');orderTableList('user')">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'"
+          [class.both-arrow]="orderUser == ''">Användare </span>
         </div>
 
-        <div class="col" (click)="sortTableList('location')">
-          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring </span>
+        <div class="col" (click)="setNextOrder('location');orderTableList('location')">
+          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
+          [class.both-arrow]="orderLocation == ''">Förvaring </span>
         </div>
 
-        <div class="col" (click)="sortTableList('selfCheck')">
-          <span class="hover" [class.up-arrow]="orderSelfCheck == 'asc'" [class.down-arrow]="orderSelfCheck == 'desc'" [class.both-arrow]="orderVerify == ''">Senaste egenkontroll </span>
+        <div class="col" (click)="setNextOrder('selfCheck');orderTableList('selfCheck')">
+          <span class="hover" [class.up-arrow]="orderSelfCheck == 'asc'" [class.down-arrow]="orderSelfCheck == 'desc'"
+          [class.both-arrow]="orderSelfCheck == ''">Senaste egenkontroll </span>
         </div>
 
-        <div class="col" (click)="sortTableList('verify')">
-          <span class="hover" [class.up-arrow]="orderVerify == 'asc'" [class.down-arrow]="orderVerify == 'desc'" [class.both-arrow]="orderVerify == ''">Senaste inventering </span>
+        <div class="col" (click)="setNextOrder('verify');orderTableList('verify')">
+          <span class="hover" [class.up-arrow]="orderVerify == 'asc'" [class.down-arrow]="orderVerify == 'desc'"
+          [class.both-arrow]="orderVerify == ''">Senaste inventering </span>
         </div>
 
       </div>

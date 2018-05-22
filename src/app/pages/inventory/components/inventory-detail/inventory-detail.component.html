@@ -9,25 +9,28 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              <b>Sort:</b>
-            </div>
-            <div class="col-12 col-md-4">
               <b>Typ:</b>
             </div>
             <div class="col-12 col-md-4">
               <b>ID:</b>
             </div>
+            <div class="col-12 col-md-4">
+              <b>Användare:</b>
+            </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{baseItem?.item?.id ? baseItem?.getItemTypeString() : ''}}
+                <i *ngIf="baseItem?.itemType == 'card'" class="material-icons sm-icon">credit_card</i>
+                <i *ngIf="baseItem?.itemType == 'document'" class="material-icons sm-icon">import_contacts</i>
+                {{baseItem?.item?.id ? baseItem?.getSubType()?.name : ''}}
+              </div>
+            <div class="col-12 col-md-4">
+              <span [class.nav-span]="user.userType.id == 1"  (click)="user.userType.id == 1 ? routeHistory() : false">
+                {{baseItem?.item?.id ? baseItem?.getNumber() : ''}}</span>
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.item?.id ? baseItem?.getSubType()?.name : ''}}
-            </div>
-            <div class="col-12 col-md-4">
-              <span [class.nav-span]="user.userType.id == 1" (click)="user.userType.id == 1 ? routeHistory() : false">{{baseItem?.item?.id ? baseItem?.getNumber() : ''}}</span>
+                {{baseItem?.item?.id ? utilitiesService.getUserString(baseItem?.getItem()?.user) : ''}}
             </div>
           </div>
           <!-- Row Space -->
@@ -35,25 +38,25 @@
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              <b>Användare:</b>
-            </div>
-            <div class="col-12 col-md-4">
               <b>Förvaringsplats:</b>
             </div>
             <div class="col-12 col-md-4">
-              <b>Senast verifierad:</b>
+              <b>Senaste inventering:</b>
+            </div>
+            <div class="col-12 col-md-4">
+              <b>Senaste egenkontroll:</b>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
             <div class="col-12 col-md-4">
-              {{baseItem?.item?.id ? utilitiesService.getUserString(baseItem?.getItem()?.user) : ''}}
-            </div>
-            <div class="col-12 col-md-4">
               {{baseItem?.item?.id ? baseItem?.item.location : ''}}
             </div>
             <div class="col-12 col-md-4">
-              {{baseItem?.item?.lastVerificationDate? (baseItem?.item?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig'}}
+                {{baseItem?.item?.lastVerificationDate? (baseItem?.item?.lastVerificationDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig'}}
+            </div>
+            <div class="col-12 col-md-4">
+              {{baseItem?.item?.lastSelfCheckDate? (baseItem?.item?.lastSelfCheckDate | date: 'yyyy-MM-dd HH:mm:ss') : 'Aldrig'}}
             </div>
           </div>
           <!-- Row Space -->

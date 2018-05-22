@@ -24,26 +24,26 @@ describe('Sprint2', function() {
     element.all(by.buttonText('Logga in')).click();
   });
 
-  // 2 - Passed
+  // 2
   it('should work to admin login', function() {
     expect(logoutFromMenu.isDisplayed()).toBe(true);
   });
 
-  // 3 - Passed
+  // 3
   it('should work to change tab from documents to cards', function() {
     documentsFromMenu.click();
     cardsFromMenu.click();
     expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/cards');
   });
 
-  // 4 - Passed
+  // 4
   it('should work to change tab from cards to documents', function() {
     cardsFromMenu.click();
     documentsFromMenu.click();
     expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/documents');
   });
 
-  // 5 - Passed
+  // 5
   it('should work to add a new card to database', function() {
     cardsFromMenu.click();
     element.all(by.buttonText('Lägg till nytt kort')).click();
@@ -65,7 +65,7 @@ describe('Sprint2', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain(s);
   });
 
-  // 6 - Passed
+  // 6
   it('should work to add a new document to database', function() {
     documentsFromMenu.click();
     element.all(by.buttonText('Lägg till ny handling')).click();
@@ -91,7 +91,7 @@ describe('Sprint2', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain(s2);
   });
 
-  // 7 - Passed
+  // 7
   it('should work to edit information of a document', function() {
     documentsFromMenu.click();
     element.all(by.className('btn-menu')).first().click();
@@ -109,7 +109,7 @@ describe('Sprint2', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain(s1);
   });
 
-    // 8 - Passed
+    // 8
     it('should work to edit information of a card', function() {
       cardsFromMenu.click();
       element.all(by.className('btn-menu')).first().click();
@@ -127,7 +127,7 @@ describe('Sprint2', function() {
       expect(element.all(by.tagName('pre')).first().getText()).toContain(s1);
     });
 
-    // 9 - Passed
+    // 9
     it('should give card added confirmation under average 5 seconds', function() {
       cardsFromMenu.click();
       const amount = 3;
@@ -155,7 +155,7 @@ describe('Sprint2', function() {
       }
     });
 
-    // 10 - Passed
+    // 10
     it('should give document added confirmation under average 5 seconds', function() {
       documentsFromMenu.click();
       const amount = 3;
@@ -186,35 +186,6 @@ describe('Sprint2', function() {
       }
     });
 
-  /*
-  it('should have a title', function() {
-    expect(browser.getTitle()).toEqual('PUMApp');
-  });
-
-  it('should work to click lost and reset in the dropdown-menu for cards', function() {
-    cardFromMenu.click();
-    element.all(by.className('btn-menu')).first().click();
-    lostFromDropdown.click();
-    browser.sleep(500);
-    expect(element(by.buttonText('Borta')).isDisplayed()).toBe(true);
-    element.all(by.className('btn-menu')).first().click();
-    resetFromDropdown.click();
-    browser.sleep(500);
-    expect(element.all(by.buttonText('Kvittera')).first().isDisplayed()).toBe(true);
-  });
-
-  it('should work to click lost and reset in the dropdown-menu for documents', function() {
-    documentsFromMenu.click();
-    element.all(by.className('btn-menu')).first().click();
-    lostFromDropdown.click();
-    browser.sleep(500);
-    expect(element(by.buttonText('Borta')).isDisplayed()).toBe(true);
-    element.all(by.className('btn-menu')).first().click();
-    resetFromDropdown.click();
-    browser.sleep(500);
-    expect(element.all(by.buttonText('Kvittera')).first().isDisplayed()).toBe(true);
-  });
-*/
 });
 
 xdescribe('Sprint3', function() {
@@ -251,7 +222,7 @@ xdescribe('Sprint3', function() {
     expect(browser.getCurrentUrl()).toEqual('http://pum.nlsn.se/document-history');
   });
 
-  // 13 (Should pass once request-card component changes the button name "Kvittera ut" to "Bekräfta")
+  // 13
   it('should work to check out a card', function() {
     cardsFromMenu.click();
     element(by.buttonText('Kvittera ut')).click();
@@ -271,7 +242,7 @@ xdescribe('Sprint3', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_out"');
   });
 
-  // 14 (Should pass once request-document component changes the button name "Kvittera ut" to "Bekräfta")
+  // 14
   it('should work to check out a document', function() {
     documentsFromMenu.click();
     element(by.buttonText('Kvittera ut')).click();
@@ -291,7 +262,7 @@ xdescribe('Sprint3', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_out"');
   });
 
-  // 15 (Should pass once return-card component changes the button name "Kvittera in" to "Bekräfta")
+  // 15
   it('should work to check in a card', function() {
     cardsFromMenu.click();
     element(by.buttonText('Kvittera in')).click();
@@ -309,7 +280,7 @@ xdescribe('Sprint3', function() {
     expect(element.all(by.tagName('pre')).first().getText()).toContain('"location":"Test_checked_in"');
   });
 
-    // 16 (Should pass once return-document component changes the button name "Kvittera in" to "Bekräfta")
+    // 16
     it('should work to check in a document', function() {
       documentsFromMenu.click();
       element(by.buttonText('Kvittera in')).click();
