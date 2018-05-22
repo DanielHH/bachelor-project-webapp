@@ -7,7 +7,8 @@
       </button>
     </div>
     <div *ngIf="typeItem?.getType()?.status.id === 6">
-      <button type="button" class="status-btn btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1 status-button" mdbRippleRadius disabled>
+      <button type="button" class="status-btn btn btn-blue-grey btn-rounded btn-sm m-0 px-2 py-1 status-button" mdbRippleRadius
+        disabled>
         <span>Inaktiv</span>
       </button>
     </div>
@@ -20,11 +21,11 @@
   </div>
 
   <div class="col">
-    <div class="column-text">{{typeItem?.getType()?.creationDate}}</div>
+    <div class="column-text">{{typeItem?.getType()?.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
   </div>
 
   <div class="col">
-    <div class="column-text">{{typeItem?.getType()?.modifiedDate}}</div>
+    <div class="column-text">{{typeItem?.getType()?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}</div>
     <div class="table-menu-fix">
       <app-item-menu [object]="typeItem" (editObject)="edit()" (editStatus)="editStatus()" [isTypeItem]="true" [adminMenu]="true"
         [showEditOption]="true" [showHistoryOption]="false"></app-item-menu>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseType } from '../../../../datamodels/baseType';
 import { CardType } from '../../../../datamodels/cardType';
@@ -13,19 +13,40 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './type-item.component.html',
   styleUrls: ['./type-item.component.scss']
 })
-export class TypeItemComponent implements OnInit {
+export class TypeItemComponent implements OnInit, OnDestroy {
   @Input() typeItem: BaseType;
 
   isActive: boolean;
+
+  cardTypeList: CardType[] = [];
+  documentTypeList: DocumentType[] = [];
+
+  dataServiceCardSubscriber: any;
+
+  dataServiceDocumentSubscriber: any;
 
   constructor(
     private dataService: DataService,
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService
-  ) {}
+  ) {
+    this.dataServiceCardSubscriber = this.dataService.cardTypeList.subscribe(cardTypeList => {
+      this.cardTypeList = cardTypeList;
+    });
+
+    this.dataServiceDocumentSubscriber = this.dataService.documentTypeList.subscribe(documentTypeList => {
+      this.documentTypeList = documentTypeList;
+    });
+  }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceCardSubscriber.unsubscribe();
+
+    this.dataServiceDocumentSubscriber.unsubscribe();
+  }
 
   /**
    * Show the modal for type details
@@ -48,13 +69,15 @@ export class TypeItemComponent implements OnInit {
     if (this.typeItem.isCardType()) {
       this.httpService.httpPut<CardType>('updateCardType/', this.typeItem.getType()).then(res => {
         if (res.message === 'success') {
-          this.dataService.getCardTypeList();
+          this.cardTypeList = this.cardTypeList.slice();
+          this.dataService.cardTypeList.next(this.cardTypeList);
         }
       });
     } else {
       this.httpService.httpPut<DocumentType>('updateDocumentType/', this.typeItem.getType()).then(res => {
         if (res.message === 'success') {
-          this.dataService.getDocumentTypeList();
+          this.documentTypeList = this.documentTypeList.slice();
+          this.dataService.documentTypeList.next(this.documentTypeList);
         }
       });
     }

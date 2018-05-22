@@ -133,7 +133,10 @@ export class ModifyUserComponent implements OnInit, OnDestroy {
 
       this.httpService.httpPost<User>('addNewUser/', newUser).then(res => {
         if (res.message === 'success') {
-          this.dataService.getUserList();
+          this.userList.unshift(res.data);
+
+          this.userList = this.userList.slice();
+          this.dataService.userList.next(this.userList);
 
           this.closeForm();
         }
@@ -148,9 +151,15 @@ export class ModifyUserComponent implements OnInit, OnDestroy {
     if (this.isValidInput()) {
       this.setUserFromForm(this.userToEdit);
 
+      this.userToEdit.modifiedDate = new Date();
+
       this.httpService.httpPut<User>('updateUser/', this.userToEdit).then(res => {
         if (res.message === 'success') {
-          this.dataService.getUserList();
+          this.userToEdit.modifiedDate = res.data.modifiedDate;
+
+          this.userList = this.userList.slice();
+          this.dataService.userList.next(this.userList);
+          console.log(this.userList);
 
           this.closeForm();
           this.dataService.getReceiptList();

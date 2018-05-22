@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../../../datamodels/user';
 import { DataService } from '../../../../services/data.service';
@@ -11,12 +11,14 @@ import { UtilitiesService } from '../../../../services/utilities.service';
   templateUrl: './user-item.component.html',
   styleUrls: ['./user-item.component.scss']
 })
-export class UserItemComponent implements OnInit {
+export class UserItemComponent implements OnInit, OnDestroy {
   @Input() user: User;
 
   userList: User[] = [];
 
   isActive: boolean;
+
+  dataServiceSubscriber: any;
 
   constructor(
     private dataService: DataService,
@@ -24,9 +26,17 @@ export class UserItemComponent implements OnInit {
     private httpService: HttpService,
     private modalService: ModalService,
     public utilitiesService: UtilitiesService
-  ) {}
+  ) {
+    this.dataServiceSubscriber = this.dataService.userList.subscribe(userList => {
+      this.userList = userList;
+    });
+  }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Show the modal for user details
@@ -48,7 +58,8 @@ export class UserItemComponent implements OnInit {
   editStatus() {
     this.httpService.httpPut<User>('updateUser/', this.user).then(res => {
       if (res.message === 'success') {
-        this.dataService.getUserList();
+        this.userList = this.userList.slice();
+        this.dataService.userList.next(this.userList);
       }
     });
   }

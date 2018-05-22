@@ -137,7 +137,12 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
       if (this.isCardType) {
         this.httpService.httpPost<CardType>('addNewCardType/', newType).then(res => {
           if (res.message === 'success') {
-            this.dataService.getCardTypeList();
+            this.cardTypeList.unshift(res.body.data);
+
+            this.cardTypeList = this.cardTypeList.slice();
+            this.dataService.cardTypeList.next(this.cardTypeList);
+
+            this.dataService.setTypeList();
 
             this.closeForm();
           }
@@ -145,7 +150,12 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
       } else {
         this.httpService.httpPost<DocumentType>('addNewDocumentType/', newType).then(res => {
           if (res.message === 'success') {
-            this.dataService.getDocumentTypeList();
+            this.documentTypeList.unshift(res.body.data);
+
+            this.documentTypeList = this.documentTypeList.slice();
+            this.dataService.documentTypeList.next(this.documentTypeList);
+
+            this.dataService.setTypeList();
 
             this.closeForm();
           }
@@ -165,19 +175,27 @@ export class ModifyTypeComponent implements OnInit, OnDestroy {
       if (this.isCardType) {
         this.httpService.httpPut<CardType>('updateCardType/', type).then(res => {
           if (res.message === 'success') {
-            this.dataService.getCardTypeList();
+            this.cardTypeList = this.cardTypeList.slice();
+            this.dataService.cardTypeList.next(this.cardTypeList);
+
+            this.dataService.setTypeList();
 
             this.closeForm();
             this.dataService.getReceiptList();
+            this.dataService.getCardList();
           }
         });
       } else {
         this.httpService.httpPut<DocumentType>('updateDocumentType/', type).then(res => {
           if (res.message === 'success') {
-            this.dataService.getDocumentTypeList();
+            this.documentTypeList = this.documentTypeList.slice();
+            this.dataService.documentTypeList.next(this.documentTypeList);
+
+            this.dataService.setTypeList();
 
             this.closeForm();
             this.dataService.getReceiptList();
+            this.dataService.getDocumentList();
           }
         });
       }

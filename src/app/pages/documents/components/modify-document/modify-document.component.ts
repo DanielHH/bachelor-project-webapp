@@ -195,7 +195,15 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
 
       this.httpService.httpPost<Document>('addNewDocument/', { document: newDoc, logEvent: logEvent }).then(res => {
         if (res.message === 'success') {
-          this.dataService.getDocumentList();
+          this.documentList.unshift(res.data.document);
+          this.itemList.unshift(new BaseItem(res.data.document, 'document'));
+
+          this.documentList = this.documentList.slice();
+          this.dataService.documentList.next(this.documentList);
+
+          this.itemList = this.itemList.slice();
+          this.dataService.itemList.next(this.itemList);
+
           this.utilitiesService.updateLogEventList(res.data.logEvent);
 
           this.closeForm();
@@ -221,7 +229,12 @@ export class ModifyDocumentComponent implements OnInit, OnDestroy {
         .httpPut<Document>('updateDocument/', { documentItem: this.documentItem, logEvent: logEvent })
         .then(res => {
           if (res.message === 'success') {
-            this.dataService.getDocumentList();
+            this.documentList = this.documentList.slice();
+            this.dataService.documentList.next(this.documentList);
+
+            this.itemList = this.itemList.slice();
+            this.dataService.itemList.next(this.itemList);
+
             this.dataService.getReceiptList();
             this.utilitiesService.updateLogEventList(res.data.logEvent);
 
