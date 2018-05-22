@@ -97,10 +97,21 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * Returns the status ID for the object
    */
   getStatusID() {
-    if (this.isTypeItem) {
+    if (this.isTypeItem && this.object.type) {
       return this.object.getType().status.id;
     } else {
       return this.object.status.id;
+    }
+  }
+
+  /**
+   * Returns the ID for the object
+   */
+  getObjectID() {
+    if (this.isTypeItem && this.object.type) {
+      return this.object.type.id;
+    } else {
+      return this.object.id;
     }
   }
 
@@ -110,7 +121,7 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that can be archived the item is available.
    */
   showArchiveOption() {
-    const isAvailable = this.object.id && this.object.status.id == 1;
+    const isAvailable = this.getObjectID() && this.getStatusID() == 1;
     return this.itemMenu && isAvailable;
   }
 
@@ -120,8 +131,8 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that can be lost and that object is available or requested.
    */
   showLostOption() {
-    const isAvailable = this.object.id && this.object.status.id == 1;
-    const isRequested = this.object.id && this.object.status.id == 2;
+    const isAvailable = this.getObjectID() && this.getStatusID() == 1;
+    const isRequested = this.getObjectID() && this.getStatusID() == 2;
     return this.itemMenu && (isAvailable || isRequested);
   }
 
@@ -131,8 +142,8 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that is archived or lost.
    */
   showRestoreOption() {
-    const isArchived = this.object.id && this.object.status.id == 3;
-    const isLost = this.object.id && this.object.status.id == 4;
+    const isArchived = this.getObjectID() && this.getStatusID() == 3;
+    const isLost = this.getObjectID() && this.getStatusID() == 4;
     return this.itemMenu && (isArchived || isLost);
   }
 
@@ -142,7 +153,7 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that can be active or inactive, and that object is inactive.
    */
   showActivateOption() {
-    const isInactive = this.object.id && this.getStatusID() === 6;
+    const isInactive = this.getObjectID() && this.getStatusID() === 6;
     return this.adminMenu && isInactive;
   }
 
@@ -152,7 +163,7 @@ export class ItemMenuComponent implements OnInit, OnDestroy {
    * that can be active or inactive, and that object is active.
    */
   showInactivateOption() {
-    const isActive = this.object.id && this.getStatusID() === 5;
+    const isActive = this.getObjectID() && this.getStatusID() === 5;
     return this.adminMenu && isActive;
   }
 }
