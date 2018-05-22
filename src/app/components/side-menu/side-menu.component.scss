@@ -45,6 +45,9 @@
       li {
         width: 100%;
         a {
+          &.collapsable {
+            padding-left: 0px !important;
+          }
           &.collapsable::after {
             content: '\f078';
             font-family: FontAwesome;

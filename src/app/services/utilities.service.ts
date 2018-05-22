@@ -139,7 +139,6 @@ export class UtilitiesService implements OnDestroy {
    * Updates logEventList
    */
   updateLogEventList(logEvent: any) {
-    logEvent.logDate = moment(logEvent.logDate).format('YYYY-MM-DD HH:mm:ss');
     this.logEventList.unshift(logEvent);
     this.logEventList = this.logEventList.slice();
     this.dataService.logEventList.next(this.logEventList);
