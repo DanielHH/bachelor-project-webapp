@@ -1,39 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
-import { HttpService } from './http.service';
-import { Receipt } from '../datamodels/receipt';
-import { Card } from '../datamodels/card';
+import * as moment from 'moment-timezone';
 import { CardType } from '../datamodels/cardType';
-import { Document } from '../datamodels/document';
 import { DocumentType } from '../datamodels/documentType';
-import { User } from '../datamodels/user';
-import { DataService } from '../services/data.service';
-import { StatusType } from '../datamodels/statusType';
-import * as moment from 'moment';
 import { ItemType } from '../datamodels/itemType';
+import { LogEvent } from '../datamodels/logEvent';
 import { LogType } from '../datamodels/logType';
+import { StatusType } from '../datamodels/statusType';
+import { User } from '../datamodels/user';
 import { UserType } from '../datamodels/userType';
 import { VerificationType } from '../datamodels/verificationType';
-import { LogEvent } from '../datamodels/logEvent';
-
+import { DataService } from '../services/data.service';
+import { HttpService } from './http.service';
 
 /**
  * Function to make a string lowercase - lowerCase(ÅSA) returns åsa
-*/
+ */
 const reApos = /['\u2019]/g;
-export const lowerCase = (str) => _.reduce(
-  _.words(_.toString(str).replace(reApos, '')),
-  (result, word, index) => result + (index ? ' ' : '') + word.toLowerCase(),
-  ''
-);
+export const lowerCase = str =>
+  _.reduce(
+    _.words(_.toString(str).replace(reApos, '')),
+    (result, word, index) => result + (index ? ' ' : '') + word.toLowerCase(),
+    ''
+  );
 
 @Injectable()
-export class UtilitiesService {
-  cardList: Card[] = [];
-  documentList: Document[] = [];
+export class UtilitiesService implements OnDestroy {
   cardTypeList: CardType[] = [];
   documentTypeList: DocumentType[] = [];
-  userList: User[] = [];
   statusTypeList: StatusType[] = [];
   itemTypeList: ItemType[] = [];
   logTypeList: LogType[] = [];
@@ -41,69 +35,100 @@ export class UtilitiesService {
   verificationTypeList: VerificationType[] = [];
   logEventList: LogEvent[] = [];
 
+  dataServiceCardTypeSubscriber: any;
+
+  dataServiceDocumentTypeSubscriber: any;
+
+  dataServiceStatusTypeSubscriber: any;
+
+  dataServiceItemTypeSubscriber: any;
+
+  dataServiceLogTypeSubscriber: any;
+
+  dataServiceUserTypeSubscriber: any;
+
+  dataServiceVerificationTypeSubscriber: any;
+
+  dataServiceLogEventSubscriber: any;
+
   constructor(private dataService: DataService, private httpService: HttpService) {
-    this.dataService.cardTypeList.subscribe(cardTypeList => {
+    this.dataServiceCardTypeSubscriber = this.dataService.cardTypeList.subscribe(cardTypeList => {
       this.cardTypeList = cardTypeList;
     });
-    this.dataService.documentTypeList.subscribe(documentTypeList => {
+
+    this.dataServiceDocumentTypeSubscriber = this.dataService.documentTypeList.subscribe(documentTypeList => {
       this.documentTypeList = documentTypeList;
     });
 
-    this.dataService.cardTypeList.subscribe((cardTypeList) => {
-      this.cardTypeList = cardTypeList;
-    });
-
-    this.dataService.cardList.subscribe((cardList) => {
-      this.cardList = cardList;
-    });
-
-    this.dataService.documentList.subscribe((documentList) => {
-      this.documentList = documentList;
-    });
-
-    this.dataService.userList.subscribe(userList => {
-      this.userList = userList;
-    });
-
-    this.dataService.statusTypeList.subscribe(statusTypeList => {
+    this.dataServiceStatusTypeSubscriber = this.dataService.statusTypeList.subscribe(statusTypeList => {
       this.statusTypeList = statusTypeList;
     });
 
-    this.dataService.itemTypeList.subscribe(itemTypeList => {
+    this.dataServiceItemTypeSubscriber = this.dataService.itemTypeList.subscribe(itemTypeList => {
       this.itemTypeList = itemTypeList;
     });
 
-    this.dataService.logTypeList.subscribe(logTypeList => {
+    this.dataServiceLogTypeSubscriber = this.dataService.logTypeList.subscribe(logTypeList => {
       this.logTypeList = logTypeList;
     });
 
-    this.dataService.userTypeList.subscribe(userTypeList => {
+    this.dataServiceUserTypeSubscriber = this.dataService.userTypeList.subscribe(userTypeList => {
       this.userTypeList = userTypeList;
     });
 
-    this.dataService.verificationTypeList.subscribe(verificationTypeList => {
-      this.verificationTypeList = verificationTypeList;
-    });
+    this.dataServiceVerificationTypeSubscriber = this.dataService.verificationTypeList.subscribe(
+      verificationTypeList => {
+        this.verificationTypeList = verificationTypeList;
+      }
+    );
 
-    this.dataService.logEventList.subscribe(logEventList => {
+    this.dataServiceLogEventSubscriber = this.dataService.logEventList.subscribe(logEventList => {
       this.logEventList = logEventList;
     });
+
+    moment.locale('sv');
+
+    moment.tz('Europe/Stockholm');
+  }
+
+  ngOnDestroy() {
+    this.dataServiceCardTypeSubscriber.unsubscribe();
+
+    this.dataServiceDocumentTypeSubscriber.unsubscribe();
+
+    this.dataServiceStatusTypeSubscriber.unsubscribe();
+
+    this.dataServiceItemTypeSubscriber.unsubscribe();
+
+    this.dataServiceLogTypeSubscriber.unsubscribe();
+
+    this.dataServiceUserTypeSubscriber.unsubscribe();
+
+    this.dataServiceVerificationTypeSubscriber.unsubscribe();
+
+    this.dataServiceLogEventSubscriber.unsubscribe();
   }
 
   /**
-   * Fills in variables for new log event
+   * Fills in variables for new log event and returns it
+   * @param itemTypeID specifies whether it is a card or a document
+   * @param logTypeID specifies which log type it is
+   * @param item item which the log event is for
+   * @param user The user involved in this log event
+   * @param logText relevant log text
    */
   createNewLogEventForItem(itemTypeID: number, logTypeID: number, item: any, user?: User, logText?: string): LogEvent {
     const logEvent = new LogEvent();
     logEvent.itemType = this.getItemTypeFromID(itemTypeID);
     logEvent.logType = this.getLogTypeFromID(logTypeID);
-    if (itemTypeID == 1) { // Av någon anledning funkar inte följande kod här: ' logEvent.itemType.name == 'Kort' '
+    if (itemTypeID == 1) {
+      // For some reaason the following does not work here: ' logEvent.itemType.name == 'Kort' '
       logEvent.card = item;
     } else {
       logEvent.document = item;
     }
     logEvent.user = user;
-    logEvent.logDate = this.getLocalDate();
+    logEvent.logDate = new Date();
     if (logText) {
       logEvent.logText = logText;
     }
@@ -113,19 +138,10 @@ export class UtilitiesService {
   /**
    * Updates logEventList
    */
-   updateLogEventList(logEvent: any) {
+  updateLogEventList(logEvent: any) {
     this.logEventList.unshift(logEvent);
     this.logEventList = this.logEventList.slice();
     this.dataService.logEventList.next(this.logEventList);
-   }
-
-  /**
-   * Returns a Date object representing current local time
-   */
-  getLocalDate(): Date {
-    const localDate = new Date();
-    localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
-    return localDate;
   }
 
   /**
@@ -146,10 +162,6 @@ export class UtilitiesService {
     } else {
       return '-';
     }
-  }
-
-  getUserFromID(id: number) {
-    return _.find(this.userList, user => user.id == id);
   }
 
   getStatusFromID(id: number) {
@@ -180,7 +192,7 @@ export class UtilitiesService {
     return _.find(this.cardTypeList, cardType => cardType.id == id || cardType.name == name);
   }
 
-    /**
+  /**
    * Returns the documentType associated with name or id
    * @param id ID of document type
    * @param name Name of document type
@@ -202,5 +214,4 @@ export class UtilitiesService {
   isUser(user: User) {
     return user.userType.id === 2;
   }
-
 }

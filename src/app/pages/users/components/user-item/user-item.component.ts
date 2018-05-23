@@ -1,40 +1,44 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import * as moment from 'moment';
-import { DataService } from '../../../../services/data.service';
-import { User } from '../../../../datamodels/user';
-import * as _ from 'lodash';
-import { RouteDataService } from '../../../../services/route-data.service';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
+
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-user-item',
   templateUrl: './user-item.component.html',
   styleUrls: ['./user-item.component.scss']
 })
-
-export class UserItemComponent implements OnInit {
-
+export class UserItemComponent implements OnInit, OnDestroy {
   @Input() user: User;
 
   userList: User[] = [];
 
   isActive: boolean;
 
+  dataServiceSubscriber: any;
+
   constructor(
     private dataService: DataService,
     private router: Router,
     private httpService: HttpService,
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService) {
-      this.dataService.userList.subscribe(userList => {
-        this.userList = userList;
-      });
+    public utilitiesService: UtilitiesService
+  ) {
+    this.dataServiceSubscriber = this.dataService.userList.subscribe(userList => {
+      this.userList = userList;
+    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Show the modal for user details
@@ -45,7 +49,7 @@ export class UserItemComponent implements OnInit {
 
   /**
    * Set user to be outputted for editing
-  */
+   */
   edit() {
     this.modalService.editUser.next(this.user);
   }
@@ -56,9 +60,9 @@ export class UserItemComponent implements OnInit {
   editStatus() {
     this.httpService.httpPut<User>('updateUser/', this.user).then(res => {
       if (res.message === 'success') {
-        this.dataService.getUserList();
+        this.userList = this.userList.slice();
+        this.dataService.userList.next(this.userList);
       }
     });
   }
 }
-

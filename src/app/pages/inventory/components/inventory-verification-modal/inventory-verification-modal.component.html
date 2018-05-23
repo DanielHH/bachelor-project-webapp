@@ -1,0 +1,10 @@
+<form #modifyForm="ngForm" (ngSubmit)="verifyInventory()">
+
+  <app-modal [(show)]="_showModal" [modalTitle]="modalTitle" [closeName]="'Avbryt'" [submitName]="'Bekräfta'">
+    <div class="row my-1">
+      <div class="col-12 wide-center">
+        <h5>{{getVerifyConfirmString()}} ({{numObjects}}) {{markedString}} objekt?</h5>
+      </div>
+    </div>
+  </app-modal>
+</form>

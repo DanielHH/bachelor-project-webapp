@@ -1,11 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Document } from '../../datamodels/document';
-
 import { DataService } from '../../services/data.service';
-import { HttpService } from '../../services/http.service';
-import { ModifyDocumentComponent } from './components/modify-document/modify-document.component';
-import { NgForm } from '@angular/forms';
-
 
 @Component({
   selector: 'app-documents',
@@ -14,16 +9,7 @@ import { NgForm } from '@angular/forms';
 })
 export class DocumentsComponent implements OnInit {
 
-  documentList: Document[] = [];
+  constructor() {}
 
-  constructor(public dataService: DataService) {
-    this.dataService.documentList.subscribe( (documentList) => {
-      this.documentList = documentList;
-    });
-
-  }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

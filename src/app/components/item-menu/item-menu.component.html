@@ -8,7 +8,7 @@
   <div *ngIf="dropdown.isOpen" dropdownToggle></div>
 
   <!--Menu-->
-  <div class="dropdown-menu" (click)="$event.stopPropagation(); dropdown.toggle()">
+  <div *ngIf="this.getObjectID" class="dropdown-menu" (click)="$event.stopPropagation(); dropdown.toggle()">
     <a class="dropdown-item" (click)="route()" *ngIf="showHistoryOption">
       Historik
     </a>
@@ -17,23 +17,23 @@
       Ändra
     </a>
 
-    <a class="dropdown-item" (click)="setStatus(3)" *ngIf="itemMenu && (object?.status?.id == 1 || object?.status?.id == 2 || object?.status?.id == 4)">
+    <a class="dropdown-item" (click)="setStatus(3)" *ngIf="showArchiveOption()">
       Arkivera
     </a>
 
-    <a class="dropdown-item" (click)="setStatus(4)" *ngIf="itemMenu && (object?.status?.id == 1 || object?.status?.id == 2)">
+    <a class="dropdown-item" (click)="setStatus(4)" *ngIf="showLostOption()">
       Borttappat
     </a>
 
-    <a class="dropdown-item" (click)="setStatus(1)" *ngIf="itemMenu && (object?.status?.id == 3 || object?.status?.id == 4)">
+    <a class="dropdown-item" (click)="setStatus(1)" *ngIf="showRestoreOption()">
       Återställ
     </a>
 
-    <a class="dropdown-item" (click)="setStatus(6)" *ngIf="adminMenu && (getStatusID() === 5)">
+    <a class="dropdown-item" (click)="setStatus(6)" *ngIf="showInactivateOption()">
       Inaktivera
     </a>
 
-    <a class="dropdown-item" (click)="setStatus(5)" *ngIf="adminMenu && (getStatusID() === 6)">
+    <a class="dropdown-item" (click)="setStatus(5)" *ngIf="showActivateOption()">
       Aktivera
     </a>
 

@@ -8,8 +8,4 @@ describe('HttpServiceService', () => {
       providers: [HttpService]
     });
   });
-
-  it('should be created', inject([HttpService], (service: HttpService) => {
-    expect(service).toBeTruthy();
-  }));
 });

@@ -1,32 +1,31 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { AuthService } from '../auth/auth.service';
+import { BaseItem } from '../datamodels/baseItem';
+import { BaseType } from '../datamodels/baseType';
 import { Card } from '../datamodels/card';
-import { HttpService } from './http.service';
 import { CardType } from '../datamodels/cardType';
-import { Document } from '../datamodels/document';
 import { Delivery } from '../datamodels/delivery';
+import { Document } from '../datamodels/document';
 import { DocumentType } from '../datamodels/documentType';
-import { Receipt } from '../datamodels/receipt';
 import { ItemType } from '../datamodels/itemType';
-import { User } from '../datamodels/user';
-import { Verification } from '../datamodels/verification';
-import { VerificationType } from '../datamodels/verificationType';
-import { StatusType } from '../datamodels/statusType';
 import { LogEvent } from '../datamodels/logEvent';
 import { LogType } from '../datamodels/logType';
-import { AuthService } from '../auth/auth.service';
-import { BaseType } from '../datamodels/baseType';
-import { UtilitiesService } from './utilities.service';
+import { Receipt } from '../datamodels/receipt';
+import { StatusType } from '../datamodels/statusType';
+import { User } from '../datamodels/user';
 import { UserType } from '../datamodels/userType';
-import { BaseItem } from '../datamodels/baseItem';
+import { Verification } from '../datamodels/verification';
+import { VerificationType } from '../datamodels/verificationType';
+import { HttpService } from './http.service';
+import * as _ from 'lodash';
 
 @Injectable()
 export class DataService {
   /**
    * List with all users
    */
-  _userList: User[] = [];
+  private _userList: User[] = [];
 
   /**
    * A subscriber to the user list
@@ -36,7 +35,7 @@ export class DataService {
   /**
    * List with all cards
    */
-  _cardList: Card[] = [];
+  private _cardList: Card[] = [];
 
   /**
    * A subscriber to the card list
@@ -46,7 +45,7 @@ export class DataService {
   /**
    * List with all cards
    */
-  _cardTypeList: CardType[] = [];
+  private _cardTypeList: CardType[] = [];
 
   /**
    * A subscriber to the card list
@@ -56,7 +55,7 @@ export class DataService {
   /**
    * List with all documents
    */
-  _documentList: Document[] = [];
+  private _documentList: Document[] = [];
 
   /**
    * A subscriber to the document list
@@ -66,7 +65,7 @@ export class DataService {
   /**
    * List with all deliverys
    */
-  _deliveryList: Delivery[] = [];
+  private _deliveryList: Delivery[] = [];
 
   /**
    * A subscriber to the document list
@@ -76,7 +75,7 @@ export class DataService {
   /**
    * List with all document types
    */
-  _documentTypeList: DocumentType[] = [];
+  private _documentTypeList: DocumentType[] = [];
 
   /**
    * A subscriber to the document type list
@@ -86,7 +85,7 @@ export class DataService {
   /**
    * List with all receipts
    */
-  _receiptList: Receipt[] = [];
+  private _receiptList: Receipt[] = [];
 
   /**
    * A subscriber to the receipt list
@@ -96,7 +95,7 @@ export class DataService {
   /**
    * List with all item types
    */
-  _itemTypeList: ItemType[] = [];
+  private _itemTypeList: ItemType[] = [];
 
   /**
    * A subscriber to the item type list
@@ -106,7 +105,7 @@ export class DataService {
   /**
    * List with all log types
    */
-  _logTypeList: LogType[] = [];
+  private _logTypeList: LogType[] = [];
 
   /**
    * A subscriber to the log type list
@@ -116,7 +115,7 @@ export class DataService {
   /**
    * List with all verifications
    */
-  _verificationList: Verification[] = [];
+  private _verificationList: Verification[] = [];
 
   /**
    * A subscriber to the verification list
@@ -126,7 +125,7 @@ export class DataService {
   /**
    * List with all verification types
    */
-  _verificationTypeList: VerificationType[] = [];
+  private _verificationTypeList: VerificationType[] = [];
 
   /**
    * A subscriber to the verification type list
@@ -138,7 +137,7 @@ export class DataService {
   /**
    * List with all status types
    */
-  _statusTypeList: StatusType[] = [];
+  private _statusTypeList: StatusType[] = [];
 
   /**
    * A subscriber to the status type list
@@ -148,7 +147,7 @@ export class DataService {
   /**
    * List with all log events
    */
-  _logEventList: LogEvent[] = [];
+  private _logEventList: LogEvent[] = [];
 
   /**
    * A subscriber to the log event list
@@ -158,7 +157,7 @@ export class DataService {
   /**
    * List with all cards and documents as BaseItems
    */
-  _itemList: BaseItem[] = [];
+  private _itemList: BaseItem[] = [];
 
   /**
    * A subscriber to the cards and documents list
@@ -168,7 +167,7 @@ export class DataService {
   /**
    * List with all card and document types
    */
-  _typeList: BaseType[] = [];
+  private _typeList: BaseType[] = [];
 
   /**
    * A subscriber to the card and document type list
@@ -178,7 +177,7 @@ export class DataService {
   /**
    * List with all user types
    */
-  _userTypeList: UserType[] = [];
+  private _userTypeList: UserType[] = [];
 
   /**
    * A subscriber to the user type list
@@ -187,10 +186,7 @@ export class DataService {
 
   userURL = '';
 
-  constructor(
-    private httpService: HttpService,
-    private authService: AuthService
-  ) {
+  constructor(private httpService: HttpService, private authService: AuthService) {
     this.authService.user.subscribe(user => {
       if (user && user.id) {
         if (user.userType.id == 1) {
@@ -203,22 +199,6 @@ export class DataService {
         this.userURL = '';
         this.resetAllData();
       }
-    });
-
-    this.cardList.subscribe(cardList => {
-      this.setItemList();
-    });
-
-    this.documentList.subscribe(documentList => {
-      this.setItemList();
-    });
-
-    this.cardTypeList.subscribe(cardTypeList => {
-      this.setTypeList();
-    });
-
-    this.documentTypeList.subscribe(documentTypeList => {
-      this.setTypeList();
     });
   }
 
@@ -286,6 +266,18 @@ export class DataService {
     this.getVerificationList();
 
     this.getCardList();
+
+    this.getItemTypeList();
+
+    this.getVerificationTypeList();
+
+    this.getLogTypeList();
+
+    this.getStatusTypeList();
+
+    this.getCardTypeList();
+
+    this.getDocumentTypeList();
   }
 
   getUserList() {
@@ -306,6 +298,7 @@ export class DataService {
     this.httpService.httpGet<Card>('getCards' + this.userURL).then(data => {
       this._cardList = data;
       this.cardList.next(this._cardList);
+      this.setItemList();
     });
   }
 
@@ -313,7 +306,7 @@ export class DataService {
     this.httpService.httpGet<CardType>('getCardTypes').then(data => {
       this._cardTypeList = data;
       this.cardTypeList.next(this._cardTypeList);
-      this.getCardList();
+      this.setTypeList();
     });
   }
 
@@ -321,6 +314,7 @@ export class DataService {
     this.httpService.httpGet<Document>('getDocuments' + this.userURL).then(data => {
       this._documentList = data;
       this.documentList.next(this._documentList);
+      this.setItemList();
     });
   }
 
@@ -335,7 +329,7 @@ export class DataService {
     this.httpService.httpGet<DocumentType>('getDocumentTypes').then(data => {
       this._documentTypeList = data;
       this.documentTypeList.next(this._documentTypeList);
-      this.getDocumentList();
+      this.setTypeList();
     });
   }
 
@@ -392,12 +386,12 @@ export class DataService {
     if (this._cardList && this._documentList) {
       this._itemList = [];
 
-      this._cardList.forEach(card => {
-        this._itemList.unshift(new BaseItem(card, 'card'));
+      _.forEach(this._cardList, card => {
+        this._itemList.push(new BaseItem(card, 'card'));
       });
 
-      this._documentList.forEach(document => {
-        this._itemList.unshift(new BaseItem(document, 'document'));
+      _.forEach(this._documentList, document => {
+        this._itemList.push(new BaseItem(document, 'document'));
       });
 
       this.itemList.next(this._itemList);
@@ -407,11 +401,11 @@ export class DataService {
   setTypeList() {
     this._typeList = [];
 
-    this._cardTypeList.forEach(type => {
+    _.forEach(this._cardTypeList, type => {
       this._typeList.unshift(new BaseType(type, 'cardType'));
     });
 
-    this._documentTypeList.forEach(type => {
+    _.forEach(this._documentTypeList, type => {
       this._typeList.unshift(new BaseType(type, 'documentType'));
     });
 

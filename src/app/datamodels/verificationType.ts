@@ -2,7 +2,6 @@
  * VerificationType data model
  */
 export class VerificationType {
-
   /**
    * Database ID of the verification type
    */
@@ -24,5 +23,4 @@ export class VerificationType {
       console.error('Invalid inventory type: ' + name + '!');
     }
   }
-
 }

@@ -11,6 +11,10 @@
     margin-bottom: 20px;
   }
 
+  .select-checkbox-col {
+    max-width: 40px !important;
+  }
+
   .table-container {
     height: calc(100vh - 250px);
     margin-bottom: -30px;
@@ -37,6 +41,8 @@
         }
 
         .col:last-child {
+          display: inline-flex;
+          justify-content: space-between;
           .column-text {
             max-width: 65% !important;
             display: inline-block;
@@ -49,6 +55,10 @@
         .table-menu-fix {
           height: 24px;
         }
+        .status-button {
+          min-width: 89px;
+          max-width: 89px;
+        }
       }
 
       .table-item:hover {
@@ -60,7 +70,7 @@
 }
 
 .table-button {
-  min-width: 160px !important;
+  min-width: 170px !important;
 }
 
 @media (max-height: 800px) {
@@ -72,19 +82,18 @@
 .hover {
   cursor: pointer;
   &.up-arrow::after {
-    content: "\f0de";
+    content: '\f0de';
     font-family: FontAwesome;
     font-size: 12px;
   }
   &.down-arrow::after {
-    content: "\f0dd";
+    content: '\f0dd';
     font-family: FontAwesome;
     font-size: 12px;
   }
   &.both-arrow::after {
-    content: "\f0dc";
+    content: '\f0dc';
     font-family: FontAwesome;
     font-size: 12px;
   }
-
 }

@@ -1,21 +1,16 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BaseType } from '../../../../datamodels/baseType';
+import { CardType } from '../../../../datamodels/cardType';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
-import { BaseType } from '../../../../datamodels/baseType';
-import { DocumentType } from '../../../../datamodels/documentType';
-import { CardType } from '../../../../datamodels/cardType';
 
 @Component({
   selector: 'app-type-detail',
   templateUrl: './type-detail.component.html',
   styleUrls: ['./type-detail.component.scss']
 })
-export class TypeDetailComponent implements OnInit {
-
+export class TypeDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -39,25 +34,32 @@ export class TypeDetailComponent implements OnInit {
   modifiedDateString: string;
   statusString: string;
 
-  constructor(
-    private modalService: ModalService,
-    public utilitiesService: UtilitiesService
-  ) {
-    this.modalService.detailType.subscribe((baseType: BaseType) => {
+  modalServiceSubscriber: any;
+
+  constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
+    this.modalServiceSubscriber = this.modalService.detailType.subscribe((baseType: BaseType) => {
       if (baseType && baseType.type && (baseType.type as CardType).id) {
         this.baseTypeItem = baseType;
         this.isCardType = baseType.isCardType();
         this.typeNameString = baseType.getType().name;
-        this.createdDateString = utilitiesService.getDateString(baseType.getType().creationDate, 'YYYY-MM-DD HH:MM:SS');
-        this.modifiedDateString = utilitiesService.getDateString(baseType.getType().modifiedDate, 'YYYY-MM-DD HH:MM:SS');
+        this.createdDateString = utilitiesService.getDateString(baseType.getType().creationDate, 'YYYY-MM-DD HH:mm:ss');
+        this.modifiedDateString = utilitiesService.getDateString(
+          baseType.getType().modifiedDate,
+          'YYYY-MM-DD HH:mm:ss'
+        );
         this.statusString = baseType.getType().status.name;
 
         this._showModal = true;
       }
     });
-
   }
-  ngOnInit() {
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalService.detailType.next(null);
+
+    this.modalServiceSubscriber.unsubscribe();
   }
 
   /**

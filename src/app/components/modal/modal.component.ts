@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  EventEmitter,
-  Output,
-  AfterViewInit
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -50,6 +42,10 @@ export class ModalComponent implements OnInit, AfterViewInit {
     this.modalInit = true;
   }
 
+  /**
+   * Set modal to show
+   * @param value boolean to show or hide modal
+   */
   setShow(value: boolean) {
     this.show = value;
     this.showChange.emit(this.show);

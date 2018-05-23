@@ -2,7 +2,7 @@
   <app-modal [(show)]="_showModal" [modalTitle]="'Detaljerad information'" [submitName]="'Stäng'" [hideClose]="true">
 
     <!-- Row card info -->
-    <div class="row">
+    <div class="row overflow-break">
       <div class="col-0 col-md-1"></div>
       <div class="col-12 col-md-10 wide-center">
         <mat-card [style.background]="'#E8EAF6'">
@@ -50,10 +50,10 @@
               {{deliveryItem?.receiver}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.deliveryItem?.documentDate | date: 'shortDate'}}
+              {{this.utilitiesService.getDateString(this.deliveryItem?.documentDate)}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.deliveryItem?.sentDate | date: 'shortDate'}}
+              {{this.utilitiesService.getDateString(this.deliveryItem?.sentDate)}}
             </div>
           </div>
           <!-- Row Space -->
@@ -67,16 +67,18 @@
               <b>Ändrad:</b>
             </div>
             <div class="col-12 col-md-4">
-              <span *ngIf="deliveryItem?.comment"><b>Kommentar:</b></span>
+              <span *ngIf="deliveryItem?.comment">
+                <b>Kommentar:</b>
+              </span>
             </div>
           </div>
           <!-- Row -->
           <div class="row my-1">
             <div class="col-0 col-md-4">
-              {{this.deliveryItem?.creationDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+              {{this.utilitiesService.getDateString(this.deliveryItem?.creationDate, 'YYYY-MM-DD HH:mm:ss')}}
             </div>
             <div class="col-0 col-md-4">
-              {{this.deliveryItem?.modifiedDate | date: 'yyyy-MM-dd HH:mm:ss'}}
+              {{this.utilitiesService.getDateString(this.deliveryItem?.modifiedDate, 'YYYY-MM-DD HH:mm:ss')}}
             </div>
             <div class="col-12 col-md-4">
               <span *ngIf="deliveryItem?.comment">{{deliveryItem?.comment}}</span>

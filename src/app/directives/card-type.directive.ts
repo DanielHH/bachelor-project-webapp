@@ -1,21 +1,22 @@
-import { Directive, Input } from '@angular/core';
-import { FormControl, Validators, Validator, ValidationErrors, NG_VALIDATORS} from '@angular/forms';
-import { DataService } from '../services/data.service';
-import { CardType } from '../datamodels/cardType';
+import { Directive, Input, OnDestroy } from '@angular/core';
+import { FormControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 import * as _ from 'lodash';
+import { CardType } from '../datamodels/cardType';
+import { DataService } from '../services/data.service';
 
 @Directive({
   selector: '[appCardType]',
-  providers: [{provide: NG_VALIDATORS, useExisting: CardTypeValidatorDirective, multi: true}]
- })
- export class CardTypeValidatorDirective implements Validator {
-
+  providers: [{ provide: NG_VALIDATORS, useExisting: CardTypeValidatorDirective, multi: true }]
+})
+export class CardTypeValidatorDirective implements Validator, OnDestroy {
   @Input() cardType = null;
 
   cardTypes: CardType[] = [];
 
+  dataServiceSubscriber: any;
+
   constructor(public dataService: DataService) {
-    this.dataService.cardTypeList.subscribe( (cardTypes) => {
+    this.dataServiceSubscriber = this.dataService.cardTypeList.subscribe(cardTypes => {
       this.cardTypes = cardTypes;
     });
   }
@@ -28,24 +29,28 @@ import * as _ from 'lodash';
     if (!input) {
       isValid = true;
     } else {
-      if (input.id) { // CardType object
-        cardTypeMatch = _.find(this.cardTypes, (cardType) => cardType.name === input.name);
-      } else { // String input
-        cardTypeMatch = _.find(this.cardTypes, (cardType) => cardType.name === input);
+      if (input.id) {
+        // CardType object
+        cardTypeMatch = _.find(this.cardTypes, cardType => cardType.name === input.name);
+      } else {
+        // String input
+        cardTypeMatch = _.find(this.cardTypes, cardType => cardType.name === input);
       }
 
-      isValid = (
+      isValid =
         (cardTypeMatch && cardTypeMatch.status.id === 5) ||
-        (cardTypeMatch && this.cardType && cardTypeMatch.id == this.cardType.id)
-      );
-
+        (cardTypeMatch && this.cardType && cardTypeMatch.id == this.cardType.id);
     }
 
     const message = {
-      'cardType': {
-        'message': 'Ogiltig typ'
+      cardType: {
+        message: 'Ogiltig typ'
       }
     };
     return isValid ? null : message;
   }
- }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+  }
+}

@@ -52,26 +52,33 @@
     <!-- Header row -->
     <div class="table-container">
       <div class="row table-header">
-        <div class="col-1" (click)="sortTableList('status.id')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        <div class="col-1" (click)="updateOrder('status.name'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+          [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col" (click)="sortTableList('documentType.name')">
-          <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'" [class.both-arrow]="orderDocumentType == ''">Typ </span>
+        <div class="col" (click)="updateOrder('documentType.name'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderDocumentType == 'asc'" [class.down-arrow]="orderDocumentType == 'desc'"
+          [class.both-arrow]="orderDocumentType == ''">Typ </span>
         </div>
-        <div class="col" (click)="sortTableList('documentNumber')">
-          <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'" [class.both-arrow]="orderDocumentNumber == ''">Dokument-ID </span>
+        <div class="col" (click)="updateOrder('documentNumber'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderDocumentNumber == 'asc'" [class.down-arrow]="orderDocumentNumber == 'desc'"
+          [class.both-arrow]="orderDocumentNumber == ''">Dokument-ID </span>
         </div>
-        <div class="col" (click)="sortTableList('name')">
-          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'" [class.both-arrow]="orderName == ''">Benämning </span>
+        <div class="col" (click)="updateOrder('name'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderName == 'asc'" [class.down-arrow]="orderName == 'desc'"
+          [class.both-arrow]="orderName == ''">Benämning </span>
         </div>
-        <div class="col" (click)="sortTableList('user.name')">
-          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
+        <div class="col" (click)="updateOrder('user.name'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'"
+          [class.both-arrow]="orderUser == ''">Användare </span>
         </div>
-        <div class="col" (click)="sortTableList('location')">
-          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
+        <div class="col" (click)="updateOrder('location'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
+          [class.both-arrow]="orderLocation == ''">Förvaringsplats </span>
         </div>
-        <div class="col" (click)="sortTableList('comment')">
-          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'" [class.both-arrow]="orderComment == ''">Kommentar </span>
+        <div class="col" (click)="updateOrder('comment'); orderTableList()">
+          <span class="hover" [class.up-arrow]="orderComment == 'asc'" [class.down-arrow]="orderComment == 'desc'"
+          [class.both-arrow]="orderComment == ''">Kommentar </span>
         </div>
       </div>
       <hr>
@@ -85,7 +92,7 @@
   </div>
 </div>
 
-<app-modify-document [documentList]="documentList" [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-document>
+<app-modify-document [modalTitle]="modalTitle" [modalType]="modalType" [(showModal)]="showModal"></app-modify-document>
 
 <app-request-document></app-request-document>
 

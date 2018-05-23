@@ -9,7 +9,7 @@
         <mat-form-field>
           <!--Input-->
           <input matInput id="filterInput" name="filterInput" [(ngModel)]="filterInput" maxlength="128" placeholder="Filtrera på"
-          (change)="updateItemSelection()">
+          (input)="updateSelectAll()">
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="filterInput" matSuffix mat-icon-button aria-label="Clear" (click)="filterInput = ''">
             <mat-icon>close</mat-icon>
@@ -23,7 +23,7 @@
           <button class="table-button" mat-raised-button color="primary" (click)="openPdfGenerationModal()">
             <span>Generera PDF</span>
           </button>
-          <button class="table-button" mat-raised-button color="primary" (click)="sendVerify()">Verifiera</button>
+          <button class="table-button" mat-raised-button color="primary" (click)="showVerifyModal()">{{getVerifyButtonString()}}</button>
         </div>
       </div>
 
@@ -34,22 +34,22 @@
 
       <div class="mr-2">
         <mat-checkbox disableRipple id="showIn" name="showIn" color="primary" class="pr-1"
-        (change)="updateItemSelection()" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
+        (change)="updateSelectAll()" [(ngModel)]="showIn">Tillgängliga</mat-checkbox>
       </div>
 
       <div class="mr-2">
         <mat-checkbox disableRipple id="showOut" name="showOut" color="primary" class="pr-1"
-        (change)="updateItemSelection()" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
+        (change)="updateSelectAll()" [(ngModel)]="showOut">Utkvitterade</mat-checkbox>
       </div>
 
       <div class="mr-2">
         <mat-checkbox disableRipple id="showArchived" name="showArchived" color="primary"
-        (change)="updateItemSelection()" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
+        (change)="updateSelectAll()" class="pr-1" [(ngModel)]="showArchived">Arkiverade</mat-checkbox>
       </div>
 
       <div class="mr-2">
         <mat-checkbox disableRipple id="showGone" name="showGone" color="primary" class="pr-1"
-        (change)="updateItemSelection()" [(ngModel)]="showGone">Borttappade</mat-checkbox>
+        (change)="updateSelectAll()" [(ngModel)]="showGone">Borttappade</mat-checkbox>
       </div>
 
     </div>
@@ -59,39 +59,50 @@
       <!-- Header row -->
       <div class="row table-header">
 
-        <div class="col-1" (click)="$event.stopPropagation()">
-          <mat-checkbox disableRipple color="primary" (checked)="selectAll" [(ngModel)]="selectAll" (change)="updateItemSelection()"></mat-checkbox>
+        <div class="col select-checkbox-col" (click)="$event.stopPropagation()">
+          <mat-checkbox disableRipple color="primary" (checked)="selectAll" [(ngModel)]="selectAll" (change)="selectionChanged()"></mat-checkbox>
         </div>
 
-        <div class="col" (click)="sortTableList('status')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        <div class="col-1" (click)="setNextOrder('status');orderTableList('status')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+          [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
 
-        <div class="col" (click)="sortTableList('subType')">
-          <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'" [class.both-arrow]="orderSubType == ''">Typ </span>
+        <div class="col" (click)="setNextOrder('subType');orderTableList('subType')">
+          <span class="hover" [class.up-arrow]="orderSubType == 'asc'" [class.down-arrow]="orderSubType == 'desc'"
+          [class.both-arrow]="orderSubType == ''">Typ </span>
         </div>
 
-        <div class="col" (click)="sortTableList('number')">
-          <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">ID </span>
+        <div class="col" (click)="setNextOrder('number');orderTableList('number')">
+          <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'"
+          [class.both-arrow]="orderNumber == ''">ID </span>
         </div>
 
-        <div class="col" (click)="sortTableList('user')">
-          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
+        <div class="col" (click)="setNextOrder('user');orderTableList('user')">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'"
+          [class.both-arrow]="orderUser == ''">Användare </span>
         </div>
 
-        <div class="col" (click)="sortTableList('location')">
-          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'" [class.both-arrow]="orderLocation == ''">Förvaring </span>
+        <div class="col" (click)="setNextOrder('location');orderTableList('location')">
+          <span class="hover" [class.up-arrow]="orderLocation == 'asc'" [class.down-arrow]="orderLocation == 'desc'"
+          [class.both-arrow]="orderLocation == ''">Förvaring </span>
         </div>
 
-        <div class="col" (click)="sortTableList('verify')">
-          <span class="hover" [class.up-arrow]="orderVerify == 'asc'" [class.down-arrow]="orderVerify == 'desc'" [class.both-arrow]="orderVerify == ''">Senast verifierad </span>
+        <div class="col" (click)="setNextOrder('selfCheck');orderTableList('selfCheck')">
+          <span class="hover" [class.up-arrow]="orderSelfCheck == 'asc'" [class.down-arrow]="orderSelfCheck == 'desc'"
+          [class.both-arrow]="orderSelfCheck == ''">Senaste egenkontroll </span>
+        </div>
+
+        <div class="col" (click)="setNextOrder('verify');orderTableList('verify')">
+          <span class="hover" [class.up-arrow]="orderVerify == 'asc'" [class.down-arrow]="orderVerify == 'desc'"
+          [class.both-arrow]="orderVerify == ''">Senaste inventering </span>
         </div>
 
       </div>
       <hr>
       <div class="table-items scrollbar-table">
         <div *ngFor="let item of baseItemList | matchFilterInventory:filterInput:showIn:showOut:showArchived:showGone">
-          <inventory-item [baseItem]="item"> </inventory-item>
+          <inventory-item [baseItem]="item" (checkedChanged)="updateSelectAll()"> </inventory-item>
         </div>
       </div>
     </div>
@@ -102,3 +113,5 @@
 
 <app-pdf-generation-modal [(showModal)]="showPdfGenerationModal" [modalTitle]="'Generera PDF från inventeringstabell'"
 [pdfType]="'inventory'"></app-pdf-generation-modal>
+
+<app-inventory-verification-modal [(showModal)]="showVerifyConfirmationModal" (verifyInventoryChange)="sendVerify()"></app-inventory-verification-modal>

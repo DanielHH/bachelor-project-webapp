@@ -36,6 +36,7 @@ input {
   width: 22px !important;
 }
 
+.nav-text,
 .side-menu-title,
 .radio-button,
 .form-check-label,
@@ -86,20 +87,16 @@ input[type] {
 }
 
 .mat-radio-checked {
-
-
   .mat-radio-outer-circle {
     border-color: $secondary-color-dark !important;
   }
 
   .mat-radio-inner-circle {
     background-color: $secondary-color-dark !important;
-
   }
 }
 
 .mat-radio-ripple {
-
   .mat-ripple-element {
     background-color: rgba($secondary-color-dark, 0.1) !important;
   }
@@ -107,4 +104,8 @@ input[type] {
 
 .mat-checkbox-layout {
   margin-bottom: 0 !important;
+}
+
+.btn-menu {
+  cursor: pointer !important;
 }

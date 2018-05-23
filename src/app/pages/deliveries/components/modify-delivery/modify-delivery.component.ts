@@ -1,21 +1,18 @@
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
-import { Delivery } from '../../../../datamodels/delivery';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
-import { HttpService } from '../../../../services/http.service';
-import { DataService } from '../../../../services/data.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { ModalService } from '../../../../services/modal.service';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { BaseType } from '../../../../datamodels/baseType';
+import { Delivery } from '../../../../datamodels/delivery';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-modify-delivery',
   templateUrl: './modify-delivery.component.html',
   styleUrls: ['./modify-delivery.component.scss']
 })
-export class ModifyDeliveryComponent implements OnInit {
+export class ModifyDeliveryComponent implements OnInit, OnDestroy {
   // Form variables
   documentTypeInput = '';
   documentNumberInput = '';
@@ -65,13 +62,17 @@ export class ModifyDeliveryComponent implements OnInit {
 
   @Output() showModalChange = new EventEmitter<any>();
 
+  modalServiceSubscriber: any;
+
+  dataServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.typeList.subscribe(baseTypes => {
+    this.dataServiceSubscriber = this.dataService.typeList.subscribe(baseTypes => {
       this.baseTypes = baseTypes;
       this.documentTypeControl.updateValueAndValidity({
         onlySelf: false,
@@ -79,7 +80,7 @@ export class ModifyDeliveryComponent implements OnInit {
       });
     });
 
-    this.modalService.editDelivery.subscribe(delivery => {
+    this.modalServiceSubscriber = this.modalService.editDelivery.subscribe(delivery => {
       this.deliveryItem = delivery;
 
       if (delivery && delivery.id) {
@@ -113,6 +114,12 @@ export class ModifyDeliveryComponent implements OnInit {
 
   ngOnInit() {}
 
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
+
   /**
    * Sets fields in document according to form
    * @param document Document to set form data to
@@ -128,6 +135,7 @@ export class ModifyDeliveryComponent implements OnInit {
       delivery.sentDate = new Date(this.sentDateInput);
 
       delivery.comment = this.commentInput ? this.commentInput : null;
+      delivery.modifiedDate = new Date();
     }
   }
 
@@ -140,20 +148,17 @@ export class ModifyDeliveryComponent implements OnInit {
 
       this.setDeliveryFromForm(newDelivery);
 
-      newDelivery.creationDate = this.utilitiesService.getLocalDate();
-      newDelivery.modifiedDate = this.utilitiesService.getLocalDate();
+      newDelivery.creationDate = new Date();
       newDelivery.status = this.utilitiesService.getStatusFromID(1);
 
       this.httpService.httpPost<Delivery>('addNewDelivery/', newDelivery).then(res => {
         if (res.message === 'success') {
-          newDelivery.creationDate = new Date();
-          newDelivery.modifiedDate = new Date();
           this.deliveryList.unshift(res.data);
           // Trigger view refresh
           this.deliveryList = this.deliveryList.slice();
           this.dataService.deliveryList.next(this.deliveryList);
 
-          this.showModal = false;
+          this.closeForm();
         }
       });
     }
@@ -168,7 +173,7 @@ export class ModifyDeliveryComponent implements OnInit {
 
       this.httpService.httpPut<Delivery>('updateDelivery/', this.deliveryItem).then(res => {
         if (res.message === 'success') {
-          this.deliveryItem.modifiedDate = new Date();
+          // Trigger view refresh
           this.deliveryList = this.deliveryList.slice();
           this.dataService.deliveryList.next(this.deliveryList);
 
@@ -217,6 +222,14 @@ export class ModifyDeliveryComponent implements OnInit {
   }
 
   /**
+   * Returns true if entered document ID is valid, else false.
+   */
+  isValidDocumentID() {
+    return !this.documentNumberControl.hasError('required') && !this.documentNumberControl.hasError('newDelivery');
+  }
+
+
+  /**
    * Returns true if entered document type is valid, else false.
    */
   isValidDocumentType() {
@@ -263,6 +276,7 @@ export class ModifyDeliveryComponent implements OnInit {
    */
   isValidInput() {
     return (
+      this.isValidDocumentID() &&
       this.isValidDocumentType() &&
       this.isValidDocumentNumber() &&
       this.isValidDocumentDate() &&

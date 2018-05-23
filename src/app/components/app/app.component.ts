@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../../datamodels/user';
-import { registerLocaleData } from '@angular/common';
-import swedish from '@angular/common/locales/sv';
-import { Title } from '@angular/platform-browser';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'SecTrack';
   user: User;
+
+  authServiceSubscriber: any;
+
+  routerSubscriber: any;
 
   constructor(
     private dataService: DataService,
@@ -23,11 +25,11 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private titleService: Title
   ) {
-    this.authService.user.subscribe(user => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
 
-    this.router.events.subscribe(event => {
+    this.routerSubscriber = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const routeTitle = route.root.firstChild.snapshot.data['name'];
         let newTitle = '';
@@ -41,7 +43,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    /* Needed by the DatePipe used to format dates and times */
-    registerLocaleData(swedish);
+  }
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.routerSubscriber.unsubscribe();
   }
 }

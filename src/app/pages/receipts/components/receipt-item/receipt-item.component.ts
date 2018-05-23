@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Receipt } from '../../../../datamodels/receipt';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-receipt-item',
@@ -20,7 +21,7 @@ export class ReceiptItemComponent implements OnInit {
 
   item: any;
 
-  constructor(private modalService: ModalService, private httpService: HttpService) {}
+  constructor(private modalService: ModalService, private httpService: HttpService, public utilitiesService: UtilitiesService) {}
 
   ngOnInit() {
     if (this.receiptItem.card) {
@@ -58,4 +59,5 @@ export class ReceiptItemComponent implements OnInit {
       window.open(this.receiptItem.url, '_blank');
     }
   }
+
 }

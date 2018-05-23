@@ -1,22 +1,21 @@
-import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
-import { Document } from '../../../../datamodels/document';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { User } from '../../../../datamodels/user';
-import { Receipt } from '../../../../datamodels/receipt';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { DataService } from '../../../../services/data.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import * as _ from 'lodash';
-import { ModalService } from '../../../../services/modal.service';
 import { AuthService } from '../../../../auth/auth.service';
+import { Document } from '../../../../datamodels/document';
+import { Receipt } from '../../../../datamodels/receipt';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-return-document',
   templateUrl: './return-document.component.html',
   styleUrls: ['./return-document.component.scss']
 })
-export class ReturnDocumentComponent implements OnInit {
-
+export class ReturnDocumentComponent implements OnInit, OnDestroy {
   @ViewChild('returnForm') returnForm: NgForm;
 
   showModal = false;
@@ -43,6 +42,14 @@ export class ReturnDocumentComponent implements OnInit {
   locationInput = '';
   commentInput = null;
 
+  authServiceSubscriber: any;
+
+  dataServiceReceiptSubscriber: any;
+
+  dataServiceDocumentSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -50,31 +57,38 @@ export class ReturnDocumentComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-
-    this.authService.user.subscribe((user) => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
 
-    this.dataService.receiptList.subscribe(receipts => {
+    this.dataServiceReceiptSubscriber = this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
-    this.dataService.documentList.subscribe(documents => {
+    this.dataServiceDocumentSubscriber = this.dataService.documentList.subscribe(documents => {
       this.documents = documents;
     });
 
-    this.modalService.returnDocument.subscribe((document) => {
+    this.modalServiceSubscriber = this.modalService.returnDocument.subscribe(document => {
       if (document && document.id) {
         this.documentItem = document;
         this.commentInput = document.comment;
 
         this._showModal = true;
-
       }
     });
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceReceiptSubscriber.unsubscribe();
+
+    this.dataServiceDocumentSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
   }
 
   /**
@@ -82,7 +96,7 @@ export class ReturnDocumentComponent implements OnInit {
    * @param id Id of receipt
    */
   getReceipt(id: number) {
-    return _.find(this.receipts, (receipt) => receipt.id == id);
+    return _.find(this.receipts, receipt => receipt.id == id);
   }
 
   /**
@@ -103,36 +117,39 @@ export class ReturnDocumentComponent implements OnInit {
       this.documentItem.user = new User();
       this.documentItem.location = this.locationInput;
       this.documentItem.comment = this.commentInput != '' ? this.commentInput : null;
-      this.documentItem.status = this.utilitiesService.getStatusFromID(1); // TODO: ENUM FOR STATUS, 1 = Returned
-      this.documentItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.documentItem.status = this.utilitiesService.getStatusFromID(1); // 1 = Returned
+      this.documentItem.modifiedDate = new Date();
 
-      const activeReceipt = this.getReceipt(this.documentItem.activeReceipt);
-      activeReceipt.endDate = this.utilitiesService.getLocalDate();
+      const activeReceipt = this.getReceipt(this.documentItem.activeReceiptID);
+      activeReceipt.endDate = new Date();
 
       // Create new log event
       const logText = this.documentItem.documentNumber + ' från ' + this.latestUser.name;
-      const logEvent = this.utilitiesService.createNewLogEventForItem(2, 4, this.documentItem, this.user, logText);
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(2, 1, this.documentItem, this.user, logText); // 2 = Document, 1 = Return
 
-      this.httpService.httpPut<Receipt>('updateReceipt/', {
-        receipt: activeReceipt,
-        logEvent: logEvent,
-        document: this.documentItem})
+      this.httpService
+        .httpPut<Receipt>('updateReceipt/', {
+          receipt: activeReceipt,
+          logEvent: logEvent,
+          document: this.documentItem
+        })
         .then(res => {
-        if (res.message === 'success') {
-          this.documentItem.activeReceipt = null;
+          if (res.message === 'success') {
+            this.documentItem.activeReceiptID = null;
             // Update log event list
             this.utilitiesService.updateLogEventList(res.data.logEvent);
 
-              // Update receipt list
-              this.receipts = this.receipts.slice();
-              this.dataService.receiptList.next(this.receipts);
+            // Update receipt list
+            this.receipts = this.receipts.slice();
+            this.dataService.receiptList.next(this.receipts);
 
-              // Update document list
-              this.dataService.documentList.next(this.documents);
+            // Update document list
+            this.dataService.documentList.next(this.documents);
 
-              this.showModal = false;
-            }
-          });
+            this.closeForm();
+          }
+        });
     }
   }
 
@@ -151,10 +168,13 @@ export class ReturnDocumentComponent implements OnInit {
     this.showModal = false;
   }
 
+  /**
+   * Get a string format of a Date object
+   * @param str Date object
+   */
   getDateString(str: Date) {
     if (str) {
       return this.utilitiesService.getDateString(str);
     }
   }
-
 }

@@ -1,19 +1,20 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
-import { NgForm } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
 import { ModalService } from '../../../../services/modal.service';
+import { DataService } from '../../../../services/data.service';
+import { lowerCase } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-user-table',
   templateUrl: './user-table.component.html',
   styleUrls: ['./user-table.component.scss']
 })
-export class UserTableComponent implements OnInit {
-
-  @Input() userList: User[];
-
+export class UserTableComponent implements OnInit, OnDestroy {
   showModal = false;
+
+  order = 'desc';
+  sortProperty = 'modifiedDate';
 
   filterInput = '';
 
@@ -33,73 +34,85 @@ export class UserTableComponent implements OnInit {
 
   modalType = 0;
 
-  constructor(private modalService: ModalService) { }
+  userList: User[] = [];
+
+  dataServiceSubscriber: any;
+
+  constructor(private modalService: ModalService, private dataService: DataService) {
+    this.dataServiceSubscriber = this.dataService.userList.subscribe(userList => {
+      this.userList = userList;
+      this.orderTableList();
+    });
+  }
 
   ngOnInit() {
-    this.sortTableListStart();
+    this.orderTableList();
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 
   /**
-   * Sorts table after location descending
-   */
-  sortTableListStart() {
-    this.userList = _.orderBy(this.userList, ['modifiedDate'], ['desc']);
-  }
-
-  /**
-   * Sorts the table depending on the properties of the items
+   * Update order and order property
    * @param property
    */
-  sortTableList(property: string) {
-    let newOrder = '';
+  updateOrder(property: string) {
+    this.sortProperty = property;
 
     switch (property) {
       case 'status.id': {
-        newOrder = this.sortTableListHelper(this.orderStatus);
-        this.orderStatus = newOrder;
+        this.order = this.getNewOrder(this.orderStatus);
+        this.orderStatus = this.order;
         break;
       }
       case 'username': {
-        newOrder = this.sortTableListHelper(this.orderUsername);
-        this.orderUsername = newOrder;
+        this.order = this.getNewOrder(this.orderUsername);
+        this.orderUsername = this.order;
         break;
       }
       case 'name': {
-        newOrder = this.sortTableListHelper(this.orderName);
-        this.orderName = newOrder;
+        this.order = this.getNewOrder(this.orderName);
+        this.orderName = this.order;
         break;
       }
       case 'email': {
-        newOrder = this.sortTableListHelper(this.orderEmail);
-        this.orderEmail = newOrder;
+        this.order = this.getNewOrder(this.orderEmail);
+        this.orderEmail = this.order;
         break;
       }
       case 'creationDate': {
-        newOrder = this.sortTableListHelper(this.orderCreationDate);
-        this.orderCreationDate = newOrder;
+        this.order = this.getNewOrder(this.orderCreationDate);
+        this.orderCreationDate = this.order;
         break;
       }
       case 'modifiedDate': {
-        newOrder = this.sortTableListHelper(this.orderModifiedDate);
-        this.orderModifiedDate = newOrder;
+        this.order = this.getNewOrder(this.orderModifiedDate);
+        this.orderModifiedDate = this.order;
         break;
       }
     }
+  }
 
-    if (newOrder) {
-      this.userList = _.orderBy(this.userList, [property], [newOrder]);
+  /**
+   * Orders card list based on set order and order property
+   */
+  orderTableList() {
+    if (this.order) {
+      this.userList = _.orderBy(this.userList, [this.sortProperty], [this.order]);
     }
-
   }
 
   /**
    * Sets the order to sort by
    * @param order
    */
-  sortTableListHelper(order: string) {
+  getNewOrder(order: string) {
     switch (order) {
-      case 'asc': return 'desc';
-      default: return 'asc';
+      case 'asc':
+        return 'desc';
+      default:
+        return 'asc';
     }
   }
 
@@ -109,6 +122,4 @@ export class UserTableComponent implements OnInit {
   openAddNewUser() {
     this.modalService.editUser.next(null);
   }
-
 }
-

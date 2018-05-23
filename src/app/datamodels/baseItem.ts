@@ -1,24 +1,16 @@
+import * as moment from 'moment-timezone';
 import { Card } from './card';
-import { Document } from './document';
-import { CardDetailComponent } from '../pages/cards/components/card-detail/card-detail.component';
 import { CardType } from './cardType';
+import { Document } from './document';
 import { DocumentType } from './documentType';
-import { User } from './user';
-import { StatusType } from './statusType';
 import { ItemType } from './itemType';
-import { UtilitiesService, lowerCase } from '../services/utilities.service';
-import { VerificationType } from './verificationType';
-import { DataService } from '../services/data.service';
-import { HttpService } from '../services/http.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
-
+import { StatusType } from './statusType';
+import { User } from './user';
 
 /**
  * A BaseItem can be either a Card or a Document.
-*/
+ */
 export class BaseItem {
-
   /**
    * The names identifying the item type.
    */
@@ -27,8 +19,8 @@ export class BaseItem {
 
   /**
    * The Card or Document this BaseItem represents.
-  */
-  item: Card|Document;
+   */
+  item: Card | Document;
 
   /**
    * The type of item this BaseItem represents.
@@ -40,9 +32,7 @@ export class BaseItem {
    */
   isChecked: boolean;
 
-  constructor(
-    item: Card|Document,
-    itemType: string) {
+  constructor(item: Card | Document, itemType: string) {
     this.item = item;
     this.itemType = itemType;
     this.isChecked = false;
@@ -53,20 +43,20 @@ export class BaseItem {
 
   /**
    * Get the card or document that this item represents
-  */
+   */
   getItem(): any {
     if (this.isCard()) {
-      return (this.item as Card);
+      return this.item as Card;
     } else {
-      return (this.item as Document);
+      return this.item as Document;
     }
   }
 
   /**
    * Return the type of Card if this BaseItem represents a Card,
    * or the type of Document if this BaseItem represents a Document.
-  */
-  getSubType(): CardType|DocumentType {
+   */
+  getSubType(): CardType | DocumentType {
     if (this.isCard()) {
       return (this.item as Card).cardType;
     } else {
@@ -76,7 +66,7 @@ export class BaseItem {
 
   /**
    * Get the card or document number for this item.
-  */
+   */
   getNumber(): string {
     if (this.isCard()) {
       return (this.item as Card).cardNumber;
@@ -87,28 +77,28 @@ export class BaseItem {
 
   /**
    * Get the user associated with this Card/Document.
-  */
+   */
   getUser(): User {
     return this.item.user;
   }
 
   /**
    * Get the location this Card/Document is stored at.
-  */
+   */
   getLocation(): string {
     return this.item.location;
   }
 
   /**
    * Get the comment associated with this Card/Document.
-  */
+   */
   getComment(): string {
     return this.item.comment;
   }
 
   /**
    * Get the (Swedish) name of the primary type of this item.
-  */
+   */
   getItemTypeString(): string {
     return this.isCard() ? 'Kort' : 'Handling';
   }
@@ -117,9 +107,31 @@ export class BaseItem {
    * Returns string representation of last verified date
    */
   getLastVerifiedString(): string {
+    moment.locale('sv');
+
+    moment.tz('Europe/Stockholm');
+
     if (this.item.lastVerificationDate) {
-      return this.item.lastVerificationDate ?
-      moment(this.item.lastVerificationDate).format('YYYY-MM-DD HH:MM:SS') : '-';
+      return this.item.lastVerificationDate
+        ? moment(this.item.lastVerificationDate).format('YYYY-MM-DD')
+        : '-';
+    } else {
+      return 'Aldrig';
+    }
+  }
+
+  /**
+   * Returns string representation of last self check date
+   */
+  getLastSelfCheckString(): string {
+    moment.locale('sv');
+
+    moment.tz('Europe/Stockholm');
+
+    if (this.item.lastSelfCheckDate) {
+      return this.item.lastSelfCheckDate
+        ? moment(this.item.lastSelfCheckDate).format('YYYY-MM-DD')
+        : '-';
     } else {
       return 'Aldrig';
     }
@@ -127,14 +139,14 @@ export class BaseItem {
 
   /**
    * Get id of the type of this item.
-  */
+   */
   getItemType(): ItemType {
     return this.isCard() ? new ItemType('Kort') : new ItemType('Handling');
   }
 
   /**
    * Get the status of this Card/Document.
-  */
+   */
   getStatus(): StatusType {
     return this.item.status;
   }
@@ -143,7 +155,7 @@ export class BaseItem {
    * Type checking using instanceof can break as the Cards/Documents can lose
    * their types (but still keep their exact structures and are accepted by type-restricted functions),
    * so type checking is done this way instead.
-  */
+   */
   isCard(): boolean {
     return this.itemType === BaseItem.CARD_NAME;
   }

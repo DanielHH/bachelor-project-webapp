@@ -1,22 +1,22 @@
-import { Component, OnInit, Input, Output, ViewChild } from '@angular/core';
-import { Card } from '../../../../datamodels/card';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { User } from '../../../../datamodels/user';
-import { ModalService } from '../../../../services/modal.service';
-import { DataService } from '../../../../services/data.service';
-import { Receipt } from '../../../../datamodels/receipt';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import * as _ from 'lodash';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { LogEvent } from '../../../../datamodels/logEvent';
 import { AuthService } from '../../../../auth/auth.service';
+import { Card } from '../../../../datamodels/card';
+import { LogEvent } from '../../../../datamodels/logEvent';
+import { Receipt } from '../../../../datamodels/receipt';
+import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-return-card',
   templateUrl: './return-card.component.html',
   styleUrls: ['./return-card.component.scss']
 })
-export class ReturnCardComponent implements OnInit {
+export class ReturnCardComponent implements OnInit, OnDestroy {
   @ViewChild('returnForm') returnForm: NgForm;
 
   showModal = false;
@@ -46,6 +46,16 @@ export class ReturnCardComponent implements OnInit {
   locationInput = '';
   commentInput = '';
 
+  authServiceSubscriber: any;
+
+  dataServiceReceiptSubscriber: any;
+
+  dataServiceCardSubscriber: any;
+
+  dataServiceLogEventSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
@@ -53,28 +63,27 @@ export class ReturnCardComponent implements OnInit {
     private modalService: ModalService,
     private authService: AuthService
   ) {
-
-    this.authService.user.subscribe((user) => {
+    this.authServiceSubscriber = this.authService.user.subscribe(user => {
       this.user = user;
     });
 
     // Receipt list subscriber
-    this.dataService.receiptList.subscribe(receipts => {
+    this.dataServiceReceiptSubscriber = this.dataService.receiptList.subscribe(receipts => {
       this.receipts = receipts;
     });
 
     // Card list subscriber
-    this.dataService.cardList.subscribe(cards => {
+    this.dataServiceCardSubscriber = this.dataService.cardList.subscribe(cards => {
       this.cards = cards;
     });
 
     // Log event list subscriber
-    this.dataService.logEventList.subscribe(logEvents => {
+    this.dataServiceLogEventSubscriber = this.dataService.logEventList.subscribe(logEvents => {
       this.logEvents = logEvents;
     });
 
     // Return card subscriber
-    this.modalService.returnCard.subscribe(card => {
+    this.modalServiceSubscriber = this.modalService.returnCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
 
@@ -85,12 +94,25 @@ export class ReturnCardComponent implements OnInit {
         setTimeout(() => {
           this.commentInput = card.comment;
         }, 250);
-
       }
     });
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalService.returnCard.next(null);
+
+    this.authServiceSubscriber.unsubscribe();
+
+    this.dataServiceReceiptSubscriber.unsubscribe();
+
+    this.dataServiceCardSubscriber.unsubscribe();
+
+    this.dataServiceLogEventSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Returns receipts from id
@@ -117,18 +139,18 @@ export class ReturnCardComponent implements OnInit {
       // Set card information
       this.cardItem.user = new User();
       this.cardItem.location = this.locationInput;
-      this.cardItem.status = this.utilitiesService.getStatusFromID(1); // TODO: ENUM FOR STATUS, 1 = Returned
-      this.cardItem.comment =
-        this.commentInput != '' ? this.commentInput : null;
-      this.cardItem.modifiedDate = this.utilitiesService.getLocalDate();
+      this.cardItem.status = this.utilitiesService.getStatusFromID(1); // 1 = Returned
+      this.cardItem.comment = this.commentInput != '' ? this.commentInput : null;
+      this.cardItem.modifiedDate = new Date();
 
       // Update receipt
-      const activeReceipt = this.getReceipt(this.cardItem.activeReceipt);
-      activeReceipt.endDate = this.utilitiesService.getLocalDate();
+      const activeReceipt = this.getReceipt(this.cardItem.activeReceiptID);
+      activeReceipt.endDate = new Date();
 
       // Create new log event
       const logText = this.cardItem.cardNumber + ' från ' + this.latestUser.name;
-      const logEvent = this.utilitiesService.createNewLogEventForItem(1, 4, this.cardItem, this.user, logText);
+      const logEvent = this.utilitiesService.
+      createNewLogEventForItem(1, 1, this.cardItem, this.user, logText); // 1 = Card, 1 = Return
 
       // Submit changes to server
       this.httpService
@@ -139,7 +161,7 @@ export class ReturnCardComponent implements OnInit {
         })
         .then(res => {
           if (res.message === 'success') {
-            this.cardItem.activeReceipt = null;
+            this.cardItem.activeReceiptID = null;
             // Update log event list
             this.utilitiesService.updateLogEventList(res.data.logEvent);
 
@@ -169,5 +191,4 @@ export class ReturnCardComponent implements OnInit {
 
     this.showModal = false;
   }
-
 }

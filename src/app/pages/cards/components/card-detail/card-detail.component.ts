@@ -1,22 +1,17 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location, DatePipe } from '@angular/common';
-import { FormControl, Validators, NgForm } from '@angular/forms';
+import { Component, OnDestroy, OnInit, ViewChild, Input } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Card } from '../../../../datamodels/card';
-import { DataService } from '../../../../services/data.service';
-import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
+import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-card-detail',
   templateUrl: './card-detail.component.html',
   styleUrls: ['./card-detail.component.scss']
 })
-export class CardDetailComponent implements OnInit {
-
+export class CardDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -34,20 +29,31 @@ export class CardDetailComponent implements OnInit {
 
   cardItem: Card = null;
 
+  modalServiceSubscriber: any;
+
+  @Input() historyRoute = true;
+
   constructor(
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService
+    public utilitiesService: UtilitiesService,
+    private routeDataService: RouteDataService,
+    private router: Router
   ) {
-    this.modalService.detailCard.subscribe((card) => {
+    this.modalServiceSubscriber = this.modalService.detailCard.subscribe(card => {
       if (card && card.id) {
         this.cardItem = card;
         this._showModal = true;
       }
     });
-
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalService.detailCard.next(null);
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   hideDetail() {
     this.showModal = false;
@@ -63,5 +69,14 @@ export class CardDetailComponent implements OnInit {
     this.modalService.detailCard.next(this.cardItem);
 
     this.showModal = false;
+  }
+
+  /**
+   * Go to item history
+   */
+  routeHistory() {
+    this.routeDataService.card.next(this.cardItem);
+    this.router.navigate(['card-history']);
+    this._showModal = false;
   }
 }

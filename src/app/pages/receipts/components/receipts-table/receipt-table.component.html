@@ -48,23 +48,29 @@
     </div>
     <div class="table-container">
       <div class="row table-header">
-        <div class="col-1" (click)="sortTableList('status')">
-          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'" [class.both-arrow]="orderStatus == ''">Status </span>
+        <div class="col-1" (click)="setNextOrder('status');orderTableList('status')">
+          <span class="hover" [class.up-arrow]="orderStatus == 'asc'" [class.down-arrow]="orderStatus == 'desc'"
+          [class.both-arrow]="orderStatus == ''">Status </span>
         </div>
-        <div class="col" (click)="sortTableList('type')">
-          <span class="hover" [class.up-arrow]="orderType == 'asc'" [class.down-arrow]="orderType == 'desc'" [class.both-arrow]="orderType == ''">Typ </span>
+        <div class="col" (click)="setNextOrder('type');orderTableList('type')">
+          <span class="hover" [class.up-arrow]="orderType == 'asc'" [class.down-arrow]="orderType == 'desc'"
+          [class.both-arrow]="orderType == ''">Typ </span>
         </div>
-        <div class="col" (click)="sortTableList('number')">
-          <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'" [class.both-arrow]="orderNumber == ''">ID </span>
+        <div class="col" (click)="setNextOrder('number');orderTableList('number')">
+          <span class="hover" [class.up-arrow]="orderNumber == 'asc'" [class.down-arrow]="orderNumber == 'desc'"
+          [class.both-arrow]="orderNumber == ''">ID </span>
         </div>
-        <div class="col" (click)="sortTableList('user')">
-          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'" [class.both-arrow]="orderUser == ''">Användare </span>
+        <div class="col" (click)="setNextOrder('user');orderTableList('user')">
+          <span class="hover" [class.up-arrow]="orderUser == 'asc'" [class.down-arrow]="orderUser == 'desc'"
+          [class.both-arrow]="orderUser == ''">Användare </span>
         </div>
-        <div class="col" (click)="sortTableList('startDate')">
-          <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'" [class.both-arrow]="orderStartDate == ''">Startdatum </span>
+        <div class="col" (click)="setNextOrder('startDate');orderTableList('startDate')">
+          <span class="hover" [class.up-arrow]="orderStartDate == 'asc'" [class.down-arrow]="orderStartDate == 'desc'"
+          [class.both-arrow]="orderStartDate == ''">Startdatum </span>
         </div>
-        <div class="col" (click)="sortTableList('endDate')">
-          <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'" [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
+        <div class="col" (click)="setNextOrder('endDate');orderTableList('endDate')">
+          <span class="hover" [class.up-arrow]="orderEndDate == 'asc'" [class.down-arrow]="orderEndDate == 'desc'"
+          [class.both-arrow]="orderEndDate == ''">Slutdatum </span>
         </div>
       </div>
       <hr>

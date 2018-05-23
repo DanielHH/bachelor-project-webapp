@@ -15,8 +15,12 @@
         </mat-form-field>
       </div>
 
-      <div class="col"></div>
-      <!-- Space -->
+      <!-- Show document details button-->
+      <div class="col text-right">
+        <div class="mt-3">
+          <button class="table-button" mat-raised-button color="primary" (click)="openDocumentDetail()">Visa handlingsdetaljer</button>
+        </div>
+      </div>
 
     </div>
 
@@ -39,23 +43,23 @@
     <div class="table-container">
       <div class="row table-header">
 
-        <div class="col-2" (click)="sortTableList('logType')">
+        <div class="col-2" (click)="updateOrder('logType'); orderTableList()">
           <span class="hover" [class.up-arrow]="orderLogType == 'asc'" [class.down-arrow]="orderLogType == 'desc'" [class.both-arrow]="orderLogType == ''">Typ </span>
         </div>
-        <div class="col" (click)="sortTableList('logText')">
+        <div class="col" (click)="updateOrder('logText'); orderTableList()">
           <span class="hover" [class.up-arrow]="orderLogText == 'asc'" [class.down-arrow]="orderLogText == 'desc'" [class.both-arrow]="orderLogText == ''">Händelse </span>
         </div>
-        <div class="col" (click)="sortTableList('user')">
+        <div class="col" (click)="updateOrder('user'); orderTableList()">
           <span class="hover" [class.up-arrow]="orderLogUser == 'asc'" [class.down-arrow]="orderLogUser == 'desc'" [class.both-arrow]="orderLogUser == ''">Utförd av </span>
         </div>
-        <div class="col-2" (click)="sortTableList('logDate')">
+        <div class="col-2" (click)="updateOrder('logDate'); orderTableList()">
           <span class="hover" [class.up-arrow]="orderLogDate == 'asc'" [class.down-arrow]="orderLogDate == 'desc'" [class.both-arrow]="orderLogDate == ''">Datum </span>
         </div>
       </div>
       <hr>
       <div class="table-items scrollbar-table">
         <!-- Add cards to the table" -->
-        <div *ngFor="let logEvent of logEventList | matchFilterLog:filterInput:showReceipt:showOther" >
+        <div *ngFor="let logEvent of filteredLogEventList | matchFilterLog:filterInput:showReceipt:showOther" >
           <app-log-item [logEventItem]="logEvent"></app-log-item>
         </div>
       </div>
@@ -64,3 +68,6 @@
 </div>
 
 <app-log-detail></app-log-detail>
+
+<app-document-detail [historyRoute]="false"></app-document-detail>
+

@@ -1,13 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Card } from '../../datamodels/card';
-import { ModifyCardComponent } from './components/modify-card/modify-card.component';
-import { MatDialog } from '@angular/material';
-
-import { DataService } from '../../services/data.service';
-import { HttpService } from '../../services/http.service';
-
-import * as _ from 'lodash';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-cards',
@@ -16,16 +7,7 @@ import { NgForm } from '@angular/forms';
 })
 export class CardsComponent implements OnInit {
 
-  cardList: Card[] = [];
+  constructor() {}
 
-  constructor(public dataService: DataService) {
-    this.dataService.cardList.subscribe((cardList) => {
-      this.cardList = cardList;
-    });
-
-  }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

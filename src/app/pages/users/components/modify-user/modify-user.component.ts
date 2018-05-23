@@ -1,27 +1,17 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Directive,
-  Inject,
-  ViewChild,
-  Output,
-  EventEmitter
-} from '@angular/core';
-import { HttpService } from '../../../../services/http.service';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { DataService } from '../../../../services/data.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import { ModalService } from '../../../../services/modal.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm, Validators } from '@angular/forms';
 import { User } from '../../../../datamodels/user';
+import { DataService } from '../../../../services/data.service';
+import { HttpService } from '../../../../services/http.service';
+import { ModalService } from '../../../../services/modal.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-modify-user',
   templateUrl: './modify-user.component.html',
   styleUrls: ['./modify-user.component.scss']
 })
-export class ModifyUserComponent implements OnInit {
-
+export class ModifyUserComponent implements OnInit, OnDestroy {
   nameInput = '';
   emailInput = '';
   usernameInput = '';
@@ -61,17 +51,21 @@ export class ModifyUserComponent implements OnInit {
     this.showModal = value;
   }
 
+  dataServiceSubscriber: any;
+
+  modalServiceSubscriber: any;
+
   constructor(
     private httpService: HttpService,
     private dataService: DataService,
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.userList.subscribe(userList => {
+    this.dataServiceSubscriber = this.dataService.userList.subscribe(userList => {
       this.userList = userList;
     });
 
-    this.modalService.editUser.subscribe(user => {
+    this.modalServiceSubscriber = this.modalService.editUser.subscribe(user => {
       if (user && user.id) {
         this.userToEdit = user;
 
@@ -86,17 +80,23 @@ export class ModifyUserComponent implements OnInit {
 
         this._showModal = true;
       } else {
-          this.userToEdit = null;
+        this.userToEdit = null;
 
-          this.modalType = 0;
-          this.modalTitle = 'Lägg till ny användare';
+        this.modalType = 0;
+        this.modalTitle = 'Lägg till ny användare';
 
-          this._showModal = true;
+        this._showModal = true;
       }
     });
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
+
+    this.modalServiceSubscriber.unsubscribe();
+  }
 
   /**
    * Sets fields in user according to form
@@ -111,7 +111,7 @@ export class ModifyUserComponent implements OnInit {
       const userTypeID = this.isAdmin ? Number(1) : Number(2);
       user.userType = this.utilitiesService.getUserTypeFromID(userTypeID);
 
-      user.modifiedDate = this.utilitiesService.getLocalDate();
+      user.modifiedDate = new Date();
 
       if (this.modalType === 0 || this.changePassword) {
         user.password = btoa(this.passwordInput);
@@ -128,12 +128,15 @@ export class ModifyUserComponent implements OnInit {
 
       this.setUserFromForm(newUser);
 
-      newUser.creationDate = this.utilitiesService.getLocalDate();
+      newUser.creationDate = new Date();
       newUser.status = this.utilitiesService.getStatusFromID(5); // Status = active
 
       this.httpService.httpPost<User>('addNewUser/', newUser).then(res => {
         if (res.message === 'success') {
-          this.dataService.getUserList();
+          this.userList.unshift(res.data);
+
+          this.userList = this.userList.slice();
+          this.dataService.userList.next(this.userList);
 
           this.closeForm();
         }
@@ -150,9 +153,13 @@ export class ModifyUserComponent implements OnInit {
 
       this.httpService.httpPut<User>('updateUser/', this.userToEdit).then(res => {
         if (res.message === 'success') {
-          this.dataService.getUserList();
+          this.userToEdit.modifiedDate = res.data.modifiedDate;
+
+          this.userList = this.userList.slice();
+          this.dataService.userList.next(this.userList);
 
           this.closeForm();
+          this.dataService.getReceiptList();
         }
       });
     }
@@ -184,10 +191,7 @@ export class ModifyUserComponent implements OnInit {
    * Returns true if entered username is valid, else false.
    */
   isValidUsername() {
-    return (
-      !this.usernameControl.hasError('required') &&
-      !this.usernameControl.hasError('newUsername')
-    );
+    return !this.usernameControl.hasError('required') && !this.usernameControl.hasError('newUsername');
   }
 
   /**
@@ -210,12 +214,7 @@ export class ModifyUserComponent implements OnInit {
    * Returns true if everything in the form is valid, else false
    */
   isValidInput() {
-    return (
-      this.isValidName() &&
-      this.isValidEmail() &&
-      this.isValidUsername() &&
-      this.isValidPassword()
-    );
+    return this.isValidName() && this.isValidEmail() && this.isValidUsername() && this.isValidPassword();
   }
 
   /**

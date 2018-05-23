@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { tokenNotExpired } from 'angular2-jwt';
-import { HttpService } from '../services/http.service';
-
-import { Http, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import { User } from '../datamodels/user';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { HttpService } from '../services/http.service';
+import { Router } from '@angular/router';
+
 
 @Injectable()
 export class AuthService {
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService, private router: Router) {}
 
   _user: User;
 
@@ -19,23 +17,15 @@ export class AuthService {
    */
   user: BehaviorSubject<User> = new BehaviorSubject<User>(this._user);
 
-  getToken(): string {
-    return localStorage.getItem('token');
-  }
-
   /**
-   * Check if the current user is authenticated by looking for a non-expired
-   * JSON Web Token.
+   * Check authentication status by checking for a current user.
    */
   isAuthenticated(): boolean {
-    const token = this.getToken();
-    // TODO: test if tokenNotExpired behaves as expected, replace placeholder code
-    return token === 'faked-jwt' && this.user.value && this.user.value.id != null; // && tokenNotExpired(token);
+    return this.user.value && this.user.value.id != null;
   }
 
   /**
-   * Attempt to log in the user by trading credentials for a JSON Web Token,
-   * which can be used to access protected resources.
+   * Attempt to log in the user with the given username and password.
    * @param username The username of the user.
    * @param password The password of the user.
    */
@@ -45,11 +35,7 @@ export class AuthService {
         if (res.message === 'success') {
           this._user = res.data;
           this.user.next(this._user);
-
-          /**
-           * Change to correct token when implemented
-           */
-          localStorage.setItem('token', 'faked-jwt');
+          this.router.navigate(['/cards']);
           resolve(true);
         } else {
           resolve(false);
@@ -57,13 +43,12 @@ export class AuthService {
       });
     });
   }
+
   /**
-   * Log the user out by removing its auth-token.
+   * Log out by resetting the current user
    */
   logout(): void {
     this._user = new User();
     this.user.next(this._user);
-    localStorage.removeItem('token');
-    // TODO: send message to backend? (revoke token?)
   }
 }

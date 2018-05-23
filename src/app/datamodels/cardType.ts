@@ -4,7 +4,6 @@ import { StatusType } from './statusType';
  * CardType data model
  */
 export class CardType {
-
   /**
    * Database ID of the card type
    */
@@ -29,5 +28,4 @@ export class CardType {
    * CardType active/inactive status
    */
   status: StatusType;
-
 }

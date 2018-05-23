@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from '../../services/http.service';
-import { DataService } from '../../services/data.service';
 import { ModalService } from '../../services/modal.service';
 
 @Component({
@@ -56,7 +55,7 @@ export class PdfGenerationModalComponent implements OnInit, OnDestroy {
     );
 
     this.filteredSubscription = this.modalService.pdfFilteredList.subscribe(filteredList => {
-      if (filteredList.length) {
+      if (filteredList && filteredList.length) {
         this.filteredList = filteredList;
         this.showModal = true;
 
@@ -79,6 +78,12 @@ export class PdfGenerationModalComponent implements OnInit, OnDestroy {
    * Need to unsubscribe, subscriptions are not destroyed when component is destroyed
    */
   ngOnDestroy() {
+    this.modalService.pdfFilteredList.next(null);
+
+    this.modalService.filterList.next(null);
+
+    this.modalService.pdfSelectedList.next(null);
+
     this.selectedSubscription.unsubscribe();
     this.filteredSubscription.unsubscribe();
     this.filterSubscription.unsubscribe();

@@ -1,17 +1,22 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { Document } from '../../../../datamodels/document';
 import { LogEvent } from '../../../../datamodels/logEvent';
 import { lowerCase } from '../../../../services/utilities.service';
+import { ModalService } from '../../../../services/modal.service';
+import { DataService } from '../../../../services/data.service';
+import { RouteDataService } from '../../../../services/route-data.service';
 
 @Component({
   selector: 'app-document-history-table',
   templateUrl: './document-history-table.component.html',
   styleUrls: ['./document-history-table.component.scss']
 })
-export class DocumentHistoryTableComponent implements OnInit {
-  @Input() logEventList: LogEvent[];
-  @Input() document: Document;
+export class DocumentHistoryTableComponent implements OnInit, OnDestroy {
+  document: Document;
+
+  order = 'desc';
+  sortProperty = 'logDate';
 
   filterInput = '';
 
@@ -23,78 +28,124 @@ export class DocumentHistoryTableComponent implements OnInit {
   showReceipt = true;
   showOther = true;
 
-  constructor() {}
+  routeDataServiceSubscriber: any;
+  dataServiceSubscriber: any;
+
+  logEventList: LogEvent[];
+  filteredLogEventList: LogEvent[];
+
+  constructor(
+    private modalService: ModalService,
+    private dataService: DataService,
+    private routeDataService: RouteDataService
+  ) {
+    this.routeDataServiceSubscriber = this.routeDataService.document.subscribe(document => {
+      this.document = document;
+      if (this.logEventList) {
+        this.filteredLogEventList = _.filter(this.logEventList, logEvent => {
+          if (logEvent.document && logEvent.document.id) {
+            return logEvent.document.id == this.document.id;
+          }
+          return false;
+        });
+      }
+      this.orderTableList();
+    });
+
+    this.dataServiceSubscriber = this.dataService.logEventList.subscribe(logEventList => {
+      this.logEventList = logEventList;
+      if (this.document && this.document.id) {
+        this.filteredLogEventList = _.filter(this.logEventList, logEvent => {
+          if (logEvent.document && logEvent.document.id) {
+            return logEvent.document.id == this.document.id;
+          }
+          return false;
+        });
+      }
+      this.orderTableList();
+    });
+  }
 
   ngOnInit() {
-    this.sortTableListStart();
+    this.orderTableList();
+  }
+
+  ngOnDestroy() {
+    this.routeDataServiceSubscriber.unsubscribe();
+
+    this.dataServiceSubscriber.unsubscribe();
   }
 
   /**
-   * Sorts table after modifiedDate ascending
-   */
-  sortTableListStart() {
-    this.logEventList = _.orderBy(this.logEventList, ['logDate'], ['desc']);
-  }
-
-  /**
-   * Sorts the table depending on the property of the log
+   * Update order and order property
    * @param property
    */
-  sortTableList(property: string) {
-    let newOrder = '';
-
+  updateOrder(property: string) {
+    this.sortProperty = property;
     switch (property) {
       case 'logDate': {
-        newOrder = this.sortTableListHelper(this.orderLogDate);
-        this.orderLogDate = newOrder;
+        this.order = this.getNewOrder(this.orderLogDate);
+        this.orderLogDate = this.order;
         break;
       }
       case 'logType': {
-        newOrder = this.sortTableListHelper(this.orderLogType);
-        this.orderLogType = newOrder;
+        this.order = this.getNewOrder(this.orderLogType);
+        this.orderLogType = this.order;
         property = 'logType.name';
         break;
       }
       case 'logText': {
-        newOrder = this.sortTableListHelper(this.orderLogText);
-        this.orderLogText = newOrder;
+        this.order = this.getNewOrder(this.orderLogText);
+        this.orderLogText = this.order;
         break;
       }
       case 'user': {
-        newOrder = this.sortTableListHelper(this.orderLogUser);
-        this.orderLogUser = newOrder;
+        this.order = this.getNewOrder(this.orderLogUser);
+        this.orderLogUser = this.order;
         property = 'user.name';
         break;
       }
     }
+  }
 
-    if (newOrder) {
-      this.logEventList = _.orderBy(
-        this.logEventList,
+  /**
+   * Orders card list based on set order and order property
+   */
+  orderTableList() {
+    if (this.order) {
+      this.filteredLogEventList = _.orderBy(
+        this.filteredLogEventList,
         [
           logEvent => {
-            if (logEvent[property]) {
-              return lowerCase(logEvent[property]) as string;
+            if (logEvent[this.sortProperty]) {
+              return lowerCase(logEvent[this.sortProperty]) as string;
             } else {
-              return logEvent[property.slice(0, -5)] ? (lowerCase(logEvent[property.slice(0, -5)].name) as string) : '';
+              return logEvent[this.sortProperty.slice(0, -5)] ? (lowerCase(logEvent[this.sortProperty.slice(0, -5)].name) as string) : '';
             }
           }
         ],
-        [newOrder]
+        [this.order]
       );
     }
   }
 
   /**
-   * Sets the order to sort by
+   * Returns new order given old one
    * @param order
    */
-  sortTableListHelper(order: string) {
+  getNewOrder(order: string) {
     switch (order) {
       case 'asc':
         return 'desc';
       default:
         return 'asc';
     }
+  }
+
+  /**
+   * Show modal with document details
+   */
+  openDocumentDetail() {
+    this.modalService.detailDocument.next(this.document);
   }
 }

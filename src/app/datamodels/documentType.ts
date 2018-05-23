@@ -4,7 +4,6 @@ import { StatusType } from './statusType';
  * DocumentType data model
  */
 export class DocumentType {
-
   /**
    * Database ID of the document type
    */
@@ -29,5 +28,4 @@ export class DocumentType {
    * DocumentType active/inactive status
    */
   status: StatusType;
-
 }

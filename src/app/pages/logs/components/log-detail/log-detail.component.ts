@@ -1,18 +1,15 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { FormControl, Validators, NgForm } from '@angular/forms';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { LogEvent } from '../../../../datamodels/logEvent';
 import { ModalService } from '../../../../services/modal.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
-import { LogEvent } from '../../../../datamodels/logEvent';
 
 @Component({
   selector: 'app-log-detail',
   templateUrl: './log-detail.component.html',
   styleUrls: ['./log-detail.component.scss']
 })
-export class LogDetailComponent implements OnInit {
-
+export class LogDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -30,19 +27,23 @@ export class LogDetailComponent implements OnInit {
 
   logEventItem: LogEvent = null;
 
-  constructor(
-    private modalService: ModalService,
-    public utilitiesService: UtilitiesService
-  ) {
-    this.modalService.detailLogEvent.subscribe((logEvent) => {
+  modalServiceSubscriber: any;
+
+  constructor(private modalService: ModalService, public utilitiesService: UtilitiesService) {
+    this.modalServiceSubscriber = this.modalService.detailLogEvent.subscribe(logEvent => {
       if (logEvent && logEvent.id) {
         this.logEventItem = logEvent;
         this._showModal = true;
       }
     });
-
   }
-  ngOnInit() {
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalService.detailLogEvent.next(null);
+
+    this.modalServiceSubscriber.unsubscribe();
   }
 
   /**

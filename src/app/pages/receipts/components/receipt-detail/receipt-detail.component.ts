@@ -1,19 +1,19 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { FormControl, Validators, NgForm } from '@angular/forms';
-import { HttpService } from '../../../../services/http.service';
-import { ModalService } from '../../../../services/modal.service';
-import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
-import * as moment from 'moment';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../auth/auth.service';
 import { Receipt } from '../../../../datamodels/receipt';
+import { User } from '../../../../datamodels/user';
+import { ModalService } from '../../../../services/modal.service';
+import { RouteDataService } from '../../../../services/route-data.service';
+import { UtilitiesService } from '../../../../services/utilities.service';
 
 @Component({
   selector: 'app-receipt-detail',
   templateUrl: './receipt-detail.component.html',
   styleUrls: ['./receipt-detail.component.scss']
 })
-export class ReceiptDetailComponent implements OnInit {
-
+export class ReceiptDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailForm') detailForm: NgForm;
 
   showModal = false;
@@ -34,11 +34,20 @@ export class ReceiptDetailComponent implements OnInit {
   typeToDisplay: string;
   idToDisplay: string;
 
+  modalServiceSubscriber: any;
+
+  authServiceSubscriber: any;
+
+  user: User;
+
   constructor(
     private modalService: ModalService,
-    public utilitiesService: UtilitiesService
+    public utilitiesService: UtilitiesService,
+    private routeDataService: RouteDataService,
+    private router: Router,
+    private authService: AuthService
   ) {
-    this.modalService.detailReceipt.subscribe((receipt) => {
+    this.modalServiceSubscriber = this.modalService.detailReceipt.subscribe(receipt => {
       if (receipt && receipt.id) {
         this.receiptItem = receipt;
 
@@ -54,8 +63,17 @@ export class ReceiptDetailComponent implements OnInit {
       }
     });
 
+    this.authServiceSubscriber = this.authService.user.subscribe(user => (this.user = user));
   }
-  ngOnInit() {
+
+  ngOnInit() {}
+
+  ngOnDestroy() {
+    this.modalService.detailReceipt.next(null);
+
+    this.modalServiceSubscriber.unsubscribe();
+
+    this.authServiceSubscriber.unsubscribe();
   }
 
   /**
@@ -68,5 +86,19 @@ export class ReceiptDetailComponent implements OnInit {
     this.modalService.detailReceipt.next(this.receiptItem);
 
     this.showModal = false;
+  }
+
+  /**
+   * Go to item history
+   */
+  routeHistory() {
+    if (this.receiptItem.card) {
+      this.routeDataService.card.next(this.receiptItem.card);
+      this.router.navigate(['card-history']);
+    } else {
+      this.routeDataService.document.next(this.receiptItem.document);
+      this.router.navigate(['document-history']);
+    }
+    this._showModal = false;
   }
 }

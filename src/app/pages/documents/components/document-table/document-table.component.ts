@@ -1,21 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';
 import { Document } from '../../../../datamodels/document';
 import { MatchFilterDocumentPipe } from '../../../../pipes/match-filter-document.pipe';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
 import { lowerCase } from '../../../../services/utilities.service';
+import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-document-table',
   templateUrl: './document-table.component.html',
   styleUrls: ['./document-table.component.scss']
 })
-export class DocumentTableComponent implements OnInit {
-  @Input() documentList: Document[];
+export class DocumentTableComponent implements OnInit, OnDestroy {
+  documentList: Document[] = [];
 
   showModal = false;
   showPdfGenerationModal = false;
+
+  order = 'desc';
+  sortProperty = 'modifiedDate';
 
   filterInput = '';
 
@@ -37,90 +41,101 @@ export class DocumentTableComponent implements OnInit {
 
   url = '';
 
+  dataServiceSubscriber: any;
+
   constructor(
     private modalService: ModalService,
     private httpService: HttpService,
-    private documentPipe: MatchFilterDocumentPipe
-  ) {}
+    private documentPipe: MatchFilterDocumentPipe,
+    private dataService: DataService
+  ) {
+    this.dataServiceSubscriber = this.dataService.documentList.subscribe(documentList => {
+      this.documentList = documentList;
+      this.orderTableList();
+    });
+  }
 
   ngOnInit() {
-    this.sortTableListStart();
+    this.orderTableList();
+  }
+
+  ngOnDestroy() {
+    this.dataServiceSubscriber.unsubscribe();
   }
 
   /**
-   * Sorts table after modifiedDate ascending
-   */
-  sortTableListStart() {
-    this.documentList = _.orderBy(this.documentList, ['modifiedDate'], ['desc']);
-  }
-
-  /**
-   * Sorts the table depending on the property of the Card
+   * Update order and order property
    * @param property
    */
-  sortTableList(property: string) {
-    let newOrder = '';
+  updateOrder(property: string) {
+    this.sortProperty = property;
 
     switch (property) {
-      case 'status.id': {
-        newOrder = this.sortTableListHelper(this.orderStatus);
-        this.orderStatus = newOrder;
+      case 'status.name': {
+        this.order = this.getNewOrder(this.orderStatus);
+        this.orderStatus = this.order;
         break;
       }
       case 'documentType.name': {
-        newOrder = this.sortTableListHelper(this.orderDocumentType);
-        this.orderDocumentType = newOrder;
+        this.order = this.getNewOrder(this.orderDocumentType);
+        this.orderDocumentType = this.order;
         break;
       }
       case 'documentNumber': {
-        newOrder = this.sortTableListHelper(this.orderDocumentNumber);
-        this.orderDocumentNumber = newOrder;
+        this.order = this.getNewOrder(this.orderDocumentNumber);
+        this.orderDocumentNumber = this.order;
         break;
       }
       case 'name': {
-        newOrder = this.sortTableListHelper(this.orderName);
-        this.orderName = newOrder;
+        this.order = this.getNewOrder(this.orderName);
+        this.orderName = this.order;
         break;
       }
       case 'user.name': {
-        newOrder = this.sortTableListHelper(this.orderUser);
-        this.orderUser = newOrder;
+        this.order = this.getNewOrder(this.orderUser);
+        this.orderUser = this.order;
         break;
       }
       case 'location': {
-        newOrder = this.sortTableListHelper(this.orderLocation);
-        this.orderLocation = newOrder;
+        this.order = this.getNewOrder(this.orderLocation);
+        this.orderLocation = this.order;
         break;
       }
       case 'comment': {
-        newOrder = this.sortTableListHelper(this.orderComment);
-        this.orderComment = newOrder;
+        this.order = this.getNewOrder(this.orderComment);
+        this.orderComment = this.order;
         break;
       }
     }
+  }
 
-    if (newOrder) {
+  /**
+   * Orders document list based on set order and order property
+   */
+  orderTableList() {
+    if (this.order) {
       this.documentList = _.orderBy(
         this.documentList,
         [
           document => {
-            if (document[property]) {
-              return lowerCase(document[property]) as string;
+            if (document[this.sortProperty]) {
+              return lowerCase(document[this.sortProperty]) as string;
             } else {
-              return document[property.slice(0, -5)] ? (lowerCase(document[property.slice(0, -5)].name) as string) : '';
+              return document[this.sortProperty.slice(0, -5)] ?
+              (lowerCase(document[this.sortProperty.slice(0, -5)].name) as string) : '';
             }
           }
         ],
-        [newOrder]
+        [this.order]
       );
     }
   }
 
   /**
-   * Sets the order to sort by
+   * Returns new order given old one
    * @param order
    */
-  sortTableListHelper(order: string) {
+  getNewOrder(order: string) {
     switch (order) {
       case 'asc':
         return 'desc';

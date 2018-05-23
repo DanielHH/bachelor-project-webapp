@@ -1,16 +1,15 @@
-import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-import { HomeComponent } from './pages/home/home.component';
-import { DocumentsComponent } from './pages/documents/documents.component';
-import { ReceiptsComponent } from './pages/receipts/receipts.component';
-import { LogsComponent } from './pages/logs/logs.component';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
+import { CardHistoryComponent } from './pages/card-history/card-history.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { DeliveriesComponent } from './pages/deliveries/deliveries.component';
-import { InventoryComponent } from './pages/inventory/inventory.component';
-import { CardDetailComponent } from './pages/cards/components/card-detail/card-detail.component';
-import { CardHistoryComponent } from './pages/cardhistory/cardhistory.component';
 import { DocumentHistoryComponent } from './pages/document-history/document-history.component';
-import { AuthGuard } from './auth/auth.guard';
+import { DocumentsComponent } from './pages/documents/documents.component';
+import { HomeComponent } from './pages/home/home.component';
+import { InventoryComponent } from './pages/inventory/inventory.component';
+import { LogsComponent } from './pages/logs/logs.component';
+import { ReceiptsComponent } from './pages/receipts/receipts.component';
 import { TypesComponent } from './pages/types/types.component';
 import { UsersComponent } from './pages/users/users.component';
 

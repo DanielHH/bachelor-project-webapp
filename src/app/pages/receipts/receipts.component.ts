@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Receipt } from '../../datamodels/receipt';
-import { DataService } from '../../services/data.service';
-
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-receipts',
@@ -9,16 +6,7 @@ import { DataService } from '../../services/data.service';
   styleUrls: ['./receipts.component.scss']
 })
 export class ReceiptsComponent implements OnInit {
+  constructor() {}
 
-  receiptList: Receipt[] = [];
-
-  constructor(public dataService: DataService) {
-    this.dataService.receiptList.subscribe((receiptList) => {
-      this.receiptList = receiptList;
-    });
-   }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

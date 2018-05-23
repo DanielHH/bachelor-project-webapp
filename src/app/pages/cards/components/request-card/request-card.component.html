@@ -1,9 +1,9 @@
 <form #requestForm="ngForm" (ngSubmit)="requestCard()">
-  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut kort'" [closeName]="closeText" [submitName]="'Kvittera ut'" [hideSubmit]="hideSubmit">
+  <app-modal [(show)]="_showModal" [modalTitle]="'Kvittera ut kort'" [closeName]="closeText" [submitName]="'Bekräfta'" [hideSubmit]="hideSubmit">
     <div [class.generating-pdf]="loading || pdfView">
 
       <!-- Row card info -->
-      <div class="row">
+      <div class="row overflow-break">
         <div class="col-0 col-md-1"></div>
         <div class="col-0 col-md-10 wide-center">
           <mat-card [style.background]="'#E8EAF6'">
@@ -89,7 +89,7 @@
               <!--Input-->
               <input id="usernameInput" name="usernameInput" [(ngModel)]="usernameInput" [style.color]="isValidUsername() ? 'black' : 'gray'"
                 placeholder="Användarnamn" aria-label="Number" matInput [matAutocomplete]="userIDs" [formControl]="usernameControl"
-                spellcheck="false" maxlength="128" appUsername required>
+                spellcheck="false" maxlength="32" appUsername required>
               <!--Check and clear-->
               <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">
                 <mat-icon [style.color]="'green'" *ngIf="isValidUsername()">done</mat-icon>
@@ -100,7 +100,7 @@
               </button>
               <!--Dropdown-->
               <mat-autocomplete #userIDs="matAutocomplete" [displayWith]="displayUser">
-                <mat-option *ngFor="let user of users | matchFilterUser:usernameInput:true:true:true:false" [value]="user">
+                <mat-option *ngFor="let user of users | matchFilterUser:usernameInput:false:true:true:false" [value]="user">
                   {{utilitiesService.getUserString(user)}}
                 </mat-option>
               </mat-autocomplete>
@@ -128,12 +128,14 @@
               tabindex="-1">
               <mat-icon>close</mat-icon>
             </button>
+            <button type="button" mat-button class="size-medium" mat-icon-button matSuffix (click)="picker.open()" tabindex="-1">
+              <mat-icon>date_range</mat-icon>
+            </button>
             <!--DatePicker-->
             <mat-datepicker #picker></mat-datepicker>
             <!--Hidden input connected to the date picker-->
             <input id="startDateDatepickerInput" name="startDateDatepickerInput" [(ngModel)]="startDateDatepickerInput" [matDatepicker]="picker"
               (dateInput)="setStartDateFromDatepicker($event);" type="hidden">
-            <mat-datepicker-toggle matSuffix class="size-big" [for]="picker"></mat-datepicker-toggle>
             <!--Errors-->
             <mat-error *ngIf="startDateControl.hasError('required')">
               Ange ett startdatum
@@ -153,7 +155,7 @@
         <div class="col-10">
           <mat-form-field>
             <!--Input-->
-            <input matInput name="locationInput" [(ngModel)]="locationInput" maxlength="128" placeholder="Ny förvaringsplats" [formControl]="locationControl"
+            <input matInput name="locationInput" [(ngModel)]="locationInput" maxlength="32" placeholder="Ny förvaringsplats" [formControl]="locationControl"
               required>
             <!--Check and clear-->
             <button mat-button class="size-medium" matSuffix mat-icon-button [disabled]="true">

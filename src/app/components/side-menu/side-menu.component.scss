@@ -16,6 +16,12 @@
     .nav-title {
       border-bottom: 1px solid white;
       width: 100%;
+      display: flex;
+      justify-content: space-between;
+      .align-button {
+        display: flex;
+        margin-top: 6px;
+      }
     }
 
     ul {
@@ -39,6 +45,9 @@
       li {
         width: 100%;
         a {
+          &.collapsable {
+            padding-left: 0px !important;
+          }
           &.collapsable::after {
             content: '\f078';
             font-family: FontAwesome;
@@ -63,5 +72,20 @@
     &.show-divider {
       display: block !important;
     }
+  }
+
+  .nav-text {
+    pointer-events: none !important;
+  }
+}
+
+// Hiding button around an object
+.btn-menu {
+  background-color: transparent !important;
+  color: white !important;
+  border-color: transparent !important;
+  padding: 0;
+   :hover {
+      cursor: pointer;
   }
 }

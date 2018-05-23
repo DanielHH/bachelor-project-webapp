@@ -1,19 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { BaseItem } from '../../../../datamodels/baseItem';
 import { Card } from '../../../../datamodels/card';
-import { CardType } from '../../../../datamodels/cardType';
 import { Document } from '../../../../datamodels/document';
-import { DocumentType } from '../../../../datamodels/documentType';
-import { User } from '../../../../datamodels/user';
-import { Verification } from '../../../../datamodels/verification';
-import { VerificationType } from '../../../../datamodels/verificationType';
 import { DataService } from '../../../../services/data.service';
 import { HttpService } from '../../../../services/http.service';
 import { ModalService } from '../../../../services/modal.service';
-import { RouteDataService } from '../../../../services/route-data.service';
 import { UtilitiesService } from '../../../../services/utilities.service';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'inventory-item',
@@ -23,27 +15,13 @@ import * as _ from 'lodash';
 export class InventoryItemComponent implements OnInit {
   @Input() baseItem: BaseItem;
 
-  cardList: Card[];
-  documentList: Document[];
-  baseItemList: BaseItem[];
+  @Output() checkedChanged = new EventEmitter<any>();
 
   constructor(
-    private dataService: DataService,
-    private routeDataService: RouteDataService,
-    private router: Router,
     private httpService: HttpService,
     private utilitiesService: UtilitiesService,
     private modalService: ModalService
   ) {
-    this.dataService.cardList.subscribe(cardList => {
-      this.cardList = cardList;
-    });
-    this.dataService.documentList.subscribe(documentList => {
-      this.documentList = documentList;
-    });
-    this.dataService.itemList.subscribe(baseItemList => {
-      this.baseItemList = baseItemList;
-    });
   }
 
   ngOnInit() {}
@@ -60,15 +38,13 @@ export class InventoryItemComponent implements OnInit {
    */
   editStatus() {
     if (this.baseItem.isCard()) {
-      this.httpService.httpPut<Card>('updateCard/', this.baseItem.getItem()).then(res => {
+      this.httpService.httpPut<Card>('updateCard/', {cardItem: this.baseItem.getItem()}).then(res => {
         if (res.message === 'success') {
-          this.dataService.cardList.next(this.cardList);
         }
       });
     } else {
-      this.httpService.httpPut<Document>('updateDocument/', this.baseItem.getItem()).then(res => {
+      this.httpService.httpPut<Document>('updateDocument/', {documentItem: this.baseItem.getItem()}).then(res => {
         if (res.message === 'success') {
-          this.dataService.documentList.next(this.documentList);
         }
       });
     }
@@ -79,24 +55,7 @@ export class InventoryItemComponent implements OnInit {
   }
 
   toggleSelected() {
-    setTimeout(() => {
-      if (this.baseItem.isCard()) {
-        for (const baseItem of this.baseItemList) {
-          if (baseItem.isCard() && baseItem.getItem().id === this.baseItem.item.id) {
-            baseItem.isChecked = !baseItem.isChecked;
-            break;
-          }
-        }
-      } else {
-        for (const baseItem of this.baseItemList) {
-          if (!baseItem.isCard() && baseItem.item.id === this.baseItem.item.id) {
-            baseItem.isChecked = !baseItem.isChecked;
-            break;
-          }
-        }
-      }
-      this.baseItemList.slice();
-      this.dataService.itemList.next(this.baseItemList);
-    } , 100);
+    this.baseItem.isChecked = !this.baseItem.isChecked;
+    this.checkedChanged.emit(true);
   }
 }

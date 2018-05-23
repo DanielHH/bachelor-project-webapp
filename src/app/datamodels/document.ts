@@ -1,13 +1,11 @@
-import { User } from './user';
-import { StatusType } from './statusType';
 import { DocumentType } from './documentType';
-import { Verification } from './verification';
+import { StatusType } from './statusType';
+import { User } from './user';
 
 /**
  * Document data model
-*/
+ */
 export class Document {
-
   /**
    * Database ID of the document
    */
@@ -76,7 +74,7 @@ export class Document {
   /**
    * Active receipt (if any)
    */
-  activeReceipt?: number;
+  activeReceiptID?: number;
 
   /**
    * ID of last verification
@@ -89,8 +87,17 @@ export class Document {
   lastVerificationDate?: Date;
 
   /**
+   * ID of last self check
+   */
+  lastSelfCheckID?: number;
+
+  /**
+   * Date of last self check
+   */
+  lastSelfCheckDate?: Date;
+
+  /**
    * Registrator
    */
   registrator?: string;
-
 }

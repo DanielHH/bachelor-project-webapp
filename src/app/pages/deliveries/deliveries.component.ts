@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Delivery } from '../../datamodels/delivery';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-deliveries',
@@ -9,17 +9,7 @@ import { Delivery } from '../../datamodels/delivery';
 })
 export class DeliveriesComponent implements OnInit {
 
-  deliveryList: Delivery[] = [];
+  constructor() {}
 
-  constructor(public dataService: DataService) {
-    this.dataService.deliveryList.subscribe( (deliveryList) => {
-      this.deliveryList = deliveryList;
-
-    });
-
-  }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

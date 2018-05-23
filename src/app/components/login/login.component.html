@@ -6,12 +6,12 @@
       <mat-spinner></mat-spinner>
     </div>
     <div class="form-wrapper" [class.fade]="loading">
-      <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" (keydown.enter)="login(loginForm)">
+      <form #loginForm="ngForm" (ngSubmit)="login(); $event.preventDefault()" (keydown.enter)="login(); $event.preventDefault()">
 
         <!-- Username input -->
         <mat-form-field>
           <!--Input-->
-          <input type="text" matInput name="usernameInput" [(ngModel)]="username" maxlength="128" placeholder="Användarnamn" [formControl]="usernameControl"
+          <input type="text" matInput name="usernameInput" [(ngModel)]="username" maxlength="32" placeholder="Användarnamn" [formControl]="usernameControl"
             (ngModelChange)="error = ''" required>
           <!--Clear-->
           <button mat-button class="size-medium" *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username = ''"
