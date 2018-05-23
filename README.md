@@ -59,6 +59,8 @@ npm install /* this will install all required packages listed in package.json */
 ng serve /* this will run the local dev server, optional ‘-o’ to open the browser automatically */
 ```
 
+To connect the application to your own API you need to change the variable `host` in the following file: src/app/services/http.service.ts 
+
 Figure 5 : ![alt text](https://lh3.google.com/u/0/d/1kUb3SdHvFmESNORxvrfZLB-AJlLMjnrj=w1387-h887-iv1 "Front-end")
 
 # Back-end
