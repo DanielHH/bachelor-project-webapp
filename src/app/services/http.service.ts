@@ -9,9 +9,11 @@ export class HttpService {
    * API url
    */
   // host = 'http://localhost:8080/';
-  host = 'http://api.nlsn.se/';
+  host;
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+      this.host = 'http://' + window.location.hostname + ':8080/';
+  }
 
   /**
    * Get request to given url
